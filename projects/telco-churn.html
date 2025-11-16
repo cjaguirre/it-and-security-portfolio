@@ -1,1 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telco Customer Churn Analysis</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Inconsolata:wght@300;400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0f18;
+            color: #d1d5db;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Inconsolata', monospace;
+        }
+
+        .accent {
+            color: #00ffff;
+        }
+
+        .section-line {
+            display: inline-block;
+            width: 120px;
+            border-bottom: 2px solid #374151;
+            margin-left: 10px;
+            transform: translateY(-6px);
+        }
+
+        .content-container {
+            max-width: 900px;
+        }
+    </style>
+</head>
+
+<body class="px-6 py-12">
+
+    <!-- Back Button -->
+    <a href="../index.html#projects" class="text-cyan-400 hover:text-cyan-300 font-mono mb-10 inline-block text-lg">
+        ← Back to Portfolio
+    </a>
+
+    <div class="content-container mx-auto">
+
+        <!-- Title -->
+        <h1 class="text-4xl font-bold accent mb-2">Telco Customer Churn Analysis</h1>
+        <div class="section-line mb-8"></div>
+
+        <!-- Subheader -->
+        <p class="text-gray-400 text-sm mb-10 font-mono">
+            Python • Machine Learning • Logistic Regression • Random Forest • SHAP Explainability • Data Cleaning • Feature Engineering
+        </p>
+
+        <!-- Overview -->
+        <p class="leading-relaxed mb-6">
+            This project analyzes a telecommunications customer churn dataset and builds predictive machine learning models 
+            to identify which customers are most likely to leave. The analysis includes data cleaning, feature engineering, 
+            visualization, model training, evaluation, and SHAP explainability.
+        </p>
+
+        <p class="leading-relaxed mb-10">
+            The objective was to produce an actionable churn model and provide business insights that help retention teams 
+            understand why customers churn and how to intervene.
+        </p>
+
+        <!-- Section: Dataset -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Dataset Overview</h2>
+
+        <p class="leading-relaxed mb-4">
+            The dataset contains 7,000+ customer records with variables related to:
+        </p>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li>Demographics (age, partner, dependents)</li>
+            <li>Service usage (internet, tech support, streaming)</li>
+            <li>Billing (monthly charges, payment method)</li>
+            <li>Contract information (month-to-month, yearly)</li>
+        </ul>
+
+        <p class="leading-relaxed mb-8">
+            Target variable: <strong>Churn (Yes/No)</strong>.
+        </p>
+
+        <!-- Section: Data Cleaning -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Data Cleaning & Preparation</h2>
+
+        <p class="leading-relaxed mb-4">
+            Significant preprocessing steps were required to prepare the dataset:
+        </p>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li>Converted “TotalCharges” field to numeric</li>
+            <li>Handled missing values and blank string entries</li>
+            <li>Removed duplicate records</li>
+            <li>One-hot encoded all categorical variables</li>
+            <li>Scaled numerical features for logistic regression</li>
+        </ul>
+
+        <pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
+df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
+df = df.dropna()
+df = pd.get_dummies(df, drop_first=True)
+        </pre>
+
+        <!-- Section: Modeling -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Machine Learning Models</h2>
+
+        <p class="leading-relaxed mb-4">
+            Two models were trained and compared:
+        </p>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li><strong>Logistic Regression</strong> — baseline interpretable model</li>
+            <li><strong>Random Forest Classifier</strong> — more complex, non-linear model</li>
+        </ul>
+
+        <p class="leading-relaxed mt-6 mb-4">Model performance was evaluated using:</p>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li>Confusion matrix</li>
+            <li>Accuracy</li>
+            <li>Precision / Recall</li>
+            <li>ROC-AUC</li>
+        </ul>
+
+        <pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
+model = RandomForestClassifier(n_estimators=300, max_depth=12, random_state=42)
+model.fit(X_train, y_train)
+preds = model.predict(X_test)
+        </pre>
+
+        <!-- Section: Explainability -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Model Explainability (SHAP)</h2>
+
+        <p class="leading-relaxed mb-4">
+            SHAP values were generated to understand which features most strongly influenced churn predictions.
+        </p>
+
+        <pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
+explainer = shap.TreeExplainer(model)
+shap_values = explainer.shap_values(X)
+shap.summary_plot(shap_values, X)
+        </pre>
+
+        <p class="leading-relaxed mb-8">
+            The SHAP summary plots revealed clear churn drivers.
+        </p>
+
+        <!-- Section: Key Drivers -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Key Churn Drivers</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li><strong>Month-to-month contracts</strong> — highest predictor of churn</li>
+            <li><strong>High monthly charges</strong></li>
+            <li><strong>Lack of fiber internet / poor service quality</strong></li>
+            <li><strong>No tech support or security add-ons</strong></li>
+            <li><strong>Electronic check billing</strong> — associated with higher churn</li>
+        </ul>
+
+        <!-- Section: Outcomes -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Key Outcomes</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li>Built a reliable churn prediction model with strong classification metrics</li>
+            <li>Mapped out the top churn indicators using SHAP explainability</li>
+            <li>Created a business recommendation set for retention strategy</li>
+            <li>Produced visuals and analysis ready for executive reporting</li>
+            <li>Delivered an end-to-end machine learning workflow</li>
+        </ul>
+
+        <!-- Section: Skills -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Skills Demonstrated</h2>
+
+        <p class="text-gray-300 mb-6">
+            Python, pandas, scikit-learn, SHAP interpretability, feature engineering, ML pipelines, data cleaning, exploratory analysis, KPI reporting.
+        </p>
+
+        <!-- Summary -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Summary</h2>
+
+        <p class="leading-relaxed mb-16">
+            This project showcases a complete machine learning workflow designed to help telecom companies identify at-risk customers 
+            and proactively reduce churn. By combining predictive modeling with explainability and business logic, the analysis 
+            transforms raw data into actionable retention insights.
+        </p>
+
+    </div>
+</body>
+</html>
