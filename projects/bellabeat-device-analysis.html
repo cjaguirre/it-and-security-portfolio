@@ -1,1 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BellaBeat Smart Device Usage Analysis</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Inconsolata:wght@300;400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0f18;
+            color: #d1d5db;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Inconsolata', monospace;
+        }
+
+        .accent {
+            color: #00ffff;
+        }
+
+        .section-line {
+            display: inline-block;
+            width: 120px;
+            border-bottom: 2px solid #374151;
+            margin-left: 10px;
+            transform: translateY(-6px);
+        }
+
+        .content-container {
+            max-width: 900px;
+        }
+    </style>
+</head>
+
+<body class="px-6 py-12">
+
+    <!-- Back Button -->
+    <a href="../index.html#projects" class="text-cyan-400 hover:text-cyan-300 font-mono mb-10 inline-block text-lg">
+        ← Back to Portfolio
+    </a>
+
+    <div class="content-container mx-auto">
+
+        <!-- Title -->
+        <h1 class="text-4xl font-bold accent mb-2">BellaBeat Smart Device Usage Analysis</h1>
+        <div class="section-line mb-8"></div>
+
+        <!-- Subheader tags -->
+        <p class="text-gray-400 text-sm mb-10 font-mono">
+            Public Fitbit Dataset • Engagement Patterns • Product Insights
+        </p>
+
+        <!-- Overview -->
+        <p class="leading-relaxed mb-6">
+            This analysis explores public Fitbit data to understand how users engage with smart devices across daily activities, 
+            movement patterns, and sleep behavior. The goal was to identify trends that could inform BellaBeat’s product and 
+            marketing strategy, helping the company promote more consistent device usage among its target audience.
+        </p>
+
+        <p class="leading-relaxed mb-6">
+            Using a combination of exploratory analysis and descriptive statistics, I analyzed activity intensity, total steps, 
+            calorie burn, sleep records, and daily engagement metrics. These insights show how habits differ between high-engagement 
+            and low-engagement users, and what lifestyle patterns correlate with consistent device interaction.
+        </p>
+
+        <!-- Section: Data & Tools -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Dataset & Tools</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li>12,000+ rows of daily Fitbit usage data</li>
+            <li>Activity minutes broken into sedentary, lightly active, fairly active, and very active</li>
+            <li>Sleep logs showing total time asleep, time in bed, and sleep efficiency</li>
+            <li>Daily step counts and calories burned</li>
+            <li>Tools used: Python, pandas, seaborn, Matplotlib</li>
+        </ul>
+
+        <!-- Section: Key Findings -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Key Findings</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li><strong>High-engagement users averaged significantly more daily steps</strong> (10k+), correlating with stronger device usage habits.</li>
+            <li><strong>Sleep patterns were a consistent marker of user segmentation</strong>: users with 6–7 hours of sleep showed the highest day-to-day device engagement.</li>
+            <li><strong>Sedentary minutes were the strongest negative indicator</strong> of device engagement.</li>
+            <li><strong>Calories burned and active minutes tracked closely with step count tiers</strong>, identifying opportunities for BellaBeat to promote activity streaks.</li>
+        </ul>
+
+        <!-- Section: Sample Code -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Sample Python Code</h2>
+
+<pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
+import pandas as pd
+
+df = pd.read_csv("dailyActivity.csv")
+
+# Summaries
+df_summary = df.groupby("Id")[["TotalSteps", "SedentaryMinutes", "Calories"]].mean()
+
+# Categorize users by activity
+df['activity_level'] = pd.cut(
+    df['TotalSteps'],
+    bins=[0, 5000, 10000, 20000],
+    labels=['Low activity', 'Moderate activity', 'High activity']
+)
+
+df.head()
+</pre>
+
+        <!-- Section: Insights for BellaBeat -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Strategic Insights for BellaBeat</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li>Marketing campaigns should encourage **daily step streaks** to reinforce consistent activity patterns.</li>
+            <li>Users respond well to **moderate sleep improvement goals** rather than highly aggressive targets.</li>
+            <li>Device notifications could focus on breaking long sedentary periods, using timely nudges.</li>
+            <li>Retention efforts should target users with declining step counts—an early sign of disengagement.</li>
+        </ul>
+
+        <!-- Section: Skills -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Skills Demonstrated</h2>
+
+        <p class="text-gray-300">
+            Exploratory data analysis, data visualization, user segmentation, behavioral insights, product analytics, 
+            storytelling for business strategy.
+        </p>
+
+        <!-- Summary -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Summary</h2>
+
+        <p class="leading-relaxed mb-16">
+            This project demonstrates how raw activity data can be transformed into meaningful insights that shape 
+            product features and marketing strategy. By identifying behavioral patterns within daily activity, sleep, 
+            and step counts, the analysis provides BellaBeat with clear opportunities to drive user engagement and 
+            long-term device retention.
+        </p>
+
+    </div>
+</body>
+</html>
