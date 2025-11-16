@@ -1,1 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manufacturing KPI Analysis</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Inconsolata:wght@300;400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0f18;
+            color: #d1d5db;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Inconsolata', monospace;
+        }
+
+        .accent {
+            color: #00ffff;
+        }
+
+        .section-line {
+            display: inline-block;
+            width: 120px;
+            border-bottom: 2px solid #374151;
+            margin-left: 10px;
+            transform: translateY(-6px);
+        }
+
+        .content-container {
+            max-width: 900px;
+        }
+    </style>
+</head>
+
+<body class="px-6 py-12">
+
+    <!-- Back Button -->
+    <a href="../index.html#projects" class="text-cyan-400 hover:text-cyan-300 font-mono mb-10 inline-block text-lg">
+        ← Back to Portfolio
+    </a>
+
+    <div class="content-container mx-auto">
+
+        <!-- Title -->
+        <h1 class="text-4xl font-bold accent mb-2">Operational Performance: Manufacturing KPI Analysis</h1>
+        <div class="section-line mb-8"></div>
+
+        <!-- Subheader tags -->
+        <p class="text-gray-400 text-sm mb-10 font-mono">
+            Excel • KPI dashboards • Operations analysis
+        </p>
+
+        <!-- Overview -->
+        <p class="leading-relaxed mb-6">
+            This project focuses on building an end-to-end operational KPI analysis for a lawn equipment manufacturer. 
+            The goal was to assess production performance, identify inefficiencies, and provide management with a 
+            clear understanding of trends across on-time delivery, transmission unit cost, and employee retention.
+        </p>
+
+        <p class="leading-relaxed mb-10">
+            Using Excel, I cleaned multiple raw data sources, created relational connections, calculated key metrics, 
+            and built an interactive KPI dashboard that highlights underperforming areas and gives leadership insight 
+            into both short-term and long-term operational health.
+        </p>
+
+        <!-- Section: Data & Methodology -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Data & Methodology</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li>Raw CSV and Excel files from operational logs and production tables.</li>
+            <li>Standardized inconsistent fields and removed duplicated rows.</li>
+            <li>Created calculated fields for on-time delivery, unit manufacturing cost, and retention rate.</li>
+            <li>Used pivot tables and slicers to enable multi-view analysis.</li>
+            <li>Designed a management-ready dashboard summarizing performance trends.</li>
+        </ul>
+
+        <!-- Section: KPIs Calculated -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Key KPIs Calculated</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li><strong>On-Time Delivery %</strong> – Percentage of customer orders shipped on or before the promised date.</li>
+            <li><strong>Transmission Unit Cost</strong> – Total cost per unit, including labor, parts, overhead, and rework.</li>
+            <li><strong>Retention Rate</strong> – Month-over-month employee retention within production lines.</li>
+            <li><strong>Defect Rate</strong> – Defective units as a percentage of total production.</li>
+            <li><strong>Product Line Contribution</strong> – Unit margin by product type to identify profit drivers.</li>
+        </ul>
+
+        <!-- Section: Excel Logic Example -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Sample Excel Logic</h2>
+
+<pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
+# On-Time Delivery %
+=IF([@[Ship Date]] <= [@[Due Date]], 1, 0)
+
+# Retention Rate
+=([@[Employees Start]] - [@[Employees Separated]]) / [@[Employees Start]]
+
+# Transmission Unit Cost
+=[@[Direct Labor]] + [@[Parts Cost]] + [@[Overhead]] + [@[Rework Cost]]
+</pre>
+
+        <!-- Section: Dashboard Insights -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Dashboard Insights</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li>The <strong>on-time delivery</strong> trend showcased strong seasonality and highlighted months where bottlenecks slowed fulfillment.</li>
+            <li><strong>Unit cost analysis</strong> revealed specific product lines with declining margins due to higher rework costs.</li>
+            <li><strong>Retention metrics</strong> showed correlations between turnover and production dips in high-volume months.</li>
+            <li>The dashboard enabled leadership to identify cost outliers and forecast staffing needs.</li>
+        </ul>
+
+        <!-- Section: Business Value -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Business Value Delivered</h2>
+
+        <p class="leading-relaxed mb-4">
+            This analysis strengthened operational decision-making by giving leadership a clear, consolidated view of 
+            production performance. Instead of relying on scattered spreadsheets and unclear trends, the KPI dashboard 
+            unified the data into one actionable report.
+        </p>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300 mb-10">
+            <li>Identified underperforming product lines.</li>
+            <li>Improved ability to forecast inventory and staffing.</li>
+            <li>Highlighted operational inefficiencies costing the company money.</li>
+            <li>Provided a measurable view of manufacturing health.</li>
+        </ul>
+
+        <!-- Section: Skills -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Skills Demonstrated</h2>
+
+        <p class="text-gray-300 mb-16">
+            Excel modeling, KPI design, pivot tables, ETL cleaning, dashboard creation, operational analysis, trend interpretation.
+        </p>
+
+    </div>
+</body>
+</html>
