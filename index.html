@@ -292,70 +292,211 @@
     </section>
 
     <!-- SKILLS -->
-    <section id="skills" class="py-16 sm:py-20 md:py-24 bg-secondary-bg border-t border-gray-700 transition-colors duration-500">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="section-title-wrapper mx-auto">
-                <h2 class="font-mono">02. Skills</h2>
-                <span></span>
-            </div>
+<!-- SKILLS -->
+<section id="skills" class="py-16 sm:py-20 md:py-24 bg-secondary-bg border-t border-gray-700 transition-colors duration-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <!-- skill cards row 1 -->
-        <div class="grid md:grid-cols-3 gap-8 mb-12">
+        <!-- Section Title -->
+        <div class="section-title-wrapper mx-auto">
+            <h2 class="font-mono">02. Skills</h2>
+            <span></span>
+        </div>
 
-                    <!-- lower skills -->
-        <div class="grid md:grid-cols-3 gap-8">
-            <!-- Protocols -->
+        <!-- ======================== -->
+        <!-- TOP SKILL PANELS (3 COL) -->
+        <!-- ======================== -->
+        <div class="grid md:grid-cols-3 gap-8 mb-16">
+
+            <!-- Security & Operations -->
             <div class="p-6 rounded-xl bg-container-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
                 <h3 class="text-lg font-bold text-text-base mb-4 flex items-center">
-                    <span class="text-xl mr-2 text-accent-cyan">⚙️</span> Protocols and concepts
+                    <span class="text-xl mr-2 text-accent-cyan">🛡️</span>
+                    Security and operations
+                </h3>
+
+                <!-- Row -->
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>Security monitoring & log review</span><span>85%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="85%"></div>
+                    </div>
+                </div>
+
+                <!-- Row -->
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>Azure & Microsoft Sentinel</span><span>80%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="80%"></div>
+                    </div>
+                </div>
+
+                <!-- Row -->
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>Incident documentation & triage</span><span>85%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="85%"></div>
+                    </div>
+                </div>
+
+                <!-- Row -->
+                <div>
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>Facility & vendor coordination</span><span>90%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="90%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data & Analytics -->
+            <div class="p-6 rounded-xl bg-container-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
+                <h3 class="text-lg font-bold text-text-base mb-4 flex items-center">
+                    <span class="text-xl mr-2 text-accent-cyan">📊</span>
+                    Data and analytics
+                </h3>
+
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>SQL (joins, CTE, cleaning)</span><span>90%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="90%"></div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>Python (pandas, analysis)</span><span>85%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="85%"></div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>Tableau dashboards</span><span>85%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="85%"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>Excel modeling & KPI design</span><span>90%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="90%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tools, Scripting, KQL -->
+            <div class="p-6 rounded-xl bg-container-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
+                <h3 class="text-lg font-bold text-text-base mb-4 flex items-center">
+                    <span class="text-xl mr-2 text-accent-cyan">💻</span>
+                    Tools and scripting
+                </h3>
+
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>PowerShell for administration</span><span>75%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="75%"></div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>KQL for log queries</span><span>75%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="75%"></div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>GitHub version control</span><span>80%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="80%"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>Documentation & SOP writing</span><span>90%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="90%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================== -->
+        <!-- LOWER TILE SECTIONS     -->
+        <!-- ======================== -->
+
+        <div class="grid md:grid-cols-3 gap-8">
+
+            <!-- Protocols and Concepts -->
+            <div class="p-6 rounded-xl bg-container-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
+                <h3 class="text-lg font-bold text-text-base mb-4 flex items-center">
+                    <span class="text-xl mr-2 text-accent-cyan">⚙️</span>
+                    Protocols and concepts
                 </h3>
                 <div class="grid grid-cols-2 gap-4 text-sm text-text-secondary">
-                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> SPF and DMARC basics</div>
-                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> EDR and endpoint security</div>
-                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> DKIM concept</div>
-                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> SIEM and log pipelines</div>
-                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> IAM and least privilege</div>
-                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> Risk and control thinking</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> SPF</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> DKIM</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> DMARC</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> SIEM pipelines</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> EDR</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> IAM & least privilege</div>
                 </div>
             </div>
 
             <!-- Certifications -->
             <div class="p-6 rounded-xl bg-container-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
                 <h3 class="text-lg font-bold text-text-base mb-4 flex items-center">
-                    <span class="text-xl mr-2 text-accent-cyan">🏅</span> Certifications
+                    <span class="text-xl mr-2 text-accent-cyan">🏅</span>
+                    Certifications
                 </h3>
                 <div class="space-y-3 text-sm text-text-secondary">
-                    <div class="flex items-center">
-                        <span class="text-accent-cyan mr-2">✓</span>
-                        CompTIA Security+ ce (SYO-701), 2025
-                    </div>
-                    <div class="flex items-center">
-                        <span class="text-accent-cyan mr-2">✓</span>
-                        Google Advanced Data Analytics, 2025
-                    </div>
-                    <div class="flex items-center">
-                        <span class="text-accent-cyan mr-2">✓</span>
-                        Google Data Analytics Professional, 2024
-                    </div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> Security+ (SYO-701), 2025</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> Google Advanced Data Analytics, 2025</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> Google Data Analytics Professional, 2024</div>
                 </div>
             </div>
 
-            <!-- Additional -->
+            <!-- Extra Skills -->
             <div class="p-6 rounded-xl bg-container-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
                 <h3 class="text-lg font-bold text-text-base mb-4 flex items-center">
-                    <span class="text-xl mr-2 text-accent-cyan">➕</span> Extra skills
+                    <span class="text-xl mr-2 text-accent-cyan">➕</span>
+                    Extra skills
                 </h3>
                 <div class="space-y-3 text-sm text-text-secondary">
-                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span>Vendor and contractor management</div>
-                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span>Technical and non technical communication</div>
-                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span>Process improvement and SOP updates</div>
-                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span>Bilingual in English and Spanish</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> Vendor & contractor management</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> Technical & non-technical communication</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> Process improvement & SOP updates</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> Bilingual (English & Spanish)</div>
                 </div>
             </div>
+
         </div>
     </div>
-    </section>
-
+</section>   
+    
     <!-- PROJECTS -->
     <section id="projects" class="py-16 sm:py-20 md:py-24 bg-primary-bg border-t border-gray-800 transition-colors duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
