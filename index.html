@@ -40,12 +40,6 @@
             transition: background-color 0.5s, color 0.5s;
         }
 
-        .hero-text-secondary {
-            color: var(--accent-primary);
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-        }
-
         .section-title-wrapper {
             display: inline-flex;
             align-items: center;
@@ -131,7 +125,7 @@
         function initSmoothScroll() {
             document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
                 anchor.addEventListener("click", function (e) {
-                    const target = document.querySelector(this.get.getAttribute("href"));
+                    const target = document.querySelector(this.getAttribute("href"));
                     if (!target) return;
                     e.preventDefault();
                     target.scrollIntoView({ behavior: "smooth" });
@@ -189,6 +183,7 @@
                         &lt;Christian Aguirre /&gt;
                     </a>
                 </div>
+
                 <div class="flex items-center space-x-4 text-sm">
                     <a href="#about" class="font-medium hover:text-accent-cyan transition duration-300">About</a>
                     <a href="#skills" class="font-medium hover:text-accent-cyan transition duration-300">Skills</a>
@@ -260,48 +255,106 @@
 
             <div class="grid lg:grid-cols-3 gap-12 items-start">
                 <div class="lg:col-span-2 space-y-4 text-text-secondary text-base leading-relaxed">
-                    <p>
-                        I am an MIS graduate and Facility Support Manager at GBA Associates LP supporting the Defense
+                    <p>I am an MIS graduate and Facility Support Manager at GBA Associates LP supporting the Defense
                         Health Headquarters campus. My day to day work lives where operations, technology, and people
                         intersect: coordinating vendors, tracking work orders, and keeping a high profile federal
-                        facility running safely and efficiently.
-                    </p>
-                    <p>
-                        Alongside facilities, I have built a portfolio in data analytics and cybersecurity. I work with
+                        facility running safely and efficiently.</p>
+
+                    <p>Alongside facilities, I have built a portfolio in data analytics and cybersecurity. I work with
                         SQL, Python, Tableau, and Excel to clean datasets, analyze KPIs, and design dashboards that show
                         trends clearly. On the security side, I hold CompTIA Security+ and have completed Azure SOC
-                        style labs involving honeypot deployment, Microsoft Sentinel log ingestion, and KQL
-                        investigations.
-                    </p>
-                    <p>
-                        I'm targeting roles blending operational thinking with data or security—SOC Analyst, IT Analyst,
-                        or Security Analyst roles where I can investigate alerts, optimize processes, and support teams
-                        with clear reporting.
-                    </p>
+                        style labs that involve building a honeypot, forwarding logs into Microsoft Sentinel, and using
+                        KQL to investigate attacks and enrich events with geo IP data.</p>
+
+                    <p>My goal is to move into roles that blend these strengths such as Security Operations Center
+                        analyst, security or IT analyst, or data analyst supporting security and operations teams.
+                        I like environments where I can investigate alerts, trace incidents, and still think in terms of
+                        process improvement and metrics.</p>
 
                     <div class="flex flex-wrap gap-2 pt-4">
                         <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Azure and Microsoft Sentinel</span>
                         <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Security+ (SYO-701)</span>
-                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">SQL & relational databases</span>
+                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">SQL and relational databases</span>
                         <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Python for analysis</span>
                         <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Tableau dashboards</span>
-                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Operations coordination</span>
+                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Operations and vendor coordination</span>
                     </div>
                 </div>
 
-                <!-- PHOTO -->
                 <div class="flex justify-center lg:justify-end mt-0 pt-0">
-                    <img src="assets/images/professional photo of myself.jpg" 
-                        alt="Christian Aguirre" 
-                        class="rounded-xl shadow-lg object-cover"
-                        style="width: 420px; height: auto; object-position: center;">
+                    <img src="assets/images/professional photo of myself.jpg"
+                         alt="Christian Aguirre"
+                         class="rounded-xl shadow-lg object-cover"
+                         style="width: 420px; height: auto; object-position: center;">
                 </div>
             </div>
         </div>
     </section>
 
     <!-- SKILLS -->
-    <!-- ...KEEP THIS SECTION EXACTLY THE SAME... -->
+    <section id="skills" class="py-16 sm:py-20 md:py-24 bg-secondary-bg border-t border-gray-700 transition-colors duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="section-title-wrapper mx-auto">
+                <h2 class="font-mono">02. Skills</h2>
+                <span></span>
+            </div>
+
+        <!-- skill cards row 1 -->
+        <div class="grid md:grid-cols-3 gap-8 mb-12">
+
+                    <!-- lower skills -->
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Protocols -->
+            <div class="p-6 rounded-xl bg-container-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
+                <h3 class="text-lg font-bold text-text-base mb-4 flex items-center">
+                    <span class="text-xl mr-2 text-accent-cyan">⚙️</span> Protocols and concepts
+                </h3>
+                <div class="grid grid-cols-2 gap-4 text-sm text-text-secondary">
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> SPF and DMARC basics</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> EDR and endpoint security</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> DKIM concept</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> SIEM and log pipelines</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> IAM and least privilege</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> Risk and control thinking</div>
+                </div>
+            </div>
+
+            <!-- Certifications -->
+            <div class="p-6 rounded-xl bg-container-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
+                <h3 class="text-lg font-bold text-text-base mb-4 flex items-center">
+                    <span class="text-xl mr-2 text-accent-cyan">🏅</span> Certifications
+                </h3>
+                <div class="space-y-3 text-sm text-text-secondary">
+                    <div class="flex items-center">
+                        <span class="text-accent-cyan mr-2">✓</span>
+                        CompTIA Security+ ce (SYO-701), 2025
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-accent-cyan mr-2">✓</span>
+                        Google Advanced Data Analytics, 2025
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-accent-cyan mr-2">✓</span>
+                        Google Data Analytics Professional, 2024
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional -->
+            <div class="p-6 rounded-xl bg-container-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
+                <h3 class="text-lg font-bold text-text-base mb-4 flex items-center">
+                    <span class="text-xl mr-2 text-accent-cyan">➕</span> Extra skills
+                </h3>
+                <div class="space-y-3 text-sm text-text-secondary">
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span>Vendor and contractor management</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span>Technical and non technical communication</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span>Process improvement and SOP updates</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span>Bilingual in English and Spanish</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
 
     <!-- PROJECTS -->
     <section id="projects" class="py-16 sm:py-20 md:py-24 bg-primary-bg border-t border-gray-800 transition-colors duration-500">
@@ -324,142 +377,353 @@
             <div class="grid md:grid-cols-2 gap-8">
 
                 <!-- Azure SOC Honeypot -->
-                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" 
-                         data-tags="soc analytics">
+                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="soc analytics">
                     <h3 class="text-xl font-semibold text-text-base mb-1">Azure SOC Honeypot and Attack Map Lab</h3>
                     <p class="text-xs font-mono text-accent-cyan mb-3">SOC lab · Azure VM · Microsoft Sentinel · KQL</p>
                     <p class="text-sm text-text-secondary mb-3">
-                        Built a Windows honeypot in Azure, captured real world attack traffic, forwarded logs into
-                        Sentinel, enriched attacker IPs, and visualized hostile activity on an interactive world map.
+                        Built a Windows honeypot in Azure, captured global attack traffic, forwarded logs, enriched attacker IPs, and visualized hostile activity on an interactive world map.
                     </p>
-                    <p class="text-xs text-text-secondary mb-4">
-                        Skills: Azure admin, NSG rules, Windows logs, KQL, SIEM thinking
-                    </p>
+                    <p class="text-xs text-text-secondary">Skills: Azure admin, NSG rules, Windows logs, KQL, SIEM thinking.</p>
 
                     <a href="projects/azure-soc-honeypot.html"
-                       class="inline-block mt-2 text-accent-cyan font-mono text-sm hover:text-accent-red transition">
+                       class="mt-4 inline-flex items-center text-accent-cyan font-mono text-sm hover:text-accent-red transition">
                         ➜ Learn more
                     </a>
                 </article>
 
                 <!-- Telco churn -->
-                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300"
-                         data-tags="ml analytics">
+                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="ml analytics">
                     <h3 class="text-xl font-semibold text-text-base mb-1">Telco Customer Churn Analysis</h3>
                     <p class="text-xs font-mono text-accent-cyan mb-3">Python · ML · SHAP</p>
                     <p class="text-sm text-text-secondary mb-3">
-                        Cleaned telco data, engineered features, built ML models, evaluated performance, and explained
-                        churn drivers with SHAP values.
+                        Cleaned telco data, engineered features, built ML models, evaluated performance, and explained churn behavior using SHAP values.
                     </p>
-                    <p class="text-xs text-text-secondary mb-4">Skills: pandas, modeling, SHAP</p>
+                    <p class="text-xs text-text-secondary">Skills: pandas, modeling, SHAP</p>
 
                     <a href="projects/telco-churn.html"
-                       class="inline-block mt-2 text-accent-cyan font-mono text-sm hover:text-accent-red transition">
+                       class="mt-4 inline-flex items-center text-accent-cyan font-mono text-sm hover:text-accent-red transition">
                         ➜ Learn more
                     </a>
                 </article>
 
-                <!-- Manufacturing KPI -->
-                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300"
-                         data-tags="analytics">
+                <!-- KPI Analysis -->
+                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="analytics">
                     <h3 class="text-xl font-semibold text-text-base mb-1">Operational performance: manufacturing KPI analysis</h3>
                     <p class="text-xs font-mono text-accent-cyan mb-3">Excel · KPI dashboards</p>
                     <p class="text-sm text-text-secondary mb-3">
-                        Created a management reporting KPI story for manufacturing performance using Excel.
+                        Created a complete KPI story that highlighted manufacturing performance using Excel dashboards.
                     </p>
-                    <p class="text-xs text-text-secondary mb-4">Skills: KPI design, Excel modeling</p>
+                    <p class="text-xs text-text-secondary">Skills: KPI design, Excel modeling</p>
 
                     <a href="projects/kpi-analysis.html"
-                       class="inline-block mt-2 text-accent-cyan font-mono text-sm hover:text-accent-red transition">
+                       class="mt-4 inline-flex items-center text-accent-cyan font-mono text-sm hover:text-accent-red transition">
                         ➜ Learn more
                     </a>
                 </article>
 
                 <!-- Cyclistic -->
-                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300"
-                         data-tags="analytics">
+                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="analytics">
                     <h3 class="text-xl font-semibold text-text-base mb-1">Cyclistic rider behavior analysis</h3>
                     <p class="text-xs font-mono text-accent-cyan mb-3">R · Tableau</p>
                     <p class="text-sm text-text-secondary mb-3">
-                        Analyzed Chicago bike share data and built Tableau visuals to guide marketing strategy.
+                        Analyzed Chicago bike data, compared rider types, and built Tableau dashboards to recommend marketing strategy.
                     </p>
-                    <p class="text-xs text-text-secondary mb-4">Skills: cohort analysis, visualization</p>
+                    <p class="text-xs text-text-secondary">Skills: cohort analysis, visualization</p>
 
                     <a href="projects/cyclist-analysis.html"
-                       class="inline-block mt-2 text-accent-cyan font-mono text-sm hover:text-accent-red transition">
+                       class="mt-4 inline-flex items-center text-accent-cyan font-mono text-sm hover:text-accent-red transition">
                         ➜ Learn more
                     </a>
                 </article>
 
                 <!-- Bellabeat -->
-                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300"
-                         data-tags="analytics">
+                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="analytics">
                     <h3 class="text-xl font-semibold text-text-base mb-1">Bellabeat smart device usage analysis</h3>
-                    <p class="text-xs font-mono text-accent-cyan mb-3">Fitbit · Engagement analytics</p>
+                    <p class="text-xs font-mono text-accent-cyan mb-3">Fitbit data · story insights</p>
                     <p class="text-sm text-text-secondary mb-3">
-                        Explored Fitbit data to uncover behavioral patterns and product insights for Bellabeat.
+                        Explored Fitbit data to understand device engagement and make product recommendations.
                     </p>
-                    <p class="text-xs text-text-secondary mb-4">Skills: storytelling, exploratory analysis</p>
+                    <p class="text-xs text-text-secondary">Skills: exploratory analysis, storytelling</p>
 
                     <a href="projects/bellabeat-device-analysis.html"
-                       class="inline-block mt-2 text-accent-cyan font-mono text-sm hover:text-accent-red transition">
+                       class="mt-4 inline-flex items-center text-accent-cyan font-mono text-sm hover:text-accent-red transition">
                         ➜ Learn more
                     </a>
                 </article>
 
                 <!-- Landscape DB -->
-                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300"
-                         data-tags="sql">
+                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="sql">
                     <h3 class="text-xl font-semibold text-text-base mb-1">Landscape database revitalization</h3>
                     <p class="text-xs font-mono text-accent-cyan mb-3">SQL Server · ETL</p>
                     <p class="text-sm text-text-secondary mb-3">
-                        Normalized and rebuilt a landscaping company database for reporting and analytics.
+                        Rebuilt a fragmented schema into an analytics ready database with clean relationships and SQL views.
                     </p>
-                    <p class="text-xs text-text-secondary mb-4">Skills: schema design, SQL views</p>
+                    <p class="text-xs text-text-secondary">Skills: relational design, optimization</p>
 
                     <a href="projects/landscape-database-revitalization.html"
-                       class="inline-block mt-2 text-accent-cyan font-mono text-sm hover:text-accent-red transition">
+                       class="mt-4 inline-flex items-center text-accent-cyan font-mono text-sm hover:text-accent-red transition">
                         ➜ Learn more
                     </a>
                 </article>
 
-                <!-- World layoffs -->
-                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300"
-                         data-tags="sql analytics">
+                <!-- World Layoffs -->
+                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="sql analytics">
                     <h3 class="text-xl font-semibold text-text-base mb-1">World layoffs SQL data cleaning</h3>
-                    <p class="text-xs font-mono text-accent-cyan mb-3">SQL pipeline · cleaning</p>
+                    <p class="text-xs font-mono text-accent-cyan mb-3">SQL pipeline · standardization</p>
                     <p class="text-sm text-text-secondary mb-3">
-                        Built a SQL pipeline to clean and standardize global layoffs data for workforce analysis.
+                        Built a SQL pipeline to clean global layoffs data, fix inconsistencies, and build rolling metrics.
                     </p>
-                    <p class="text-xs text-text-secondary mb-4">Skills: data cleaning, SQL logic</p>
+                    <p class="text-xs text-text-secondary">Skills: window functions, data quality</p>
 
                     <a href="projects/world-layoffs-sql-cleaning.html"
-                       class="inline-block mt-2 text-accent-cyan font-mono text-sm hover:text-accent-red transition">
+                       class="mt-4 inline-flex items-center text-accent-cyan font-mono text-sm hover:text-accent-red transition">
                         ➜ Learn more
                     </a>
                 </article>
 
-                <!-- Optimization models -->
-                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300"
-                         data-tags="or analytics">
+                <!-- Optimization Models -->
+                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="or analytics">
                     <h3 class="text-xl font-semibold text-text-base mb-1">Operations techniques: optimization and decision models</h3>
-                    <p class="text-xs font-mono text-accent-cyan mb-3">Excel · Simulation</p>
+                    <p class="text-xs font-mono text-accent-cyan mb-3">Excel · modeling</p>
                     <p class="text-sm text-text-secondary mb-3">
-                        Built linear programs, simulations, and decision trees to solve operational problems.
+                        Applied OR techniques including Monte Carlo simulation, linear programs, payoff tables, and decision trees.
                     </p>
-                    <p class="text-xs text-text-secondary mb-4">Skills: optimization, scenario analysis</p>
+                    <p class="text-xs text-text-secondary">Skills: optimization, simulation</p>
 
                     <a href="projects/optimization-decision-models.html"
-                       class="inline-block mt-2 text-accent-cyan font-mono text-sm hover:text-accent-red transition">
+                       class="mt-4 inline-flex items-center text-accent-cyan font-mono text-sm hover:text-accent-red transition">
                         ➜ Learn more
                     </a>
                 </article>
+            </div>
+
+            <div class="mt-8 text-sm text-text-secondary">
+                Full project write ups and code live in this repository:
+                <a href="https://github.com/cjaguirre/Cybersecurity-and-Data-Analytics-Portfolio" target="_blank" class="text-accent-cyan hover:text-accent-red">
+                    Cybersecurity and Data Analytics Portfolio on GitHub
+                </a>.
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="py-16 sm:py-20 md:py-24 bg-secondary-bg border-t border-gray-700 transition-colors duration-500">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="section-title-wrapper mx-auto">
+                <h2 class="font-mono">04. Experience</h2>
+                <span></span>
+            </div>
+
+            <div class="space-y-10">
+
+                <!-- GBA -->
+                <div class="grid md:grid-cols-2 gap-4 pb-4 border-b border-gray-700">
+                    <div>
+                        <h3 class="text-xl font-bold text-text-base">Facility Support Manager</h3>
+                        <p class="text-accent-cyan mb-2">GBA Associates LP · Defense Health Headquarters</p>
+                        <p class="text-sm text-text-secondary">
+                            Oversee daily facility operations, coordinate vendors and contractors, manage work orders, 
+                            and support building maintenance and infrastructure projects across a federal campus.
+                        </p>
+                    </div>
+                    <div class="md:text-right">
+                        <p class="text-sm font-mono text-text-secondary">March 2025 – Present</p>
+                        <p class="text-sm text-text-secondary">Falls Church, Virginia · on site</p>
+                    </div>
+                </div>
+
+                <!-- Lowe's Pro Sales -->
+                <div class="grid md:grid-cols-2 gap-4 pb-4 border-b border-gray-700">
+                    <div>
+                        <h3 class="text-xl font-bold text-text-base">Pro Sales Associate</h3>
+                        <p class="text-accent-cyan mb-2">Lowe’s Companies, Inc.</p>
+                        <p class="text-sm text-text-secondary">
+                            Supported contractors and business customers with quotes, orders, and material coordination.
+                            Helped plan deliveries and resolve issues under tight timelines.
+                        </p>
+                    </div>
+                    <div class="md:text-right">
+                        <p class="text-sm font-mono text-text-secondary">January 2022 – March 2025</p>
+                        <p class="text-sm text-text-secondary">Fairfax, Virginia</p>
+                    </div>
+                </div>
+
+                <!-- Lumber Associate -->
+                <div class="grid md:grid-cols-2 gap-4 pb-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-text-base">Building Materials and Lumber Associate</h3>
+                        <p class="text-accent-cyan mb-2">Lowe’s Companies, Inc.</p>
+                        <p class="text-sm text-text-secondary">
+                            Assisted customers with product selection, maintained inventory, and ensured a safe and organized sales floor.
+                        </p>
+                    </div>
+                    <div class="md:text-right">
+                        <p class="text-sm font-mono text-text-secondary">January 2021 – December 2022</p>
+                        <p class="text-sm text-text-secondary">Fairfax, Virginia</p>
+                    </div>
+                </div>
 
             </div>
         </div>
     </section>
 
-    <!-- EXPERIENCE, EDUCATION, CONTACT, FOOTER — KEEP SAME -->
+        <!-- EDUCATION -->
+    <section id="education" class="py-16 sm:py-20 md:py-24 bg-primary-bg border-t border-gray-800 transition-colors duration-500">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="section-title-wrapper mx-auto">
+                <h2 class="font-mono">05. Education</h2>
+                <span></span>
+            </div>
 
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <div class="p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
+                    <h3 class="text-xl font-bold text-text-base mb-2">
+                        Bachelor of Science, Management Information Systems
+                    </h3>
+                    <p class="text-accent-cyan mb-3">George Mason University</p>
+                    <p class="text-sm text-text-secondary">Completed December 2023</p>
+                    <p class="text-sm text-text-secondary">
+                        Coursework included predictive modeling, relational database design, systems analysis, and
+                        operations management.
+                    </p>
+                </div>
+
+                <div class="p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
+                    <h3 class="text-xl font-bold text-text-base mb-2">
+                        Associate of Science, Business Administration
+                    </h3>
+                    <p class="text-accent-cyan mb-3">Northern Virginia Community College</p>
+                    <p class="text-sm text-text-secondary">Completed 2021</p>
+                    <p class="text-sm text-text-secondary">
+                        Focused on accounting, economics, and business communication while building a foundation for MIS
+                        and analytics work.
+                    </p>
+                </div>
+            </div>
+
+            <div class="md:col-span-2">
+                <h3 class="text-xl font-bold text-text-base mt-2 mb-4">Licenses and certifications</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="p-5 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
+                        <h4 class="text-lg font-semibold text-text-base mb-1">CompTIA Security+ ce</h4>
+                        <p class="text-sm text-text-secondary mb-1">Issued November 2025</p>
+                        <p class="text-xs text-text-secondary">Credential ID: 9abb1113 0a29 44ed bb61 6a859edb1369</p>
+                    </div>
+
+                    <div class="p-5 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
+                        <h4 class="text-lg font-semibold text-text-base mb-1">Google Advanced Data Analytics</h4>
+                        <p class="text-sm text-text-secondary mb-1">Issued September 2025</p>
+                        <p class="text-xs text-text-secondary">Credential ID: GLMK7O7YEGR0</p>
+                    </div>
+
+                    <div class="p-5 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
+                        <h4 class="text-lg font-semibold text-text-base mb-1">Google Data Analytics Professional Certificate</h4>
+                        <p class="text-sm text-text-secondary mb-1">Issued 2024</p>
+                        <p class="text-xs text-text-secondary">Coursera and Google</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="py-16 sm:py-20 md:py-24 bg-secondary-bg border-t border-gray-700 transition-colors duration-500">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="section-title-wrapper mx-auto">
+                <h2 class="font-mono">06. Contact</h2>
+                <span></span>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-text-base">Let’s connect</h3>
+                    <p class="text-text-secondary leading-relaxed">
+                        I am open to roles in security operations, IT or systems analysis, and data analytics where I
+                        can investigate issues, improve processes, and support teams with clear reporting. Reach out if
+                        you would like to talk through an opportunity or just compare notes on labs and projects.
+                    </p>
+
+                    <div class="space-y-3 pt-4 text-sm">
+                        <div class="flex items-center text-accent-cyan">
+                            <span class="mr-3">📧</span>
+                            <p class="text-text-secondary">cj.aguirr3@gmail.com</p>
+                        </div>
+
+                        <div class="flex items-center text-accent-cyan">
+                            <span class="mr-3">📍</span>
+                            <p class="text-text-secondary">Fairfax, Virginia, United States</p>
+                        </div>
+
+                        <div class="flex items-center text-accent-cyan">
+                            <span class="mr-3">🔗</span>
+                            <a href="https://www.linkedin.com/in/christianaguirre/"
+                               target="_blank"
+                               class="text-text-secondary hover:text-accent-cyan">
+                                linkedin.com/in/christianaguirre
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-primary-bg p-8 rounded-xl shadow-lg border border-gray-700">
+                    <form name="contact" data-netlify="true" netlify-honeypot="bot-field">
+                        <input type="hidden" name="form-name" value="contact" />
+                        <p class="hidden">
+                            <label>Do not fill this out: <input name="bot-field" /></label>
+                        </p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                            <input type="text" name="name" placeholder="Name"
+                                   class="w-full p-3 rounded-lg bg-secondary-bg border border-gray-600 focus:border-accent-cyan focus:ring-accent-cyan text-text-base placeholder-text-secondary"
+                                   required />
+
+                            <input type="email" name="email" placeholder="Email"
+                                   class="w-full p-3 rounded-lg bg-secondary-bg border border-gray-600 focus:border-accent-cyan focus:ring-accent-cyan text-text-base placeholder-text-secondary"
+                                   required />
+                        </div>
+
+                        <div class="mb-4">
+                            <input type="text" name="subject" placeholder="Subject"
+                                   class="w-full p-3 rounded-lg bg-secondary-bg border border-gray-600 focus:border-accent-cyan focus:ring-accent-cyan text-text-base placeholder-text-secondary"
+                                   required />
+                        </div>
+
+                        <div class="mb-6">
+                            <textarea name="message" rows="5" placeholder="Your message"
+                                      class="w-full p-3 rounded-lg bg-secondary-bg border border-gray-600 focus:border-accent-cyan focus:ring-accent-cyan text-text-base placeholder-text-secondary"
+                                      required></textarea>
+                        </div>
+
+                        <div class="text-right">
+                            <button type="submit"
+                                    class="inline-flex items-center bg-accent-cyan text-primary-bg font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-opacity-90 transition duration-300">
+                                Send message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-primary-bg text-gray-500 text-center py-4 text-sm border-t border-gray-800 transition-colors duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="text-left">
+                <p class="text-xl font-mono text-accent-cyan mb-1">&lt;Christian Aguirre /&gt;</p>
+                <p class="text-xs text-text-secondary">
+                    Building secure and efficient environments by combining facility operations, data analytics, and
+                    cybersecurity.
+                </p>
+                <p class="mt-2 text-xs">&copy; 2025 Christian Aguirre. All rights reserved.</p>
+            </div>
+
+            <div class="flex items-center space-x-4 text-xs">
+                <a href="#hero" class="text-accent-cyan hover:text-accent-red transition duration-300 flex items-center">
+                    Back to top <span class="ml-1">⬆️</span>
+                </a>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
