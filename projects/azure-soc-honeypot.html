@@ -1,1 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure SOC Honeypot & Attack Map Lab</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Inconsolata:wght@300;400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0f18;
+            color: #d1d5db;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Inconsolata', monospace;
+        }
+
+        .accent {
+            color: #00ffff;
+        }
+
+        .section-line {
+            display: inline-block;
+            width: 120px;
+            border-bottom: 2px solid #374151;
+            margin-left: 10px;
+            transform: translateY(-6px);
+        }
+
+        .content-container {
+            max-width: 900px;
+        }
+    </style>
+</head>
+
+<body class="px-6 py-12">
+
+    <!-- Back Button -->
+    <a href="../index.html#projects" class="text-cyan-400 hover:text-cyan-300 font-mono mb-10 inline-block text-lg">
+        ← Back to Portfolio
+    </a>
+
+    <div class="content-container mx-auto">
+
+        <!-- Title -->
+        <h1 class="text-4xl font-bold accent mb-2">Azure SOC Honeypot and Attack Map Lab</h1>
+        <div class="section-line mb-8"></div>
+
+        <!-- Subheader tags -->
+        <p class="text-gray-400 text-sm mb-10 font-mono">
+            SOC Lab • Azure VM • Microsoft Sentinel • KQL • Threat Detection
+        </p>
+
+        <!-- Main Project Description -->
+        <p class="leading-relaxed mb-6">
+            This project involved building a full Windows honeypot in Azure, opening it to the internet, and capturing real-world attack traffic. 
+            By intentionally exposing the VM with an “allow all inbound” Network Security Group rule and disabling Windows Firewall inside the host, 
+            global attackers were able to reach the system and generate live authentication attempts.
+        </p>
+
+        <p class="leading-relaxed mb-6">
+            SecurityEvent logs were forwarded using the Azure Monitor Agent (AMA) to a Log Analytics Workspace connected to Microsoft Sentinel. 
+            Inside Sentinel, I created KQL queries to filter failed logons (Event ID 4625), extract attacker IP addresses, and enrich those IPs using 
+            a custom Sentinel Watchlist containing geolocation data.
+        </p>
+
+        <p class="leading-relaxed mb-6">
+            The culmination of the lab was an interactive world attack map built within a Sentinel Workbook. This map dynamically visualized attacker 
+            locations based on real-time honeypot logs, allowing the identification of high-frequency attacker countries and malicious IP ranges.
+        </p>
+
+        <!-- Architecture / Process Section -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">What I Built</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li>Deployed a Windows 10 honeypot VM inside Azure</li>
+            <li>Configured an unrestricted NSG to intentionally expose the system</li>
+            <li>Disabled host firewall to allow global attack traffic</li>
+            <li>Forwarded logs to a Log Analytics Workspace via AMA</li>
+            <li>Connected workspace to Microsoft Sentinel for SIEM capabilities</li>
+            <li>Ingested and queried SecurityEvent logs using KQL</li>
+            <li>Uploaded a 54k-row geolocation CSV as a Sentinel Watchlist</li>
+            <li>Used <code>ipv4_lookup()</code> to enrich logs with country data</li>
+            <li>Built an interactive attack map dashboard inside Workbooks</li>
+        </ul>
+
+        <!-- KQL Section -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Sample KQL Used</h2>
+
+<pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
+let GeoIPDB_FULL = _GetWatchlist("geoip");
+let WindowsEvents = SecurityEvent
+    | where EventID == 4625
+    | where IpAddress != "" and isnotempty(IpAddress)
+    | order by TimeGenerated desc
+    | evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
+WindowsEvents
+</pre>
+
+        <!-- Key Insights -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Key Insights</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li>The honeypot received attacks within minutes of deployment.</li>
+            <li>Most attackers originated from VPS providers or botnet-controlled IP ranges.</li>
+            <li>Common username attempts included “admin”, “test”, “guest”, and “administrator”.</li>
+            <li>KQL log enrichment enabled immediate mapping of hostile activity by country.</li>
+            <li>Sentinel’s Workbook capabilities made large-scale attack visualization seamless.</li>
+        </ul>
+
+        <!-- Skills Section -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Skills Demonstrated</h2>
+
+        <p class="text-gray-300">
+            Azure administration, NSG rules, Windows security logs, SIEM analysis, KQL querying,
+            network traffic monitoring, log enrichment, attack visualization.
+        </p>
+
+        <!-- Wrap-up -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Summary</h2>
+
+        <p class="leading-relaxed mb-16">
+            This lab replicates the daily workflow of a Security Operations Center (SOC) analyst: configuring log sources, 
+            analyzing authentication failures, enriching data, and visualizing attacker behavior. The hands-on experience 
+            strengthened my understanding of SIEM pipelines, cloud log ingestion, and threat intelligence analysis within Azure.
+        </p>
+
+    </div>
+</body>
+</html>
