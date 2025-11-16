@@ -1,1 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landscape Database Revitalization</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Inconsolata:wght@300;400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0f18;
+            color: #d1d5db;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Inconsolata', monospace;
+        }
+
+        .accent {
+            color: #00ffff;
+        }
+
+        .section-line {
+            display: inline-block;
+            width: 120px;
+            border-bottom: 2px solid #374151;
+            margin-left: 10px;
+            transform: translateY(-6px);
+        }
+
+        .content-container {
+            max-width: 900px;
+        }
+    </style>
+</head>
+
+<body class="px-6 py-12">
+
+    <!-- Back Button -->
+    <a href="../index.html#projects" class="text-cyan-400 hover:text-cyan-300 font-mono mb-10 inline-block text-lg">
+        ← Back to Portfolio
+    </a>
+
+    <div class="content-container mx-auto">
+
+        <!-- Title -->
+        <h1 class="text-4xl font-bold accent mb-2">Landscape Database Revitalization</h1>
+        <div class="section-line mb-8"></div>
+
+        <!-- Subheader tags -->
+        <p class="text-gray-400 text-sm mb-10 font-mono">
+            SQL • Database normalization • Schema redesign • Business logic modeling
+        </p>
+
+        <!-- Overview -->
+        <p class="leading-relaxed mb-6">
+            This project transformed a fragmented landscaping services database into a clean, normalized, analytics-ready system. 
+            The original dataset contained inconsistent fields, duplicated entries, and missing relational structure, which made 
+            billing, job tracking, and client reporting slow and unreliable.
+        </p>
+
+        <p class="leading-relaxed mb-10">
+            The goal was to rebuild the entire backend: standardize service categories, normalize job and invoice tables, enforce 
+            relational integrity, and redesign the schema to support accurate reporting for operations and management. The result 
+            was a robust SQL database that improves efficiency, accuracy, and maintainability.
+        </p>
+
+        <!-- Section: Problems Identified -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Problems Identified in the Original System</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li>Client names stored inconsistently (misspellings, different formats)</li>
+            <li>Service descriptions varied widely and lacked standardization</li>
+            <li>No primary keys or relational constraints</li>
+            <li>Duplicate job entries with mismatched billing amounts</li>
+            <li>Invoices and jobs mixed in the same table (breaking normalization rules)</li>
+            <li>Hard-to-analyze fields like free-text notes and manual timestamps</li>
+        </ul>
+
+        <!-- Section: Objectives -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Project Objectives</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li>Redesign the database structure using proper relationships</li>
+            <li>Normalize tables to eliminate redundancy and inconsistencies</li>
+            <li>Create reliable keys to connect clients, jobs, materials, and invoices</li>
+            <li>Improve query performance and reporting clarity</li>
+            <li>Set the foundation for a future dashboard or CRM integration</li>
+        </ul>
+
+        <!-- Section: New Schema -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">New Database Schema</h2>
+
+        <p class="leading-relaxed mb-4">
+            The database was rebuilt using a properly normalized structure consisting of the following tables:
+        </p>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li><strong>Clients</strong> – business names, contact info, location</li>
+            <li><strong>Services</strong> – standardized service categories, pricing models</li>
+            <li><strong>Jobs</strong> – date, service type, assigned crew, materials used</li>
+            <li><strong>Invoices</strong> – linked directly to jobs through foreign keys</li>
+            <li><strong>Materials</strong> – mulch, soil, maintenance materials, etc.</li>
+            <li><strong>JobMaterials</strong> (junction table) – quantity + cost per job</li>
+        </ul>
+
+        <!-- Section: Example SQL -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Sample SQL Improvements</h2>
+
+<pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
+
+-- Standardizing service categories
+UPDATE Services
+SET ServiceType = 'Lawn Maintenance'
+WHERE ServiceType IN ('Lawn Care', 'Grass Cut', 'Cutting Grass');
+
+-- Creating relational structure
+ALTER TABLE Jobs
+ADD CONSTRAINT fk_client
+FOREIGN KEY (ClientID) REFERENCES Clients(ClientID);
+
+-- Identifying duplicate jobs
+SELECT JobID, ClientID, ServiceID, JobDate, COUNT(*)
+FROM Jobs
+GROUP BY JobID, ClientID, ServiceID, JobDate
+HAVING COUNT(*) > 1;
+
+</pre>
+
+        <!-- Section: Key Outcomes -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Key Outcomes</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li>100% reduction in duplicate job entries</li>
+            <li>Clean, standardized service catalog enabling accurate billing</li>
+            <li>Faster SQL queries due to proper indexing and structure</li>
+            <li>Improved ability to track expenses and materials per job</li>
+            <li>Better reporting accuracy for monthly and seasonal performance</li>
+            <li>A fully scalable structure ready for dashboards or automation</li>
+        </ul>
+
+        <!-- Section: Skills -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Skills Demonstrated</h2>
+
+        <p class="text-gray-300 mb-6">
+            SQL normalization, schema design, relational modeling, data cleaning, ETL logic, indexing & constraints, 
+            operational reporting, database refactoring.
+        </p>
+
+        <!-- Summary -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Summary</h2>
+
+        <p class="leading-relaxed mb-16">
+            This project rebuilt a broken operational database into a fully structured, reliable SQL system. By fixing data 
+            consistency issues, implementing relational models, and standardizing key fields, the new database lays the 
+            groundwork for analytics, better customer tracking, and long-term operational improvement.
+        </p>
+
+    </div>
+</body>
+</html>
