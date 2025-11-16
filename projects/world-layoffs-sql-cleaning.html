@@ -1,1 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Layoffs — SQL Data Cleaning</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Inconsolata:wght@300;400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0f18;
+            color: #d1d5db;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Inconsolata', monospace;
+        }
+
+        .accent {
+            color: #00ffff;
+        }
+
+        .section-line {
+            display: inline-block;
+            width: 120px;
+            border-bottom: 2px solid #374151;
+            margin-left: 10px;
+            transform: translateY(-6px);
+        }
+
+        .content-container {
+            max-width: 900px;
+        }
+    </style>
+</head>
+
+<body class="px-6 py-12">
+
+    <!-- Back Button -->
+    <a href="../index.html#projects" class="text-cyan-400 hover:text-cyan-300 font-mono mb-10 inline-block text-lg">
+        ← Back to Portfolio
+    </a>
+
+    <div class="content-container mx-auto">
+
+        <!-- Title -->
+        <h1 class="text-4xl font-bold accent mb-2">World Layoffs — SQL Data Cleaning</h1>
+        <div class="section-line mb-8"></div>
+
+        <!-- Subheader -->
+        <p class="text-gray-400 text-sm mb-10 font-mono">
+            SQL • Data Cleaning • Exploratory Analysis • ETL Concepts • Standardization • Data Quality
+        </p>
+
+        <!-- Overview -->
+        <p class="leading-relaxed mb-6">
+            This project focuses on cleaning and preparing a global layoffs dataset for analytics. Using SQL, I corrected structural issues, standardized inconsistent fields, handled missing values, removed duplicates, and transformed the dataset into an analysis-ready format.
+        </p>
+
+        <p class="leading-relaxed mb-10">
+            The final cleaned dataset supports reporting on global workforce trends, industry impact, and corporate downsizing patterns during major economic shifts.
+        </p>
+
+        <!-- Section: Dataset -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Dataset Overview</h2>
+
+        <p class="leading-relaxed mb-4">
+            The original dataset included records from companies around the world with fields such as:
+        </p>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li>Company Name</li>
+            <li>Country</li>
+            <li>Industry</li>
+            <li>Location</li>
+            <li>Total Employees</li>
+            <li>Layoff Count</li>
+            <li>Percentage Laid Off</li>
+            <li>Layoff Date</li>
+        </ul>
+
+        <p class="leading-relaxed mb-8">
+            Raw data contained numerous inconsistencies, making cleaning essential before analysis.
+        </p>
+
+        <!-- Section: Data Cleaning -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Key Data Cleaning Steps</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300 mb-8">
+            <li>Removed duplicate entries using window functions.</li>
+            <li>Standardized inconsistent company names (e.g., "Google LLC" vs "Google").</li>
+            <li>Filled missing industry values using company reference groups.</li>
+            <li>Converted date strings into SQL date format.</li>
+            <li>Trimmed whitespace and fixed casing issues.</li>
+            <li>Removed invalid records with incomplete or contradictory data.</li>
+        </ul>
+
+        <pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
+-- Example: Remove duplicates
+WITH ranked AS (
+    SELECT *,
+    ROW_NUMBER() OVER (
+        PARTITION BY company, location, date
+        ORDER BY layoffs DESC
+    ) AS rn
+    FROM layoffs_raw
+)
+DELETE FROM ranked WHERE rn > 1;
+        </pre>
+
+        <pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700 mt-6">
+-- Standardizing industry by pulling most common value
+UPDATE layoffs
+SET industry = (
+    SELECT mode() WITHIN GROUP (ORDER BY industry)
+    FROM layoffs AS l2
+    WHERE l2.company = layoffs.company
+)
+WHERE industry IS NULL;
+        </pre>
+
+        <!-- Section: Transformations -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Data Transformations</h2>
+
+        <p class="leading-relaxed mb-4">
+            After the cleaning phase, I added several derived fields to support trend analysis:
+        </p>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300 mb-8">
+            <li><strong>Year</strong> extracted from the layoff date</li>
+            <li><strong>Quarter</strong> derived for period trend reporting</li>
+            <li><strong>Categorized industries</strong> into standardized business groups</li>
+            <li><strong>Country normalization</strong> for consistent geography analytics</li>
+        </ul>
+
+        <pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
+ALTER TABLE layoffs_clean
+ADD COLUMN year INT;
+
+UPDATE layoffs_clean
+SET year = EXTRACT(YEAR FROM layoff_date);
+        </pre>
+
+        <!-- Insights -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Insights Enabled by Cleaning</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300 mb-8">
+            <li>Company-level and industry-level layoff trends</li>
+            <li>Country-by-country economic pressure indicators</li>
+            <li>Identification of industries most impacted (Tech, Finance, Retail)</li>
+            <li>Patterns between company size and layoff severity</li>
+            <li>Time-series trends showing spikes during recessions</li>
+        </ul>
+
+        <!-- Skills -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Skills Demonstrated</h2>
+
+        <p class="text-gray-300 mb-6">
+            SQL, Data Cleaning, Window Functions, CTEs, Joins, Standardization, ETL Concepts, Business Analytics.
+        </p>
+
+        <!-- Summary -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Summary</h2>
+
+        <p class="leading-relaxed mb-16">
+            This project demonstrates strong SQL data cleaning abilities and the ability to transform a messy global dataset
+            into a trusted data source for meaningful insights. The final cleaned table supports high-quality analytics 
+            on global layoffs, industry downturns, and workforce trends.
+        </p>
+
+    </div>
+
+</body>
+</html>
