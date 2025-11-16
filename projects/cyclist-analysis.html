@@ -1,1 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyclistic Rider Behavior Analysis</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Inconsolata:wght@300;400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0f18;
+            color: #d1d5db;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Inconsolata', monospace;
+        }
+
+        .accent {
+            color: #00ffff;
+        }
+
+        .section-line {
+            display: inline-block;
+            width: 120px;
+            border-bottom: 2px solid #374151;
+            margin-left: 10px;
+            transform: translateY(-6px);
+        }
+
+        .content-container {
+            max-width: 900px;
+        }
+    </style>
+</head>
+
+<body class="px-6 py-12">
+
+    <!-- Back Button -->
+    <a href="../index.html#projects" class="text-cyan-400 hover:text-cyan-300 font-mono mb-10 inline-block text-lg">
+        ← Back to Portfolio
+    </a>
+
+    <div class="content-container mx-auto">
+
+        <!-- Title -->
+        <h1 class="text-4xl font-bold accent mb-2">Cyclistic Rider Behavior Analysis</h1>
+        <div class="section-line mb-8"></div>
+
+        <!-- Subheader tags -->
+        <p class="text-gray-400 text-sm mb-10 font-mono">
+            R & Tableau • Bike-share usage • Rider segmentation • Marketing insights
+        </p>
+
+        <!-- Overview -->
+        <p class="leading-relaxed mb-6">
+            This project analyzes twelve months of Chicago’s Cyclistic bike-share data to identify key differences 
+            between casual riders and annual members. The goal was to understand how riding habits vary across seasons, 
+            weekdays, time of day, and trip purposes — insights used to support Cyclistic’s marketing strategy to 
+            convert casual riders into members.
+        </p>
+
+        <p class="leading-relaxed mb-10">
+            Using R for data wrangling and Tableau for visualization, this analysis reveals the behavioral patterns 
+            and peak usage windows that distinguish the two rider groups, enabling clear recommendations for 
+            membership growth and targeted promotions.
+        </p>
+
+        <!-- Section: Data & Tools -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Dataset & Tools</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li>12 months of Cyclistic trip data (over 5 million rides)</li>
+            <li>Trip durations, rideable types, start/end times, station locations</li>
+            <li>R for merging, cleaning, and summarizing datasets</li>
+            <li>Tableau for interactive dashboards and visual exploration</li>
+        </ul>
+
+        <!-- Section: Key Findings -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Key Findings</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li><strong>Casual riders peak on weekends</strong>, especially afternoons during warmer seasons.</li>
+            <li><strong>Members ride more consistently year-round</strong>, particularly during weekday commute hours.</li>
+            <li><strong>Electric bikes are more popular with casual riders</strong> due to convenience and leisure use.</li>
+            <li><strong>Trip durations for casual riders are significantly longer</strong>, often tied to recreational routes.</li>
+            <li><strong>Members favor shorter, utilitarian trips</strong> aligned with commuting or errands.</li>
+        </ul>
+
+        <!-- Section: Sample R Code -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Sample R Code</h2>
+
+<pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
+library(tidyverse)
+
+# Load and combine monthly files
+files <- list.files(pattern = "*.csv")
+all_trips <- files %>% 
+  map_df(~ read_csv(.))
+
+# Clean durations and remove bad data
+clean_trips <- all_trips %>% 
+  mutate(ride_length = ended_at - started_at,
+         day_of_week = weekdays(started_at)) %>%
+  filter(ride_length > 0)
+
+# Summary comparison
+clean_trips %>% 
+  group_by(member_casual) %>% 
+  summarise(
+    avg_duration = mean(ride_length),
+    total_rides = n()
+  )
+</pre>
+
+        <!-- Section: Insights for Cyclistic -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Strategic Insights for Cyclistic</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li>Promotions should target <strong>weekend casual riders</strong> with “Ride More This Summer” membership discounts.</li>
+            <li>Introduce <strong>commuter-focused member perks</strong> such as guaranteed bike availability at key stations.</li>
+            <li>Highlight the <strong>cost savings of frequent short rides</strong> to appeal to casual riders with long trip histories.</li>
+            <li>Push app notifications during <strong>peak conversion windows</strong> (warm months, weekend afternoons).</li>
+            <li>Create routes and challenges that reward consistent usage, bridging casual → member behavior.</li>
+        </ul>
+
+        <!-- Section: Skills -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Skills Demonstrated</h2>
+
+        <p class="text-gray-300">
+            Data cleaning, R wrangling, cohort comparison, Tableau dashboarding, behavioral analytics, strategic insights.
+        </p>
+
+        <!-- Summary -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Summary</h2>
+
+        <p class="leading-relaxed mb-16">
+            This project demonstrates how large behavioral datasets can shape marketing and retention strategies. 
+            By identifying exactly how and when riders use Cyclistic bikes — and what differentiates casual users 
+            from loyal members — the company can create targeted campaigns aimed at boosting membership and driving 
+            long-term ridership.
+        </p>
+
+    </div>
+</body>
+</html>
