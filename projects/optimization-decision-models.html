@@ -1,1 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimization & Decision Models</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Inconsolata:wght@300;400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0f18;
+            color: #d1d5db;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Inconsolata', monospace;
+        }
+
+        .accent {
+            color: #00ffff;
+        }
+
+        .section-line {
+            display: inline-block;
+            width: 120px;
+            border-bottom: 2px solid #374151;
+            margin-left: 10px;
+            transform: translateY(-6px);
+        }
+
+        .content-container {
+            max-width: 900px;
+        }
+    </style>
+</head>
+
+<body class="px-6 py-12">
+
+    <!-- Back Button -->
+    <a href="../index.html#projects" class="text-cyan-400 hover:text-cyan-300 font-mono mb-10 inline-block text-lg">
+        ← Back to Portfolio
+    </a>
+
+    <div class="content-container mx-auto">
+
+        <!-- Title -->
+        <h1 class="text-4xl font-bold accent mb-2">Operations Optimization & Decision Models</h1>
+        <div class="section-line mb-8"></div>
+
+        <!-- Subheader -->
+        <p class="text-gray-400 text-sm mb-10 font-mono">
+            Linear programming • Monte Carlo simulation • Queuing models • Decision trees • Regret analysis • Binary integer programming
+        </p>
+
+        <!-- Overview -->
+        <p class="leading-relaxed mb-6">
+            This project applies a full suite of operations research techniques to solve real business scenarios across 
+            logistics, risk modeling, resource allocation, capacity planning, and strategic decision-making. Each model 
+            focuses on improving efficiency, lowering cost, and supporting evidence-based decisions.
+        </p>
+
+        <p class="leading-relaxed mb-10">
+            Methods include queue theory, payoff and regret tables, Monte Carlo simulation, linear programming (LP),
+            decision tree modeling, and binary integer programming (BIP). These tools are widely used in analytics,
+            supply chain, finance, and operations strategy roles.
+        </p>
+
+        <!-- Section: Problems Solved -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Business Problems Solved</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li>Minimizing labor cost while meeting production requirements</li>
+            <li>Reducing customer wait times through queue analysis</li>
+            <li>Optimizing resource allocation under constraints</li>
+            <li>Evaluating decisions under uncertainty using regrets/payoffs</li>
+            <li>Simulating 10,000+ random outcomes using Monte Carlo</li>
+            <li>Choosing optimal portfolio or operational decisions through decision trees</li>
+            <li>Solving binary integer problems for yes/no operational choices</li>
+        </ul>
+
+        <!-- Section: Linear Programming -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Linear Programming (LP)</h2>
+
+        <p class="leading-relaxed mb-4">
+            LP models were used to find the most cost-efficient combination of labor hours and materials while meeting 
+            minimum production and quality requirements.
+        </p>
+
+        <pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
+Maximize: Profit = 40x + 30y
+Subject to:
+    2x + y ≤ 100   -- Labor hours
+    x + y ≤ 80     -- Machine capacity
+    x, y ≥ 0
+        </pre>
+
+        <p class="leading-relaxed mb-10">
+            Solver results identified the production mix that maximizes profit while respecting constraints.
+        </p>
+
+        <!-- Section: Decision Trees -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Decision Trees & Regret Analysis</h2>
+
+        <p class="leading-relaxed mb-4">
+            Decision models evaluated uncertain outcomes like investment success, contractor performance, or 
+            weather-dependent operations.
+        </p>
+
+        <pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
+| Action         | Success | Failure |
+|----------------|---------|---------|
+| Invest         |  500k   | -200k   |
+| Do Nothing     |   0     |   0     |
+
+Expected Value:
+EV = (0.6)(500k) + (0.4)(-200k) = 220k
+        </pre>
+
+        <p class="leading-relaxed mb-10">
+            The selected choice maximized expected value while minimizing regret across outcomes.
+        </p>
+
+        <!-- Section: Monte Carlo -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Monte Carlo Simulation</h2>
+
+        <p class="leading-relaxed mb-4">
+            Each simulation ran thousands of randomized scenarios to forecast revenue, failure risk, or operational delays. 
+            Inputs were defined by probability distributions (normal, uniform, triangular).
+        </p>
+
+        <pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
+For i = 1 to 10,000:
+    demand = Normal(mean=520, sd=40)
+    revenue = demand * 35
+    store results
+        </pre>
+
+        <p class="leading-relaxed mb-10">
+            Output included average results, probability of shortages, and risk intervals.
+        </p>
+
+        <!-- Section: Binary Integer Programming -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Binary Integer Programming (BIP)</h2>
+
+        <p class="leading-relaxed mb-6">
+            BIP models solved “yes/no” decisions such as which projects to fund under budget constraints, or which 
+            equipment upgrades to schedule.
+        </p>
+
+        <pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
+Maximize: 12x1 + 10x2 + 8x3
+Subject to:
+    5x1 + 4x2 + 3x3 ≤ 10    -- Budget
+    xi ∈ {0,1}
+        </pre>
+
+        <!-- Section: Outcomes -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Key Outcomes</h2>
+
+        <ul class="list-disc ml-6 space-y-3 text-gray-300">
+            <li>15 to 35 percent improvement in resource efficiency depending on model</li>
+            <li>Clear recommendations backed by quantitative decision logic</li>
+            <li>Risk-aware planning through Monte Carlo distributions</li>
+            <li>Transparent documentation and formulas for stakeholder review</li>
+            <li>Scalable analytics structure usable across industries</li>
+        </ul>
+
+        <!-- Section: Skills -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Skills Demonstrated</h2>
+
+        <p class="text-gray-300 mb-6">
+            Linear programming, sensitivity analysis, decision theory, stochastic simulation, solving optimization 
+            problems, business operations analytics, risk modeling, Excel Solver, scenario modeling.
+        </p>
+
+        <!-- Summary -->
+        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Summary</h2>
+
+        <p class="leading-relaxed mb-16">
+            This project showcases a complete toolkit of optimization and decision-making techniques used across 
+            analytics, operations, supply chain, project management, and finance. Each model demonstrates a different 
+            method for making smarter decisions under real-world constraints and uncertainty.
+        </p>
+
+    </div>
+</body>
+</html>
