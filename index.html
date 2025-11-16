@@ -760,63 +760,100 @@
 
 
         <!-- EDUCATION -->
-    <section id="education" class="py-16 sm:py-20 md:py-24 bg-primary-bg border-t border-gray-800 transition-colors duration-500">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="section-title-wrapper mx-auto">
-                <h2 class="font-mono">05. Education</h2>
-                <span></span>
-            </div>
+    <section id="education" class="pt-24 pb-32">
+    <div class="max-w-5xl mx-auto px-6">
 
-            <div class="grid md:grid-cols-2 gap-8 mb-12">
-                <div class="p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
-                    <h3 class="text-xl font-bold text-text-base mb-2">
-                        Bachelor of Science, Management Information Systems
-                    </h3>
-                    <p class="text-accent-cyan mb-3">George Mason University</p>
-                    <p class="text-sm text-text-secondary">Completed December 2023</p>
-                    <p class="text-sm text-text-secondary">
-                        Coursework included predictive modeling, relational database design, systems analysis, and
-                        operations management.
-                    </p>
-                </div>
-
-                <div class="p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
-                    <h3 class="text-xl font-bold text-text-base mb-2">
-                        Associate of Science, Business Administration
-                    </h3>
-                    <p class="text-accent-cyan mb-3">Northern Virginia Community College</p>
-                    <p class="text-sm text-text-secondary">Completed 2021</p>
-                    <p class="text-sm text-text-secondary">
-                        Focused on accounting, economics, and business communication while building a foundation for MIS
-                        and analytics work.
-                    </p>
-                </div>
-            </div>
-
-            <div class="md:col-span-2">
-                <h3 class="text-xl font-bold text-text-base mt-2 mb-4">Licenses and certifications</h3>
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="p-5 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
-                        <h4 class="text-lg font-semibold text-text-base mb-1">CompTIA Security+ ce</h4>
-                        <p class="text-sm text-text-secondary mb-1">Issued November 2025</p>
-                        <p class="text-xs text-text-secondary">Credential ID: 9abb1113 0a29 44ed bb61 6a859edb1369</p>
-                    </div>
-
-                    <div class="p-5 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
-                        <h4 class="text-lg font-semibold text-text-base mb-1">Google Advanced Data Analytics</h4>
-                        <p class="text-sm text-text-secondary mb-1">Issued September 2025</p>
-                        <p class="text-xs text-text-secondary">Credential ID: GLMK7O7YEGR0</p>
-                    </div>
-
-                    <div class="p-5 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
-                        <h4 class="text-lg font-semibold text-text-base mb-1">Google Data Analytics Professional Certificate</h4>
-                        <p class="text-sm text-text-secondary mb-1">Issued 2024</p>
-                        <p class="text-xs text-text-secondary">Coursera and Google</p>
-                    </div>
-                </div>
-            </div>
+        <!-- Title -->
+        <div class="section-title-wrapper mb-12">
+            <h2>05. Education</h2>
+            <span></span>
         </div>
-    </section>
+
+        <!-- Degrees -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+
+            <!-- BS MIS -->
+            <div class="bg-[var(--bg-secondary)] p-6 rounded-xl border border-gray-800 hover:border-[var(--accent-primary)] transition">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="text-[var(--accent-primary)] text-3xl">🎓</div>
+                    <h3 class="text-xl font-semibold">Bachelor of Science, Management Information Systems</h3>
+                </div>
+
+                <p class="text-[var(--accent-primary)] mb-2">
+                    George Mason University
+                </p>
+
+                <p class="text-sm text-[var(--text-secondary)] mb-3">
+                    Completed December 2023
+                </p>
+
+                <p class="text-[var(--text-secondary)] leading-relaxed">
+                    Coursework included predictive modeling, relational database design, systems analysis,
+                    and operations management.
+                </p>
+            </div>
+
+            <!-- AS Business Admin -->
+            <div class="bg-[var(--bg-secondary)] p-6 rounded-xl border border-gray-800 hover:border-[var(--accent-primary)] transition">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="text-[var(--accent-primary)] text-3xl">🎓</div>
+                    <h3 class="text-xl font-semibold">Associate of Science, Business Administration</h3>
+                </div>
+
+                <p class="text-[var(--accent-primary)] mb-2">
+                    Northern Virginia Community College
+                </p>
+
+                <p class="text-sm text-[var(--text-secondary)] mb-3">
+                    Completed 2021
+                </p>
+
+                <p class="text-[var(--text-secondary)] leading-relaxed">
+                    Focused on accounting, economics, business communication, and foundational MIS / analytics work.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Licenses & Certifications -->
+        <h3 class="text-2xl font-semibold text-[var(--text-base)] mb-6">
+            Licenses & Certifications
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <!-- Security+ -->
+            <div class="bg-[var(--bg-secondary)] p-6 rounded-xl border border-gray-800 hover:border-[var(--accent-primary)] transition">
+                <h4 class="text-lg font-semibold mb-1">CompTIA Security+ ce</h4>
+                <p class="text-sm text-[var(--text-secondary)] mb-2">Issued November 2025</p>
+                <p class="text-xs text-[var(--text-secondary)]">
+                    Credential ID: 9abb1113 0a29 44ed bb61 6a859edb1369
+                </p>
+            </div>
+
+            <!-- Google Advanced DA -->
+            <div class="bg-[var(--bg-secondary)] p-6 rounded-xl border border-gray-800 hover:border-[var(--accent-primary)] transition">
+                <h4 class="text-lg font-semibold mb-1">Google Advanced Data Analytics</h4>
+                <p class="text-sm text-[var(--text-secondary)] mb-2">Issued September 2025</p>
+                <p class="text-xs text-[var(--text-secondary)]">
+                    Credential ID: GLMK7O7YEGR0
+                </p>
+            </div>
+
+            <!-- Google Data Analytics -->
+            <div class="bg-[var(--bg-secondary)] p-6 rounded-xl border border-gray-800 hover:border-[var(--accent-primary)] transition">
+                <h4 class="text-lg font-semibold mb-1">Google Data Analytics Professional Certificate</h4>
+                <p class="text-sm text-[var(--text-secondary)] mb-2">Issued 2024</p>
+                <p class="text-xs text-[var(--text-secondary)]">
+                    Coursera & Google
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
 
     <!-- CONTACT -->
     <section id="contact" class="py-16 sm:py-20 md:py-24 bg-secondary-bg border-t border-gray-700 transition-colors duration-500">
