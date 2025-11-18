@@ -1,194 +1,407 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telco Customer Churn Analysis</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Telco Customer Churn Analysis | Christian Aguirre</title>
 
+    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Fonts + Theme -->
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Inconsolata:wght@300;400;700&display=swap');
+        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
+
+        .dark {
+            --bg-default: #050814;
+            --bg-secondary: #111827;
+            --text-base: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --accent-primary: #00ffff;
+            --accent-red: #f97373;
+            --container-bg: #020617;
+            background-color: var(--bg-default);
+            color: var(--text-base);
+        }
+
+        .light {
+            --bg-default: #ffffff;
+            --bg-secondary: #f3f4f6;
+            --text-base: #111827;
+            --text-secondary: #4b5563;
+            --accent-primary: #0891b2;
+            --accent-red: #dc2626;
+            --container-bg: #ffffff;
+            background-color: var(--bg-default);
+            color: var(--text-base);
+        }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0a0f18;
-            color: #d1d5db;
+            font-family: "Inter", sans-serif;
+            transition: background-color 0.5s, color 0.5s;
         }
 
-        h1, h2, h3 {
-            font-family: 'Inconsolata', monospace;
+        .hero-grid-bg {
+            background-color: var(--bg-default);
+            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, rgba(0, 0, 0, 0) 1px);
+            background-size: 22px 22px;
+            background-position: center;
         }
 
-        .accent {
-            color: #00ffff;
+        .section-title-wrapper {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 1.75rem;
+            font-family: "Inconsolata", monospace;
         }
 
-        .section-line {
-            display: inline-block;
-            width: 120px;
-            border-bottom: 2px solid #374151;
-            margin-left: 10px;
-            transform: translateY(-6px);
+        .section-title-wrapper h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
         }
 
-        .content-container {
-            max-width: 900px;
+        .section-title-wrapper span {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            margin-left: 0.75rem;
+            border-bottom: 2px solid var(--text-secondary);
+            flex-grow: 1;
+            width: 140px;
+        }
+
+        .pill {
+            border-radius: 999px;
+            padding: 0.2rem 0.6rem;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        .pill-muted {
+            color: var(--text-secondary);
+            background-color: rgba(15, 23, 42, 0.9);
+        }
+
+        .pill-accent {
+            color: var(--accent-primary);
+            background-color: rgba(15, 23, 42, 0.9);
+            border-color: rgba(34, 211, 238, 0.8);
+        }
+
+        .card-shell {
+            border-radius: 1.25rem;
+            border-width: 1px;
+            border-color: rgba(31, 41, 55, 0.9);
+            background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.14), transparent 55%),
+                        radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.95), #020617);
+            box-shadow: 0 20px 35px rgba(15, 23, 42, 0.9);
+        }
+
+        .card-shell-simple {
+            border-radius: 1.25rem;
+            border-width: 1px;
+            border-color: rgba(31, 41, 55, 0.9);
+            background-color: rgba(15, 23, 42, 0.98);
+            box-shadow: 0 20px 35px rgba(15, 23, 42, 0.9);
+        }
+
+        pre code {
+            font-family: "Inconsolata", monospace;
+            font-size: 0.8rem;
         }
     </style>
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-bg": "var(--bg-default)",
+                        "secondary-bg": "var(--bg-secondary)",
+                        "container-bg": "var(--container-bg)",
+                        "text-base": "var(--text-base)",
+                        "text-secondary": "var(--text-secondary)",
+                        "accent-cyan": "var(--accent-primary)",
+                        "accent-red": "var(--accent-red)"
+                    }
+                }
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const html = document.documentElement;
+            const saved = localStorage.getItem("theme") || "dark";
+            html.setAttribute("data-theme", saved);
+            html.classList.add(saved);
+        });
+    </script>
 </head>
 
-<body class="px-6 py-12">
+<body class="bg-primary-bg text-text-base transition-colors duration-500">
+<main class="min-h-screen bg-primary-bg">
 
-    <!-- Back Button -->
-    <a href="../index.html#projects" class="text-cyan-400 hover:text-cyan-300 font-mono mb-10 inline-block text-lg">
-        ← Back to Portfolio
-    </a>
+    <!-- HERO -->
+    <section class="hero-grid-bg border-b border-gray-800">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12 md:pb-16">
 
-    <div class="content-container mx-auto">
+            <!-- Back -->
+            <a href="../index.html#projects"
+               class="inline-flex items-center text-accent-cyan text-sm mb-6 hover:text-accent-red transition">
+                ← Back to Portfolio
+            </a>
 
-        <!-- Title -->
-        <h1 class="text-4xl font-bold accent mb-2">Telco Customer Churn Analysis</h1>
-        <div class="section-line mb-8"></div>
+            <!-- Pills -->
+            <div class="flex flex-wrap gap-2 mb-4">
+                <span class="pill pill-accent">Machine Learning Project</span>
+                <span class="pill pill-muted">Python</span>
+                <span class="pill pill-muted">scikit-learn</span>
+                <span class="pill pill-muted">SHAP Explainability</span>
+                <span class="pill pill-muted">Feature Engineering</span>
+                <span class="pill pill-muted">Data Cleaning</span>
+            </div>
 
-        <!-- Subheader -->
-        <p class="text-gray-400 text-sm mb-10 font-mono">
-            Python • Machine Learning • Logistic Regression • Random Forest • SHAP Explainability • Data Cleaning • Feature Engineering
-        </p>
+            <!-- Title -->
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
+                Telco Customer Churn Analysis
+            </h1>
+            <p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed">
+                Built an end-to-end machine learning workflow to predict customer churn, identify the strongest churn
+                indicators, and create data-driven recommendations for telecom retention strategy.
+            </p>
 
-        <!-- Overview -->
-        <p class="leading-relaxed mb-6">
-            This project analyzes a telecommunications customer churn dataset and builds predictive machine learning models 
-            to identify which customers are most likely to leave. The analysis includes data cleaning, feature engineering, 
-            visualization, model training, evaluation, and SHAP explainability.
-        </p>
+            <!-- Meta info -->
+            <div class="flex flex-wrap gap-3 mt-5 text-xs text-text-secondary">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent-cyan"></span>
+                    Logistic Regression · Random Forest
+                </span>
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent-cyan"></span>
+                    SHAP Model Explainability
+                </span>
+            </div>
 
-        <p class="leading-relaxed mb-10">
-            The objective was to produce an actionable churn model and provide business insights that help retention teams 
-            understand why customers churn and how to intervene.
-        </p>
+            <!-- Top two cards -->
+            <div class="mt-10 grid md:grid-cols-2 gap-6">
 
-        <!-- Section: Dataset -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Dataset Overview</h2>
+                <!-- Narrative -->
+                <article class="card-shell p-6 sm:p-7">
+                    <div class="flex items-baseline justify-between mb-3">
+                        <h2 class="text-xs sm:text-sm font-bold tracking-[0.22em] uppercase">
+                            Project Narrative
+                        </h2>
+                    </div>
+                    <div class="space-y-3 text-sm sm:text-[0.95rem] leading-relaxed">
+                        <p>
+                            This project applies machine learning to a telecommunications customer dataset to predict which
+                            subscribers are most likely to churn. After preparing the data, I trained logistic regression and
+                            random forest models, evaluated their performance, and used SHAP values to understand which
+                            factors influence churn the most.
+                        </p>
+                        <p>
+                            The workflow produced a reliable predictive model and clear insights that inform retention
+                            strategy—highlighting key customer segments and risk behaviors.
+                        </p>
+                    </div>
+                </article>
 
-        <p class="leading-relaxed mb-4">
-            The dataset contains 7,000+ customer records with variables related to:
-        </p>
+                <!-- What I built -->
+                <article class="card-shell-simple p-6 sm:p-7">
+                    <div class="flex items-baseline justify-between mb-3">
+                        <h2 class="text-xs sm:text-sm font-bold tracking-[0.22em] uppercase">What I Built</h2>
+                    </div>
 
-        <ul class="list-disc ml-6 space-y-3 text-gray-300">
-            <li>Demographics (age, partner, dependents)</li>
-            <li>Service usage (internet, tech support, streaming)</li>
-            <li>Billing (monthly charges, payment method)</li>
-            <li>Contract information (month-to-month, yearly)</li>
-        </ul>
+                    <ul class="list-disc list-outside pl-5 space-y-2 text-sm leading-relaxed">
+                        <li>Loaded and explored the Telco churn dataset.</li>
+                        <li>Cleaned and converted problematic variables (including TotalCharges).</li>
+                        <li>Performed feature engineering and one-hot encoding for all categorical fields.</li>
+                        <li>Built models using logistic regression and random forest.</li>
+                        <li>Evaluated performance using accuracy, recall, precision, and ROC-AUC.</li>
+                        <li>Generated SHAP values to understand the strongest churn drivers.</li>
+                        <li>Developed insights and recommendations for customer retention.</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
 
-        <p class="leading-relaxed mb-8">
-            Target variable: <strong>Churn (Yes/No)</strong>.
-        </p>
+    <!-- MAIN CONTENT -->
+    <section class="py-12 md:py-16 bg-primary-bg">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <!-- Section: Data Cleaning -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Data Cleaning & Preparation</h2>
+            <!-- Dataset Overview -->
+            <div class="section-title-wrapper">
+                <h2>Dataset Overview</h2>
+                <span></span>
+            </div>
 
-        <p class="leading-relaxed mb-4">
-            Significant preprocessing steps were required to prepare the dataset:
-        </p>
+            <p class="text-text-secondary text-sm sm:text-[0.95rem] leading-relaxed mb-6">
+                The dataset contains 7,000+ customer records with fields covering demographics, billing, service usage,
+                and contract information. The target variable is <strong class="text-text-base">Churn (Yes/No)</strong>.
+            </p>
 
-        <ul class="list-disc ml-6 space-y-3 text-gray-300">
-            <li>Converted “TotalCharges” field to numeric</li>
-            <li>Handled missing values and blank string entries</li>
-            <li>Removed duplicate records</li>
-            <li>One-hot encoded all categorical variables</li>
-            <li>Scaled numerical features for logistic regression</li>
-        </ul>
+            <ul class="list-disc list-outside pl-5 space-y-1 text-sm text-text-secondary mb-6">
+                <li>Demographics: age, partner status, dependents</li>
+                <li>Services: tech support, internet type, streaming</li>
+                <li>Billing: monthly charges, payment method, tenure</li>
+                <li>Contract types: month-to-month or annual</li>
+            </ul>
 
-        <pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
-df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
+            <div class="w-full my-6 bg-secondary-bg p-6 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
+                [ Insert screenshot: dataset preview ]
+            </div>
+
+            <!-- Data Prep -->
+            <div class="section-title-wrapper mt-12">
+                <h2>Data Cleaning & Preparation</h2>
+                <span></span>
+            </div>
+
+            <p class="text-text-secondary text-sm mb-4 leading-relaxed">
+                Data preparation focused on converting mixed-type fields, handling missing values, encoding
+                categorical variables, and scaling numerical features.
+            </p>
+
+            <ul class="list-disc list-outside pl-5 space-y-1 text-sm text-text-secondary">
+                <li>Converted <code class="text-accent-cyan">TotalCharges</code> to numeric and fixed blank entries.</li>
+                <li>Dropped rows with missing values after conversion.</li>
+                <li>One-hot encoded categorical variables for model compatibility.</li>
+                <li>Standardized numerical fields for logistic regression.</li>
+            </ul>
+
+            <pre class="bg-secondary-bg border border-gray-700 rounded-xl p-4 mt-6 overflow-x-auto text-[0.8rem]">
+<code>df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
 df = df.dropna()
-df = pd.get_dummies(df, drop_first=True)
-        </pre>
+df = pd.get_dummies(df, drop_first=True)</code></pre>
 
-        <!-- Section: Modeling -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Machine Learning Models</h2>
+            <div class="w-full my-6 bg-secondary-bg p-6 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
+                [ Insert screenshot: correlation heatmap or prep steps ]
+            </div>
 
-        <p class="leading-relaxed mb-4">
-            Two models were trained and compared:
-        </p>
+            <!-- ML Models -->
+            <div class="section-title-wrapper mt-12">
+                <h2>Machine Learning Models</h2>
+                <span></span>
+            </div>
 
-        <ul class="list-disc ml-6 space-y-3 text-gray-300">
-            <li><strong>Logistic Regression</strong> — baseline interpretable model</li>
-            <li><strong>Random Forest Classifier</strong> — more complex, non-linear model</li>
-        </ul>
+            <p class="text-text-secondary text-sm leading-relaxed mb-4">
+                Two supervised learning models were trained and evaluated:
+            </p>
 
-        <p class="leading-relaxed mt-6 mb-4">Model performance was evaluated using:</p>
+            <ul class="list-disc list-outside pl-5 space-y-1 text-sm text-text-secondary">
+                <li><strong class="text-text-base">Logistic Regression</strong> — simple, interpretable baseline.</li>
+                <li><strong class="text-text-base">Random Forest</strong> — captures non-linear relationships.</li>
+            </ul>
 
-        <ul class="list-disc ml-6 space-y-3 text-gray-300">
-            <li>Confusion matrix</li>
-            <li>Accuracy</li>
-            <li>Precision / Recall</li>
-            <li>ROC-AUC</li>
-        </ul>
+            <p class="text-text-secondary text-sm mt-4 mb-2">Model performance was measured using:</p>
 
-        <pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
-model = RandomForestClassifier(n_estimators=300, max_depth=12, random_state=42)
+            <ul class="list-disc list-outside pl-5 space-y-1 text-sm text-text-secondary">
+                <li>Confusion matrix</li>
+                <li>Accuracy</li>
+                <li>Precision and Recall</li>
+                <li>ROC-AUC</li>
+            </ul>
+
+            <pre class="bg-secondary-bg border border-gray-700 rounded-xl p-4 mt-6 overflow-x-auto text-[0.8rem]">
+<code>model = RandomForestClassifier(n_estimators=300, max_depth=12, random_state=42)
 model.fit(X_train, y_train)
-preds = model.predict(X_test)
-        </pre>
+preds = model.predict(X_test)</code></pre>
 
-        <!-- Section: Explainability -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Model Explainability (SHAP)</h2>
+            <div class="w-full my-6 bg-secondary-bg p-6 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
+                [ Insert screenshot: confusion matrix or ROC curve ]
+            </div>
 
-        <p class="leading-relaxed mb-4">
-            SHAP values were generated to understand which features most strongly influenced churn predictions.
-        </p>
+            <!-- SHAP -->
+            <div class="section-title-wrapper mt-12">
+                <h2>Model Explainability (SHAP)</h2>
+                <span></span>
+            </div>
 
-        <pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
-explainer = shap.TreeExplainer(model)
+            <p class="text-text-secondary text-sm leading-relaxed mb-4">
+                SHAP values explain how each feature contributes to model predictions. This helped identify the most
+                influential churn drivers and provided transparency for business decision-making.
+            </p>
+
+            <pre class="bg-secondary-bg border border-gray-700 rounded-xl p-4 mt-6 overflow-x-auto text-[0.8rem]">
+<code>explainer = shap.TreeExplainer(model)
 shap_values = explainer.shap_values(X)
-shap.summary_plot(shap_values, X)
-        </pre>
+shap.summary_plot(shap_values, X)</code></pre>
 
-        <p class="leading-relaxed mb-8">
-            The SHAP summary plots revealed clear churn drivers.
-        </p>
+            <div class="w-full my-6 bg-secondary-bg p-6 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
+                [ Insert screenshot: SHAP summary plot ]
+            </div>
 
-        <!-- Section: Key Drivers -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Key Churn Drivers</h2>
+            <!-- Key Drivers -->
+            <div class="section-title-wrapper mt-12">
+                <h2>Key Churn Drivers</h2>
+                <span></span>
+            </div>
 
-        <ul class="list-disc ml-6 space-y-3 text-gray-300">
-            <li><strong>Month-to-month contracts</strong> — highest predictor of churn</li>
-            <li><strong>High monthly charges</strong></li>
-            <li><strong>Lack of fiber internet / poor service quality</strong></li>
-            <li><strong>No tech support or security add-ons</strong></li>
-            <li><strong>Electronic check billing</strong> — associated with higher churn</li>
-        </ul>
+            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary leading-relaxed">
+                <li>Month-to-month contracts were the strongest churn predictor.</li>
+                <li>Customers with high monthly charges churned at significantly higher rates.</li>
+                <li>Limited support features (no tech support or security add-ons) increased churn likelihood.</li>
+                <li>Electronic check billing was consistently correlated with higher churn.</li>
+                <li>Fiber-optic users showed lower churn, suggesting service quality matters.</li>
+            </ul>
 
-        <!-- Section: Outcomes -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Key Outcomes</h2>
+            <!-- Outcomes -->
+            <div class="section-title-wrapper mt-12">
+                <h2>Key Outcomes</h2>
+                <span></span>
+            </div>
 
-        <ul class="list-disc ml-6 space-y-3 text-gray-300">
-            <li>Built a reliable churn prediction model with strong classification metrics</li>
-            <li>Mapped out the top churn indicators using SHAP explainability</li>
-            <li>Created a business recommendation set for retention strategy</li>
-            <li>Produced visuals and analysis ready for executive reporting</li>
-            <li>Delivered an end-to-end machine learning workflow</li>
-        </ul>
+            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary leading-relaxed">
+                <li>Built predictive churn models with strong classification performance.</li>
+                <li>Identified top churn indicators using SHAP explainability.</li>
+                <li>Created data-driven recommendations for customer retention.</li>
+                <li>Delivered analysis ready for dashboards and executive reporting.</li>
+                <li>Completed a full ML lifecycle—from cleaning to explainability.</li>
+            </ul>
 
-        <!-- Section: Skills -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Skills Demonstrated</h2>
+            <!-- Skills -->
+            <div class="section-title-wrapper mt-12">
+                <h2>Skills Demonstrated</h2>
+                <span></span>
+            </div>
 
-        <p class="text-gray-300 mb-6">
-            Python, pandas, scikit-learn, SHAP interpretability, feature engineering, ML pipelines, data cleaning, exploratory analysis, KPI reporting.
-        </p>
+            <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Python</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">pandas</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">scikit-learn</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">SHAP</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">ML pipelines</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Feature engineering</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Data cleaning</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Exploratory analysis</span>
+            </div>
 
-        <!-- Summary -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Summary</h2>
+            <!-- Summary -->
+            <div class="mt-12 bg-secondary-bg border border-accent-cyan rounded-2xl p-6 sm:p-7 shadow-lg">
+                <h3 class="text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-accent-cyan">
+                    Summary
+                </h3>
+                <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-secondary">
+                    This project demonstrates a full machine learning workflow focused on helping telecom companies
+                    identify at-risk customers. By combining predictive modeling with SHAP explainability and business
+                    framing, the analysis turns raw customer data into actionable retention insights.
+                </p>
+            </div>
 
-        <p class="leading-relaxed mb-16">
-            This project showcases a complete machine learning workflow designed to help telecom companies identify at-risk customers 
-            and proactively reduce churn. By combining predictive modeling with explainability and business logic, the analysis 
-            transforms raw data into actionable retention insights.
-        </p>
+            <!-- Back -->
+            <div class="mt-10">
+                <a href="../index.html#projects"
+                   class="inline-flex items-center text-accent-cyan text-sm hover:text-accent-red transition">
+                    ← Back to Portfolio
+                </a>
+            </div>
 
-    </div>
+        </div>
+    </section>
+
+</main>
 </body>
 </html>
