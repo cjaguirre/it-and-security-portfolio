@@ -1,191 +1,375 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Optimization & Decision Models</title>
 
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Operations Optimization & Decision Models | Christian Aguirre</title>
+
+    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Fonts + Theme Variables -->
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Inconsolata:wght@300;400;700&display=swap');
+        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
+
+        .dark {
+            --bg-default: #050814;
+            --bg-secondary: #111827;
+            --text-base: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --accent-primary: #00ffff;
+            --accent-red: #f97373;
+            --container-bg: #020617;
+            background: var(--bg-default);
+            color: var(--text-base);
+        }
+
+        .light {
+            --bg-default: #ffffff;
+            --bg-secondary: #f3f4f6;
+            --text-base: #111827;
+            --text-secondary: #4b5563;
+            --accent-primary: #0891b2;
+            --accent-red: #dc2626;
+            --container-bg: #ffffff;
+        }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0a0f18;
-            color: #d1d5db;
+            font-family: "Inter", sans-serif;
         }
 
-        h1, h2, h3 {
-            font-family: 'Inconsolata', monospace;
+        .hero-grid-bg {
+            background-color: var(--bg-default);
+            background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+            background-size: 22px 22px;
         }
 
-        .accent {
-            color: #00ffff;
+        .section-title-wrapper {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 1.75rem;
+            font-family: "Inconsolata", monospace;
         }
 
-        .section-line {
-            display: inline-block;
-            width: 120px;
-            border-bottom: 2px solid #374151;
-            margin-left: 10px;
-            transform: translateY(-6px);
+        .section-title-wrapper h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
         }
 
-        .content-container {
-            max-width: 900px;
+        .section-title-wrapper span {
+            flex-grow: 1;
+            width: 150px;
+            margin-left: .75rem;
+            border-bottom: 2px solid var(--text-secondary);
+        }
+
+        .pill {
+            border-radius: 999px;
+            padding: .25rem .6rem;
+            font-size: .68rem;
+            border: 1px solid rgba(148,163,184,0.5);
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .pill-accent {
+            color: var(--accent-primary);
+            border-color: rgba(34,211,238,0.8);
+        }
+
+        .pill-muted {
+            color: var(--text-secondary);
+        }
+
+        .card-shell {
+            border-radius: 1.25rem;
+            border: 1px solid rgba(31,41,55,0.85);
+            background: radial-gradient(circle at top left,
+                    rgba(56,189,248,0.16),
+                    transparent 60%),
+                radial-gradient(circle at bottom right,
+                    rgba(15,23,42,0.96),
+                    #020617);
+            box-shadow: 0 22px 40px rgba(0, 0, 0, 0.55);
+        }
+
+        .card-shell-simple {
+            border-radius: 1.25rem;
+            background: rgba(15, 23, 42, 0.98);
+            border: 1px solid rgba(31, 41, 55, 0.9);
+            box-shadow: 0 22px 40px rgba(0, 0, 0, 0.55);
+        }
+
+        pre code {
+            font-family: "Inconsolata", monospace;
+            font-size: .85rem;
         }
     </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const html = document.documentElement;
+            const saved = localStorage.getItem("theme") || "dark";
+            html.classList.add(saved);
+            html.setAttribute("data-theme", saved);
+        });
+    </script>
 </head>
 
-<body class="px-6 py-12">
+<body class="bg-primary-bg text-text-base">
+<main class="min-h-screen">
 
-    <!-- Back Button -->
-    <a href="../index.html#projects" class="text-cyan-400 hover:text-cyan-300 font-mono mb-10 inline-block text-lg">
-        ← Back to Portfolio
-    </a>
+    <!-- HERO SECTION -->
+    <section class="hero-grid-bg border-b border-gray-800">
+        <div class="max-w-6xl mx-auto px-4 pt-8 pb-12">
 
-    <div class="content-container mx-auto">
+            <!-- Back Link -->
+            <a href="../index.html#projects"
+                class="inline-flex text-accent-cyan text-sm mb-6 hover:text-accent-red transition">
+                ← Back to Portfolio
+            </a>
 
-        <!-- Title -->
-        <h1 class="text-4xl font-bold accent mb-2">Operations Optimization & Decision Models</h1>
-        <div class="section-line mb-8"></div>
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-2 mb-4">
+                <span class="pill pill-accent">Operations Research</span>
+                <span class="pill pill-muted">Optimization</span>
+                <span class="pill pill-muted">Simulation</span>
+                <span class="pill pill-muted">Decision Modeling</span>
+            </div>
 
-        <!-- Subheader -->
-        <p class="text-gray-400 text-sm mb-10 font-mono">
-            Linear programming • Monte Carlo simulation • Queuing models • Decision trees • Regret analysis • Binary integer programming
-        </p>
+            <!-- Title -->
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4">
+                Operations Optimization & Decision Models
+            </h1>
 
-        <!-- Overview -->
-        <p class="leading-relaxed mb-6">
-            This project applies a full suite of operations research techniques to solve real business scenarios across 
-            logistics, risk modeling, resource allocation, capacity planning, and strategic decision-making. Each model 
-            focuses on improving efficiency, lowering cost, and supporting evidence-based decisions.
-        </p>
+            <p class="max-w-3xl text-sm text-text-secondary leading-relaxed">
+                A comprehensive set of analytics and operations research models built to solve real business problems across
+                logistics, labor planning, risk modeling, and strategic decision-making. Techniques include linear programming,
+                Monte Carlo simulation, queuing models, decision trees, regret analysis, and binary integer programming.
+            </p>
 
-        <p class="leading-relaxed mb-10">
-            Methods include queue theory, payoff and regret tables, Monte Carlo simulation, linear programming (LP),
-            decision tree modeling, and binary integer programming (BIP). These tools are widely used in analytics,
-            supply chain, finance, and operations strategy roles.
-        </p>
+            <!-- Meta -->
+            <div class="flex flex-wrap gap-3 mt-6 text-xs text-text-secondary">
+                <span class="inline-flex items-center gap-2 px-3 py-1 border bg-secondary-bg border-gray-700 rounded-full">
+                    <span class="w-1.5 h-1.5 bg-accent-cyan rounded-full"></span>
+                    Resource Optimization
+                </span>
+                <span class="inline-flex items-center gap-2 px-3 py-1 border bg-secondary-bg border-gray-700 rounded-full">
+                    <span class="w-1.5 h-1.5 bg-accent-cyan rounded-full"></span>
+                    Decision Science
+                </span>
+            </div>
 
-        <!-- Section: Problems Solved -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Business Problems Solved</h2>
+            <!-- Two Cards -->
+            <div class="grid md:grid-cols-2 gap-6 mt-10">
 
-        <ul class="list-disc ml-6 space-y-3 text-gray-300">
-            <li>Minimizing labor cost while meeting production requirements</li>
-            <li>Reducing customer wait times through queue analysis</li>
-            <li>Optimizing resource allocation under constraints</li>
-            <li>Evaluating decisions under uncertainty using regrets/payoffs</li>
-            <li>Simulating 10,000+ random outcomes using Monte Carlo</li>
-            <li>Choosing optimal portfolio or operational decisions through decision trees</li>
-            <li>Solving binary integer problems for yes/no operational choices</li>
-        </ul>
+                <!-- Narrative -->
+                <article class="card-shell p-6">
+                    <h2 class="text-xs tracking-[0.22em] uppercase font-bold mb-3">Project Narrative</h2>
+                    <p class="text-sm text-text-secondary leading-relaxed mb-3">
+                        This project brings together key tools from operations research to address common real-world challenges:
+                        minimizing cost, reducing bottlenecks, planning under uncertainty, and choosing optimal strategies. Each
+                        model is designed to provide a clear, data-driven recommendation tailored to operational constraints.
+                    </p>
 
-        <!-- Section: Linear Programming -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Linear Programming (LP)</h2>
+                    <p class="text-sm text-text-secondary leading-relaxed">
+                        These methods are widely used in supply chain, finance, tech operations, and project management to
+                        optimize efficiency and make informed decisions under uncertainty.
+                    </p>
+                </article>
 
-        <p class="leading-relaxed mb-4">
-            LP models were used to find the most cost-efficient combination of labor hours and materials while meeting 
-            minimum production and quality requirements.
-        </p>
+                <!-- What I Built -->
+                <article class="card-shell-simple p-6">
+                    <h2 class="text-xs tracking-[0.22em] uppercase font-bold mb-3">What I Built</h2>
+                    <ul class="list-disc pl-5 text-sm leading-relaxed text-text-base space-y-2">
+                        <li>Linear programming models for labor, cost, and production optimization.</li>
+                        <li>Monte Carlo simulations forecasting 10,000+ randomized scenarios.</li>
+                        <li>Decision trees and regret tables for strategic choice evaluation.</li>
+                        <li>Queuing analysis to measure wait times and service performance.</li>
+                        <li>Binary integer models for selecting optimal project or resource choices.</li>
+                    </ul>
+                </article>
 
-        <pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
-Maximize: Profit = 40x + 30y
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <section class="py-12 bg-primary-bg">
+        <div class="max-w-6xl mx-auto px-4">
+
+            <!-- Business Problems -->
+            <div class="section-title-wrapper">
+                <h2>Business Problems Solved</h2>
+                <span></span>
+            </div>
+
+            <ul class="list-disc pl-5 text-sm text-text-secondary leading-relaxed space-y-2">
+                <li>Minimizing labor costs while meeting production requirements.</li>
+                <li>Reducing customer wait times using queuing models.</li>
+                <li>Allocating resources efficiently under operational constraints.</li>
+                <li>Evaluating uncertain outcomes using payoff and regret analysis.</li>
+                <li>Running Monte Carlo simulations to model revenue, demand, and risk.</li>
+                <li>Building decision trees for optimal strategic choices.</li>
+                <li>Solving binary integer problems to select the best investments or upgrades.</li>
+            </ul>
+
+            <div class="my-6 bg-secondary-bg p-6 border rounded-xl border-gray-700 text-center text-xs italic text-text-secondary">
+                [ Insert screenshot: LP solver output / queuing model table ]
+            </div>
+
+            <!-- Linear Programming -->
+            <div class="section-title-wrapper mt-12">
+                <h2>Linear Programming (LP)</h2>
+                <span></span>
+            </div>
+
+            <p class="text-sm text-text-secondary leading-relaxed mb-4">
+                LP models identified the most cost-effective combination of labor hours and materials while meeting operational
+                requirements.
+            </p>
+
+            <pre class="bg-secondary-bg border border-gray-700 rounded-xl p-4 overflow-x-auto text-[0.85rem]">
+<code>Maximize: Profit = 40x + 30y
+
 Subject to:
     2x + y ≤ 100   -- Labor hours
     x + y ≤ 80     -- Machine capacity
-    x, y ≥ 0
-        </pre>
+    x, y ≥ 0</code>
+            </pre>
 
-        <p class="leading-relaxed mb-10">
-            Solver results identified the production mix that maximizes profit while respecting constraints.
-        </p>
+            <p class="text-sm text-text-secondary leading-relaxed mt-3">
+                Solver results produced the optimal production mix under cost and capacity constraints.
+            </p>
 
-        <!-- Section: Decision Trees -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Decision Trees & Regret Analysis</h2>
+            <div class="my-6 bg-secondary-bg p-6 border rounded-xl border-gray-700 text-center text-xs italic">
+                [ Insert screenshot: LP solver results ]
+            </div>
 
-        <p class="leading-relaxed mb-4">
-            Decision models evaluated uncertain outcomes like investment success, contractor performance, or 
-            weather-dependent operations.
-        </p>
+            <!-- Decision Trees -->
+            <div class="section-title-wrapper mt-12">
+                <h2>Decision Trees & Regret Analysis</h2>
+                <span></span>
+            </div>
 
-        <pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
-| Action         | Success | Failure |
-|----------------|---------|---------|
-| Invest         |  500k   | -200k   |
-| Do Nothing     |   0     |   0     |
+            <p class="text-sm text-text-secondary leading-relaxed mb-4">
+                Decision models evaluated strategic choices under uncertainty such as investment payoff, project success, or
+                weather-dependent operations.
+            </p>
+
+            <pre class="bg-secondary-bg border border-gray-700 rounded-xl p-4 overflow-x-auto text-[0.85rem]">
+<code>| Action     | Success | Failure |
+|------------|---------|---------|
+| Invest     |  500k   | -200k   |
+| Do Nothing |    0    |   0     |
 
 Expected Value:
-EV = (0.6)(500k) + (0.4)(-200k) = 220k
-        </pre>
+EV = (0.6)(500k) + (0.4)(-200k) = 220k</code>
+            </pre>
 
-        <p class="leading-relaxed mb-10">
-            The selected choice maximized expected value while minimizing regret across outcomes.
-        </p>
+            <div class="my-6 bg-secondary-bg p-6 border rounded-xl border-gray-700 text-center text-xs italic">
+                [ Insert screenshot: decision tree or regret table ]
+            </div>
 
-        <!-- Section: Monte Carlo -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Monte Carlo Simulation</h2>
+            <!-- Monte Carlo -->
+            <div class="section-title-wrapper mt-12">
+                <h2>Monte Carlo Simulation</h2>
+                <span></span>
+            </div>
 
-        <p class="leading-relaxed mb-4">
-            Each simulation ran thousands of randomized scenarios to forecast revenue, failure risk, or operational delays. 
-            Inputs were defined by probability distributions (normal, uniform, triangular).
-        </p>
+            <p class="text-sm text-text-secondary leading-relaxed mb-4">
+                Thousands of randomized scenarios were simulated to forecast demand, revenue ranges, and operational risk.
+            </p>
 
-        <pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
-For i = 1 to 10,000:
+            <pre class="bg-secondary-bg border border-gray-700 rounded-xl p-4 overflow-x-auto text-[0.85rem]">
+<code>For i = 1 to 10,000:
     demand = Normal(mean=520, sd=40)
     revenue = demand * 35
-    store results
-        </pre>
+    store results</code>
+            </pre>
 
-        <p class="leading-relaxed mb-10">
-            Output included average results, probability of shortages, and risk intervals.
-        </p>
+            <p class="text-sm text-text-secondary leading-relaxed mt-3">
+                Outputs included probability of shortages, confidence intervals, and risk-adjusted forecasts.
+            </p>
 
-        <!-- Section: Binary Integer Programming -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Binary Integer Programming (BIP)</h2>
+            <div class="my-6 bg-secondary-bg p-6 border rounded-xl border-gray-700 text-center text-xs italic">
+                [ Insert screenshot: Monte Carlo histogram or risk curve ]
+            </div>
 
-        <p class="leading-relaxed mb-6">
-            BIP models solved “yes/no” decisions such as which projects to fund under budget constraints, or which 
-            equipment upgrades to schedule.
-        </p>
+            <!-- BIP -->
+            <div class="section-title-wrapper mt-12">
+                <h2>Binary Integer Programming (BIP)</h2>
+                <span></span>
+            </div>
 
-        <pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
-Maximize: 12x1 + 10x2 + 8x3
+            <p class="text-sm text-text-secondary leading-relaxed mb-4">
+                BIP models addressed yes/no decisions such as project selection under budget constraints.
+            </p>
+
+            <pre class="bg-secondary-bg border border-gray-700 rounded-xl p-4 overflow-x-auto text-[0.85rem]">
+<code>Maximize: 12x1 + 10x2 + 8x3
+
 Subject to:
     5x1 + 4x2 + 3x3 ≤ 10    -- Budget
-    xi ∈ {0,1}
-        </pre>
+    xi ∈ {0,1}</code>
+            </pre>
 
-        <!-- Section: Outcomes -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Key Outcomes</h2>
+            <div class="my-6 bg-secondary-bg p-6 border rounded-xl border-gray-700 text-center text-xs italic">
+                [ Insert screenshot: BIP solver output ]
+            </div>
 
-        <ul class="list-disc ml-6 space-y-3 text-gray-300">
-            <li>15 to 35 percent improvement in resource efficiency depending on model</li>
-            <li>Clear recommendations backed by quantitative decision logic</li>
-            <li>Risk-aware planning through Monte Carlo distributions</li>
-            <li>Transparent documentation and formulas for stakeholder review</li>
-            <li>Scalable analytics structure usable across industries</li>
-        </ul>
+            <!-- Outcomes -->
+            <div class="section-title-wrapper mt-12">
+                <h2>Key Outcomes</h2>
+                <span></span>
+            </div>
 
-        <!-- Section: Skills -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Skills Demonstrated</h2>
+            <ul class="list-disc pl-5 text-sm text-text-secondary leading-relaxed space-y-2 mb-10">
+                <li>15–35 percent improvements in resource efficiency depending on the model.</li>
+                <li>Clear, quantitative recommendations for business decisions.</li>
+                <li>Risk-aware planning supported by stochastic simulation.</li>
+                <li>Transparent documentation of assumptions and model logic.</li>
+                <li>Scalable modeling framework applicable across industries.</li>
+            </ul>
 
-        <p class="text-gray-300 mb-6">
-            Linear programming, sensitivity analysis, decision theory, stochastic simulation, solving optimization 
-            problems, business operations analytics, risk modeling, Excel Solver, scenario modeling.
-        </p>
+            <!-- Skills -->
+            <div class="section-title-wrapper">
+                <h2>Skills Demonstrated</h2>
+                <span></span>
+            </div>
 
-        <!-- Summary -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Summary</h2>
+            <div class="flex flex-wrap gap-2 mb-12">
+                <span class="px-3 py-1 text-xs font-mono rounded-full border border-accent-cyan text-accent-cyan">Linear Programming</span>
+                <span class="px-3 py-1 text-xs font-mono rounded-full border border-accent-cyan text-accent-cyan">Decision Theory</span>
+                <span class="px-3 py-1 text-xs font-mono rounded-full border border-accent-cyan text-accent-cyan">Monte Carlo Simulation</span>
+                <span class="px-3 py-1 text-xs font-mono rounded-full border border-accent-cyan text-accent-cyan">Binary Integer Programming</span>
+                <span class="px-3 py-1 text-xs font-mono rounded-full border border-accent-cyan text-accent-cyan">Optimization Models</span>
+                <span class="px-3 py-1 text-xs font-mono rounded-full border border-accent-cyan text-accent-cyan">Risk Modeling</span>
+            </div>
 
-        <p class="leading-relaxed mb-16">
-            This project showcases a complete toolkit of optimization and decision-making techniques used across 
-            analytics, operations, supply chain, project management, and finance. Each model demonstrates a different 
-            method for making smarter decisions under real-world constraints and uncertainty.
-        </p>
+            <!-- Summary -->
+            <div class="bg-secondary-bg border border-accent-cyan rounded-2xl p-6 shadow-lg">
+                <h3 class="text-sm font-semibold tracking-[0.18em] uppercase text-accent-cyan mb-3">Summary</h3>
+                <p class="text-sm text-text-secondary leading-relaxed">
+                    This project demonstrates a complete toolkit of operations research techniques used in analytics, supply chain,
+                    finance, and strategic planning. Each model applies quantitative logic to make smarter decisions under real-world
+                    constraints and uncertainty.
+                </p>
+            </div>
 
-    </div>
+            <!-- Back -->
+            <div class="mt-10">
+                <a href="../index.html#projects"
+                    class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition">
+                    ← Back to Portfolio
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+</main>
 </body>
 </html>
