@@ -1,135 +1,873 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azure SOC Honeypot & Attack Map Lab</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8" />
+    <title>Azure SOC Honeypot and Attack Map Lab | Cybersecurity and Data Analytics Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="End to end Azure SOC honeypot and attack map lab using Microsoft Sentinel, Log Analytics, KQL, and GeoIP enrichment." />
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Inconsolata:wght@300;400;700&display=swap');
+        :root {
+            --bg-main: #020817;
+            --bg-card: #020b1f;
+            --bg-chip: #0b1220;
+            --accent: #38bdf8;
+            --accent-soft: #075985;
+            --text-main: #e5e7eb;
+            --text-muted: #9ca3af;
+            --border-subtle: #1f2933;
+            --code-bg: #020617;
+            --code-border: #1e293b;
+            --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.65);
+        }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0a0f18;
+        * {
+            box-sizing: border-box;
+        }
+
+        body.azure-soc-page {
+            margin: 0;
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, #0f172a 0, #020617 45%, #000000 100%);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .page-wrapper {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 3rem 1.25rem 4rem;
+        }
+
+        @media (min-width: 768px) {
+            .page-wrapper {
+                padding: 4rem 1.5rem 5rem;
+            }
+        }
+
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pill {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .pill span {
+            color: var(--accent);
+            margin-right: 0.3rem;
+        }
+
+        h1.main-title {
+            font-size: clamp(2.4rem, 4vw, 2.9rem);
+            line-height: 1.1;
+            font-weight: 800;
+            margin: 0 0 0.75rem;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            max-width: 640px;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .hero-meta .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(55, 65, 81, 0.9);
+        }
+
+        .hero-meta .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: var(--accent);
+        }
+
+        .layout-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+            gap: 1.75rem;
+            margin-top: 2.75rem;
+            align-items: flex-start;
+        }
+
+        @media (max-width: 880px) {
+            .layout-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        .card {
+            background: radial-gradient(circle at top left, rgba(15, 118, 178, 0.18), transparent 55%),
+                        radial-gradient(circle at bottom right, rgba(8, 47, 73, 0.7), rgba(15, 23, 42, 0.95));
+            border-radius: 1.35rem;
+            padding: 1.6rem 1.5rem;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .card-compact {
+            background: rgba(15, 23, 42, 0.95);
+            border-radius: 1.15rem;
+            padding: 1.4rem 1.4rem;
+            border: 1px solid rgba(31, 41, 55, 0.85);
+            box-shadow: 0 16px 30px rgba(15, 23, 42, 0.75);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #e5f3ff;
+        }
+
+        .card-tagline {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+        }
+
+        .body-text {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--text-main);
+        }
+
+        .body-text p {
+            margin: 0 0 0.8rem;
+        }
+
+        .section {
+            margin-top: 2.25rem;
+        }
+
+        .section-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.17em;
+            color: #dbeafe;
+            margin-bottom: 0.75rem;
+        }
+
+        .divider {
+            height: 1px;
+            width: 100%;
+            background: linear-gradient(to right, transparent, rgba(148, 163, 184, 0.55), transparent);
+            margin: 0.5rem 0 1.4rem;
+        }
+
+        ul.clean-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0.25rem 0 0;
+        }
+
+        ul.clean-list li {
+            position: relative;
+            padding-left: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        ul.clean-list li::before {
+            content: "";
+            position: absolute;
+            left: 0.2rem;
+            top: 0.55rem;
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: var(--accent);
+        }
+
+        .two-col-list {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 0.9rem 2.5rem;
+        }
+
+        @media (max-width: 720px) {
+            .two-col-list {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        .code-block {
+            margin-top: 1rem;
+            border-radius: 0.9rem;
+            background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.06), transparent 55%),
+                        var(--code-bg);
+            border: 1px solid var(--code-border);
+            padding: 1rem 1.1rem;
+            overflow-x: auto;
+            font-family: ui-monospace, SFMonoRegular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.78rem;
+            color: #e5e7eb;
+        }
+
+        .code-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            margin-bottom: 0.25rem;
+        }
+
+        .workflow-table,
+        .architecture-table,
+        .dataflow-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.6rem;
+            font-size: 0.85rem;
+        }
+
+        .workflow-table th,
+        .workflow-table td,
+        .architecture-table th,
+        .architecture-table td,
+        .dataflow-table th,
+        .dataflow-table td {
+            padding: 0.55rem 0.7rem;
+            border-bottom: 1px solid rgba(55, 65, 81, 0.8);
+            vertical-align: top;
+        }
+
+        .workflow-table th,
+        .architecture-table th,
+        .dataflow-table th {
+            text-align: left;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--text-muted);
+            background: rgba(15, 23, 42, 0.9);
+        }
+
+        .workflow-table tr:nth-child(even) td,
+        .architecture-table tr:nth-child(even) td,
+        .dataflow-table tr:nth-child(even) td {
+            background: rgba(15, 23, 42, 0.7);
+        }
+
+        .label-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.12rem 0.45rem;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            background: rgba(15, 23, 42, 0.9);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.4rem;
+        }
+
+        .skill-chip {
+            padding: 0.15rem 0.55rem;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            background: rgba(15, 23, 42, 0.9);
+            font-size: 0.78rem;
             color: #d1d5db;
         }
 
-        h1, h2, h3, h4 {
-            font-family: 'Inconsolata', monospace;
+        .summary-card {
+            margin-top: 2.4rem;
+            padding: 1.3rem 1.4rem;
+            border-radius: 1.2rem;
+            border: 1px solid rgba(56, 189, 248, 0.7);
+            background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), transparent 60%),
+                        rgba(15, 23, 42, 0.98);
+            box-shadow: 0 18px 40px rgba(8, 47, 73, 0.85);
         }
 
-        .accent {
-            color: #00ffff;
+        .summary-card h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #e0f2fe;
         }
 
-        .section-line {
-            display: inline-block;
-            width: 120px;
-            border-bottom: 2px solid #374151;
-            margin-left: 10px;
-            transform: translateY(-6px);
+        .summary-card p {
+            margin: 0.3rem 0;
+            font-size: 0.9rem;
+            line-height: 1.7;
         }
 
-        .content-container {
-            max-width: 900px;
+        .foot-note {
+            margin-top: 1.75rem;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        a.inline-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a.inline-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 
-<body class="px-6 py-12">
+<body class="azure-soc-page">
+<div class="page-wrapper">
 
-    <!-- Back Button -->
-    <a href="../index.html#projects" class="text-cyan-400 hover:text-cyan-300 font-mono mb-10 inline-block text-lg">
-        ← Back to Portfolio
-    </a>
+    <!-- Header -->
+    <div class="pill-row">
+        <div class="pill"><span>Project</span>Azure SOC Lab</div>
+        <div class="pill">Azure VM</div>
+        <div class="pill">Microsoft Sentinel</div>
+        <div class="pill">KQL</div>
+        <div class="pill">Threat Detection</div>
+    </div>
 
-    <div class="content-container mx-auto">
+    <h1 class="main-title">Azure SOC Honeypot and Attack Map Lab</h1>
+    <p class="subtitle">
+        This lab walks through building a Windows honeypot in Azure, exposing it to the public internet,
+        forwarding security events into a SIEM, enriching attacker data with GeoIP context, and visualizing global
+        attack activity on a real time map inside Microsoft Sentinel.
+    </p>
 
-        <!-- Title -->
-        <h1 class="text-4xl font-bold accent mb-2">Azure SOC Honeypot and Attack Map Lab</h1>
-        <div class="section-line mb-8"></div>
+    <div class="hero-meta">
+        <div class="badge">
+            <span class="dot"></span>
+            Built as a realistic Security Operations workflow
+        </div>
+        <div class="badge">
+            <span class="dot"></span>
+            Tools: Azure, Log Analytics, Sentinel, KQL
+        </div>
+    </div>
 
-        <!-- Subheader tags -->
-        <p class="text-gray-400 text-sm mb-10 font-mono">
-            SOC Lab • Azure VM • Microsoft Sentinel • KQL • Threat Detection
-        </p>
+    <!-- Top layout: overview + quick facts -->
+    <div class="layout-grid">
+        <section class="card">
+            <div class="card-header">
+                <div class="card-title">Project Narrative</div>
+                <div class="card-tagline">End to end SOC style workflow</div>
+            </div>
+            <div class="body-text">
+                <p>
+                    The objective of this lab was to simulate what a Security Operations Center analyst does daily:
+                    collect logs from endpoints, route them into a central SIEM, enrich the data with context, then
+                    query and visualize that activity to understand attacker behavior.
+                </p>
+                <p>
+                    I began by deploying a Windows 10 honeypot virtual machine in Azure and deliberately weakening its
+                    security posture by opening inbound traffic through the Network Security Group and disabling the
+                    Windows firewall. This encouraged real brute force attempts from the public internet and produced
+                    authentic security telemetry.
+                </p>
+                <p>
+                    Using the Azure Monitor Agent and a Log Analytics Workspace, I forwarded Windows SecurityEvent logs
+                    (with a focus on failed logon events, ID 4625) into Microsoft Sentinel. From there, I built Kusto
+                    Query Language queries, enriched attacker IP addresses with country data using a GeoIP watchlist,
+                    and surfaced the results in an interactive attack map Workbook.
+                </p>
+            </div>
+        </section>
 
-        <!-- Main Project Description -->
-        <p class="leading-relaxed mb-6">
-            This project involved building a full Windows honeypot in Azure, opening it to the internet, and capturing real-world attack traffic. 
-            By intentionally exposing the VM with an “allow all inbound” Network Security Group rule and disabling Windows Firewall inside the host, 
-            global attackers were able to reach the system and generate live authentication attempts.
-        </p>
+        <aside class="card-compact">
+            <div class="card-header">
+                <div class="card-title">What I Built</div>
+                <div class="card-tagline">High level checklist</div>
+            </div>
 
-        <p class="leading-relaxed mb-6">
-            SecurityEvent logs were forwarded using the Azure Monitor Agent (AMA) to a Log Analytics Workspace connected to Microsoft Sentinel. 
-            Inside Sentinel, I created KQL queries to filter failed logons (Event ID 4625), extract attacker IP addresses, and enrich those IPs using 
-            a custom Sentinel Watchlist containing geolocation data.
-        </p>
+            <div class="body-text">
+                <ul class="clean-list">
+                    <li>Configured an Azure subscription and portal environment.</li>
+                    <li>Deployed a Windows 10 honeypot virtual machine with public exposure.</li>
+                    <li>Opened inbound access in the Network Security Group to invite real attacks.</li>
+                    <li>Disabled Windows firewall on the host to fully expose RDP.</li>
+                    <li>Forwarded Windows SecurityEvent logs to a Log Analytics Workspace via the Azure Monitor Agent.</li>
+                    <li>Onboarded the workspace into Microsoft Sentinel as the SIEM layer.</li>
+                    <li>Imported a GeoIP CSV file into Sentinel as a watchlist for location enrichment.</li>
+                    <li>Used KQL (including the ipv4_lookup function) to combine logs with GeoIP data.</li>
+                    <li>Created a Sentinel Workbook that visualizes attacker locations on a world map.</li>
+                </ul>
+            </div>
+        </aside>
+    </div>
 
-        <p class="leading-relaxed mb-6">
-            The culmination of the lab was an interactive world attack map built within a Sentinel Workbook. This map dynamically visualized attacker 
-            locations based on real-time honeypot logs, allowing the identification of high-frequency attacker countries and malicious IP ranges.
-        </p>
+    <!-- Detailed sections -->
 
-        <!-- Architecture / Process Section -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">What I Built</h2>
+    <section class="section">
+        <div class="section-title">Workflow Overview</div>
+        <div class="divider"></div>
 
-        <ul class="list-disc ml-6 space-y-3 text-gray-300">
-            <li>Deployed a Windows 10 honeypot VM inside Azure</li>
-            <li>Configured an unrestricted NSG to intentionally expose the system</li>
-            <li>Disabled host firewall to allow global attack traffic</li>
-            <li>Forwarded logs to a Log Analytics Workspace via AMA</li>
-            <li>Connected workspace to Microsoft Sentinel for SIEM capabilities</li>
-            <li>Ingested and queried SecurityEvent logs using KQL</li>
-            <li>Uploaded a 54k-row geolocation CSV as a Sentinel Watchlist</li>
-            <li>Used <code>ipv4_lookup()</code> to enrich logs with country data</li>
-            <li>Built an interactive attack map dashboard inside Workbooks</li>
-        </ul>
+        <table class="workflow-table">
+            <thead>
+            <tr>
+                <th>Stage</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><strong>Azure Setup</strong></td>
+                <td>
+                    I started by creating an Azure subscription, signing into the Azure portal, and confirming that
+                    I had access to the services required for this lab: Virtual Machines, Network Security Groups,
+                    Log Analytics Workspaces, and Microsoft Sentinel.
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Honeypot Creation and Exposure</strong></td>
+                <td>
+                    I deployed a Windows 10 virtual machine with a public IP address and RDP access.
+                    On the associated Network Security Group, I created an inbound rule allowing any protocol from
+                    any source to any destination. Inside the guest operating system I turned off all Windows firewall
+                    profiles using the <code>wf.msc</code> management console. This produced a fully exposed honeypot
+                    that would quickly draw inbound probing from the internet.
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Local Log Validation</strong></td>
+                <td>
+                    Before forwarding logs to the cloud, I validated that the honeypot was actually producing
+                    meaningful events. I attempted several invalid logons using a fake user such as
+                    <code>employee</code> and inspected the Security log in Event Viewer.
+                    I confirmed that Windows was recording Event ID 4625 entries for failed logons, including
+                    information such as username, source IP, and failure reason.
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Log Forwarding and SIEM Integration</strong></td>
+                <td>
+                    I created a Log Analytics Workspace (LAW), then enabled Microsoft Sentinel using that workspace
+                    as its data store. On the honeypot VM I configured the Windows Security Events via AMA connector,
+                    which installed the Azure Monitor Agent extension and created a Data Collection Rule.
+                    After the connector was active, I queried the SecurityEvent table in both LAW and Sentinel to
+                    confirm that failed logon events from the honeypot were arriving in the cloud.
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Log Enrichment with GeoIP</strong></td>
+                <td>
+                    Raw SecurityEvent data includes source IP addresses but no geographic context. To add this,
+                    I imported a GeoIP CSV file as a Sentinel watchlist named <code>geoip</code>.
+                    Using KQL and the <code>ipv4_lookup</code> function, I joined attacker IP addresses from
+                    Event ID 4625 entries with the watchlist, enriching each event with country and other
+                    location attributes.
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Attack Map Visualization</strong></td>
+                <td>
+                    With enrichment in place, I built a Sentinel Workbook that runs a KQL query against the
+                    SecurityEvent table and plots the results on a world map. The Workbook is configured to
+                    update as new failed logons are ingested, giving a near real time visualization of where
+                    attacks against the honeypot are originating.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
 
-        <!-- KQL Section -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Sample KQL Used</h2>
+    <section class="section">
+        <div class="section-title">Part One: Azure Subscription Setup</div>
+        <div class="divider"></div>
 
-<pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
-let GeoIPDB_FULL = _GetWatchlist("geoip");
-let WindowsEvents = SecurityEvent
+        <div class="body-text">
+            <p>
+                The starting point of this project was preparing a cloud environment. I either used the free
+                Azure tier or a paid subscription and then logged into the portal at
+                <a href="https://portal.azure.com" class="inline-link" target="_blank" rel="noreferrer">portal.azure.com</a>.
+                This step mirrors what junior analysts do when they first gain access to an enterprise tenant.
+            </p>
+            <div class="two-col-list">
+                <div>
+                    <div class="label-pill">Core tasks</div>
+                    <ul class="clean-list">
+                        <li>Created an Azure subscription suitable for virtual machine workloads.</li>
+                        <li>Accessed the Azure portal and confirmed permissions to deploy resources.</li>
+                        <li>Verified the availability of core services: Virtual Machines, NSG, LAW, Sentinel.</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="label-pill">Why this matters</div>
+                    <ul class="clean-list">
+                        <li>Reflects common onboarding tasks for SOC and cloud security roles.</li>
+                        <li>Establishes a safe, isolated place to collect and analyze real attacker activity.</li>
+                        <li>Ensures billing and resource governance are understood up front.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-title">Part Two: Honeypot Virtual Machine and Exposure</div>
+        <div class="divider"></div>
+
+        <div class="body-text">
+            <p>
+                With the subscription ready, I moved on to creating the actual honeypot. The goal here was not to
+                harden the host but to safely expose it in a controlled environment so that real attackers would
+                attempt to access it.
+            </p>
+
+            <div class="two-col-list">
+                <div>
+                    <div class="label-pill">VM deployment</div>
+                    <ul class="clean-list">
+                        <li>Searched for <strong>Virtual Machines</strong> in the Azure portal and created a Windows 10 VM.</li>
+                        <li>Enabled a public IP and left RDP open so that remote logons were possible.</li>
+                        <li>Selected an appropriate machine size based on lab constraints and cost.</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="label-pill">Deliberate exposure</div>
+                    <ul class="clean-list">
+                        <li>Configured the VM Network Security Group with an inbound rule that allowed any source, any port, and any protocol.</li>
+                        <li>Logged into the VM and used <code>wf.msc</code> to turn off all Windows firewall profiles (domain, private, public).</li>
+                        <li>Confirmed that RDP and other ports were reachable from the internet.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <p>
+                This stage created a realistic target that would rapidly begin receiving scans and brute force attempts,
+                replicating common misconfigurations that SOC teams see in real environments.
+            </p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-title">Part Three: Local Log Inspection</div>
+        <div class="divider"></div>
+
+        <div class="body-text">
+            <p>
+                Before building out the full logging pipeline, I validated that Windows was generating the right
+                events on the host.
+            </p>
+
+            <ul class="clean-list">
+                <li>Performed several failed RDP logons using a decoy username such as <code>employee</code>.</li>
+                <li>Opened Event Viewer, navigated to <strong>Windows Logs</strong> then <strong>Security</strong>, and searched for Event ID 4625.</li>
+                <li>Confirmed that each failed logon produced a 4625 entry, including time stamp, user name, and IP address details.</li>
+            </ul>
+
+            <p>
+                This step established a baseline: I knew that as soon as I connected the machine to Azure Monitor and
+                Sentinel, those same 4625 events would be available for analysis.
+            </p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-title">Part Four: Log Forwarding and SIEM Integration</div>
+        <div class="divider"></div>
+
+        <div class="body-text">
+            <p>
+                After confirming local logging, I created the cloud side infrastructure to collect and analyze events.
+            </p>
+
+            <div class="two-col-list">
+                <div>
+                    <div class="label-pill">Central log store</div>
+                    <ul class="clean-list">
+                        <li>Created a Log Analytics Workspace (LAW) that would act as the central log repository.</li>
+                        <li>Enabled Microsoft Sentinel using this workspace as the backing data store.</li>
+                        <li>Used the Security blade in Sentinel to manage connectors and analytics.</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="label-pill">Connector configuration</div>
+                    <ul class="clean-list">
+                        <li>Configured the <strong>Windows Security Events via AMA</strong> connector.</li>
+                        <li>Automatically deployed the Azure Monitor Agent extension to the honeypot VM.</li>
+                        <li>Created a Data Collection Rule to route SecurityEvent logs from the VM into LAW.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <div class="code-label">Sample KQL to verify ingestion</div>
+<pre><code>SecurityEvent
+| where EventID == 4625
+| sort by TimeGenerated desc</code></pre>
+            </div>
+
+            <p>
+                Running this query confirmed that the failed logon events generated on the honeypot were now visible
+                inside both Log Analytics and Sentinel, which is the core of any SIEM pipeline.
+            </p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-title">Part Five: Log Enrichment and GeoIP Watchlist</div>
+        <div class="divider"></div>
+
+        <div class="body-text">
+            <p>
+                Raw security logs are useful, but they become much more powerful when enriched with external
+                intelligence. In this case, I wanted to know where in the world my attackers were located.
+            </p>
+
+            <div class="two-col-list">
+                <div>
+                    <div class="label-pill">Watchlist setup</div>
+                    <ul class="clean-list">
+                        <li>Downloaded the <code>geoip-summarized.csv</code> dataset containing IP ranges and country information.</li>
+                        <li>Opened Microsoft Sentinel and created a watchlist named <code>geoip</code>.</li>
+                        <li>Set the source type to local file and used <code>network</code> as the search key for CIDR blocks.</li>
+                        <li>Verified that the import completed with about fifty four thousand rows.</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="label-pill">KQL enrichment</div>
+                    <ul class="clean-list">
+                        <li>Joined the SecurityEvent table to the GeoIP watchlist using <code>ipv4_lookup</code>.</li>
+                        <li>Enriched each Event ID 4625 entry with country and related GeoIP attributes.</li>
+                        <li>Used these enriched fields later as the basis for map coordinates.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <div class="code-label">GeoIP enrichment query</div>
+<pre><code>let GeoIPDB_FULL = _GetWatchlist("geoip");
+let WindowsEvents =
+    SecurityEvent
     | where EventID == 4625
-    | where IpAddress != "" and isnotempty(IpAddress)
     | order by TimeGenerated desc
     | evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
-WindowsEvents
-</pre>
+WindowsEvents</code></pre>
+            </div>
 
-        <!-- Key Insights -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Key Insights</h2>
+            <p>
+                The result was a data set where every failed logon against the honeypot now included both the attacker
+                IP address and the country it originated from, a critical step for threat hunting and reporting.
+            </p>
+        </div>
+    </section>
 
-        <ul class="list-disc ml-6 space-y-3 text-gray-300">
-            <li>The honeypot received attacks within minutes of deployment.</li>
-            <li>Most attackers originated from VPS providers or botnet-controlled IP ranges.</li>
-            <li>Common username attempts included “admin”, “test”, “guest”, and “administrator”.</li>
-            <li>KQL log enrichment enabled immediate mapping of hostile activity by country.</li>
-            <li>Sentinel’s Workbook capabilities made large-scale attack visualization seamless.</li>
-        </ul>
+    <section class="section">
+        <div class="section-title">Part Six: Sentinel Workbook Attack Map</div>
+        <div class="divider"></div>
 
-        <!-- Skills Section -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Skills Demonstrated</h2>
+        <div class="body-text">
+            <p>
+                With the enriched data in place, I created an attack map that displays global brute force activity
+                against the honeypot VM.
+            </p>
 
-        <p class="text-gray-300">
-            Azure administration, NSG rules, Windows security logs, SIEM analysis, KQL querying,
-            network traffic monitoring, log enrichment, attack visualization.
+            <ul class="clean-list">
+                <li>Opened the Workbooks area in Sentinel and created a new blank Workbook.</li>
+                <li>Removed prepopulated visual elements to start with a clean canvas.</li>
+                <li>Added a <strong>Query</strong> element and switched to the advanced editor.</li>
+                <li>Pasted a JSON configuration that defines the query and the map visualization settings.</li>
+                <li>Bound the latitude and longitude fields to columns produced by the GeoIP enrichment query.</li>
+                <li>Adjusted map style, bubble intensity, and labels for readability.</li>
+            </ul>
+
+            <p>
+                Once saved, the Workbook updates as new SecurityEvent records are ingested. The result is a live
+                map where each bubble represents a cluster of failed logon attempts from a particular region,
+                giving a clear visual of where malicious activity is concentrated.
+            </p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-title">Architecture Overview</div>
+        <div class="divider"></div>
+
+        <table class="architecture-table">
+            <thead>
+            <tr>
+                <th>Component</th>
+                <th>Role</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><strong>Public Internet</strong></td>
+                <td>Origin of real world scanning and brute force attacks that target the exposed RDP service on the honeypot VM.</td>
+            </tr>
+            <tr>
+                <td><strong>Azure Network Security Group (Allow All Inbound)</strong></td>
+                <td>Intentionally misconfigured access control layer that allows any inbound traffic to reach the VM to generate realistic attack telemetry.</td>
+            </tr>
+            <tr>
+                <td><strong>Windows 10 Honeypot VM with Azure Monitor Agent</strong></td>
+                <td>Endpoint that collects Windows SecurityEvent logs, including failed logons (Event ID 4625). The Azure Monitor Agent forwards these logs to the Log Analytics Workspace.</td>
+            </tr>
+            <tr>
+                <td><strong>Log Analytics Workspace (LAW)</strong></td>
+                <td>Central repository for all ingested logs, serving as the data layer for Sentinel. Also stores the GeoIP watchlist data used for enrichment.</td>
+            </tr>
+            <tr>
+                <td><strong>Microsoft Sentinel (SIEM)</strong></td>
+                <td>Performs correlation, KQL queries, analytic rules, and visualizations. Hosts the GeoIP watchlist and the attack map Workbook.</td>
+            </tr>
+            <tr>
+                <td><strong>SOC Analyst</strong></td>
+                <td>Uses Sentinel to investigate failed logons, review global attack patterns on the map, and understand which IPs and regions are producing the highest volume of malicious activity.</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="dataflow-table">
+            <thead>
+            <tr>
+                <th>From</th>
+                <th>To</th>
+                <th>Purpose</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Public Internet</td>
+                <td>Honeypot VM</td>
+                <td>Brute force attempts and general probing provide real attack data for analysis.</td>
+            </tr>
+            <tr>
+                <td>Honeypot VM</td>
+                <td>Log Analytics Workspace</td>
+                <td>Azure Monitor Agent forwards SecurityEvent logs, including Event ID 4625, into LAW.</td>
+            </tr>
+            <tr>
+                <td>Log Analytics Workspace</td>
+                <td>Microsoft Sentinel</td>
+                <td>Sentinel uses LAW as its data source for SIEM style investigations and analytic rules.</td>
+            </tr>
+            <tr>
+                <td>GeoIP Watchlist</td>
+                <td>Sentinel KQL Queries</td>
+                <td>Provides location metadata that is joined with SecurityEvent IP addresses using ipv4_lookup.</td>
+            </tr>
+            <tr>
+                <td>Sentinel Workbooks</td>
+                <td>SOC Analyst</td>
+                <td>Attack map visualizations and log views help the analyst understand patterns and trends.</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="section">
+        <div class="section-title">Sample KQL Used</div>
+        <div class="divider"></div>
+
+        <div class="code-block">
+            <div class="code-label">Enriched failed logons from the honeypot</div>
+<pre><code>let GeoIPDB_FULL = _GetWatchlist("geoip");
+let WindowsEvents = SecurityEvent
+    | where EventID == 4625
+    | sort by TimeGenerated desc
+    | evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
+WindowsEvents</code></pre>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-title">Key Insights</div>
+        <div class="divider"></div>
+
+        <div class="body-text">
+            <ul class="clean-list">
+                <li>The honeypot began receiving inbound attacks shortly after exposure, confirming that misconfigured RDP hosts are rapidly targeted on the internet.</li>
+                <li>Most attacks originated from a small set of countries and hosting providers, which is consistent with known brute force infrastructure.</li>
+                <li>Common username attempts included admin, test, guest, and generic employee style names.</li>
+                <li>Using KQL with GeoIP enrichment made it easy to pivot from a single IP address to a broader view of attacker infrastructure.</li>
+                <li>Sentinel Workbooks provided a simple way to present complex data through an intuitive attack map for stakeholders.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-title">Skills Demonstrated</div>
+        <div class="divider"></div>
+
+        <div class="skills-grid">
+            <span class="skill-chip">Azure administration</span>
+            <span class="skill-chip">Network Security Groups</span>
+            <span class="skill-chip">Windows SecurityEvent logs</span>
+            <span class="skill-chip">Log Analytics Workspace</span>
+            <span class="skill-chip">Microsoft Sentinel SIEM</span>
+            <span class="skill-chip">KQL querying</span>
+            <span class="skill-chip">Log enrichment</span>
+            <span class="skill-chip">Watchlists and ipv4_lookup</span>
+            <span class="skill-chip">Threat visualization</span>
+            <span class="skill-chip">SOC style investigation</span>
+        </div>
+    </section>
+
+    <div class="summary-card">
+        <h3>Summary</h3>
+        <p>
+            This project recreates the daily experience of a Security Operations Center analyst working in a cloud
+            environment. I deployed and exposed a Windows honeypot, configured Azure Monitor and Log Analytics for
+            log collection, integrated Microsoft Sentinel as the SIEM layer, and enriched attacker IP addresses with
+            GeoIP data for additional context.
         </p>
-
-        <!-- Wrap-up -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Summary</h2>
-
-        <p class="leading-relaxed mb-16">
-            This lab replicates the daily workflow of a Security Operations Center (SOC) analyst: configuring log sources, 
-            analyzing authentication failures, enriching data, and visualizing attacker behavior. The hands-on experience 
-            strengthened my understanding of SIEM pipelines, cloud log ingestion, and threat intelligence analysis within Azure.
+        <p>
+            Using KQL, I investigated failed logon events and surfaced the results through a dynamic attack map
+            Workbook. The finished lab demonstrates not only familiarity with Azure security tooling but also an
+            understanding of how real attacks appear in telemetry and how to turn those raw events into visual,
+            actionable intelligence.
         </p>
-
     </div>
+
+    <div class="foot-note">
+        Inspired by community labs that emphasize realistic SOC workflows. Built and customized end to end as part
+        of my Cybersecurity and Data Analytics portfolio.
+    </div>
+
+</div>
 </body>
 </html>
