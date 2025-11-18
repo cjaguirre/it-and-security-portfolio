@@ -1,101 +1,270 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyclistic Rider Behavior Analysis</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cyclistic Rider Behavior Analysis | Christian Aguirre</title>
 
+    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Fonts + Theme -->
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Inconsolata:wght@300;400;700&display=swap');
+        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
+
+        .dark {
+            --bg-default: #050814;
+            --bg-secondary: #111827;
+            --text-base: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --accent-primary: #00ffff;
+            --accent-red: #f97373;
+            --container-bg: #020617;
+            background-color: var(--bg-default);
+            color: var(--text-base);
+        }
+
+        .light {
+            --bg-default: #ffffff;
+            --bg-secondary: #f3f4f6;
+            --text-base: #111827;
+            --text-secondary: #4b5563;
+            --accent-primary: #0891b2;
+            --accent-red: #dc2626;
+            --container-bg: #ffffff;
+            background-color: var(--bg-default);
+            color: var(--text-base);
+        }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0a0f18;
-            color: #d1d5db;
+            font-family: "Inter", sans-serif;
+            transition: background-color 0.5s, color 0.5s;
         }
 
-        h1, h2, h3 {
-            font-family: 'Inconsolata', monospace;
+        .hero-grid-bg {
+            background-color: var(--bg-default);
+            background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, rgba(0,0,0,0) 1px);
+            background-size: 22px 22px;
+            background-position: center;
         }
 
-        .accent {
-            color: #00ffff;
+        .section-title-wrapper {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 1.75rem;
+            font-family: "Inconsolata", monospace;
         }
 
-        .section-line {
-            display: inline-block;
-            width: 120px;
-            border-bottom: 2px solid #374151;
-            margin-left: 10px;
-            transform: translateY(-6px);
+        .section-title-wrapper h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
         }
 
-        .content-container {
-            max-width: 900px;
+        .section-title-wrapper span {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            margin-left: .75rem;
+            border-bottom: 2px solid var(--text-secondary);
+            flex-grow: 1;
+            width: 140px;
+        }
+
+        .pill {
+            border-radius: 999px;
+            padding: .2rem .6rem;
+            border: 1px solid rgba(148,163,184,0.4);
+            font-size: .68rem;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+        }
+
+        .pill-muted {
+            color: var(--text-secondary);
+            background-color: rgba(15,23,42,0.9);
+        }
+
+        .pill-accent {
+            color: var(--accent-primary);
+            background-color: rgba(15,23,42,0.9);
+            border-color: rgba(34,211,238,0.8);
+        }
+
+        .card-shell {
+            border-radius: 1.25rem;
+            border: 1px solid rgba(31,41,55,0.9);
+            background: radial-gradient(circle at top left, rgba(56,189,248,0.14), transparent 60%),
+                        radial-gradient(circle at bottom right, rgba(15,23,42,0.95), #020617);
+            box-shadow: 0 20px 35px rgba(15,23,42,0.9);
+        }
+
+        .card-shell-simple {
+            border-radius: 1.25rem;
+            border: 1px solid rgba(31,41,55,0.9);
+            background-color: rgba(15,23,42,0.98);
+            box-shadow: 0 20px 35px rgba(15,23,42,0.9);
+        }
+
+        pre code {
+            font-family: "Inconsolata", monospace;
+            font-size: 0.85rem;
         }
     </style>
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-bg": "var(--bg-default)",
+                        "secondary-bg": "var(--bg-secondary)",
+                        "container-bg": "var(--container-bg)",
+                        "text-base": "var(--text-base)",
+                        "text-secondary": "var(--text-secondary)",
+                        "accent-cyan": "var(--accent-primary)",
+                        "accent-red": "var(--accent-red)"
+                    }
+                }
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const html = document.documentElement;
+            const saved = localStorage.getItem("theme") || "dark";
+            html.setAttribute("data-theme", saved);
+            html.classList.add(saved);
+        });
+    </script>
 </head>
 
-<body class="px-6 py-12">
+<body class="bg-primary-bg text-text-base transition-colors duration-500">
+<main class="min-h-screen bg-primary-bg">
 
-    <!-- Back Button -->
-    <a href="../index.html#projects" class="text-cyan-400 hover:text-cyan-300 font-mono mb-10 inline-block text-lg">
-        ← Back to Portfolio
-    </a>
+    <!-- HERO -->
+    <section class="hero-grid-bg border-b border-gray-800">
+        <div class="max-w-6xl mx-auto px-4 pt-8 pb-12">
 
-    <div class="content-container mx-auto">
+            <!-- Back -->
+            <a href="../index.html#projects"
+               class="inline-flex items-center text-accent-cyan text-sm mb-6 hover:text-accent-red transition">
+                ← Back to Portfolio
+            </a>
 
-        <!-- Title -->
-        <h1 class="text-4xl font-bold accent mb-2">Cyclistic Rider Behavior Analysis</h1>
-        <div class="section-line mb-8"></div>
+            <!-- Pills -->
+            <div class="flex flex-wrap gap-2 mb-4">
+                <span class="pill pill-accent">Cyclistic Case Study</span>
+                <span class="pill pill-muted">R Programming</span>
+                <span class="pill pill-muted">Tableau</span>
+                <span class="pill pill-muted">Behavioral Analytics</span>
+            </div>
 
-        <!-- Subheader tags -->
-        <p class="text-gray-400 text-sm mb-10 font-mono">
-            R & Tableau • Bike-share usage • Rider segmentation • Marketing insights
-        </p>
+            <!-- Title -->
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3">
+                Cyclistic Rider Behavior Analysis
+            </h1>
 
-        <!-- Overview -->
-        <p class="leading-relaxed mb-6">
-            This project analyzes twelve months of Chicago’s Cyclistic bike-share data to identify key differences 
-            between casual riders and annual members. The goal was to understand how riding habits vary across seasons, 
-            weekdays, time of day, and trip purposes — insights used to support Cyclistic’s marketing strategy to 
-            convert casual riders into members.
-        </p>
+            <p class="max-w-3xl text-sm text-text-secondary leading-relaxed">
+                A twelve-month analysis of Chicago’s Cyclistic bike-share program, comparing how casual riders and annual
+                members differ in seasonality, trip duration, behavior, and peak usage. Insights support marketing
+                strategies focused on converting casual riders into long-term members.
+            </p>
 
-        <p class="leading-relaxed mb-10">
-            Using R for data wrangling and Tableau for visualization, this analysis reveals the behavioral patterns 
-            and peak usage windows that distinguish the two rider groups, enabling clear recommendations for 
-            membership growth and targeted promotions.
-        </p>
+            <!-- Meta Pills -->
+            <div class="flex flex-wrap gap-3 mt-5 text-xs text-text-secondary">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent-cyan"></span>
+                    Rider Segmentation
+                </span>
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent-cyan"></span>
+                    Usage Trends
+                </span>
+            </div>
 
-        <!-- Section: Data & Tools -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Dataset & Tools</h2>
+            <!-- Two Cards -->
+            <div class="mt-10 grid md:grid-cols-2 gap-6">
 
-        <ul class="list-disc ml-6 space-y-3 text-gray-300">
-            <li>12 months of Cyclistic trip data (over 5 million rides)</li>
-            <li>Trip durations, rideable types, start/end times, station locations</li>
-            <li>R for merging, cleaning, and summarizing datasets</li>
-            <li>Tableau for interactive dashboards and visual exploration</li>
-        </ul>
+                <!-- Narrative -->
+                <article class="card-shell p-6">
+                    <h2 class="text-xs font-bold tracking-[0.22em] uppercase mb-3">Project Narrative</h2>
+                    <p class="text-sm text-text-secondary leading-relaxed mb-3">
+                        This project explores how casual riders and Cyclistic annual members behave differently across
+                        seasons and times of day. By combining twelve months of trip data in R and visualizing findings in
+                        Tableau, the analysis highlights clear differences in trip duration, usage patterns, and preferred
+                        ride types.
+                    </p>
+                    <p class="text-sm text-text-secondary leading-relaxed">
+                        These behavioral insights help Cyclistic target marketing campaigns toward high-conversion segments
+                        during their peak activity windows.
+                    </p>
+                </article>
 
-        <!-- Section: Key Findings -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Key Findings</h2>
+                <!-- What I Built -->
+                <article class="card-shell-simple p-6">
+                    <h2 class="text-xs font-bold tracking-[0.22em] uppercase mb-3">What I Built</h2>
+                    <ul class="list-disc list-outside pl-5 space-y-2 text-sm leading-relaxed text-text-base">
+                        <li>Merged and cleaned 12 monthly datasets using R.</li>
+                        <li>Calculated ride duration, weekdays, seasons, and usage segments.</li>
+                        <li>Compared casual vs. member behavior with summary statistics.</li>
+                        <li>Developed Tableau dashboards for seasonal, hourly, and geographic trends.</li>
+                        <li>Delivered insights aligned with Cyclistic’s membership-growth strategy.</li>
+                    </ul>
+                </article>
 
-        <ul class="list-disc ml-6 space-y-3 text-gray-300">
-            <li><strong>Casual riders peak on weekends</strong>, especially afternoons during warmer seasons.</li>
-            <li><strong>Members ride more consistently year-round</strong>, particularly during weekday commute hours.</li>
-            <li><strong>Electric bikes are more popular with casual riders</strong> due to convenience and leisure use.</li>
-            <li><strong>Trip durations for casual riders are significantly longer</strong>, often tied to recreational routes.</li>
-            <li><strong>Members favor shorter, utilitarian trips</strong> aligned with commuting or errands.</li>
-        </ul>
+            </div>
+        </div>
+    </section>
 
-        <!-- Section: Sample R Code -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Sample R Code</h2>
+    <!-- MAIN CONTENT -->
+    <section class="py-12 bg-primary-bg">
+        <div class="max-w-6xl mx-auto px-4">
 
-<pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
-library(tidyverse)
+            <!-- Dataset & Tools -->
+            <div class="section-title-wrapper">
+                <h2>Dataset & Tools</h2>
+                <span></span>
+            </div>
+
+            <p class="text-sm text-text-secondary leading-relaxed mb-4">
+                The analysis used over five million Cyclistic trips across twelve months, focusing on timestamps,
+                rideable types, station locations, and user type (member or casual). R handled cleaning and wrangling,
+                while Tableau powered interactive exploration.
+            </p>
+
+            <ul class="list-disc list-outside pl-5 space-y-1 text-sm text-text-secondary">
+                <li>12 months of Cyclistic trip data (>5 million rides)</li>
+                <li>Trip durations, bike types, start/end timestamps</li>
+                <li>R for combining and transforming datasets</li>
+                <li>Tableau for dashboards and rider segmentation visuals</li>
+            </ul>
+
+            <div class="w-full my-6 bg-secondary-bg p-6 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
+                [ Insert screenshot: Tableau dashboard or dataset preview ]
+            </div>
+
+            <!-- Key Findings -->
+            <div class="section-title-wrapper mt-12">
+                <h2>Key Findings</h2>
+                <span></span>
+            </div>
+
+            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary leading-relaxed">
+                <li>Casual riders peak on weekends, especially during warm afternoon hours.</li>
+                <li>Members show consistent weekday usage tied to commuting routines.</li>
+                <li>Electric bikes are favored by casual riders for recreational trips.</li>
+                <li>Casual riders take longer rides that follow scenic or leisure routes.</li>
+                <li>Members take shorter, utility-driven trips aligned with errands or work.</li>
+            </ul>
+
+            <!-- R Code -->
+            <div class="section-title-wrapper mt-12">
+                <h2>Sample R Code</h2>
+                <span></span>
+            </div>
+
+            <pre class="bg-secondary-bg border border-gray-700 rounded-xl p-4 overflow-x-auto text-[0.85rem]">
+<code>library(tidyverse)
 
 # Load and combine monthly files
 files <- list.files(pattern = "*.csv")
@@ -114,37 +283,65 @@ clean_trips %>%
   summarise(
     avg_duration = mean(ride_length),
     total_rides = n()
-  )
-</pre>
+  )</code>
+            </pre>
 
-        <!-- Section: Insights for Cyclistic -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Strategic Insights for Cyclistic</h2>
+            <div class="w-full my-6 bg-secondary-bg p-6 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
+                [ Insert screenshot: R console output or summary table ]
+            </div>
 
-        <ul class="list-disc ml-6 space-y-3 text-gray-300">
-            <li>Promotions should target <strong>weekend casual riders</strong> with “Ride More This Summer” membership discounts.</li>
-            <li>Introduce <strong>commuter-focused member perks</strong> such as guaranteed bike availability at key stations.</li>
-            <li>Highlight the <strong>cost savings of frequent short rides</strong> to appeal to casual riders with long trip histories.</li>
-            <li>Push app notifications during <strong>peak conversion windows</strong> (warm months, weekend afternoons).</li>
-            <li>Create routes and challenges that reward consistent usage, bridging casual → member behavior.</li>
-        </ul>
+            <!-- Strategic Insights -->
+            <div class="section-title-wrapper mt-12">
+                <h2>Strategic Insights for Cyclistic</h2>
+                <span></span>
+            </div>
 
-        <!-- Section: Skills -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Skills Demonstrated</h2>
+            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary leading-relaxed mb-8">
+                <li>Target weekend casual riders with seasonal membership promotions.</li>
+                <li>Offer commuter perks to reinforce daily usage among members.</li>
+                <li>Highlight cost savings for frequent short-duration trips.</li>
+                <li>Promote app notifications during warm-season peak hours.</li>
+                <li>Create challenges or incentives that reward consistent usage patterns.</li>
+            </ul>
 
-        <p class="text-gray-300">
-            Data cleaning, R wrangling, cohort comparison, Tableau dashboarding, behavioral analytics, strategic insights.
-        </p>
+            <!-- Skills -->
+            <div class="section-title-wrapper mt-12">
+                <h2>Skills Demonstrated</h2>
+                <span></span>
+            </div>
 
-        <!-- Summary -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Summary</h2>
+            <div class="flex flex-wrap gap-2 mb-12">
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">R Programming</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Data Wrangling</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Tableau Dashboards</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Cohort Comparison</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Behavioral Analytics</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Data Cleaning</span>
+            </div>
 
-        <p class="leading-relaxed mb-16">
-            This project demonstrates how large behavioral datasets can shape marketing and retention strategies. 
-            By identifying exactly how and when riders use Cyclistic bikes — and what differentiates casual users 
-            from loyal members — the company can create targeted campaigns aimed at boosting membership and driving 
-            long-term ridership.
-        </p>
+            <!-- Summary -->
+            <div class="bg-secondary-bg border border-accent-cyan rounded-2xl p-6 shadow-lg">
+                <h3 class="text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-accent-cyan">
+                    Summary
+                </h3>
+                <p class="text-sm text-text-secondary leading-relaxed">
+                    This project shows how usage data can shape strategy for membership growth. By understanding when and
+                    how riders use Cyclistic bikes, the company can target its marketing with precision and design incentives
+                    that encourage casual riders to adopt member-like behavior.
+                </p>
+            </div>
 
-    </div>
+            <!-- Back -->
+            <div class="mt-10">
+                <a href="../index.html#projects"
+                   class="inline-flex items-center text-accent-cyan text-sm hover:text-accent-red transition">
+                    ← Back to Portfolio
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+</main>
 </body>
 </html>
