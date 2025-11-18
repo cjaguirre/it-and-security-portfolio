@@ -1,119 +1,266 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landscape Database Revitalization</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Landscape Database Revitalization | Christian Aguirre</title>
 
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Fonts + Theme Vars -->
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Inconsolata:wght@300;400;700&display=swap');
+        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
+
+        .dark {
+            --bg-default: #050814;
+            --bg-secondary: #111827;
+            --text-base: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --accent-primary: #00ffff;
+            --accent-red: #f97373;
+            --container-bg: #020617;
+            background: var(--bg-default);
+            color: var(--text-base);
+        }
+
+        .light {
+            --bg-default: #ffffff;
+            --bg-secondary: #f3f4f6;
+            --text-base: #111827;
+            --text-secondary: #4b5563;
+            --accent-primary: #0891b2;
+            --accent-red: #dc2626;
+            --container-bg: #ffffff;
+        }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0a0f18;
-            color: #d1d5db;
+            font-family: "Inter", sans-serif;
+            transition: background-color .5s, color .5s;
         }
 
-        h1, h2, h3 {
-            font-family: 'Inconsolata', monospace;
+        .hero-grid-bg {
+            background-color: var(--bg-default);
+            background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+            background-size: 22px 22px;
         }
 
-        .accent {
-            color: #00ffff;
+        .section-title-wrapper {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 1.75rem;
+            font-family: "Inconsolata", monospace;
         }
 
-        .section-line {
-            display: inline-block;
-            width: 120px;
-            border-bottom: 2px solid #374151;
-            margin-left: 10px;
-            transform: translateY(-6px);
+        .section-title-wrapper h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
         }
 
-        .content-container {
-            max-width: 900px;
+        .section-title-wrapper span {
+            margin-left: .75rem;
+            border-bottom: 2px solid var(--text-secondary);
+            width: 150px;
+            flex-grow: 1;
+        }
+
+        .pill {
+            border-radius: 9999px;
+            padding: .25rem .6rem;
+            border: 1px solid rgba(148,163,184,0.5);
+            font-size: .68rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .pill-accent {
+            color: var(--accent-primary);
+            border-color: rgba(34,211,238,0.8);
+        }
+
+        .pill-muted {
+            color: var(--text-secondary);
+        }
+
+        .card-shell {
+            border-radius: 1.25rem;
+            border: 1px solid rgba(31,41,55,0.85);
+            background: radial-gradient(circle at top left, rgba(56,189,248,0.16), transparent 60%),
+                        radial-gradient(circle at bottom right, rgba(15,23,42,0.96), #020617);
+            box-shadow: 0 22px 40px rgba(0,0,0,0.55);
+        }
+
+        .card-shell-simple {
+            border-radius: 1.25rem;
+            background: rgba(15,23,42,0.98);
+            border: 1px solid rgba(31,41,55,0.9);
+            box-shadow: 0 22px 40px rgba(0,0,0,0.55);
+        }
+
+        pre code {
+            font-family: "Inconsolata", monospace;
+            font-size: .85rem;
         }
     </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const html = document.documentElement;
+            const saved = localStorage.getItem("theme") || "dark";
+            html.classList.add(saved);
+            html.setAttribute("data-theme", saved);
+        });
+    </script>
 </head>
 
-<body class="px-6 py-12">
+<body class="bg-primary-bg text-text-base">
+<main class="min-h-screen">
 
-    <!-- Back Button -->
-    <a href="../index.html#projects" class="text-cyan-400 hover:text-cyan-300 font-mono mb-10 inline-block text-lg">
-        ← Back to Portfolio
-    </a>
+    <!-- HERO -->
+    <section class="hero-grid-bg border-b border-gray-800">
+        <div class="max-w-6xl mx-auto px-4 pt-8 pb-12">
 
-    <div class="content-container mx-auto">
+            <!-- Back -->
+            <a href="../index.html#projects"
+               class="inline-flex items-center text-accent-cyan text-sm hover:text-accent-red transition mb-6">
+                ← Back to Portfolio
+            </a>
 
-        <!-- Title -->
-        <h1 class="text-4xl font-bold accent mb-2">Landscape Database Revitalization</h1>
-        <div class="section-line mb-8"></div>
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-2 mb-4">
+                <span class="pill pill-accent">Database Project</span>
+                <span class="pill pill-muted">SQL</span>
+                <span class="pill pill-muted">Schema Design</span>
+                <span class="pill pill-muted">Normalization</span>
+            </div>
 
-        <!-- Subheader tags -->
-        <p class="text-gray-400 text-sm mb-10 font-mono">
-            SQL • Database normalization • Schema redesign • Business logic modeling
-        </p>
+            <!-- Title -->
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4">
+                Landscape Database Revitalization
+            </h1>
 
-        <!-- Overview -->
-        <p class="leading-relaxed mb-6">
-            This project transformed a fragmented landscaping services database into a clean, normalized, analytics-ready system. 
-            The original dataset contained inconsistent fields, duplicated entries, and missing relational structure, which made 
-            billing, job tracking, and client reporting slow and unreliable.
-        </p>
+            <p class="max-w-3xl text-sm text-text-secondary leading-relaxed">
+                A complete redesign of a fragmented landscaping services database. The project rebuilt the schema from
+                the ground up — fixing inconsistencies, removing duplicated logic, enforcing relationships, and creating
+                a clean, analytics-ready SQL system for billing, job tracking, and operations reporting.
+            </p>
 
-        <p class="leading-relaxed mb-10">
-            The goal was to rebuild the entire backend: standardize service categories, normalize job and invoice tables, enforce 
-            relational integrity, and redesign the schema to support accurate reporting for operations and management. The result 
-            was a robust SQL database that improves efficiency, accuracy, and maintainability.
-        </p>
+            <!-- Meta Pills -->
+            <div class="flex flex-wrap gap-3 mt-5 text-xs text-text-secondary">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
+                    <span class="w-1.5 h-1.5 bg-accent-cyan rounded-full"></span>
+                    Operational Database
+                </span>
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
+                    <span class="w-1.5 h-1.5 bg-accent-cyan rounded-full"></span>
+                    Schema Refactoring
+                </span>
+            </div>
 
-        <!-- Section: Problems Identified -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Problems Identified in the Original System</h2>
+            <!-- Two top cards -->
+            <div class="grid md:grid-cols-2 gap-6 mt-10">
 
-        <ul class="list-disc ml-6 space-y-3 text-gray-300">
-            <li>Client names stored inconsistently (misspellings, different formats)</li>
-            <li>Service descriptions varied widely and lacked standardization</li>
-            <li>No primary keys or relational constraints</li>
-            <li>Duplicate job entries with mismatched billing amounts</li>
-            <li>Invoices and jobs mixed in the same table (breaking normalization rules)</li>
-            <li>Hard-to-analyze fields like free-text notes and manual timestamps</li>
-        </ul>
+                <!-- Project narrative -->
+                <article class="card-shell p-6">
+                    <h2 class="text-xs tracking-[0.22em] uppercase font-bold mb-3">Project Narrative</h2>
+                    <p class="text-sm text-text-secondary leading-relaxed mb-3">
+                        The original database suffered from inconsistent client names, duplicated job entries, unstandardized
+                        service descriptions, and a lack of relational integrity. This made billing, material tracking, and
+                        reporting both slow and error-prone.
+                    </p>
+                    <p class="text-sm text-text-secondary leading-relaxed">
+                        The system was redesigned using proper normalization principles — ensuring a clean structure,
+                        accurate joins, and consistent data ready for analysis, automation, and future dashboards.
+                    </p>
+                </article>
 
-        <!-- Section: Objectives -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Project Objectives</h2>
+                <!-- What I built -->
+                <article class="card-shell-simple p-6">
+                    <h2 class="text-xs tracking-[0.22em] uppercase font-bold mb-3">What I Built</h2>
+                    <ul class="list-disc list-outside pl-5 text-sm text-text-base leading-relaxed space-y-2">
+                        <li>Fully normalized SQL schema covering clients, services, jobs, invoices, and materials.</li>
+                        <li>Standardized service categories and cleaned inconsistent text fields.</li>
+                        <li>Implemented relational keys and referential constraints.</li>
+                        <li>Identified and eliminated duplicate job records.</li>
+                        <li>Created a scalable structure supporting analytics and future CRM integration.</li>
+                    </ul>
+                </article>
 
-        <ul class="list-disc ml-6 space-y-3 text-gray-300">
-            <li>Redesign the database structure using proper relationships</li>
-            <li>Normalize tables to eliminate redundancy and inconsistencies</li>
-            <li>Create reliable keys to connect clients, jobs, materials, and invoices</li>
-            <li>Improve query performance and reporting clarity</li>
-            <li>Set the foundation for a future dashboard or CRM integration</li>
-        </ul>
+            </div>
 
-        <!-- Section: New Schema -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">New Database Schema</h2>
+        </div>
+    </section>
 
-        <p class="leading-relaxed mb-4">
-            The database was rebuilt using a properly normalized structure consisting of the following tables:
-        </p>
+    <!-- MAIN CONTENT -->
+    <section class="py-12">
+        <div class="max-w-6xl mx-auto px-4">
 
-        <ul class="list-disc ml-6 space-y-3 text-gray-300">
-            <li><strong>Clients</strong> – business names, contact info, location</li>
-            <li><strong>Services</strong> – standardized service categories, pricing models</li>
-            <li><strong>Jobs</strong> – date, service type, assigned crew, materials used</li>
-            <li><strong>Invoices</strong> – linked directly to jobs through foreign keys</li>
-            <li><strong>Materials</strong> – mulch, soil, maintenance materials, etc.</li>
-            <li><strong>JobMaterials</strong> (junction table) – quantity + cost per job</li>
-        </ul>
+            <!-- Problems Identified -->
+            <div class="section-title-wrapper">
+                <h2>Problems Identified</h2>
+                <span></span>
+            </div>
 
-        <!-- Section: Example SQL -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Sample SQL Improvements</h2>
+            <ul class="list-disc list-outside pl-5 text-sm text-text-secondary space-y-2 leading-relaxed">
+                <li>Client names stored in inconsistent formats and with frequent misspellings.</li>
+                <li>Service descriptions lacked standard categories, causing reporting issues.</li>
+                <li>No primary keys or foreign key constraints anywhere in the schema.</li>
+                <li>Duplicate job entries with conflicting billing amounts.</li>
+                <li>Invoices mixed with job data, breaking normalization rules.</li>
+                <li>Free-text notes and manual timestamps impossible to analyze reliably.</li>
+            </ul>
 
-<pre class="bg-[#111827] text-gray-200 p-4 rounded-lg text-sm overflow-x-auto border border-gray-700">
+            <div class="my-6 w-full bg-secondary-bg p-6 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
+                [ Insert screenshot: original schema or messy dataset ]
+            </div>
 
--- Standardizing service categories
+            <!-- Objectives -->
+            <div class="section-title-wrapper mt-12">
+                <h2>Project Objectives</h2>
+                <span></span>
+            </div>
+
+            <ul class="list-disc list-outside pl-5 text-sm text-text-secondary leading-relaxed space-y-2">
+                <li>Normalize all tables to eliminate redundancy and inconsistencies.</li>
+                <li>Create reliable primary/foreign keys connecting clients, jobs, and invoices.</li>
+                <li>Improve SQL query performance through indexing and structure.</li>
+                <li>Enable clean, accurate analytics for operational and financial reporting.</li>
+                <li>Build a scalable backend ready for dashboards and process automation.</li>
+            </ul>
+
+            <!-- New Schema -->
+            <div class="section-title-wrapper mt-12">
+                <h2>New Database Schema</h2>
+                <span></span>
+            </div>
+
+            <p class="text-sm text-text-secondary leading-relaxed mb-3">
+                The redesigned schema follows proper relational modeling, reducing duplication and supporting reliable
+                joins across all operational data.
+            </p>
+
+            <ul class="list-disc list-outside pl-5 text-sm text-text-secondary leading-relaxed space-y-2">
+                <li><strong>Clients</strong> — standardized business names, contacts, locations.</li>
+                <li><strong>Services</strong> — normalized service categories with pricing models.</li>
+                <li><strong>Jobs</strong> — service type, job date, assigned crew, materials used.</li>
+                <li><strong>Invoices</strong> — linked to jobs through strict foreign keys.</li>
+                <li><strong>Materials</strong> — mulch, soil, turf, maintenance materials, etc.</li>
+                <li><strong>JobMaterials</strong> — junction table capturing quantity + cost per job.</li>
+            </ul>
+
+            <div class="my-6 w-full bg-secondary-bg p-6 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
+                [ Insert screenshot: new ERD or schema diagram ]
+            </div>
+
+            <!-- SQL Improvements -->
+            <div class="section-title-wrapper mt-12">
+                <h2>Sample SQL Improvements</h2>
+                <span></span>
+            </div>
+
+            <pre class="bg-secondary-bg border border-gray-700 rounded-xl p-4 overflow-x-auto text-[0.85rem]">
+<code>-- Standardizing service categories
 UPDATE Services
 SET ServiceType = 'Lawn Maintenance'
 WHERE ServiceType IN ('Lawn Care', 'Grass Cut', 'Cutting Grass');
@@ -127,39 +274,64 @@ FOREIGN KEY (ClientID) REFERENCES Clients(ClientID);
 SELECT JobID, ClientID, ServiceID, JobDate, COUNT(*)
 FROM Jobs
 GROUP BY JobID, ClientID, ServiceID, JobDate
-HAVING COUNT(*) > 1;
+HAVING COUNT(*) > 1;</code>
+            </pre>
 
-</pre>
+            <div class="my-6 w-full bg-secondary-bg p-6 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
+                [ Insert screenshot: SQL results or cleaned tables ]
+            </div>
 
-        <!-- Section: Key Outcomes -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Key Outcomes</h2>
+            <!-- Outcomes -->
+            <div class="section-title-wrapper mt-12">
+                <h2>Key Outcomes</h2>
+                <span></span>
+            </div>
 
-        <ul class="list-disc ml-6 space-y-3 text-gray-300">
-            <li>100% reduction in duplicate job entries</li>
-            <li>Clean, standardized service catalog enabling accurate billing</li>
-            <li>Faster SQL queries due to proper indexing and structure</li>
-            <li>Improved ability to track expenses and materials per job</li>
-            <li>Better reporting accuracy for monthly and seasonal performance</li>
-            <li>A fully scalable structure ready for dashboards or automation</li>
-        </ul>
+            <ul class="list-disc list-outside pl-5 text-sm text-text-secondary leading-relaxed space-y-2 mb-10">
+                <li>Eliminated all duplicate job records.</li>
+                <li>Standardized service catalog enabled accurate invoice generation.</li>
+                <li>Faster queries thanks to indexing and normalized structure.</li>
+                <li>Reliable tracking of materials and job-level expenses.</li>
+                <li>Accurate reporting across clients, crews, and service lines.</li>
+                <li>Scalable backend ready for BI dashboards and automation.</li>
+            </ul>
 
-        <!-- Section: Skills -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Skills Demonstrated</h2>
+            <!-- Skills -->
+            <div class="section-title-wrapper">
+                <h2>Skills Demonstrated</h2>
+                <span></span>
+            </div>
 
-        <p class="text-gray-300 mb-6">
-            SQL normalization, schema design, relational modeling, data cleaning, ETL logic, indexing & constraints, 
-            operational reporting, database refactoring.
-        </p>
+            <div class="flex flex-wrap gap-2 mb-12">
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">SQL Normalization</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Schema Design</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Relational Modeling</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Indexing & Constraints</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Data Cleaning</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">ETL Logic</span>
+            </div>
 
-        <!-- Summary -->
-        <h2 class="text-2xl font-semibold accent mt-12 mb-4">Summary</h2>
+            <!-- Summary -->
+            <div class="bg-secondary-bg border border-accent-cyan rounded-2xl p-6 shadow-lg">
+                <h3 class="text-sm font-semibold tracking-[0.18em] uppercase text-accent-cyan mb-3">Summary</h3>
+                <p class="text-sm text-text-secondary leading-relaxed">
+                    This project rebuilt an outdated landscape services database into a clean, normalized SQL system.
+                    With standardized fields, relational keys, and a future-ready schema, the redesigned backend now
+                    supports accurate billing, better job tracking, and reliable operational reporting.
+                </p>
+            </div>
 
-        <p class="leading-relaxed mb-16">
-            This project rebuilt a broken operational database into a fully structured, reliable SQL system. By fixing data 
-            consistency issues, implementing relational models, and standardizing key fields, the new database lays the 
-            groundwork for analytics, better customer tracking, and long-term operational improvement.
-        </p>
+            <!-- Back bottom -->
+            <div class="mt-10">
+                <a href="../index.html#projects"
+                   class="inline-flex items-center text-accent-cyan text-sm hover:text-accent-red transition">
+                    ← Back to Portfolio
+                </a>
+            </div>
 
-    </div>
+        </div>
+    </section>
+
+</main>
 </body>
 </html>
