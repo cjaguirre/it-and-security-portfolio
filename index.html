@@ -11,7 +11,6 @@
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
 
-        /* ---------- THEME VARIABLES ---------- */
         .dark {
             --bg-default: #050814;
             --bg-secondary: #111827;
@@ -41,14 +40,6 @@
             transition: background-color 0.5s, color 0.5s;
         }
 
-        /* ---------- SUBTLE GRID BACKGROUND (APPLIED TO EVERYTHING EXCEPT NAVBAR) ---------- */
-        .global-grid-bg {
-            background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, rgba(0,0,0,0) 1px);
-            background-size: 20px 20px;
-            background-position: center;
-        }
-
-        /* ---------- SECTION TITLES ---------- */
         .section-title-wrapper {
             display: inline-flex;
             align-items: center;
@@ -71,10 +62,30 @@
             flex-grow: 1;
             width: 150px;
         }
+
+        .progress-bar-container {
+            height: 4px;
+            background-color: var(--bg-secondary);
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--accent-primary);
+            transition: width 0.8s ease-out;
+        }
+        
+        .hero-grid-bg {
+                background-color: var(--bg-default);
+                background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, rgba(0,0,0,0) 1px);
+                background-size: 20px 20px;
+                background-position: center;
+        }
+       
     </style>
 
     <script>
-        /* ---------- TAILWIND CONFIG ---------- */
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -86,20 +97,22 @@
                         "text-base": "var(--text-base)",
                         "text-secondary": "var(--text-secondary)",
                         "accent-cyan": "var(--accent-primary)",
-                        "accent-red": "var(--accent-red)"
+                        "accent-red": "var(--accent-red)",
+                        "accent-orange": "#f97316"
                     }
                 }
             }
         };
 
-        /* ---------- PAGE INIT ---------- */
         document.addEventListener("DOMContentLoaded", () => {
             setInitialTheme();
             initSmoothScroll();
             initProjectFilters();
+            const toggle = document.getElementById("theme-toggle");
+            if (toggle) toggle.addEventListener("click", toggleTheme);
+            animateProgressBars();
         });
 
-        /* ---------- THEME SAVING ---------- */
         function setInitialTheme() {
             const html = document.documentElement;
             const savedTheme = localStorage.getItem("theme") || "dark";
@@ -109,19 +122,18 @@
 
         function toggleTheme() {
             const html = document.documentElement;
-            const current = html.getAttribute("data-theme");
-            const next = current === "dark" ? "light" : "dark";
-            html.classList.remove(current);
-            html.classList.add(next);
-            html.setAttribute("data-theme", next);
-            localStorage.setItem("theme", next);
+            const currentTheme = html.getAttribute("data-theme");
+            const newTheme = currentTheme === "dark" ? "light" : "dark";
+            html.classList.remove(currentTheme);
+            html.classList.add(newTheme);
+            html.setAttribute("data-theme", newTheme);
+            localStorage.setItem("theme", newTheme);
         }
 
-        /* ---------- SMOOTH SCROLL ---------- */
         function initSmoothScroll() {
-            document.querySelectorAll('a[href^="#"]').forEach(a => {
-                a.addEventListener("click", e => {
-                    const target = document.querySelector(a.getAttribute("href"));
+            document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+                anchor.addEventListener("click", function (e) {
+                    const target = document.querySelector(this.getAttribute("href"));
                     if (!target) return;
                     e.preventDefault();
                     target.scrollIntoView({ behavior: "smooth" });
@@ -129,210 +141,818 @@
             });
         }
 
-        /* ---------- PROJECT FILTERS ---------- */
+        function animateProgressBars() {
+            document.querySelectorAll(".progress-bar").forEach((bar) => {
+                const percentage = bar.dataset.percentage;
+                bar.style.width = percentage;
+            });
+        }
+
         function initProjectFilters() {
-            const filterBtns = document.querySelectorAll(".filter-btn");
-            const cards = document.querySelectorAll(".project-card");
+            const filterButtons = document.querySelectorAll(".filter-btn");
+            const projectCards = document.querySelectorAll(".project-card");
 
-            filterBtns.forEach(btn => {
-                btn.addEventListener("click", () => {
-                    const filter = btn.dataset.filter;
+            projectCards.forEach((card) => card.classList.remove("hidden"));
 
-                    filterBtns.forEach(b => {
-                        b.classList.remove("bg-accent-red", "text-white");
-                        b.classList.add("bg-secondary-bg", "text-text-secondary");
+            filterButtons.forEach((button) => {
+                button.addEventListener("click", () => {
+                    const filter = button.dataset.filter;
+
+                    filterButtons.forEach((btn) => {
+                        btn.classList.remove("bg-accent-red", "text-white");
+                        btn.classList.add("bg-secondary-bg", "text-text-secondary");
                     });
 
-                    btn.classList.add("bg-accent-red", "text-white");
+                    button.classList.add("bg-accent-red", "text-white");
+                    button.classList.remove("bg-secondary-bg", "text-text-secondary");
 
-                    cards.forEach(card => {
-                        const tags = card.dataset.tags;
-                        card.classList.toggle("hidden", filter !== "all" && !tags.includes(filter));
+                    projectCards.forEach((card) => {
+                        const tags = card.dataset.tags || "";
+                        if (filter === "all" || tags.includes(filter)) {
+                            card.classList.remove("hidden");
+                        } else {
+                            card.classList.add("hidden");
+                        }
                     });
                 });
             });
         }
     </script>
-
 </head>
 
-<!-- APPLY GRID TO EVERYTHING EXCEPT NAVBAR -->
-<body class="global-grid-bg transition-colors duration-500">
+<body class="transition-colors duration-500">
 
-<!-- NAVBAR (no grid here) -->
-<nav class="sticky top-0 z-50 bg-secondary-bg shadow-lg border-b border-gray-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <a href="#hero" class="text-xl font-mono text-accent-cyan hover:text-accent-red transition">
-                &lt;Christian Aguirre /&gt;
-            </a>
+    <!-- NAVBAR -->
+    <nav class="sticky top-0 z-50 bg-secondary-bg shadow-lg border-b border-gray-800 transition-colors duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#hero" class="text-xl font-mono text-accent-cyan hover:text-accent-red transition duration-300">
+                        &lt;Christian Aguirre /&gt;
+                    </a>
+                </div>
 
-            <div class="flex items-center space-x-4 text-sm">
-                <a href="#about" class="hover:text-accent-cyan transition">About</a>
-                <a href="#skills" class="hover:text-accent-cyan transition">Skills</a>
-                <a href="#projects" class="hover:text-accent-cyan transition">Projects</a>
-                <a href="#experience" class="hover:text-accent-cyan transition">Experience</a>
-                <a href="#education" class="hover:text-accent-cyan transition">Education</a>
-                <a href="#contact" class="hover:text-accent-cyan transition">Contact</a>
+                <div class="flex items-center space-x-4 text-sm">
+                    <a href="#about" class="font-medium hover:text-accent-cyan transition duration-300">About</a>
+                    <a href="#skills" class="font-medium hover:text-accent-cyan transition duration-300">Skills</a>
+                    <a href="#projects" class="font-medium hover:text-accent-cyan transition duration-300">Projects</a>
+                    <a href="#experience" class="font-medium hover:text-accent-cyan transition duration-300">Experience</a>
+                    <a href="#education" class="font-medium hover:text-accent-cyan transition duration-300">Education</a>
+                    <a href="#contact" class="font-medium hover:text-accent-cyan transition duration-300">Contact</a>
 
-                <button id="theme-toggle" onclick="toggleTheme()"
-                    class="p-2 rounded-full hover:bg-primary-bg transition text-text-secondary">
-                    🌓
-                </button>
+                    <a href="https://github.com/cjaguirre/Cybersecurity-and-Data-Analytics-Portfolio"
+                       target="_blank"
+                       class="hidden sm:inline-flex items-center border border-accent-cyan text-accent-cyan px-3 py-1 rounded-md text-xs hover:bg-accent-cyan hover:text-primary-bg transition">
+                        GitHub Repo
+                    </a>
+
+                    <button id="theme-toggle"
+                            class="p-2 rounded-full hover:bg-primary-bg transition-colors duration-300 text-text-secondary"
+                            aria-label="Toggle theme">
+                        <span>🌓</span>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-<!-- EVERYTHING BELOW THIS LINE HAS GRID BACKGROUND -->
-<!-- HERO -->
-<section id="hero" class="pt-20 pb-24 min-h-screen flex items-center text-center">
-    <div class="max-w-5xl mx-auto px-4">
-        <p class="font-mono text-lg text-text-secondary">Hello, my name is</p>
-        <h1 class="text-6xl sm:text-7xl font-extrabold text-text-base mb-3">
-            Christian Aguirre
-        </h1>
-        <h2 class="text-3xl sm:text-4xl text-text-secondary mb-6">
-            Cybersecurity and Data Analytics Professional
-        </h2>
+    <!-- HERO -->
+   <section id="hero"
+         class="hero-grid-bg pt-20 pb-12 sm:pt-24 md:pt-32 md:pb-24 min-h-screen flex items-center transition-colors duration-500 text-center">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p class="hero-text-secondary font-mono text-lg mx-auto">Hello, my name is</p>
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-3 text-text-base">
+                Christian Aguirre
+            </h1>
+            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-semibold mb-6 text-text-secondary">
+                Cybersecurity and Data Analytics Professional
+            </h2>
+            <p class="text-lg max-w-3xl mx-auto mb-10 text-text-secondary leading-relaxed">
+                Facility Support Manager at the Defense Health Headquarters with a background in Management Information
+                Systems, cloud security labs, and hands-on data analytics. I combine Security+ knowledge, Azure SOC
+                projects, and SQL or Python analysis to detect threats, interpret logs, and turn operational data into
+                clear decisions.
+            </p>
 
-        <p class="max-w-3xl mx-auto text-text-secondary mb-10">
-            Cybersecurity and MIS professional combining Security+ knowledge, cloud experience, 
-            and analytical skills to investigate issues, optimize processes, and support secure operations.
-        </p>
-
-        <div class="flex justify-center gap-4 flex-wrap">
-            <a href="#contact"
-               class="border-2 border-accent-cyan text-accent-cyan py-3 px-8 rounded-lg hover:bg-accent-cyan hover:text-primary-bg transition">
-                Get in touch
-            </a>
-            <a href="https://www.linkedin.com/in/christianaguirre/" target="_blank"
-               class="border-2 border-accent-cyan text-accent-cyan py-3 px-8 rounded-lg hover:bg-accent-cyan hover:text-primary-bg transition">
-                LinkedIn
-            </a>
-            <a href="https://github.com/cjaguirre" target="_blank"
-               class="border-2 border-accent-cyan text-accent-cyan py-3 px-8 rounded-lg hover:bg-accent-cyan hover:text-primary-bg transition">
-                GitHub
-            </a>
+            <div class="flex justify-center flex-wrap gap-4">
+                <a href="#contact"
+                   class="inline-block border-2 border-accent-cyan text-accent-cyan font-semibold py-3 px-8 rounded-lg hover:bg-accent-cyan hover:text-primary-bg transition duration-300 transform hover:scale-[1.02]">
+                    Get in touch
+                </a>
+                <a href="https://www.linkedin.com/in/christianaguirre/"
+                   target="_blank"
+                   class="inline-flex items-center border-2 border-accent-cyan text-accent-cyan font-semibold py-3 px-8 rounded-lg hover:bg-accent-cyan hover:text-primary-bg transition duration-300 transform hover:scale-[1.02]">
+                    LinkedIn
+                </a>
+                <a href="https://github.com/cjaguirre"
+                   target="_blank"
+                   class="inline-flex items-center border-2 border-accent-cyan text-accent-cyan font-semibold py-3 px-8 rounded-lg hover:bg-accent-cyan hover:text-primary-bg transition duration-300 transform hover:scale-[1.02]">
+                    GitHub
+                </a>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- ABOUT -->
-<section id="about" class="py-24 border-t border-gray-800">
-    <div class="max-w-7xl mx-auto px-4">
+    <!-- ABOUT -->
+    <section id="about" class="py-16 sm:py-20 md:py-24 bg-primary-bg border-t border-gray-800 transition-colors duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="section-title-wrapper mx-auto">
+                <h2 class="font-mono">01. About me</h2>
+                <span></span>
+            </div>
 
+            <div class="grid lg:grid-cols-3 gap-12 items-start">
+                <div class="lg:col-span-2 space-y-4 text-text-secondary text-base leading-relaxed">
+                    <p>I am an MIS graduate and Facility Support Manager at GBA Associates LP supporting the Defense
+                        Health Headquarters campus. My day to day work lives where operations, technology, and people
+                        intersect: coordinating vendors, tracking work orders, and keeping a high profile federal
+                        facility running safely and efficiently.</p>
+
+                    <p>Alongside facilities, I have built a portfolio in data analytics and cybersecurity. I work with
+                        SQL, Python, Tableau, and Excel to clean datasets, analyze KPIs, and design dashboards that show
+                        trends clearly. On the security side, I hold CompTIA Security+ and have completed Azure SOC
+                        style labs that involve building a honeypot, forwarding logs into Microsoft Sentinel, and using
+                        KQL to investigate attacks and enrich events with geo IP data.</p>
+
+                    <p>My goal is to move into roles that blend these strengths such as Security Operations Center
+                        analyst, security or IT analyst, or data analyst supporting security and operations teams.
+                        I like environments where I can investigate alerts, trace incidents, and still think in terms of
+                        process improvement and metrics.</p>
+
+                    <div class="flex flex-wrap gap-2 pt-4">
+                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Azure and Microsoft Sentinel</span>
+                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Security+ (SYO-701)</span>
+                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">SQL and relational databases</span>
+                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Python for analysis</span>
+                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Tableau dashboards</span>
+                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Operations and vendor coordination</span>
+                    </div>
+                </div>
+
+                <div class="flex justify-center lg:justify-end mt-0 pt-0">
+                    <img src="assets/images/professional photo of myself.jpg"
+                         alt="Christian Aguirre"
+                         class="rounded-xl shadow-lg object-cover"
+                         style="width: 420px; height: auto; object-position: center;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SKILLS -->
+<!-- SKILLS -->
+<section id="skills" class="py-16 sm:py-20 md:py-24 bg-secondary-bg border-t border-gray-700 transition-colors duration-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Section Title -->
         <div class="section-title-wrapper mx-auto">
-            <h2>01. About me</h2>
+            <h2 class="font-mono">02. Skills</h2>
             <span></span>
         </div>
 
-        <div class="grid lg:grid-cols-3 gap-12">
-            <div class="lg:col-span-2 space-y-4 text-text-secondary leading-relaxed">
+        <!-- ======================== -->
+        <!-- TOP SKILL PANELS (3 COL) -->
+        <!-- ======================== -->
+        <div class="grid md:grid-cols-3 gap-8 mb-16">
 
-                <p>I am an MIS graduate and technology professional with experience supporting large operational environments
-                    while building strong skills in cybersecurity and data analytics.</p>
+            <!-- Security & Operations -->
+            <div class="p-6 rounded-xl bg-container-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
+                <h3 class="text-lg font-bold text-text-base mb-4 flex items-center">
+                    <span class="text-xl mr-2 text-accent-cyan">🛡️</span>
+                    Security and operations
+                </h3>
 
-                <p>I’ve developed hands-on projects using SQL, Python, Tableau, and Excel — plus Security+ and Azure SOC labs
-                   involving honeypots, Sentinel log ingestion, and KQL analysis.</p>
+                <!-- Row -->
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>Security monitoring & log review</span><span>85%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="85%"></div>
+                    </div>
+                </div>
 
-                <p>I’m working toward roles in cybersecurity analysis, IT systems support, or data analytics for security/ops teams.</p>
+                <!-- Row -->
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>Azure & Microsoft Sentinel</span><span>80%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="80%"></div>
+                    </div>
+                </div>
 
-                <div class="flex flex-wrap gap-2 pt-4">
-                    <span class="skill-pill">Azure & Microsoft Sentinel</span>
-                    <span class="skill-pill">CompTIA Security+</span>
-                    <span class="skill-pill">SQL & KQL</span>
-                    <span class="skill-pill">Python for Data</span>
-                    <span class="skill-pill">Tableau Dashboards</span>
-                    <span class="skill-pill">Data Cleaning</span>
-                    <span class="skill-pill">Operations & Vendor Coordination</span>
+                <!-- Row -->
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>Incident documentation & triage</span><span>85%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="85%"></div>
+                    </div>
+                </div>
+
+                <!-- Row -->
+                <div>
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>Facility & vendor coordination</span><span>90%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="90%"></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="flex justify-center">
-                <img src="assets/images/professional photo of myself.jpg"
-                     class="rounded-xl shadow-lg object-cover" style="width: 420px;">
+            <!-- Data & Analytics -->
+            <div class="p-6 rounded-xl bg-container-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
+                <h3 class="text-lg font-bold text-text-base mb-4 flex items-center">
+                    <span class="text-xl mr-2 text-accent-cyan">📊</span>
+                    Data and analytics
+                </h3>
+
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>SQL (joins, CTE, cleaning)</span><span>90%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="90%"></div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>Python (pandas, analysis)</span><span>85%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="85%"></div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>Tableau dashboards</span><span>85%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="85%"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>Excel modeling & KPI design</span><span>90%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="90%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tools, Scripting, KQL -->
+            <div class="p-6 rounded-xl bg-container-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
+                <h3 class="text-lg font-bold text-text-base mb-4 flex items-center">
+                    <span class="text-xl mr-2 text-accent-cyan">💻</span>
+                    Tools and scripting
+                </h3>
+
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>PowerShell for administration</span><span>75%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="75%"></div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>KQL for log queries</span><span>75%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="75%"></div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>GitHub version control</span><span>80%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="80%"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between mb-1 text-sm text-text-secondary">
+                        <span>Documentation & SOP writing</span><span>90%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-percentage="90%"></div>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- ======================== -->
+        <!-- LOWER TILE SECTIONS     -->
+        <!-- ======================== -->
+
+        <div class="grid md:grid-cols-3 gap-8">
+
+            <!-- Protocols and Concepts -->
+            <div class="p-6 rounded-xl bg-container-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
+                <h3 class="text-lg font-bold text-text-base mb-4 flex items-center">
+                    <span class="text-xl mr-2 text-accent-cyan">⚙️</span>
+                    Protocols and concepts
+                </h3>
+                <div class="grid grid-cols-2 gap-4 text-sm text-text-secondary">
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> SPF</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> DKIM</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> DMARC</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> SIEM pipelines</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> EDR</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> IAM & least privilege</div>
+                </div>
+            </div>
+
+            <!-- Certifications -->
+            <div class="p-6 rounded-xl bg-container-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
+                <h3 class="text-lg font-bold text-text-base mb-4 flex items-center">
+                    <span class="text-xl mr-2 text-accent-cyan">🏅</span>
+                    Certifications
+                </h3>
+                <div class="space-y-3 text-sm text-text-secondary">
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> CompTIA Security+ (SYO-701), 2025</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> Google Advanced Data Analytics, 2025</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> Google Data Analytics, 2024</div>
+                </div>
+            </div>
+
+            <!-- Extra Skills -->
+            <div class="p-6 rounded-xl bg-container-bg border border-gray-700 hover:border-accent-cyan transition duration-300">
+                <h3 class="text-lg font-bold text-text-base mb-4 flex items-center">
+                    <span class="text-xl mr-2 text-accent-cyan">➕</span>
+                    Extra skills
+                </h3>
+                <div class="space-y-3 text-sm text-text-secondary">
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> Vendor & contractor management</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> Technical & non-technical communication</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> Process improvement & SOP updates</div>
+                    <div class="flex items-center"><span class="text-accent-cyan mr-2">✓</span> Bilingual (English & Spanish)</div>
+                </div>
+            </div>
+
+        </div>
     </div>
-</section>
+</section>   
+    
+    <!-- PROJECTS -->
+    <section id="projects" class="py-16 sm:py-20 md:py-24 bg-primary-bg border-t border-gray-800 transition-colors duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="section-title-wrapper mx-auto">
+                <h2 class="font-mono">03. Selected projects</h2>
+                <span></span>
+            </div>
 
-<!-- SKILLS -->
-<section id="skills" class="py-24 border-t border-gray-800">
-    <div class="max-w-7xl mx-auto px-4">
+            <!-- filters -->
+            <div class="flex flex-wrap gap-3 mb-8 text-sm">
+                <button class="filter-btn bg-accent-red text-white px-4 py-1 rounded-full" data-filter="all">All</button>
+                <button class="filter-btn bg-secondary-bg text-text-secondary px-4 py-1 rounded-full" data-filter="soc">SOC and security</button>
+                <button class="filter-btn bg-secondary-bg text-text-secondary px-4 py-1 rounded-full" data-filter="ml">ML and modeling</button>
+                <button class="filter-btn bg-secondary-bg text-text-secondary px-4 py-1 rounded-full" data-filter="analytics">Analytics</button>
+                <button class="filter-btn bg-secondary-bg text-text-secondary px-4 py-1 rounded-full" data-filter="sql">SQL and databases</button>
+                <button class="filter-btn bg-secondary-bg text-text-secondary px-4 py-1 rounded-full" data-filter="or">Optimization</button>
+            </div>
 
-        <div class="section-title-wrapper mx-auto">
-            <h2>02. Skills</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+
+                <!-- Azure SOC Honeypot -->
+                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="soc analytics">
+                    <h3 class="text-xl font-semibold text-text-base mb-1">Azure SOC Honeypot and Attack Map Lab</h3>
+                    <p class="text-xs font-mono text-accent-cyan mb-3">SOC lab · Azure VM · Microsoft Sentinel · KQL</p>
+                    <p class="text-sm text-text-secondary mb-3">
+                        Built a Windows honeypot in Azure, captured global attack traffic, forwarded logs, enriched attacker IPs, and visualized hostile activity on an interactive world map.
+                    </p>
+                    <p class="text-xs text-text-secondary">Skills: Azure admin, NSG rules, Windows logs, KQL, SIEM thinking.</p>
+
+                    <a href="projects/azure-soc-honeypot.html"
+                       class="mt-4 inline-flex items-center text-accent-cyan font-mono text-sm hover:text-accent-red transition">
+                        ➜ Learn more
+                    </a>
+                </article>
+
+                <!-- Telco churn -->
+                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="ml analytics">
+                    <h3 class="text-xl font-semibold text-text-base mb-1">Telco Customer Churn Analysis</h3>
+                    <p class="text-xs font-mono text-accent-cyan mb-3">Python · ML · SHAP</p>
+                    <p class="text-sm text-text-secondary mb-3">
+                        Cleaned telco data, engineered features, built ML models, evaluated performance, and explained churn behavior using SHAP values.
+                    </p>
+                    <p class="text-xs text-text-secondary">Skills: pandas, modeling, SHAP</p>
+
+                    <a href="projects/telco-churn.html"
+                       class="mt-4 inline-flex items-center text-accent-cyan font-mono text-sm hover:text-accent-red transition">
+                        ➜ Learn more
+                    </a>
+                </article>
+
+                <!-- KPI Analysis -->
+                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="analytics">
+                    <h3 class="text-xl font-semibold text-text-base mb-1">Operational performance: manufacturing KPI analysis</h3>
+                    <p class="text-xs font-mono text-accent-cyan mb-3">Excel · KPI dashboards</p>
+                    <p class="text-sm text-text-secondary mb-3">
+                        Created a complete KPI story that highlighted manufacturing performance using Excel dashboards.
+                    </p>
+                    <p class="text-xs text-text-secondary">Skills: KPI design, Excel modeling</p>
+
+                    <a href="projects/kpi-analysis.html"
+                       class="mt-4 inline-flex items-center text-accent-cyan font-mono text-sm hover:text-accent-red transition">
+                        ➜ Learn more
+                    </a>
+                </article>
+
+                <!-- Cyclistic -->
+                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="analytics">
+                    <h3 class="text-xl font-semibold text-text-base mb-1">Cyclistic rider behavior analysis</h3>
+                    <p class="text-xs font-mono text-accent-cyan mb-3">R · Tableau</p>
+                    <p class="text-sm text-text-secondary mb-3">
+                        Analyzed Chicago bike data, compared rider types, and built Tableau dashboards to recommend marketing strategy.
+                    </p>
+                    <p class="text-xs text-text-secondary">Skills: cohort analysis, visualization</p>
+
+                    <a href="projects/cyclist-analysis.html"
+                       class="mt-4 inline-flex items-center text-accent-cyan font-mono text-sm hover:text-accent-red transition">
+                        ➜ Learn more
+                    </a>
+                </article>
+
+                <!-- Bellabeat -->
+                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="analytics">
+                    <h3 class="text-xl font-semibold text-text-base mb-1">Bellabeat smart device usage analysis</h3>
+                    <p class="text-xs font-mono text-accent-cyan mb-3">Fitbit data · story insights</p>
+                    <p class="text-sm text-text-secondary mb-3">
+                        Explored Fitbit data to understand device engagement and make product recommendations.
+                    </p>
+                    <p class="text-xs text-text-secondary">Skills: exploratory analysis, storytelling</p>
+
+                    <a href="projects/bellabeat-device-analysis.html"
+                       class="mt-4 inline-flex items-center text-accent-cyan font-mono text-sm hover:text-accent-red transition">
+                        ➜ Learn more
+                    </a>
+                </article>
+
+                <!-- Landscape DB -->
+                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="sql">
+                    <h3 class="text-xl font-semibold text-text-base mb-1">Landscape database revitalization</h3>
+                    <p class="text-xs font-mono text-accent-cyan mb-3">SQL Server · ETL</p>
+                    <p class="text-sm text-text-secondary mb-3">
+                        Rebuilt a fragmented schema into an analytics ready database with clean relationships and SQL views.
+                    </p>
+                    <p class="text-xs text-text-secondary">Skills: relational design, optimization</p>
+
+                    <a href="projects/landscape-database-revitalization.html"
+                       class="mt-4 inline-flex items-center text-accent-cyan font-mono text-sm hover:text-accent-red transition">
+                        ➜ Learn more
+                    </a>
+                </article>
+
+                <!-- World Layoffs -->
+                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="sql analytics">
+                    <h3 class="text-xl font-semibold text-text-base mb-1">World layoffs SQL data cleaning</h3>
+                    <p class="text-xs font-mono text-accent-cyan mb-3">SQL pipeline · standardization</p>
+                    <p class="text-sm text-text-secondary mb-3">
+                        Built a SQL pipeline to clean global layoffs data, fix inconsistencies, and build rolling metrics.
+                    </p>
+                    <p class="text-xs text-text-secondary">Skills: window functions, data quality</p>
+
+                    <a href="projects/world-layoffs-sql-cleaning.html"
+                       class="mt-4 inline-flex items-center text-accent-cyan font-mono text-sm hover:text-accent-red transition">
+                        ➜ Learn more
+                    </a>
+                </article>
+
+                <!-- Optimization Models -->
+                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="or analytics">
+                    <h3 class="text-xl font-semibold text-text-base mb-1">Operations techniques: optimization and decision models</h3>
+                    <p class="text-xs font-mono text-accent-cyan mb-3">Excel · modeling</p>
+                    <p class="text-sm text-text-secondary mb-3">
+                        Applied OR techniques including Monte Carlo simulation, linear programs, payoff tables, and decision trees.
+                    </p>
+                    <p class="text-xs text-text-secondary">Skills: optimization, simulation</p>
+
+                    <a href="projects/optimization-decision-models.html"
+                       class="mt-4 inline-flex items-center text-accent-cyan font-mono text-sm hover:text-accent-red transition">
+                        ➜ Learn more
+                    </a>
+                </article>
+            </div>
+
+            <div class="mt-8 text-sm text-text-secondary">
+                Full project write ups and code live in this repository:
+                <a href="https://github.com/cjaguirre/Cybersecurity-and-Data-Analytics-Portfolio" target="_blank" class="text-accent-cyan hover:text-accent-red">
+                    Cybersecurity and Data Analytics Portfolio on GitHub
+                </a>.
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+   <section id="experience" class="py-20 bg-secondary-bg border-t border-gray-700 transition-colors duration-500">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Section Title -->
+        <div class="section-title-wrapper mx-auto mb-12">
+            <h2 class="font-mono">04. Experience</h2>
             <span></span>
         </div>
 
-        <!-- your existing skills content remains unchanged… -->
-        <!-- (omitted here only to save tokens, but I will re-include if you want full expansion) -->
+        <div class="relative">
 
-    </div>
-</section>
+            <!-- Timeline Vertical Line -->
+            <div class="absolute left-1/2 transform -translate-x-1/2 h-full border-l-2 border-accent-cyan opacity-40"></div>
 
-<!-- PROJECTS -->
-<section id="projects" class="py-24 border-t border-gray-800">
-    <div class="max-w-7xl mx-auto px-4">
+            <!-- Job 1 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 relative">
+                <!-- Left side -->
+                <div class="md:text-right pr-8">
+                    <h3 class="text-xl font-bold text-text-base">Facility Support Manager</h3>
+                    <p class="text-accent-cyan mb-2">
+                        GBA Associates LP · Defense Health Headquarters
+                    </p>
+                    <p class="text-text-secondary leading-relaxed">
+                        Oversee daily facility operations, coordinate vendors and contractors, manage work orders,
+                        and support building maintenance and infrastructure projects across a federal campus.
+                    </p>
+                </div>
 
-        <div class="section-title-wrapper mx-auto">
-            <h2>03. Selected projects</h2>
-            <span></span>
+                <!-- Right side -->
+                <div class="flex flex-col justify-center pl-8">
+                    <p class="text-sm font-mono text-text-secondary">
+                        March 2025 – Present
+                    </p>
+                    <p class="text-sm text-text-secondary">
+                        Falls Church, Virginia · on site
+                    </p>
+                </div>
+
+                <!-- Timeline dot -->
+                <div class="absolute left-1/2 top-1 transform -translate-x-1/2 w-4 h-4 bg-accent-cyan rounded-full shadow-lg"></div>
+            </div>
+
+            <!-- Job 2 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 relative">
+                <!-- Left side -->
+                <div class="md:text-right pr-8">
+                    <h3 class="text-xl font-bold text-text-base">Pro Sales Associate</h3>
+                    <p class="text-accent-cyan mb-2">
+                        Lowe’s Companies, Inc.
+                    </p>
+                    <p class="text-text-secondary leading-relaxed">
+                        Supported contractors and business customers with quotes, orders, and material coordination.
+                        Helped plan deliveries and resolve issues on tight timelines.
+                    </p>
+                </div>
+
+                <!-- Right side -->
+                <div class="flex flex-col justify-center pl-8">
+                    <p class="text-sm font-mono text-text-secondary">
+                        January 2022 – March 2025
+                    </p>
+                    <p class="text-sm text-text-secondary">
+                        Fairfax, Virginia
+                    </p>
+                </div>
+
+                <!-- Timeline dot -->
+                <div class="absolute left-1/2 top-1 transform -translate-x-1/2 w-4 h-4 bg-accent-cyan rounded-full shadow-lg"></div>
+            </div>
+
+            <!-- Job 3 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 relative">
+                <!-- Left side -->
+                <div class="md:text-right pr-8">
+                    <h3 class="text-xl font-bold text-text-base">Building Materials and Lumber Associate</h3>
+                    <p class="text-accent-cyan mb-2">
+                        Lowe’s Companies, Inc.
+                    </p>
+                    <p class="text-text-secondary leading-relaxed">
+                        Assisted customers with product selection, maintained inventory, and ensured a safe and organized
+                        sales floor.
+                    </p>
+                </div>
+
+                <!-- Right side -->
+                <div class="flex flex-col justify-center pl-8">
+                    <p class="text-sm font-mono text-text-secondary">
+                        January 2021 – December 2022
+                    </p>
+                    <p class="text-sm text-text-secondary">
+                        Fairfax, Virginia
+                    </p>
+                </div>
+
+                <!-- Timeline dot -->
+                <div class="absolute left-1/2 top-1 transform -translate-x-1/2 w-4 h-4 bg-accent-cyan rounded-full shadow-lg"></div>
+            </div>
+
         </div>
-
-        <!-- your full projects content stays exactly the same … -->
-
     </div>
 </section>
 
-<!-- EXPERIENCE -->
-<section id="experience" class="py-24 border-t border-gray-800">
-    <div class="max-w-6xl mx-auto px-4">
 
-        <div class="section-title-wrapper mx-auto">
-            <h2>04. Experience</h2>
-            <span></span>
-        </div>
+        <!-- EDUCATION -->
+    <section id="education" class="pt-24 pb-32">
+    <div class="max-w-5xl mx-auto px-6">
 
-        <!-- original experience timeline preserved… -->
-
-    </div>
-</section>
-
-<!-- EDUCATION -->
-<section id="education" class="py-24 border-t border-gray-800">
-    <div class="max-w-6xl mx-auto px-4">
-
+        <!-- Title -->
         <div class="section-title-wrapper mb-12">
             <h2>05. Education</h2>
             <span></span>
         </div>
 
-        <!-- your full education content kept… -->
+        <!-- Degrees -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
 
-    </div>
-</section>
+            <!-- BS MIS -->
+            <div class="bg-[var(--bg-secondary)] p-6 rounded-xl border border-gray-800 hover:border-[var(--accent-primary)] transition">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="text-[var(--accent-primary)] text-3xl">🎓</div>
+                    <h3 class="text-xl font-semibold">Bachelor of Science, Management Information Systems</h3>
+                </div>
 
-<!-- CONTACT -->
-<section id="contact" class="py-24 border-t border-gray-800">
-    <div class="max-w-5xl mx-auto px-4">
+                <p class="text-[var(--accent-primary)] mb-2">
+                    George Mason University
+                </p>
 
-        <div class="section-title-wrapper mx-auto">
-            <h2>06. Contact</h2>
-            <span></span>
+                <p class="text-sm text-[var(--text-secondary)] mb-3">
+                    Completed December 2023
+                </p>
+
+                <p class="text-[var(--text-secondary)] leading-relaxed">
+                    Coursework included predictive modeling, relational database design, systems analysis,
+                    and operations management.
+                </p>
+            </div>
+
+            <!-- AS Business Admin -->
+            <div class="bg-[var(--bg-secondary)] p-6 rounded-xl border border-gray-800 hover:border-[var(--accent-primary)] transition">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="text-[var(--accent-primary)] text-3xl">🎓</div>
+                    <h3 class="text-xl font-semibold">Associate of Science, Business Administration</h3>
+                </div>
+
+                <p class="text-[var(--accent-primary)] mb-2">
+                    Northern Virginia Community College
+                </p>
+
+                <p class="text-sm text-[var(--text-secondary)] mb-3">
+                    Completed 2021
+                </p>
+
+                <p class="text-[var(--text-secondary)] leading-relaxed">
+                    Focused on accounting, economics, business communication, and foundational MIS / analytics work.
+                </p>
+            </div>
+
         </div>
 
-        <!-- your full contact form unchanged… -->
+        <!-- Licenses & Certifications -->
+        <h3 class="text-2xl font-semibold text-[var(--text-base)] mb-6">
+            Licenses & Certifications
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <!-- Security+ -->
+            <div class="bg-[var(--bg-secondary)] p-6 rounded-xl border border-gray-800 hover:border-[var(--accent-primary)] transition">
+                <h4 class="text-lg font-semibold mb-1">CompTIA Security+ ce</h4>
+                <p class="text-sm text-[var(--text-secondary)] mb-2">Issued November 2025</p>
+                <p class="text-xs text-[var(--text-secondary)]">
+                    Credential ID: 9abb1113 0a29 44ed bb61 6a859edb1369
+                </p>
+            </div>
+
+            <!-- Google Advanced DA -->
+            <div class="bg-[var(--bg-secondary)] p-6 rounded-xl border border-gray-800 hover:border-[var(--accent-primary)] transition">
+                <h4 class="text-lg font-semibold mb-1">Google Advanced Data Analytics</h4>
+                <p class="text-sm text-[var(--text-secondary)] mb-2">Issued September 2025</p>
+                <p class="text-xs text-[var(--text-secondary)]">
+                    Credential ID: GLMK7O7YEGR0
+                </p>
+            </div>
+
+            <!-- Google Data Analytics -->
+            <div class="bg-[var(--bg-secondary)] p-6 rounded-xl border border-gray-800 hover:border-[var(--accent-primary)] transition">
+                <h4 class="text-lg font-semibold mb-1">Google Data Analytics Professional Certificate</h4>
+                <p class="text-sm text-[var(--text-secondary)] mb-2">Issued 2024</p>
+                <p class="text-xs text-[var(--text-secondary)]">
+                    Coursera & Google
+                </p>
+            </div>
+
+        </div>
 
     </div>
 </section>
 
-<!-- FOOTER -->
-<footer class="py-6 border-t border-gray-800 text-center text-text-secondary">
-    <p class="font-mono text-accent-cyan">&lt;Christian Aguirre /&gt;</p>
-    <p class="text-xs">&copy; 2025 Christian Aguirre. All rights reserved.</p>
-</footer>
 
+    <!-- CONTACT -->
+    <section id="contact" class="py-16 sm:py-20 md:py-24 bg-secondary-bg border-t border-gray-700 transition-colors duration-500">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="section-title-wrapper mx-auto">
+                <h2 class="font-mono">06. Contact</h2>
+                <span></span>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-text-base">Let’s connect</h3>
+                    <p class="text-text-secondary leading-relaxed">
+                        I am open to roles in security operations, IT or systems analysis, and data analytics where I
+                        can investigate issues, improve processes, and support teams with clear reporting. Reach out if
+                        you would like to talk through an opportunity or just compare notes on labs and projects.
+                    </p>
+
+                    <div class="space-y-3 pt-4 text-sm">
+                        <div class="flex items-center text-accent-cyan">
+                            <span class="mr-3">📧</span>
+                            <p class="text-text-secondary">cj.aguirr3@gmail.com</p>
+                        </div>
+
+                        <div class="flex items-center text-accent-cyan">
+                            <span class="mr-3">📍</span>
+                            <p class="text-text-secondary">Fairfax, Virginia, United States</p>
+                        </div>
+
+                        <div class="flex items-center text-accent-cyan">
+                            <span class="mr-3">🔗</span>
+                            <a href="https://www.linkedin.com/in/christianaguirre/"
+                               target="_blank"
+                               class="text-text-secondary hover:text-accent-cyan">
+                                linkedin.com/in/christianaguirre
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-primary-bg p-8 rounded-xl shadow-lg border border-gray-700">
+                    <form name="contact" data-netlify="true" netlify-honeypot="bot-field">
+                        <input type="hidden" name="form-name" value="contact" />
+                        <p class="hidden">
+                            <label>Do not fill this out: <input name="bot-field" /></label>
+                        </p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                            <input type="text" name="name" placeholder="Name"
+                                   class="w-full p-3 rounded-lg bg-secondary-bg border border-gray-600 focus:border-accent-cyan focus:ring-accent-cyan text-text-base placeholder-text-secondary"
+                                   required />
+
+                            <input type="email" name="email" placeholder="Email"
+                                   class="w-full p-3 rounded-lg bg-secondary-bg border border-gray-600 focus:border-accent-cyan focus:ring-accent-cyan text-text-base placeholder-text-secondary"
+                                   required />
+                        </div>
+
+                        <div class="mb-4">
+                            <input type="text" name="subject" placeholder="Subject"
+                                   class="w-full p-3 rounded-lg bg-secondary-bg border border-gray-600 focus:border-accent-cyan focus:ring-accent-cyan text-text-base placeholder-text-secondary"
+                                   required />
+                        </div>
+
+                        <div class="mb-6">
+                            <textarea name="message" rows="5" placeholder="Your message"
+                                      class="w-full p-3 rounded-lg bg-secondary-bg border border-gray-600 focus:border-accent-cyan focus:ring-accent-cyan text-text-base placeholder-text-secondary"
+                                      required></textarea>
+                        </div>
+
+                        <div class="text-right">
+                            <button type="submit"
+                                    class="inline-flex items-center bg-accent-cyan text-primary-bg font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-opacity-90 transition duration-300">
+                                Send message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-primary-bg text-gray-500 text-center py-4 text-sm border-t border-gray-800 transition-colors duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="text-left">
+                <p class="text-xl font-mono text-accent-cyan mb-1">&lt;Christian Aguirre /&gt;</p>
+                <p class="text-xs text-text-secondary">
+                    Building secure and efficient environments by combining facility operations, data analytics, and
+                    cybersecurity.
+                </p>
+                <p class="mt-2 text-xs">&copy; 2025 Christian Aguirre. All rights reserved.</p>
+            </div>
+
+            <div class="flex items-center space-x-4 text-xs">
+                <a href="#hero" class="text-accent-cyan hover:text-accent-red transition duration-300 flex items-center">
+                    Back to top <span class="ml-1">⬆️</span>
+                </a>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
