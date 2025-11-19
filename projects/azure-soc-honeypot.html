@@ -348,8 +348,13 @@
                             <li>Performed a few failed logon attempts using a decoy username (for example, <code>employee</code>) to generate baseline events.</li>
                         </ul>
 
-                        <div class="w-full my-5 bg-secondary-bg p-5 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
-                            [ Insert screenshot: NSG inbound rule showing “Allow Any Any” ]
+                        <div class="w-full my-5 bg-secondary-bg p-5 rounded-xl border border-gray-700 text-center">
+                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_NSG-Rule-Allow-All-Inbound.png"
+                                 alt="NSG Rule Allow All Inbound"
+                                 class="mx-auto rounded-lg border border-gray-800 shadow-lg max-w-[700px] w-full object-contain" />
+                            <p class="mt-2 text-xs italic text-text-secondary">
+                                NSG Rule: Allow All Inbound
+                            </p>
                         </div>
                     </section>
 
@@ -369,8 +374,13 @@
                             <li>Validated ingestion by querying the <code>SecurityEvent</code> table for failed logons (Event ID 4625).</li>
                         </ul>
 
-                        <div class="w-full my-5 bg-secondary-bg p-5 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
-                            [ Insert screenshot: Sentinel connector showing Windows Security Events via AMA as “Connected” ]
+                        <div class="w-full my-5 bg-secondary-bg p-5 rounded-xl border border-gray-700 text-center">
+                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_AMA-as-Connected.png"
+                                 alt="AMA Connector Showing Connected"
+                                 class="mx-auto rounded-lg border border-gray-800 shadow-lg max-w-[700px] w-full object-contain" />
+                            <p class="mt-2 text-xs italic text-text-secondary">
+                                AMA Connector: Windows Security Events (Connected)
+                            </p>
                         </div>
                     </section>
 
@@ -389,8 +399,13 @@
                             <li>Used KQL with <code>ipv4_lookup</code> to enrich 4625 events with GeoIP attributes.</li>
                         </ul>
 
-                        <div class="w-full my-5 bg-secondary-bg p-5 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
-                            [ Insert screenshot: Sentinel watchlist showing imported GeoIP rows ]
+                        <div class="w-full my-5 bg-secondary-bg p-5 rounded-xl border border-gray-700 text-center">
+                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Sentinel-Watchlist-GeoIP-Rows.png"
+                                 alt="Sentinel Watchlist GeoIP Rows"
+                                 class="mx-auto rounded-lg border border-gray-800 shadow-lg max-w-[700px] w-full object-contain" />
+                            <p class="mt-2 text-xs italic text-text-secondary">
+                                Sentinel Watchlist: GeoIP Rows
+                            </p>
                         </div>
                     </section>
 
@@ -410,8 +425,13 @@
                             <li>Configured filters and time range controls to explore attack patterns over different windows.</li>
                         </ul>
 
-                        <div class="w-full my-5 bg-secondary-bg p-5 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
-                            [ Insert screenshot: Sentinel Workbook world map showing attacker locations ]
+                        <div class="w-full my-5 bg-secondary-bg p-5 rounded-xl border border-gray-700 text-center">
+                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Clean-Attack-Map-Visualization.png"
+                                 alt="Attack Map Visualization"
+                                 class="mx-auto rounded-lg border border-gray-800 shadow-lg max-w-[700px] w-full object-contain" />
+                            <p class="mt-2 text-xs italic text-text-secondary">
+                                Sentinel Workbook: Global Attack Map Visualization
+                            </p>
                         </div>
                     </section>
                 </div>
