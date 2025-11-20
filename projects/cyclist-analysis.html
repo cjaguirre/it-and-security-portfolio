@@ -85,37 +85,27 @@
             box-shadow: 0 16px 28px rgba(0,0,0,0.45);
         }
 
-        pre code {
-            font-family: "Inconsolata", monospace;
-            font-size: 0.82rem;
+        .img-box {
+            background-color: var(--bg-secondary);
+            border: 1px solid rgba(148,163,184,0.2);
+            border-radius: 0.8rem;
+            padding: 1rem;
+            margin-top: 1rem;
         }
+
+        .img-box img {
+            width: 100%;
+            border-radius: 0.6rem;
+        }
+
+        .img-caption {
+            margin-top: 0.6rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
     </style>
-
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary-bg": "var(--bg-default)",
-                        "secondary-bg": "var(--bg-secondary)",
-                        "container-bg": "var(--container-bg)",
-                        "text-base": "var(--text-base)",
-                        "text-secondary": "var(--text-secondary)",
-                        "accent-cyan": "var(--accent-primary)",
-                        "accent-red": "var(--accent-red)"
-                    }
-                }
-            }
-        };
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const html = document.documentElement;
-            const saved = localStorage.getItem("theme") || "dark";
-            html.classList.add(saved);
-            html.setAttribute("data-theme", saved);
-        });
-    </script>
 </head>
 
 <body class="bg-primary-bg text-text-base">
@@ -123,15 +113,12 @@
 
     <!-- HERO -->
     <section class="hero-grid-bg border-b border-gray-800">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12 md:pb-16">
+        <div class="max-w-6xl mx-auto px-4 pt-8 pb-12">
 
-            <!-- Back -->
-            <a href="../index.html#projects"
-               class="inline-flex items-center text-accent-cyan text-xs sm:text-sm mb-6 hover:text-accent-red">
+            <a href="../index.html#projects" class="inline-flex items-center text-accent-primary text-xs mb-6 hover:text-accent-red">
                 ← Back to Portfolio
             </a>
 
-            <!-- Pills -->
             <div class="flex flex-wrap gap-2 mb-5">
                 <span class="pill pill-accent">Cyclistic Case Study</span>
                 <span class="pill pill-muted">R Programming</span>
@@ -139,70 +126,30 @@
                 <span class="pill pill-muted">Behavior Analytics</span>
             </div>
 
-            <!-- Title -->
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
-                Cyclistic Rider Behavior Analysis
-            </h1>
+            <h1 class="text-4xl sm:text-5xl font-extrabold mb-3">Cyclistic Rider Behavior Analysis</h1>
 
-            <!-- Subtitle -->
             <p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed">
                 A year-long analysis of Chicago’s bike-share program comparing casual riders and annual members.
-                Findings support the Google Data Analytics Capstone objective: informing strategies to convert
-                high-usage casual riders into long-term members.
+                Supports the Google Data Analytics Capstone objective: converting high-usage casual riders into long-term members.
             </p>
 
-            <!-- Meta Pills -->
-            <div class="flex flex-wrap gap-3 mt-5 text-[0.7rem] sm:text-xs text-text-secondary">
-                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
-                    <span class="w-1.5 h-1.5 bg-accent-cyan rounded-full"></span>
+            <div class="flex flex-wrap gap-3 mt-5 text-[0.7rem] text-text-secondary">
+                <span class="px-3 py-1 rounded-full bg-secondary-bg border border-gray-700 inline-flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 bg-accent-primary rounded-full"></span>
                     Rider Segmentation
                 </span>
-                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
-                    <span class="w-1.5 h-1.5 bg-accent-cyan rounded-full"></span>
+                <span class="px-3 py-1 rounded-full bg-secondary-bg border border-gray-700 inline-flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 bg-accent-primary rounded-full"></span>
                     Usage Trends
                 </span>
             </div>
 
-            <!-- Narrative + What I Built -->
-            <div class="mt-10 grid md:grid-cols-2 gap-6">
-                
-                <!-- Project Narrative -->
-                <article class="card-section">
-                    <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2">
-                        Project Narrative
-                    </p>
-                    <p class="text-sm sm:text-[0.95rem] leading-relaxed mb-2 text-text-base">
-                        This analysis covers 12 months of Cyclistic bike-share data to understand differences between
-                        casual riders and annual members. Using R for wrangling and Tableau for visualization, I 
-                        uncovered seasonal trends, weekday vs weekend behavior patterns, and ride duration differences.
-                    </p>
-                    <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base">
-                        Insights directly support marketing strategies focused on converting high-usage casual riders 
-                        into long-term members, following the full Google Data Analytics Capstone workflow.
-                    </p>
-                </article>
-
-                <!-- What I Built -->
-                <article class="card-section">
-                    <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2">
-                        What I Built
-                    </p>
-                    <ul class="list-disc list-outside pl-5 space-y-1.5 text-sm sm:text-[0.95rem] text-text-base">
-                        <li>Merged and cleaned 12 months of trip data in R using tidyverse.</li>
-                        <li>Derived ride_length and day_of_week variables for segmentation.</li>
-                        <li>Summarized statistical differences between rider types.</li>
-                        <li>Created Tableau dashboards showing seasonal and hourly trends.</li>
-                        <li>Generated clear recommendations to increase membership conversion.</li>
-                    </ul>
-                </article>
-
-            </div>
         </div>
     </section>
 
     <!-- WORKFLOW OVERVIEW -->
-    <section class="py-10 md:py-12 border-b border-gray-800 bg-primary-bg">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section class="py-10 border-b border-gray-800">
+        <div class="max-w-6xl mx-auto px-4">
 
             <div class="section-title-wrapper mb-6">
                 <h2>Workflow Overview</h2>
@@ -211,291 +158,183 @@
 
             <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
                 <div class="card-section text-xs">
-                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 1</p>
-                    <p class="text-sm font-semibold mb-1">Import</p>
-                    <p class="text-[0.8rem] text-text-secondary">
-                        12 CSVs loaded and standardized with <code>bind_rows()</code>.
-                    </p>
+                    <p class="font-mono text-accent-primary uppercase mb-1">Step 1</p>
+                    <p class="text-sm font-semibold">Import</p>
+                    <p class="text-[0.8rem] text-text-secondary">Loaded and merged 12 CSVs using <code>bind_rows()</code>.</p>
                 </div>
+
                 <div class="card-section text-xs">
-                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 2</p>
-                    <p class="text-sm font-semibold mb-1">Cleaning</p>
-                    <p class="text-[0.8rem] text-text-secondary">
-                        Missing data fixed, duplicates removed, invalid rides filtered.
-                    </p>
+                    <p class="font-mono text-accent-primary uppercase mb-1">Step 2</p>
+                    <p class="text-sm font-semibold">Cleaning</p>
+                    <p class="text-[0.8rem] text-text-secondary">Removed invalid rides, fixed timestamps.</p>
                 </div>
+
                 <div class="card-section text-xs">
-                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 3</p>
-                    <p class="text-sm font-semibold mb-1">Feature Engineering</p>
-                    <p class="text-[0.8rem] text-text-secondary">
-                        Derived ride length + weekday variables with lubridate.
-                    </p>
+                    <p class="font-mono text-accent-primary uppercase mb-1">Step 3</p>
+                    <p class="text-sm font-semibold">Feature Engineering</p>
+                    <p class="text-[0.8rem] text-text-secondary">Created ride length + weekday fields.</p>
                 </div>
+
                 <div class="card-section text-xs">
-                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 4</p>
-                    <p class="text-sm font-semibold mb-1">Analysis</p>
-                    <p class="text-[0.8rem] text-text-secondary">
-                        Compared behavior patterns between rider types.
-                    </p>
+                    <p class="font-mono text-accent-primary uppercase mb-1">Step 4</p>
+                    <p class="text-sm font-semibold">Analysis</p>
+                    <p class="text-[0.8rem] text-text-secondary">Compared patterns between rider types.</p>
                 </div>
+
                 <div class="card-section text-xs">
-                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 5</p>
-                    <p class="text-sm font-semibold mb-1">Visualization</p>
-                    <p class="text-[0.8rem] text-text-secondary">
-                        Built Tableau dashboards showing trends and KPIs.
-                    </p>
+                    <p class="font-mono text-accent-primary uppercase mb-1">Step 5</p>
+                    <p class="text-sm font-semibold">Visualization</p>
+                    <p class="text-[0.8rem] text-text-secondary">Built Tableau dashboards.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- LAB BREAKDOWN -->
-    <section class="py-10 md:py-14 bg-primary-bg">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section class="py-12">
+        <div class="max-w-6xl mx-auto px-4 space-y-10">
 
-            <div class="section-title-wrapper mb-6">
-                <h2>Lab Breakdown</h2>
-                <span></span>
-            </div>
-
-            <div class="space-y-8 text-sm sm:text-[0.95rem] leading-relaxed text-text-secondary">
-
-                <!-- 1 -->
-                <section class="card-section">
-                    <h3 class="text-base font-semibold text-text-base mb-1">
-                        1. Data Import & Standardization
-                    </h3>
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Imported 12 monthly CSVs using tidyverse & janitor
-                    </p>
-                    <p class="mb-4">
-                        Monthly ride datasets were downloaded, unzipped, and imported using <code>read_csv()</code>.
-                        Column names were standardized across all files to prevent schema conflicts.
-                    </p>
-                    <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <p class="text-xs italic text-text-secondary">
-                            [ Screenshot placeholder: RStudio data import view ]
-                        </p>
-                    </div>
-                </section>
-
-                <!-- 2 -->
-                <section class="card-section">
-                    <h3 class="text-base font-semibold text-text-base mb-1">
-                        2. Data Cleaning & Feature Engineering
-                    </h3>
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        ride_length & day_of_week derived using lubridate
-                    </p>
-                    <p class="mb-4">
-                        Invalid rides, missing timestamps, or negative durations were removed. Additional fields 
-                        including <code>ride_length</code> and <code>day_of_week</code> were engineered to support 
-                        segmentation and trend analysis.
-                    </p>
-                    <ul class="list-disc list-outside pl-5 space-y-1 mb-4">
-                        <li>Timestamp conversion using <code>ymd_hms()</code>.</li>
-                        <li>Calculated ride length in minutes.</li>
-                        <li>Derived weekday labels to compare patterns.</li>
-                        <li>Filtered incomplete or invalid trip records.</li>
-                    </ul>
-                    <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <p class="text-xs italic text-text-secondary">
-                            [ Screenshot placeholder: Cleaning transformations ]
-                        </p>
-                    </div>
-                </section>
-
-                <!-- 3 -->
-                <section class="card-section">
-                    <h3 class="text-base font-semibold text-text-base mb-1">
-                        3. Summary Statistics & Trend Analysis
-                    </h3>
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Behavioral differences between casual & member riders
-                    </p>
-                    <ul class="list-disc list-outside pl-5 space-y-2 mb-4">
-                        <li>Casual riders take longer average rides.</li>
-                        <li>Members ride more consistently on weekdays.</li>
-                        <li>Casual usage spikes during summer and weekends.</li>
-                        <li>Electric bikes are more popular among casual users.</li>
-                    </ul>
-                    <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <p class="text-xs italic text-text-secondary">
-                            [ Screenshot placeholder: Summary statistics table ]
-                        </p>
-                    </div>
-                </section>
-
-                <!-- 4 -->
-                <section class="card-section">
-                    <h3 class="text-base font-semibold text-text-base mb-1">
-                        4. Visualization & Communication
-                    </h3>
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        ggplot2 charts & Tableau dashboards
-                    </p>
-                    <ul class="list-disc list-outside pl-5 space-y-2 mb-4">
-                        <li>Bar charts: ride volume by weekday.</li>
-                        <li>Line charts: average duration by month.</li>
-                        <li>Heatmaps: hourly ride intensity.</li>
-                        <li>Tableau dashboards combining key metrics.</li>
-                    </ul>
-                    <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <p class="text-xs italic text-text-secondary">
-                            [ Screenshot placeholder: Tableau dashboard preview ]
-                        </p>
-                    </div>
-                </section>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- SAMPLE R CODE -->
-    <section class="py-10 md:py-12 border-t border-gray-800 bg-primary-bg">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
-            <div class="section-title-wrapper mb-6">
-                <h2>Sample R Code</h2>
-                <span></span>
-            </div>
-
-            <div class="card-section">
-                <pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto">
-<code>library(tidyverse)
-library(lubridate)
-
-# Load and combine monthly files
-files <- list.files(pattern = "*.csv")
-all_trips <- files %>% 
-  map_df(read_csv) %>% 
-  clean_names()
-
-# Clean durations and remove bad data
-all_trips <- all_trips %>% 
-  mutate(
-    started_at = ymd_hms(started_at),
-    ended_at = ymd_hms(ended_at),
-    ride_length = as.numeric(difftime(ended_at, started_at, units = "mins")),
-    day_of_week = wday(started_at, label = TRUE)
-  ) %>% 
-  filter(ride_length > 1, !is.na(member_casual))
-
-# Summary comparison
-summary_stats <- all_trips %>% 
-  group_by(member_casual) %>% 
-  summarise(
-    average_ride_length = mean(ride_length),
-    ride_count = n()
-  )
-</code>
-                </pre>
-
-                <p class="text-xs italic mt-3 text-center text-text-secondary">
-                    [ Screenshot placeholder: R summary output ]
+            <!-- 1. IMPORT -->
+            <section class="card-section">
+                <h3 class="text-base font-semibold mb-1">1. Data Import & Standardization</h3>
+                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                    Merge 12 months of trip data using tidyverse
                 </p>
-            </div>
+
+                <p>Files were combined using read_csv(), map_df(), and clean_names() to standardize schema.</p>
+
+                <div class="img-box">
+                    <img src="../assets/images/CY1_DataImport_Merge.png" alt="">
+                    <p class="img-caption">RStudio — Merging 12 monthly trip datasets</p>
+                </div>
+            </section>
+
+            <!-- 2. CLEANING -->
+            <section class="card-section">
+                <h3 class="text-base font-semibold mb-1">2. Data Cleaning & Feature Engineering</h3>
+                <p class="text-xs uppercase text-text-secondary mb-3">Cleaning timestamps • Derived fields</p>
+
+                <p>Negative durations, missing timestamps, and invalid rows were removed. Ride length and day_of_week were generated.</p>
+
+                <div class="img-box">
+                    <img src="../assets/images/CY1_DataCleaning_Transformation.png" alt="">
+                    <p class="img-caption">Cleaning transformations: timestamp conversion + ride_length + weekday extraction</p>
+                </div>
+            </section>
+
+            <!-- 3. SUMMARY STATS -->
+            <section class="card-section">
+                <h3 class="text-base font-semibold mb-1">3. Summary Statistics & Trend Analysis</h3>
+                <p class="text-xs uppercase text-text-secondary mb-3">Summary differences between rider types</p>
+
+                <ul class="list-disc pl-5 text-text-secondary space-y-1">
+                    <li>Casual riders take longer rides</li>
+                    <li>Members ride more consistently on weekdays</li>
+                    <li>Casual use increases heavily in summer</li>
+                </ul>
+
+                <div class="img-box">
+                    <img src="../assets/images/CY1_Summary_Statistics.png" alt="">
+                    <p class="img-caption">R summary statistics comparing casual vs member riders</p>
+                </div>
+            </section>
+
+            <!-- 4. VISUALIZATION -->
+            <section class="card-section">
+                <h3 class="text-base font-semibold mb-1">4. Visualization & Communication</h3>
+                <p class="text-xs uppercase text-text-secondary mb-3">Tableau dashboards + ggplot charts</p>
+
+                <div class="img-box">
+                    <img src="../assets/images/CY1_Tableau_Dashboard.png" alt="">
+                    <p class="img-caption">Final Tableau Dashboard — ride volume, heatmap, and duration analysis</p>
+                </div>
+
+                <div class="img-box">
+                    <img src="../assets/images/CY1_Rides_By_DayOfWeek.png" alt="">
+                    <p class="img-caption">Ride Volume by Day of Week — Casual vs Members</p>
+                </div>
+
+                <div class="img-box">
+                    <img src="../assets/images/CY1_AvgDuration_DayOfWeek.png" alt="">
+                    <p class="img-caption">Average Ride Duration by Day of Week</p>
+                </div>
+
+                <div class="img-box">
+                    <img src="../assets/images/CY1_AvgDuration_RiderType.png" alt="">
+                    <p class="img-caption">Average Ride Duration by Rider Type</p>
+                </div>
+            </section>
+
+            <!-- 5. R OUTPUT -->
+            <section class="card-section">
+                <h3 class="text-base font-semibold mb-1">5. RStudio Console Output</h3>
+
+                <div class="img-box">
+                    <img src="../assets/images/CY1_RStudio_PackageInstall.png" alt="">
+                    <p class="img-caption">RStudio Console — package installation + environment setup</p>
+                </div>
+            </section>
+
         </div>
     </section>
 
-    <!-- ARCHITECTURE OVERVIEW -->
-    <section class="py-10 md:py-12 bg-primary-bg">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
-            <div class="section-title-wrapper mb-6">
-                <h2>Architecture Overview</h2>
-                <span></span>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-8 text-sm text-text-secondary card-section">
-
-                <div>
-                    <h3 class="text-base font-semibold text-text-base mb-2">Dataset + Processing Pipeline</h3>
-                    <ul class="list-disc pl-5 space-y-1">
-                        <li><span class="text-text-base font-semibold">12 Monthly CSVs</span> — raw trip logs for Chicago bike-share.</li>
-                        <li><span class="text-text-base font-semibold">R tidyverse pipeline</span> — combines, cleans, and standardizes records.</li>
-                        <li><span class="text-text-base font-semibold">Feature engineering</span> — ride_length, weekdays, and derived metrics.</li>
-                        <li><span class="text-text-base font-semibold">Aggregated comparisons</span> — segmentation between casual and members.</li>
-                        <li><span class="text-text-base font-semibold">Tableau export</span> — used to build interactive dashboards.</li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h3 class="text-base font-semibold text-text-base mb-2">Data Flow</h3>
-                    <ul class="list-disc pl-5 space-y-1">
-                        <li>Raw Monthly CSVs → RStudio preprocessing</li>
-                        <li>RStudio → Feature engineering + cleaning</li>
-                        <li>Processed dataset → Tableau</li>
-                        <li>Tableau → Visual trend dashboards</li>
-                        <li>Insights → Membership conversion strategy</li>
-                    </ul>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- KEY INSIGHTS -->
-    <section class="py-10 md:py-12 bg-primary-bg">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    <!-- INSIGHTS -->
+    <section class="py-12 border-t border-gray-800">
+        <div class="max-w-6xl mx-auto px-4 space-y-10">
 
             <div>
                 <div class="section-title-wrapper mb-6">
                     <h2>Key Insights</h2>
                     <span></span>
                 </div>
+
                 <div class="card-section">
-                    <ul class="list-disc pl-5 space-y-2 text-sm sm:text-[0.95rem] text-text-secondary">
-                        <li>Casual riders show strong weekend and warm-season usage spikes.</li>
-                        <li>Members ride more consistently during weekday commutes.</li>
-                        <li>Casual riders take nearly double the average ride duration.</li>
-                        <li>Usage patterns reveal clear differences between leisure and commuting behavior.</li>
+                    <ul class="list-disc pl-5 text-text-secondary space-y-2">
+                        <li>Casual riders spike sharply on weekends & summer</li>
+                        <li>Members ride heavily during weekday commutes</li>
+                        <li>Casual riders take nearly 2× longer rides</li>
+                        <li>Electric bikes are more popular among casual users</li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Skills -->
             <div>
                 <div class="section-title-wrapper mb-6">
                     <h2>Skills Demonstrated</h2>
                     <span></span>
                 </div>
-                <div class="card-section">
-                    <div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
-                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">R Programming</span>
-                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Data Wrangling</span>
-                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Feature Engineering</span>
-                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Tableau Dashboards</span>
-                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Behavior Analysis</span>
-                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Cohort Segmentation</span>
-                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Data Cleaning</span>
-                    </div>
+
+                <div class="card-section flex flex-wrap gap-2 text-[0.7rem]">
+                    <span class="px-3 py-1 rounded-full border border-accent-primary text-accent-primary font-mono">R Programming</span>
+                    <span class="px-3 py-1 rounded-full border border-accent-primary text-accent-primary font-mono">Data Wrangling</span>
+                    <span class="px-3 py-1 rounded-full border border-accent-primary text-accent-primary font-mono">Feature Engineering</span>
+                    <span class="px-3 py-1 rounded-full border border-accent-primary text-accent-primary font-mono">Tableau Dashboards</span>
+                    <span class="px-3 py-1 rounded-full border border-accent-primary text-accent-primary font-mono">Behavior Analysis</span>
+                    <span class="px-3 py-1 rounded-full border border-accent-primary text-accent-primary font-mono">Segmentation</span>
+                    <span class="px-3 py-1 rounded-full border border-accent-primary text-accent-primary font-mono">Cleaning</span>
                 </div>
             </div>
+
         </div>
     </section>
 
     <!-- SUMMARY -->
-    <section class="pb-12 md:pb-14 bg-primary-bg">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section class="pb-14">
+        <div class="max-w-6xl mx-auto px-4">
 
-            <!-- Dark card with white border (Azure matched) -->
             <div class="bg-secondary-bg border border-white/30 rounded-2xl p-6 shadow-lg">
-                <h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-text-base">
+                <h3 class="text-xs font-semibold tracking-[0.18em] uppercase mb-3 text-text-base">
                     Summary
                 </h3>
-                <p class="text-sm sm:text-[0.95rem] text-text-secondary leading-relaxed">
-                    This Cyclistic rider analysis highlights year-long differences between casual and member riders
-                    across seasons, weekdays, and ride durations. By understanding rider behavior trends, Cyclistic 
-                    can target high-usage casual riders with personalized membership incentives that reflect their 
-                    actual usage patterns—making data-driven strategy the center of long-term rider retention.
+                <p class="text-sm text-text-secondary leading-relaxed">
+                    This Cyclistic rider analysis provides data-driven insights into how casual and member riders behave across seasons,
+                    weekdays, and ride durations. These findings help shape marketing strategies aimed at converting high-usage casual
+                    riders into long-term members using real behavioral evidence.
                 </p>
             </div>
 
-            <!-- Back link -->
             <div class="mt-10">
-                <a href="../index.html#projects"
-                   class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition">
+                <a href="../index.html#projects" class="inline-flex text-accent-primary text-sm hover:text-accent-red">
                     ← Back to Portfolio
                 </a>
             </div>
