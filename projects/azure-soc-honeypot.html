@@ -540,31 +540,34 @@ WindowsEvents</code></pre>
     </section>
 
     <!-- SUMMARY -->
-    <section class="pb-12 md:pb-14 bg-primary-bg">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <<div class="card-section bg-white border border-gray-300 rounded-2xl p-6 text-black">
-                <h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-black">
-                    Summary
-                </h3>
-                <p class="text-sm sm:text-[0.95rem] leading-relaxed text-black/80">
-                    This project ties together endpoint logging, Azure monitoring, and SIEM analysis into one pipeline.
-                    I stood up a deliberately vulnerable Windows host, collected its logs in Log Analytics, analyzed
-                    the resulting events in Microsoft Sentinel using KQL, and layered on GeoIP enrichment to understand
-                    where attacks were coming from. The final attack map presents hostile activity in a format that
-                    analysts, managers, and non-technical stakeholders can all understand, while still reflecting the
-                    underlying technical work required to operate a modern SOC.
-                </p>
+    <!-- SUMMARY -->
+        <section class="pb-12 md:pb-14 bg-primary-bg">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+                <div class="border border-gray-300 bg-white rounded-2xl p-6 shadow-lg">
+                    <h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-gray-900">
+                        Summary
+                    </h3>
+                    <p class="text-sm sm:text-[0.95rem] leading-relaxed text-gray-700">
+                        This project ties together endpoint logging, Azure monitoring, and SIEM analysis into one pipeline.
+                        I stood up a deliberately vulnerable Windows host, collected its logs in Log Analytics, analyzed
+                        the resulting events in Microsoft Sentinel using KQL, and layered on GeoIP enrichment to understand
+                        where attacks were coming from. The final attack map presents hostile activity in a format that
+                        analysts, managers, and non-technical stakeholders can all understand, while still reflecting the
+                        underlying technical work required to operate a modern SOC.
+                    </p>
+                </div>
+        
+                <div class="mt-8">
+                    <a href="../index.html#projects"
+                       class="inline-flex items-center text-accent-cyan text-xs sm:text-sm hover:text-accent-red transition-colors">
+                        ← Back to Portfolio
+                    </a>
+                </div>
+        
             </div>
+        </section>
 
-
-            <div class="mt-8">
-                <a href="../index.html#projects"
-                   class="inline-flex items-center text-accent-cyan text-xs sm:text-sm hover:text-accent-red transition-colors">
-                    ← Back to Portfolio
-                </a>
-            </div>
-        </div>
-    </section>
 </main>
 </body>
 </html>
