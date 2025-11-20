@@ -38,13 +38,14 @@
 
         body {
             font-family: "Inter", sans-serif;
-            transition: background-color .5s, color .5s;
+            transition: background-color 0.5s, color 0.5s;
         }
 
         .hero-grid-bg {
             background-color: var(--bg-default);
-            background-image: radial-gradient(circle, rgba(148,163,184,0.12) 1px, transparent 1px);
+            background-image: radial-gradient(circle, rgba(148, 163, 184, 0.12) 1px, rgba(0, 0, 0, 0) 1px);
             background-size: 22px 22px;
+            background-position: center;
         }
 
         .section-title-wrapper {
@@ -61,7 +62,9 @@
         }
 
         .section-title-wrapper span {
-            margin-left: .75rem;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-left: 0.75rem;
             border-bottom: 1px solid var(--text-secondary);
             flex-grow: 1;
             width: 140px;
@@ -74,27 +77,33 @@
             font-size: 0.68rem;
             text-transform: uppercase;
             letter-spacing: 0.12em;
+            white-space: nowrap;
         }
 
         .pill-muted {
             color: var(--text-secondary);
-            background-color: rgba(15,23,42,0.96);
+            background-color: rgba(15, 23, 42, 0.96);
         }
 
         .pill-accent {
             color: var(--accent-primary);
-            background-color: rgba(15,23,42,0.96);
-            border-color: rgba(34,211,238,0.8);
+            background-color: rgba(15, 23, 42, 0.96);
+            border-color: rgba(34, 211, 238, 0.8);
         }
 
-        /* Flat cards for uniformity */
+        /* Flat, no-glow cards */
+        .card-shell,
+        .card-shell-simple,
         .card-section {
             border-radius: 0.9rem;
             border-width: 1px;
-            border-color: rgba(31,41,55,0.9);
+            border-color: rgba(31, 41, 55, 0.9);
             background-color: var(--bg-secondary);
+            box-shadow: 0 16px 28px rgba(0, 0, 0, 0.45);
+        }
+
+        .card-section {
             padding: 1.75rem;
-            box-shadow: 0 16px 28px rgba(0,0,0,0.45);
         }
 
         pre code {
@@ -130,17 +139,16 @@
     </script>
 </head>
 
-
 <body class="bg-primary-bg text-text-base transition-colors duration-500">
-<main class="min-h-screen bg-primary-bg">
+<main class="min-h-screen bg-primary-bg text-text-base">
 
     <!-- HERO -->
     <section class="hero-grid-bg border-b border-gray-800">
-        <div class="max-w-6xl mx-auto px-4 pt-8 pb-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12 md:pb-16">
 
-            <!-- Back -->
+            <!-- Back link -->
             <a href="../index.html#projects"
-               class="inline-flex items-center text-accent-cyan text-xs sm:text-sm mb-6 hover:text-accent-red transition">
+               class="inline-flex items-center text-accent-cyan text-xs sm:text-sm mb-6 hover:text-accent-red transition-colors">
                 ← Back to Portfolio
             </a>
 
@@ -148,199 +156,390 @@
             <div class="flex flex-wrap gap-2 mb-5">
                 <span class="pill pill-accent">Bellabeat Case Study</span>
                 <span class="pill pill-muted">Fitbit Dataset</span>
-                <span class="pill pill-muted">User Behavior</span>
+                <span class="pill pill-muted">R Programming</span>
                 <span class="pill pill-muted">Engagement Analytics</span>
             </div>
 
-            <!-- Title -->
+            <!-- Title + subtitle -->
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
                 Bellabeat Smart Device Usage Analysis
             </h1>
-
             <p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed">
-                Analysis of activity, sleep, and wellness behavior from Fitbit data to uncover trends, improve 
-                Bellabeat product engagement, and identify marketing opportunities based on real user habits.
+                Used real Fitbit activity and sleep data to understand how wellness habits translate into
+                smart device engagement. The analysis surfaces patterns Bellabeat can use to shape product
+                features and targeted marketing for health conscious users.
             </p>
 
-            <!-- Meta Pills -->
+            <!-- Meta badges -->
             <div class="flex flex-wrap gap-3 mt-5 text-[0.7rem] sm:text-xs text-text-secondary">
                 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
                     <span class="w-1.5 h-1.5 rounded-full bg-accent-cyan"></span>
-                    Activity & Sleep Patterns
+                    Activity and Sleep Patterns
                 </span>
                 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
                     <span class="w-1.5 h-1.5 rounded-full bg-accent-cyan"></span>
-                    Behavioral Insights
+                    Behavior and Engagement Insights
                 </span>
             </div>
 
-            <!-- Top Split -->
+            <!-- Top split: Narrative + What I Built -->
             <div class="mt-10 grid md:grid-cols-2 gap-6">
-
-                <!-- Narrative -->
+                <!-- Project Narrative -->
                 <article class="card-section">
-                    <p class="text-[0.7rem] uppercase tracking-[0.22em] text-text-secondary mb-2">Project Narrative</p>
-                    <p class="text-sm leading-relaxed mb-2">
-                        This capstone analysis explores daily movement, sleep, and activity trends to understand how 
-                        Bellabeat users interact with wellness devices. Usage signals such as total steps, active minutes, 
-                        calories burned, and sleep duration reveal strong relationships between behavior and device engagement.
+                    <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2">
+                        Project Narrative
                     </p>
-                    <p class="text-sm leading-relaxed">
-                        These insights help Bellabeat refine its marketing and product strategy by identifying when and 
-                        how users rely on their smart devices the most.
+                    <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-2">
+                        This project explores how people actually use their wellness wearables across a typical month.
+                        By combining daily steps, calories burned, active minutes, and sleep data from Fitbit, I built
+                        a picture of when users move, rest, and engage with their devices.
+                    </p>
+                    <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base">
+                        The goal is to give Bellabeat a data backed view of user behavior that can inform campaigns,
+                        in app nudges, and product decisions aimed at keeping users active, rested, and engaged with
+                        the Bellabeat ecosystem.
                     </p>
                 </article>
 
                 <!-- What I Built -->
                 <article class="card-section">
-                    <p class="text-[0.7rem] uppercase tracking-[0.22em] text-text-secondary mb-2">What I Built</p>
-                    <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-base leading-relaxed">
-                        <li>Imported, cleaned, and merged Fitbit activity, sleep, and calorie datasets.</li>
-                        <li>Calculated new metrics such as active minutes and weekday behavior.</li>
-                        <li>Analyzed trends across steps, active minutes, sleep duration, and calories.</li>
-                        <li>Created visuals highlighting weekday patterns and wellness habits.</li>
-                        <li>Developed insights to support Bellabeat’s strategic marketing goals.</li>
+                    <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2">
+                        What I Built
+                    </p>
+                    <ul class="list-disc list-outside pl-5 space-y-1.5 text-sm sm:text-[0.95rem] text-text-base">
+                        <li>End to end R workflow to import, clean, and combine multiple Fitbit tables.</li>
+                        <li>Feature set capturing daily activity, intensity, and sleep behavior.</li>
+                        <li>Summary views that compare high and low engagement users.</li>
+                        <li>Visuals that highlight weekday and weekend wellness patterns.</li>
+                        <li>Actionable recommendations tied to Bellabeat marketing and product strategy.</li>
                     </ul>
                 </article>
-
             </div>
         </div>
     </section>
 
-
-    <!-- MAIN CONTENT -->
-    <section class="py-12 bg-primary-bg">
-        <div class="max-w-6xl mx-auto px-4">
-
-            <!-- Dataset & Tools -->
-            <div class="section-title-wrapper mb-4">
-                <h2>Dataset & Tools</h2>
+    <!-- WORKFLOW OVERVIEW -->
+    <section class="py-10 md:py-12 border-b border-gray-800 bg-primary-bg">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="section-title-wrapper mb-6">
+                <h2>Workflow Overview</h2>
                 <span></span>
             </div>
 
-            <p class="text-sm text-text-secondary leading-relaxed mb-4">
-                The dataset includes 30 days of Fitbit data from 30 users, covering daily steps, calories burned, active 
-                minutes, and sleep metrics. Analysis was completed using R, tidyverse, ggplot2, and Tableau for visualization.
-            </p>
-
-            <ul class="list-disc list-outside pl-5 space-y-1 text-sm text-text-secondary">
-                <li>Fitbit activity, sleep, and calorie datasets</li>
-                <li>30 days of user behavior</li>
-                <li>Daily movement intensity + time asleep</li>
-                <li>R, tidyverse, ggplot2, Tableau</li>
-            </ul>
-
-            <div class="w-full my-6 bg-secondary-bg p-6 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
-                [ Insert dataset preview screenshot ]
+            <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="card-section text-xs">
+                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 1</p>
+                    <p class="text-sm font-semibold mb-1">Ask</p>
+                    <p class="text-[0.8rem] text-text-secondary">
+                        Define how device usage and wellness behavior can guide Bellabeat strategy.
+                    </p>
+                </div>
+                <div class="card-section text-xs">
+                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 2</p>
+                    <p class="text-sm font-semibold mb-1">Prepare</p>
+                    <p class="text-[0.8rem] text-text-secondary">
+                        Import Fitbit activity, sleep, and calories data for 30 users across 30 days.
+                    </p>
+                </div>
+                <div class="card-section text-xs">
+                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 3</p>
+                    <p class="text-sm font-semibold mb-1">Process</p>
+                    <p class="text-[0.8rem] text-text-secondary">
+                        Clean records, engineer daily metrics, and standardize date fields.
+                    </p>
+                </div>
+                <div class="card-section text-xs">
+                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 4</p>
+                    <p class="text-sm font-semibold mb-1">Analyze</p>
+                    <p class="text-[0.8rem] text-text-secondary">
+                        Explore activity and sleep trends across users and days of the week.
+                    </p>
+                </div>
+                <div class="card-section text-xs">
+                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 5</p>
+                    <p class="text-sm font-semibold mb-1">Share & Act</p>
+                    <p class="text-[0.8rem] text-text-secondary">
+                        Translate findings into engagement and marketing recommendations for Bellabeat.
+                    </p>
+                </div>
             </div>
+        </div>
+    </section>
 
-
-            <!-- Key Findings -->
-            <div class="section-title-wrapper mt-12 mb-4">
-                <h2>Key Findings</h2>
+    <!-- LAB BREAKDOWN -->
+    <section class="py-10 md:py-14 bg-primary-bg">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="section-title-wrapper mb-6">
+                <h2>Lab Breakdown</h2>
                 <span></span>
             </div>
 
-            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary leading-relaxed">
-                <li>Users walked the most on weekdays, with peak steps mid-week.</li>
-                <li>Sleep duration averaged 6–7.5 hours—below the recommended 8 hours.</li>
-                <li>Calories burned strongly correlated with active minutes.</li>
-                <li>Weekends showed the largest drop-off in wellness behavior.</li>
-            </ul>
+            <div class="space-y-8 text-sm sm:text-[0.95rem] leading-relaxed text-text-secondary">
+                <!-- 1. Dataset Overview -->
+                <section class="card-section">
+                    <h3 class="text-base font-semibold text-text-base mb-1">
+                        1. Dataset and Business Question
+                    </h3>
+                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                        Fitbit data used as a proxy for Bellabeat users
+                    </p>
+                    <p class="mb-3">
+                        The analysis uses a public Fitbit dataset with about 30 users over 30 days. It includes daily
+                        steps, distance, calories, intensity, and separate tables for sleep and weight. The guiding
+                        question is how these patterns can help Bellabeat increase activation, retention, and daily
+                        engagement with its own smart devices.
+                    </p>
+                    <ul class="list-disc list-outside pl-5 space-y-1 mb-4">
+                        <li>Daily activity metrics: steps, distance, calories, intensity minutes.</li>
+                        <li>Sleep metrics where available: total minutes and time in bed.</li>
+                        <li>User level identifiers to track behavior over time.</li>
+                        <li>Thirty day window aligned with a typical on boarding period.</li>
+                    </ul>
 
+                    <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
+                        <p class="text-xs italic text-text-secondary">
+                            [ Screenshot placeholder: dataset preview and column overview ]
+                        </p>
+                    </div>
+                </section>
 
-            <!-- Sample Code -->
-            <div class="section-title-wrapper mt-12 mb-4">
-                <h2>Sample R Code</h2>
-                <span></span>
-            </div>
+                <!-- 2. Cleaning & Feature Engineering -->
+                <section class="card-section">
+                    <h3 class="text-base font-semibold text-text-base mb-1">
+                        2. Data Cleaning and Feature Engineering
+                    </h3>
+                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                        Joined activity and sleep tables and created daily wellness signals
+                    </p>
+                    <p class="mb-3">
+                        Activity and sleep tables did not share a perfect key out of the box. I standardized date
+                        formats, removed duplicate entries, and then joined tables at the user and date level. From
+                        there, I engineered features that describe a typical day for each user.
+                    </p>
+                    <ul class="list-disc list-outside pl-5 space-y-1 mb-4">
+                        <li>Converted all date fields to a consistent format and time zone.</li>
+                        <li>Joined daily activity and sleep data on user and date.</li>
+                        <li>Computed total active minutes by combining activity intensity fields.</li>
+                        <li>Derived day of week for weekday versus weekend comparisons.</li>
+                    </ul>
 
-            <pre class="bg-secondary-bg border border-gray-700 rounded-xl p-4 overflow-x-auto text-[0.85rem]">
-<code># Import Fitbit data
-daily_activity <- read_csv("dailyActivity_merged.csv") %>%
+                    <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-[0.78rem]">
+<code># Merge and engineer core daily metrics
+daily_activity &lt;- read_csv("dailyActivity_merged.csv") %&gt;%
   clean_names()
 
-daily_sleep <- read_csv("sleepDay_merged.csv") %>%
+daily_sleep &lt;- read_csv("sleepDay_merged.csv") %&gt;%
   clean_names()
 
-# Merge
-merged <- daily_activity %>%
-  inner_join(daily_sleep, by = c("id", "activity_date" = "sleep_day"))
+daily_activity &lt;- daily_activity %&gt;%
+  mutate(activity_date = mdy(activity_date))
 
-# Create features
-cleaned <- merged %>%
+daily_sleep &lt;- daily_sleep %&gt;%
+  mutate(sleep_date = mdy(sleep_day))
+
+merged &lt;- daily_activity %&gt;%
+  inner_join(daily_sleep,
+             by = c("id", "activity_date" = "sleep_date")) %&gt;%
   mutate(
     day_of_week = wday(activity_date, label = TRUE),
     active_minutes_total = very_active_minutes +
                            fairly_active_minutes +
                            lightly_active_minutes
-  )
+  )</code></pre>
+                </section>
 
-glimpse(cleaned)</code>
-            </pre>
+                <!-- 3. Behavior Patterns -->
+                <section class="card-section">
+                    <h3 class="text-base font-semibold text-text-base mb-1">
+                        3. Daily and Weekly Behavior Patterns
+                    </h3>
+                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                        Compared movement and rest behavior across the week
+                    </p>
+                    <p class="mb-3">
+                        With a clean daily view of each user, I examined how steps, active minutes, calories, and sleep
+                        changed by day of week. This highlights when users are most engaged with their wellness routine
+                        and where there may be drop off.
+                    </p>
+                    <ul class="list-disc list-outside pl-5 space-y-2 mb-4">
+                        <li>Steps and calories tend to peak on weekdays, especially Tuesday through Thursday.</li>
+                        <li>Sleep duration clusters in the six to seven and a half hour range for most users.</li>
+                        <li>Active minutes align with workdays, suggesting commute or regular gym patterns.</li>
+                        <li>Weekends show lower movement for many users, even when sleep time increases slightly.</li>
+                    </ul>
 
-            <div class="w-full my-6 bg-secondary-bg p-6 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
-                [ Insert R output screenshot ]
+                    <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
+                        <p class="text-xs italic text-text-secondary">
+                            [ Screenshot placeholder: bar chart of steps by day of week ]
+                        </p>
+                    </div>
+                </section>
+
+                <!-- 4. Engagement Opportunities -->
+                <section class="card-section">
+                    <h3 class="text-base font-semibold text-text-base mb-1">
+                        4. Engagement and Marketing Opportunities
+                    </h3>
+                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                        Mapped behavior patterns to specific Bellabeat actions
+                    </p>
+                    <p class="mb-3">
+                        Once patterns were clear, I translated them into concrete actions Bellabeat could take. The
+                        focus is on using data to time nudges, adjust messaging, and design challenges that align with
+                        how users already live their lives.
+                    </p>
+                    <ul class="list-disc list-outside pl-5 space-y-2 mb-4">
+                        <li>Use weekday streaks and step goals to reinforce existing activity habits.</li>
+                        <li>Introduce gentle weekend reminders aimed at maintaining momentum rather than pushing hard workouts.</li>
+                        <li>Highlight sleep insights in the app for users consistently below recommended rest levels.</li>
+                        <li>Promote long term wellness programs that track both movement and sleep quality together.</li>
+                    </ul>
+
+                    <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
+                        <p class="text-xs italic text-text-secondary">
+                            [ Screenshot placeholder: example engagement or notification concept ]
+                        </p>
+                    </div>
+                </section>
             </div>
+        </div>
+    </section>
 
-
-            <!-- Strategic Insights -->
-            <div class="section-title-wrapper mt-12 mb-4">
-                <h2>Strategic Insights for Bellabeat</h2>
-                <span></span>
-            </div>
-
-            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary leading-relaxed mb-10">
-                <li>Promote weekday habit-tracking challenges to encourage consistent activity.</li>
-                <li>Enhance sleep coaching features to address below-average rest duration.</li>
-                <li>Use gamified step goals and streaks to increase device engagement.</li>
-                <li>Deliver weekend nudges to counter lower activity levels.</li>
-            </ul>
-
-
-            <!-- Skills -->
-            <div class="section-title-wrapper mb-4">
-                <h2>Skills Demonstrated</h2>
+    <!-- SAMPLE R CODE -->
+    <section class="py-10 md:py-12 border-t border-gray-800 bg-primary-bg">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="section-title-wrapper mb-6">
+                <h2>Sample R Code</h2>
                 <span></span>
             </div>
 
             <div class="card-section">
-                <div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
-                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">R Programming</span>
-                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Data Wrangling</span>
-                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Behavior Analytics</span>
-                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Visualization</span>
-                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">User Segmentation</span>
-                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Product Strategy</span>
+                <p class="text-xs font-mono text-accent-cyan mb-2 uppercase tracking-[0.18em]">
+                    Summary of activity and sleep by day of week
+                </p>
+                <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-[0.78rem]">
+<code>library(tidyverse)
+library(lubridate)
+library(janitor)
+
+# Summarize key wellness metrics by day of week
+day_summary &lt;- merged %&gt;%
+  group_by(day_of_week) %&gt;%
+  summarise(
+    avg_steps = mean(total_steps, na.rm = TRUE),
+    avg_calories = mean(calories, na.rm = TRUE),
+    avg_active_minutes = mean(active_minutes_total, na.rm = TRUE),
+    avg_sleep_minutes = mean(total_minutes_asleep, na.rm = TRUE),
+    .groups = "drop"
+  ) %&gt;%
+  arrange(day_of_week)
+
+day_summary</code></pre>
+
+                <p class="text-xs italic mt-3 text-center text-text-secondary">
+                    [ Screenshot placeholder: R summary output or ggplot visualization ]
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ARCHITECTURE / INSIGHTS / SKILLS -->
+    <section class="py-10 md:py-12 bg-primary-bg">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+            <!-- Architecture -->
+            <div>
+                <div class="section-title-wrapper mb-6">
+                    <h2>Architecture Overview</h2>
+                    <span></span>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 text-sm text-text-secondary card-section">
+                    <div>
+                        <h3 class="text-base font-semibold text-text-base mb-2">Components</h3>
+                        <ul class="list-disc list-outside pl-5 space-y-1">
+                            <li><span class="font-semibold text-text-base">Fitbit source tables</span> — daily activity, sleep, and calories.</li>
+                            <li><span class="font-semibold text-text-base">R processing layer</span> — tidyverse pipeline for cleaning and joins.</li>
+                            <li><span class="font-semibold text-text-base">Feature store</span> — engineered daily metrics and weekday labels.</li>
+                            <li><span class="font-semibold text-text-base">Visualization layer</span> — R charts and optional Tableau dashboards.</li>
+                            <li><span class="font-semibold text-text-base">Insight and strategy layer</span> — marketing and product recommendations.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-semibold text-text-base mb-2">Data Flow</h3>
+                        <ul class="list-disc list-outside pl-5 space-y-1">
+                            <li>Raw Fitbit CSVs → R import and cleaning.</li>
+                            <li>Cleaned activity and sleep data → joined daily view.</li>
+                            <li>Daily view → aggregated by user and day of week.</li>
+                            <li>Aggregations → charts and dashboard views.</li>
+                            <li>Visuals and tables → Bellabeat engagement strategy and campaigns.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
-
-            <!-- Summary -->
-            <div class="section-title-wrapper mt-12 mb-4">
-                <h2>Summary</h2>
-                <span></span>
+            <!-- Key Insights -->
+            <div>
+                <div class="section-title-wrapper mb-6">
+                    <h2>Key Insights</h2>
+                    <span></span>
+                </div>
+                <div class="card-section">
+                    <ul class="list-disc list-outside pl-5 space-y-2 text-text-secondary text-sm sm:text-[0.95rem]">
+                        <li>Most users fall short of eight hours of sleep even on low activity days.</li>
+                        <li>Weekday activity is more structured, making it easier to anchor challenges and streaks.</li>
+                        <li>Weekend engagement dips suggest a need for lighter, lifestyle oriented nudges instead of strict goals.</li>
+                        <li>Users with more consistent sleep and activity patterns tend to show more stable device usage.</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="card-section">
-                <p class="text-sm text-text-secondary leading-relaxed">
-                    This project highlights how wellness behavior—steps, sleep, activity minutes, and calories—can guide 
-                    Bellabeat’s product strategy. Identifying user routines helps refine notifications, challenges, and 
-                    engagement workflows that strengthen long-term device usage.
+            <!-- Skills -->
+            <div>
+                <div class="section-title-wrapper mb-6">
+                    <h2>Skills Demonstrated</h2>
+                    <span></span>
+                </div>
+                <div class="card-section">
+                    <div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">R programming</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">tidyverse data wrangling</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Feature engineering</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Behavior analytics</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Visualization and storytelling</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Product and marketing strategy</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SUMMARY -->
+    <section class="pb-12 md:pb-14 bg-primary-bg">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Dark card with thin white border (same style as other projects) -->
+            <div class="bg-secondary-bg border border-white/30 rounded-2xl p-6 shadow-lg">
+                <h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-text-base">
+                    Summary
+                </h3>
+                <p class="text-sm sm:text-[0.95rem] text-text-secondary leading-relaxed">
+                    This Bellabeat smart device analysis connects raw Fitbit data to concrete engagement opportunities.
+                    By cleaning and joining activity and sleep records, engineering daily wellness signals, and
+                    studying behavior by day of week, the project shows when users are most receptive to coaching and
+                    how Bellabeat can time its features, challenges, and messaging to match real user habits.
                 </p>
             </div>
 
-
-            <!-- Back -->
+            <!-- Back link (same spacing as other projects) -->
             <div class="mt-10">
                 <a href="../index.html#projects"
-                   class="inline-flex items-center text-accent-cyan text-xs sm:text-sm hover:text-accent-red transition">
+                   class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition">
                     ← Back to Portfolio
                 </a>
             </div>
 
         </div>
     </section>
+
 </main>
 </body>
 </html>
