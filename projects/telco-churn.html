@@ -296,14 +296,19 @@
                         <li>Contracts (1-year, 2-year, month-to-month)</li>
                     </ul>
 
+                    <!-- Dataset Preview -->
                     <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <p class="text-xs italic text-text-secondary">[ Screenshot: Dataset Preview ]</p>
+                        <img src="../assets/images/TC1_Dataset Preview.png"
+                             alt="Dataset Preview"
+                             class="rounded-lg mx-auto">
                     </div>
 
-                    <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <p class="text-xs italic text-text-secondary">[ Screenshot: Correlation Heatmap Preview ]</p>
+                    <!-- Correlation Heatmap -->
+                    <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                        <img src="../assets/images/TC1_Correlation Heatmap.png"
+                             alt="Correlation Heatmap"
+                             class="rounded-lg mx-auto">
                     </div>
-                    
                 </section>
 
                 <!-- 2 Cleaning -->
@@ -375,8 +380,11 @@ y_pred = model.predict(X_test)
 print(confusion_matrix(y_test, y_pred))
 print(classification_report(y_test, y_pred))</code></pre>
 
+                    <!-- Confusion Matrix Screenshot -->
                     <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
-                        <p class="text-xs italic text-text-secondary">[ Screenshot: Confusion Matrix ]</p>
+                        <img src="../assets/images/TC1_Modeling & Performance Evaluation.png"
+                             alt="Confusion Matrix and Performance Metrics"
+                             class="rounded-lg mx-auto">
                     </div>
 
                 </section>
@@ -400,8 +408,11 @@ shap_values = explainer.shap_values(X_test)
 shap.summary_plot(shap_values[1], X_test)
 shap.summary_plot(shap_values[1], X_test, plot_type="bar")</code></pre>
 
+                    <!-- SHAP Plot Screenshot -->
                     <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
-                        <p class="text-xs italic text-text-secondary">[ Screenshot: SHAP Summary Plot ]</p>
+                        <img src="../assets/images/TC1_SHAP Summary Plot.png"
+                             alt="SHAP Summary Plot"
+                             class="rounded-lg mx-auto">
                     </div>
 
                 </section>
@@ -410,7 +421,7 @@ shap.summary_plot(shap_values[1], X_test, plot_type="bar")</code></pre>
         </div>
     </section>
 
-    <!-- SAMPLE KQL (converted to Sample Code for ML) -->
+    <!-- SAMPLE CODE -->
     <section class="py-10 md:py-12 border-t border-gray-800 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -527,11 +538,9 @@ shap.summary_plot(shap_values[1], X_test)</code></pre>
     </section>
 
     <!-- SUMMARY -->
-        <!-- SUMMARY -->
     <section class="pb-12 md:pb-14 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            <!-- Dark card with thin white border (same style as Azure project) -->
             <div class="bg-secondary-bg border border-white/30 rounded-2xl p-6 shadow-lg">
                 <h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-text-base">
                     Summary
@@ -545,7 +554,6 @@ shap.summary_plot(shap_values[1], X_test)</code></pre>
                 </p>
             </div>
 
-            <!-- Back link (same spacing as Azure project) -->
             <div class="mt-10">
                 <a href="../index.html#projects"
                    class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition">
