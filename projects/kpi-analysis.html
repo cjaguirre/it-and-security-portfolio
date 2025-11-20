@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manufacturing KPI Analysis | Christian Aguirre</title>
 
-    <!-- Tailwind CDN -->
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Fonts + Theme -->
+    <!-- Theme + Fonts -->
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
 
         .dark {
             --bg-default: #050814;
-            --bg-secondary: #111827;
+            --bg-secondary: #0d111f;
             --text-base: #e5e7eb;
             --text-secondary: #9ca3af;
             --accent-primary: #00ffff;
@@ -24,26 +24,13 @@
             color: var(--text-base);
         }
 
-        .light {
-            --bg-default: #ffffff;
-            --bg-secondary: #f3f4f6;
-            --text-base: #111827;
-            --text-secondary: #4b5563;
-            --accent-primary: #0891b2;
-            --accent-red: #dc2626;
-            --container-bg: #ffffff;
-            background-color: var(--bg-default);
-            color: var(--text-base);
-        }
-
         body {
             font-family: "Inter", sans-serif;
-            transition: background-color 0.5s, color 0.5s;
         }
 
         .hero-grid-bg {
             background-color: var(--bg-default);
-            background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, rgba(0,0,0,0) 1px);
+            background-image: radial-gradient(circle, rgba(148,163,184,0.12) 1px, transparent 1px);
             background-size: 22px 22px;
             background-position: center;
         }
@@ -51,297 +38,323 @@
         .section-title-wrapper {
             display: inline-flex;
             align-items: center;
-            margin-bottom: 1.75rem;
             font-family: "Inconsolata", monospace;
+            margin-bottom: 1.25rem;
         }
 
         .section-title-wrapper h2 {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: var(--accent-primary);
         }
 
         .section-title-wrapper span {
-            color: var(--text-secondary);
-            font-size: 1.25rem;
-            margin-left: .75rem;
-            border-bottom: 2px solid var(--text-secondary);
-            flex-grow: 1;
+            margin-left: 0.75rem;
+            border-bottom: 1px solid var(--text-secondary);
             width: 140px;
+            flex-grow: 1;
         }
 
         .pill {
-            border-radius: 999px;
-            padding: .2rem .6rem;
-            border: 1px solid rgba(148,163,184,0.4);
-            font-size: .68rem;
+            border-radius: 9999px;
+            padding: 0.22rem 0.65rem;
+            border: 1px solid rgba(148,163,184,0.35);
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
-            letter-spacing: .12em;
-        }
-
-        .pill-muted {
-            color: var(--text-secondary);
-            background-color: rgba(15,23,42,0.9);
+            background-color: rgba(15,23,42,0.96);
+            white-space: nowrap;
         }
 
         .pill-accent {
             color: var(--accent-primary);
-            background-color: rgba(15,23,42,0.9);
             border-color: rgba(34,211,238,0.8);
         }
 
-        .card-shell {
-            border-radius: 1.25rem;
-            border-width: 1px;
-            border-color: rgba(31,41,55,0.9);
-            background: radial-gradient(circle at top left, rgba(56,189,248,0.14), transparent 55%),
-                        radial-gradient(circle at bottom right, rgba(15,23,42,0.95), #020617);
-            box-shadow: 0 20px 35px rgba(15,23,42,0.9);
+        .pill-muted {
+            color: var(--text-secondary);
         }
 
-        .card-shell-simple {
-            border-radius: 1.25rem;
-            border: 1px solid rgba(31,41,55,0.9);
-            background-color: rgba(15,23,42,0.98);
-            box-shadow: 0 20px 35px rgba(15,23,42,0.9);
+        .card-section {
+            background-color: var(--bg-secondary);
+            border: 1px solid rgba(31,41,55,0.85);
+            border-radius: 0.9rem;
+            padding: 1.75rem;
+            box-shadow: 0 16px 28px rgba(0,0,0,0.45);
         }
     </style>
-
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary-bg": "var(--bg-default)",
-                        "secondary-bg": "var(--bg-secondary)",
-                        "container-bg": "var(--container-bg)",
-                        "text-base": "var(--text-base)",
-                        "text-secondary": "var(--text-secondary)",
-                        "accent-cyan": "var(--accent-primary)",
-                        "accent-red": "var(--accent-red)"
-                    }
-                }
-            }
-        };
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const html = document.documentElement;
-            const saved = localStorage.getItem("theme") || "dark";
-            html.setAttribute("data-theme", saved);
-            html.classList.add(saved);
-        });
-    </script>
 </head>
 
-<body class="bg-primary-bg text-text-base transition-colors duration-500">
+<body class="bg-primary-bg text-text-base">
 <main class="min-h-screen bg-primary-bg">
 
-    <!-- HERO -->
-    <section class="hero-grid-bg border-b border-gray-800">
-        <div class="max-w-6xl mx-auto px-4 pt-8 pb-12">
+<!-- HERO -->
+<section class="hero-grid-bg border-b border-gray-800">
+    <div class="max-w-6xl mx-auto px-4 pt-8 pb-12">
 
-            <!-- Back -->
-            <a href="../index.html#projects"
-               class="inline-flex items-center text-accent-cyan text-sm mb-6 hover:text-accent-red transition">
+        <!-- Back -->
+        <a href="../index.html#projects"
+           class="inline-flex items-center text-accent-cyan text-xs mb-6 hover:text-accent-red">
+            ← Back to Portfolio
+        </a>
+
+        <!-- Pills -->
+        <div class="flex flex-wrap gap-2 mb-5">
+            <span class="pill pill-accent">Excel KPI Project</span>
+            <span class="pill pill-muted">Operations Analytics</span>
+            <span class="pill pill-muted">Statistical Testing</span>
+            <span class="pill pill-muted">Dashboard Reporting</span>
+        </div>
+
+        <!-- Title -->
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3">
+            Operational Performance Analysis for a Manufacturing Company
+        </h1>
+
+        <p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed">
+            A full operational analytics project built in Microsoft Excel and Word to diagnose 
+            performance issues in a lawn equipment manufacturing company. The project analyzes 
+            on-time delivery KPIs, transmission cost efficiency, and employee retention to provide 
+            data-driven recommendations that support better operational decision-making.
+        </p>
+
+        <!-- Meta Pills -->
+        <div class="flex flex-wrap gap-3 mt-5 text-[0.7rem] text-text-secondary">
+            <span class="px-3 py-1 rounded-full bg-secondary-bg border border-gray-700 inline-flex items-center gap-2">
+                <span class="w-1.5 h-1.5 bg-accent-primary rounded-full"></span>
+                Excel Dashboards · KPI Modeling
+            </span>
+            <span class="px-3 py-1 rounded-full bg-secondary-bg border border-gray-700 inline-flex items-center gap-2">
+                <span class="w-1.5 h-1.5 bg-accent-primary rounded-full"></span>
+                Statistical Analysis · ANOVA · Proportion Tests
+            </span>
+        </div>
+
+        <!-- Narrative + What I Built -->
+        <div class="mt-10 grid md:grid-cols-2 gap-6">
+
+            <!-- Project Narrative -->
+            <article class="card-section">
+                <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2">
+                    Project Narrative
+                </p>
+                <p class="text-sm leading-relaxed mb-2">
+                    This senior-level analytics project evaluated key operational KPIs for a lawn equipment 
+                    manufacturer. Using structured Excel workbooks, statistical testing, and business-focused 
+                    reporting, I identified performance trends, cost inefficiencies, and retention issues that 
+                    directly impact productivity and profitability.
+                </p>
+                <p class="text-sm leading-relaxed">
+                    The deliverables included a multi-tab Excel analysis workbook and an 8-page report 
+                    summarizing KPI trends, test results, and recommendations.
+                </p>
+            </article>
+
+            <!-- What I Built -->
+            <article class="card-section">
+                <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2">
+                    What I Built
+                </p>
+                <ul class="list-disc list-outside pl-5 space-y-1.5 text-sm">
+                    <li>Multi-tab Excel workbook for KPI analysis.</li>
+                    <li>On-time delivery, transmission cost, and employee retention dashboards.</li>
+                    <li>One-sample proportion test for delivery improvement (2014 → 2018).</li>
+                    <li>ANOVA testing to compare transmission process costs.</li>
+                    <li>Retention breakdowns by gender and locality.</li>
+                    <li>Full Word-based report summarizing results and insights.</li>
+                </ul>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- WORKFLOW OVERVIEW -->
+<section class="py-10 border-b border-gray-800">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="section-title-wrapper mb-6"><h2>Workflow Overview</h2><span></span></div>
+
+        <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
+            <div class="card-section text-xs">
+                <p class="font-mono text-accent-cyan uppercase mb-1">Step 1</p>
+                <p class="text-sm font-semibold mb-1">Data Import</p>
+                <p class="text-[0.8rem] text-text-secondary">Excel workbooks imported with raw delivery, cost, and retention data.</p>
+            </div>
+
+            <div class="card-section text-xs">
+                <p class="font-mono text-accent-cyan uppercase mb-1">Step 2</p>
+                <p class="text-sm font-semibold mb-1">Cleaning & Exploration</p>
+                <p class="text-[0.8rem] text-text-secondary">Formatted cells, applied filters, corrected missing values.</p>
+            </div>
+
+            <div class="card-section text-xs">
+                <p class="font-mono text-accent-cyan uppercase mb-1">Step 3</p>
+                <p class="text-sm font-semibold mb-1">KPI Construction</p>
+                <p class="text-[0.8rem] text-text-secondary">Developed metrics for delivery %, process costs, and retention.</p>
+            </div>
+
+            <div class="card-section text-xs">
+                <p class="font-mono text-accent-cyan uppercase mb-1">Step 4</p>
+                <p class="text-sm font-semibold mb-1">Statistical Testing</p>
+                <p class="text-[0.8rem] text-text-secondary">Performed proportion test and ANOVA on KPI data.</p>
+            </div>
+
+            <div class="card-section text-xs">
+                <p class="font-mono text-accent-cyan uppercase mb-1">Step 5</p>
+                <p class="text-sm font-semibold mb-1">Reporting</p>
+                <p class="text-[0.8rem] text-text-secondary">Created structured Word report summarizing actionable insights.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- LAB BREAKDOWN -->
+<section class="py-12">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="section-title-wrapper mb-6"><h2>Lab Breakdown</h2><span></span></div>
+
+        <div class="space-y-8">
+
+            <!-- 1. Dataset Overview -->
+            <section class="card-section">
+                <h3 class="text-base font-semibold mb-1">1. Dataset Overview</h3>
+                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                    Excel Workbook · Multiple KPI Tabs · 2014–2018
+                </p>
+
+                <p class="mb-3">
+                    The dataset contained operational metrics for delivery performance, transmission unit costs, 
+                    and employee retention, organized in labeled Excel tabs for clear navigation:
+                </p>
+
+                <ul class="list-disc pl-5 space-y-1 mb-4 text-text-secondary">
+                    <li>On-Time Delivery Analysis (2014–2018)</li>
+                    <li>Transmission Cost Comparisons</li>
+                    <li>Employee Retention (Gender & Locality)</li>
+                </ul>
+
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
+                    <p class="text-xs italic">[ Screenshot: BUS 310 CSP Main Screen ]</p>
+                </div>
+            </section>
+
+            <!-- 2. On-Time Delivery -->
+            <section class="card-section">
+                <h3 class="text-base font-semibold mb-1">2. On-Time Delivery Analysis</h3>
+                <p class="text-xs uppercase tracking-[0.16em] mb-3 text-text-secondary">
+                    One-sample proportion test · Delivery trend visualization
+                </p>
+
+                <p class="mb-3">
+                    Delivery performance was analyzed from 2014 to 2018. A one-sample proportion test showed a 
+                    statistically meaningful improvement in 2018 compared to baseline 2014 delivery rates.
+                </p>
+
+                <ul class="list-disc pl-5 space-y-1 mb-4 text-text-secondary">
+                    <li>Monthly trend analysis revealed seasonality patterns.</li>
+                    <li>Delivery performance rose steadily across the time period.</li>
+                </ul>
+
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
+                    <p class="text-xs italic">[ Screenshot: BUS 310 CSP OTD Percentage ]</p>
+                </div>
+            </section>
+
+            <!-- 3. Transmission Cost -->
+            <section class="card-section">
+                <h3 class="text-base font-semibold mb-1">3. Transmission Cost Analysis</h3>
+                <p class="text-xs uppercase tracking-[0.16em] mb-3 text-text-secondary">
+                    One-way ANOVA · Cost comparison across processes
+                </p>
+
+                <p class="mb-3">
+                    A one-way ANOVA test was performed to compare transmission process costs. Although differences 
+                    were not large, Process A emerged as a slightly more cost-effective alternative.
+                </p>
+
+                <ul class="list-disc pl-5 space-y-1 mb-4 text-text-secondary">
+                    <li>Evaluated cost components across several processes.</li>
+                    <li>ANOVA showed marginal variances but actionable insights.</li>
+                </ul>
+
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
+                    <p class="text-xs italic">[ Screenshot: BUS 310 CSP UTC for Processes ]</p>
+                </div>
+            </section>
+
+            <!-- 4. Employee Retention -->
+            <section class="card-section">
+                <h3 class="text-base font-semibold mb-1">4. Employee Retention Analysis</h3>
+                <p class="text-xs uppercase tracking-[0.16em] mb-3 text-text-secondary">
+                    Gender · Locality · Retention trends
+                </p>
+
+                <p class="mb-3">
+                    Employee retention was evaluated using demographic breakdowns. Local employees and male employees 
+                    showed slightly higher retention, informing targeted retention strategies.
+                </p>
+
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
+                    <p class="text-xs italic">[ Screenshot: BUS 310 CSP ER by G&L ]</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</section>
+
+<!-- INSIGHTS / OUTCOMES -->
+<section class="py-10 border-t border-gray-800">
+    <div class="max-w-6xl mx-auto px-4 space-y-10">
+        
+        <!-- Key Outcomes -->
+        <div>
+            <div class="section-title-wrapper mb-6"><h2>Key Outcomes</h2><span></span></div>
+            <div class="card-section">
+                <ul class="list-disc pl-5 space-y-2 text-sm text-text-secondary">
+                    <li>Delivery performance increased consistently from 2014 to 2018.</li>
+                    <li>Process A identified as slightly more cost-effective.</li>
+                    <li>Retention patterns revealed demographic risk factors.</li>
+                    <li>Excel workbook and report provide reusable templates for operational analysis.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Skills Demonstrated -->
+        <div>
+            <div class="section-title-wrapper mb-6"><h2>Skills Demonstrated</h2><span></span></div>
+            <div class="card-section flex flex-wrap gap-2 text-[0.7rem]">
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Excel Modeling</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">KPI Analysis</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Statistical Testing</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Dashboard Reporting</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Operational Analytics</span>
+                <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Data Cleaning</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SUMMARY -->
+<section class="pb-12">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="card-section border border-accent-cyan">
+            <h3 class="text-xs font-semibold uppercase tracking-[0.18em] text-accent-cyan mb-3">Summary</h3>
+            <p class="text-sm text-text-secondary leading-relaxed">
+                This manufacturing KPI analysis demonstrates how operational datasets can be transformed into 
+                decision-ready insights. The project highlights improvements in delivery performance, modest 
+                cost optimization opportunities, and workforce retention patterns. With structured worksheets 
+                and a clear narrative report, leadership gains a reliable framework for tracking performance and 
+                identifying opportunities for continued operational improvement.
+            </p>
+        </div>
+
+        <div class="mt-8">
+            <a href="../index.html#projects" class="text-accent-cyan text-xs hover:text-accent-red">
                 ← Back to Portfolio
             </a>
-
-            <!-- Pills -->
-            <div class="flex flex-wrap gap-2 mb-4">
-                <span class="pill pill-accent">Excel KPI Project</span>
-                <span class="pill pill-muted">Operational Analysis</span>
-                <span class="pill pill-muted">Dashboard Design</span>
-                <span class="pill pill-muted">ETL Cleaning</span>
-            </div>
-
-            <!-- Title -->
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3">
-                Operational Performance: Manufacturing KPI Analysis
-            </h1>
-            <p class="max-w-3xl text-sm text-text-secondary leading-relaxed">
-                Designed a full operational KPI dashboard for a lawn equipment manufacturer, combining cleaned datasets,
-                calculated metrics, and Excel visualizations to uncover patterns in delivery performance, unit cost,
-                product margins, and retention.
-            </p>
-
-            <!-- Meta -->
-            <div class="flex flex-wrap gap-3 mt-5 text-xs text-text-secondary">
-                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
-                    <span class="w-1.5 h-1.5 rounded-full bg-accent-cyan"></span>
-                    Excel • KPI Dashboards
-                </span>
-                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
-                    <span class="w-1.5 h-1.5 rounded-full bg-accent-cyan"></span>
-                    Operational Performance
-                </span>
-            </div>
-
-            <!-- Top Cards -->
-            <div class="mt-10 grid md:grid-cols-2 gap-6">
-
-                <!-- Narrative -->
-                <article class="card-shell p-6">
-                    <h2 class="text-xs font-bold tracking-[0.22em] uppercase mb-3">Project Narrative</h2>
-                    <p class="text-sm text-text-secondary leading-relaxed mb-3">
-                        The goal was to evaluate production performance using real operational data. Multiple files were
-                        cleaned, standardized, and joined into a structured data model. I then created calculated KPI
-                        fields and built an interactive dashboard that summarizes trends for leadership.
-                    </p>
-                    <p class="text-sm text-text-secondary leading-relaxed">
-                        The final product provides a clear, consolidated view of efficiency, cost behavior, labor
-                        stability, and product-line contribution.
-                    </p>
-                </article>
-
-                <!-- What I Built -->
-                <article class="card-shell-simple p-6">
-                    <h2 class="text-xs font-bold tracking-[0.22em] uppercase mb-3">What I Built</h2>
-                    <ul class="list-disc list-outside pl-5 space-y-2 text-sm leading-relaxed text-text-base">
-                        <li>Cleaned raw operational files and corrected inconsistent fields.</li>
-                        <li>Created calculated KPIs including delivery %, retention, unit cost, and defect rate.</li>
-                        <li>Used pivot tables, relationships, and slicers for drill-down analysis.</li>
-                        <li>Designed an executive dashboard summarizing key operational trends.</li>
-                        <li>Highlighted inefficiencies and product-line performance issues.</li>
-                    </ul>
-                </article>
-            </div>
         </div>
-    </section>
-
-    <!-- CONTENT -->
-    <section class="py-12 bg-primary-bg">
-        <div class="max-w-6xl mx-auto px-4">
-
-            <!-- Data & Methodology -->
-            <div class="section-title-wrapper">
-                <h2>Data & Methodology</h2>
-                <span></span>
-            </div>
-
-            <p class="text-sm text-text-secondary leading-relaxed mb-4">
-                The analysis started with raw CSV and Excel files extracted from operational logs. After cleaning and
-                combining them, I calculated KPIs and built an Excel dashboard to visualize month-to-month performance.
-            </p>
-
-            <ul class="list-disc list-outside pl-5 space-y-1 text-sm text-text-secondary mb-6">
-                <li>Standardized inconsistent headers and formats.</li>
-                <li>Removed duplicate rows and corrected missing values.</li>
-                <li>Built calculated fields for performance KPIs.</li>
-                <li>Created pivot models with slicers for flexible analysis.</li>
-            </ul>
-
-            <div class="w-full my-6 bg-secondary-bg p-6 rounded-xl border border-gray-700 text-xs italic text-text-secondary text-center">
-                [ Insert screenshot: raw data or setup view ]
-            </div>
-
-            <!-- KPIs -->
-            <div class="section-title-wrapper mt-12">
-                <h2>Key KPIs Calculated</h2>
-                <span></span>
-            </div>
-
-            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary leading-relaxed">
-                <li><strong class="text-text-base">On-Time Delivery %</strong> — share of orders shipped by or before the scheduled date.</li>
-                <li><strong class="text-text-base">Transmission Unit Cost</strong> — total cost per produced unit.</li>
-                <li><strong class="text-text-base">Retention Rate</strong> — monthly production employee retention.</li>
-                <li><strong class="text-text-base">Defect Rate</strong> — defective units divided by total output.</li>
-                <li><strong class="text-text-base">Product Line Contribution</strong> — margin analysis to identify high-value items.</li>
-            </ul>
-
-            <!-- Excel Logic -->
-            <div class="section-title-wrapper mt-12">
-                <h2>Sample Excel Logic</h2>
-                <span></span>
-            </div>
-
-            <pre class="bg-secondary-bg border border-gray-700 rounded-xl p-4 overflow-x-auto text-[0.85rem]">
-<code># On-Time Delivery %
-=IF([@[Ship Date]] <= [@[Due Date]], 1, 0)
-
-# Retention Rate
-=([@[Employees Start]] - [@[Employees Separated]]) / [@[Employees Start]]
-
-# Transmission Unit Cost
-=[@[Direct Labor]] + [@[Parts Cost]] + [@[Overhead]] + [@[Rework Cost]]</code></pre>
-
-            <div class="w-full my-6 bg-secondary-bg p-6 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
-                [ Insert screenshot: KPI formulas or pivot table ]
-            </div>
-
-            <!-- Insights -->
-            <div class="section-title-wrapper mt-12">
-                <h2>Dashboard Insights</h2>
-                <span></span>
-            </div>
-
-            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary leading-relaxed mb-6">
-                <li>On-time delivery showed seasonal bottlenecks affecting customer fulfillment.</li>
-                <li>Unit cost analysis highlighted declining margins in certain product lines.</li>
-                <li>Retention dips aligned with production slowdowns in peak months.</li>
-                <li>Leadership gained visibility into cost outliers and staffing needs.</li>
-            </ul>
-
-            <div class="w-full my-6 bg-secondary-bg p-6 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
-                [ Insert screenshot: dashboard overview ]
-            </div>
-
-            <!-- Business Value -->
-            <div class="section-title-wrapper mt-12">
-                <h2>Business Value Delivered</h2>
-                <span></span>
-            </div>
-
-            <p class="text-sm text-text-secondary leading-relaxed mb-4">
-                The consolidated KPI dashboard provided leadership with a clearer understanding of operational
-                performance, allowing them to make data-supported decisions.
-            </p>
-
-            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary leading-relaxed">
-                <li>Identified underperforming product lines and cost drivers.</li>
-                <li>Improved inventory forecasting and staffing outlook.</li>
-                <li>Revealed inefficiencies causing margin erosion.</li>
-                <li>Created a measurable baseline for operational health.</li>
-            </ul>
-
-            <!-- Skills -->
-            <div class="section-title-wrapper mt-12">
-                <h2>Skills Demonstrated</h2>
-                <span></span>
-            </div>
-
-            <div class="flex flex-wrap gap-2 mb-12">
-                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Excel Modeling</span>
-                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">KPI Design</span>
-                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Pivot Tables</span>
-                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">ETL Cleaning</span>
-                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Operational Analysis</span>
-                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Trend Interpretation</span>
-            </div>
-
-            <!-- Summary -->
-            <div class="bg-secondary-bg border border-accent-cyan rounded-2xl p-6 shadow-lg">
-                <h3 class="text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-accent-cyan">
-                    Summary
-                </h3>
-                <p class="text-sm text-text-secondary leading-relaxed">
-                    This project consolidates raw operational data into a structured KPI framework that highlights trends,
-                    inefficiencies, and product-line performance. The final dashboard gives leadership a clear view of
-                    manufacturing health and supports stronger decision-making across cost control, staffing, and production
-                    planning.
-                </p>
-            </div>
-
-            <!-- Back bottom -->
-            <div class="mt-10">
-                <a href="../index.html#projects"
-                   class="inline-flex items-center text-accent-cyan text-sm hover:text-accent-red transition">
-                    ← Back to Portfolio
-                </a>
-            </div>
-
-        </div>
-    </section>
+    </div>
+</section>
 
 </main>
 </body>
