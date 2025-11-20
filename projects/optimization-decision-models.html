@@ -8,19 +8,19 @@
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Fonts + Theme Variables -->
+    <!-- Fonts + Theme -->
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
 
         .dark {
             --bg-default: #050814;
-            --bg-secondary: #111827;
+            --bg-secondary: #0d111f;
             --text-base: #e5e7eb;
             --text-secondary: #9ca3af;
             --accent-primary: #00ffff;
             --accent-red: #f97373;
             --container-bg: #020617;
-            background: var(--bg-default);
+            background-color: var(--bg-default);
             color: var(--text-base);
         }
 
@@ -41,98 +41,109 @@
 
         .hero-grid-bg {
             background-color: var(--bg-default);
-            background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+            background-image: radial-gradient(circle, rgba(148,163,184,0.12) 1px, transparent 1px);
             background-size: 22px 22px;
         }
 
         .section-title-wrapper {
             display: inline-flex;
             align-items: center;
-            margin-bottom: 1.75rem;
+            margin-bottom: 1.25rem;
             font-family: "Inconsolata", monospace;
         }
 
         .section-title-wrapper h2 {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: var(--accent-primary);
         }
 
         .section-title-wrapper span {
-            flex-grow: 1;
-            width: 150px;
             margin-left: .75rem;
-            border-bottom: 2px solid var(--text-secondary);
+            border-bottom: 1px solid var(--text-secondary);
+            flex-grow: 1;
+            width: 140px;
+            color: var(--text-secondary);
         }
 
         .pill {
             border-radius: 999px;
-            padding: .25rem .6rem;
-            font-size: .68rem;
-            border: 1px solid rgba(148,163,184,0.5);
-            letter-spacing: .12em;
+            padding: 0.18rem 0.6rem;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            font-size: 0.68rem;
             text-transform: uppercase;
-        }
-
-        .pill-accent {
-            color: var(--accent-primary);
-            border-color: rgba(34,211,238,0.8);
+            letter-spacing: 0.12em;
+            white-space: nowrap;
         }
 
         .pill-muted {
             color: var(--text-secondary);
+            background-color: rgba(15,23,42,0.96);
         }
 
-        .card-shell {
-            border-radius: 1.25rem;
-            border: 1px solid rgba(31,41,55,0.85);
-            background: radial-gradient(circle at top left,
-                        rgba(56,189,248,0.16),
-                        transparent 60%),
-                        radial-gradient(circle at bottom right,
-                        rgba(15,23,42,0.96),
-                        #020617);
-            box-shadow: 0 22px 40px rgba(0,0,0,0.55);
+        .pill-accent {
+            color: var(--accent-primary);
+            background-color: rgba(15,23,42,0.96);
+            border-color: rgba(34,211,238,0.8);
         }
 
-        .card-shell-simple {
-            border-radius: 1.25rem;
-            background: rgba(15,23,42,0.98);
-            border: 1px solid rgba(31,41,55,0.9);
-            box-shadow: 0 22px 40px rgba(0,0,0,0.55);
+        .card-section {
+            border-radius: 0.9rem;
+            border-width: 1px;
+            border-color: rgba(31,41,55,0.9);
+            background-color: var(--bg-secondary);
+            padding: 1.75rem;
+            box-shadow: 0 16px 28px rgba(0,0,0,0.45);
         }
 
         pre code {
             font-family: "Inconsolata", monospace;
-            font-size: .85rem;
+            font-size: 0.82rem;
         }
     </style>
 
     <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-bg": "var(--bg-default)",
+                        "secondary-bg": "var(--bg-secondary)",
+                        "container-bg": "var(--container-bg)",
+                        "text-base": "var(--text-base)",
+                        "text-secondary": "var(--text-secondary)",
+                        "accent-cyan": "var(--accent-primary)",
+                        "accent-red": "var(--accent-red)"
+                    }
+                }
+            }
+        };
+
         document.addEventListener("DOMContentLoaded", () => {
             const html = document.documentElement;
             const saved = localStorage.getItem("theme") || "dark";
-            html.classList.add(saved);
             html.setAttribute("data-theme", saved);
+            html.classList.add(saved);
         });
     </script>
 </head>
 
 <body class="bg-primary-bg text-text-base">
-<main class="min-h-screen">
+<main class="min-h-screen bg-primary-bg">
 
-    <!-- HERO SECTION -->
+    <!-- HERO -->
     <section class="hero-grid-bg border-b border-gray-800">
         <div class="max-w-6xl mx-auto px-4 pt-8 pb-12">
 
-            <!-- Back Link -->
+            <!-- Back -->
             <a href="../index.html#projects"
-               class="inline-flex text-accent-cyan text-sm mb-6 hover:text-accent-red transition">
+               class="inline-flex text-accent-cyan text-xs sm:text-sm mb-6 hover:text-accent-red transition">
                 ← Back to Portfolio
             </a>
 
-            <!-- Tags -->
-            <div class="flex flex-wrap gap-2 mb-4">
+            <!-- Pills -->
+            <div class="flex flex-wrap gap-2 mb-5">
                 <span class="pill pill-accent">Operations Management</span>
                 <span class="pill pill-muted">Optimization</span>
                 <span class="pill pill-muted">Simulation</span>
@@ -140,58 +151,53 @@
             </div>
 
             <!-- Title -->
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
                 Operations Optimization & Decision Models
             </h1>
 
-            <p class="max-w-3xl text-sm text-text-secondary leading-relaxed">
-                A six-part operations and supply chain project applying linear programming (LP), mixed-integer and binary
-                models, queueing theory, decision trees, and Monte Carlo simulation to real-world scenarios in retail,
-                legal services, and manufacturing. The work focuses on resource allocation, risk-aware decision-making,
-                and cost-efficient process design.
+            <p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed">
+                A six-part operations and supply chain project applying linear programming, queueing theory,
+                mixed-integer models, Monte Carlo simulation, payoff & regret tables, and EMV decision trees to
+                real-world scenarios in retail, legal services, and manufacturing.
             </p>
 
-            <!-- Meta -->
-            <div class="flex flex-wrap gap-3 mt-6 text-xs text-text-secondary">
-                <span class="inline-flex items-center gap-2 px-3 py-1 bg-secondary-bg border border-gray-700 rounded-full">
-                    <span class="w-1.5 h-1.5 bg-accent-cyan rounded-full"></span>
+            <!-- Meta Pills -->
+            <div class="flex flex-wrap gap-3 mt-5 text-[0.7rem] sm:text-xs text-text-secondary">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent-cyan"></span>
                     Resource Optimization
                 </span>
-                <span class="inline-flex items-center gap-2 px-3 py-1 bg-secondary-bg border border-gray-700 rounded-full">
-                    <span class="w-1.5 h-1.5 bg-accent-cyan rounded-full"></span>
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent-cyan"></span>
                     Quantitative Decision-Making
                 </span>
             </div>
 
-            <!-- Two Cards -->
-            <div class="grid md:grid-cols-2 gap-6 mt-10">
+            <!-- Narrative + What I Built -->
+            <div class="mt-10 grid md:grid-cols-2 gap-6">
 
-                <!-- Narrative -->
-                <article class="card-shell p-6">
-                    <h2 class="text-xs tracking-[0.22em] uppercase font-bold mb-3">Project Narrative</h2>
-                    <p class="text-sm text-text-secondary leading-relaxed mb-3">
-                        As part of an Operations and Supply Chain Management course, this project tackled six structured
-                        business problems ranging from staffing cashiers and stocking perishable goods to evaluating
-                        legal strategy and assigning machinists. Each problem was modeled quantitatively, solved using
-                        tools like Excel Solver and LINGO, and translated into a concrete recommendation.
+                <article class="card-section">
+                    <p class="text-[0.7rem] uppercase tracking-[0.22em] text-text-secondary mb-2">Project Narrative</p>
+                    <p class="text-sm leading-relaxed mb-2">
+                        These six business problems were solved using operations research techniques rooted in
+                        optimization, probability, and decision science. Each model targets efficiency, profitability,
+                        or risk reduction, demonstrating how structured analytics directly support real-world decisions.
                     </p>
-                    <p class="text-sm text-text-secondary leading-relaxed">
-                        The result is a compact portfolio of operations research techniques showing how LP, Monte Carlo
-                        simulation, decision trees, and binary integer programming directly support profitability,
-                        service quality, and risk management.
+                    <p class="text-sm leading-relaxed">
+                        The combined set forms a decision-support toolkit applicable across retail operations,
+                        inventory management, legal strategy, labor planning, and manufacturing assignments.
                     </p>
                 </article>
 
-                <!-- What I Built -->
-                <article class="card-shell-simple p-6">
-                    <h2 class="text-xs tracking-[0.22em] uppercase font-bold mb-3">What I Built</h2>
-                    <ul class="list-disc pl-5 text-sm leading-relaxed text-text-base space-y-2">
-                        <li>Queueing model for cashier staffing and balking reduction.</li>
-                        <li>Decision table, regret table, and sensitivity analysis for steak stocking.</li>
-                        <li>Monte Carlo profitability simulation for launching a new product line.</li>
-                        <li>LP cost comparison for copier selection in a law office.</li>
-                        <li>Decision tree model for a patent infringement lawsuit strategy.</li>
-                        <li>Binary integer assignment model for machinist–machine pairing in manufacturing.</li>
+                <article class="card-section">
+                    <p class="text-[0.7rem] uppercase tracking-[0.22em] text-text-secondary mb-2">What I Built</p>
+                    <ul class="list-disc list-outside pl-5 space-y-2 text-sm sm:text-[0.95rem] leading-relaxed">
+                        <li>Queueing model for retail checkout optimization.</li>
+                        <li>Linear programming model for copier cost minimization.</li>
+                        <li>Binary integer programming for machinist–machine assignment.</li>
+                        <li>Monte Carlo simulation for uncertain profitability.</li>
+                        <li>Payoff & regret tables for perishable inventory decisions.</li>
+                        <li>EMV decision tree for legal strategy optimization.</li>
                     </ul>
                 </article>
 
@@ -203,256 +209,117 @@
     <section class="py-12 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4">
 
-            <!-- Overview & Tools -->
-            <div class="section-title-wrapper">
-                <h2>Project Overview & Tools</h2>
+            <!-- CATEGORY 1 -->
+            <div class="section-title-wrapper mb-4">
+                <h2>Optimization Models (Queueing, Linear Programming, Binary Assignment)</h2>
                 <span></span>
             </div>
 
-            <p class="text-sm text-text-secondary leading-relaxed mb-4">
-                The project was completed in Fall 2023 for an Operations and Supply Chain Management course. It combines
-                management science techniques to support resource optimization, cost reduction, and structured
-                decision-making across six distinct business cases.
-            </p>
+            <div class="card-section mb-10 text-text-secondary text-sm leading-relaxed">
+                <p class="text-text-base font-semibold mb-3">Included Models:</p>
+                <ul class="list-disc pl-5 space-y-2 mb-4">
+                    <li><span class="text-text-base font-semibold">Queueing Model:</span> Determined cashier staffing using M/M/c queues.</li>
+                    <li><span class="text-text-base font-semibold">LP Copier Model:</span> Compared copier leasing options for minimum daily cost.</li>
+                    <li><span class="text-text-base font-semibold">Binary Assignment:</span> Assigned machinists to machines using a BILP.</li>
+                </ul>
 
-            <ul class="list-disc pl-5 text-sm text-text-secondary leading-relaxed space-y-1 mb-4">
-                <li><span class="font-semibold text-text-base">Techniques:</span> LP, MILP, BILP, queueing theory, decision trees, Monte Carlo simulation.</li>
-                <li><span class="font-semibold text-text-base">Software:</span> Excel with Solver Add-In, LINGO.</li>
-                <li><span class="font-semibold text-text-base">Domains:</span> retail checkout, inventory, product launch, office equipment, legal strategy, machining.</li>
-            </ul>
+                <p class="font-semibold text-text-base mt-4 mb-2">Representative Equation (Queueing):</p>
+                <pre class="bg-secondary-bg border border-gray-700 rounded-lg p-4 overflow-x-auto">
+<code>ρ = λ / (cμ)
 
-            <div class="my-6 bg-secondary-bg p-6 border border-gray-700 rounded-xl text-center text-xs italic text-text-secondary">
-                [ Insert screenshot: overview worksheet or summary dashboard ]
-            </div>
+Select minimum c such that:
+P(wait &gt; 5 min) ≤ threshold</code>
+                </pre>
 
-            <!-- Problem A -->
-            <div class="section-title-wrapper mt-12">
-                <h2>Problem A – Customer Checkout Optimization</h2>
-                <span></span>
-            </div>
-
-            <p class="text-xs uppercase tracking-[0.18em] text-text-secondary mb-2">
-                Queueing model to reduce balking and excessive waiting in a retail environment.
-            </p>
-
-            <ul class="list-disc pl-5 text-sm text-text-secondary leading-relaxed space-y-2 mb-3">
-                <li><span class="font-semibold text-text-base">Objective:</span> Determine the minimum number of cashiers required so customers rarely wait more than 5 minutes.</li>
-                <li><span class="font-semibold text-text-base">Methodology:</span> Modeled arrivals as a Poisson process and service times as exponential (M/M/c queue), then evaluated utilization and waiting-time metrics for 1, 2, and 3 cashiers.</li>
-                <li><span class="font-semibold text-text-base">Result:</span> At least three cashiers are required to keep waiting times under the target threshold and minimize customer balking.</li>
-            </ul>
-
-            <pre class="bg-secondary-bg border border-gray-700 rounded-xl p-4 overflow-x-auto text-[0.83rem]">
-<code>ρ = λ / (cμ)              -- Utilization with c cashiers
-P(wait &gt; 5) ≈ P(queue &gt; 0)·e^{-(μc-λ)·5}
-
-Evaluate c = 1, 2, 3 and select the smallest c
-that satisfies P(wait &gt; 5 minutes) ≤ target.</code>
-            </pre>
-
-            <div class="my-6 bg-secondary-bg p-6 border border-gray-700 rounded-xl text-center text-xs italic text-text-secondary">
-                [ Insert screenshot: queueing calculations and performance table ]
-            </div>
-
-            <!-- Problem B -->
-            <div class="section-title-wrapper mt-12">
-                <h2>Problem B – Specialty Steak Stocking</h2>
-                <span></span>
-            </div>
-
-            <p class="text-xs uppercase tracking-[0.18em] text-text-secondary mb-2">
-                Payoff, regret, and sensitivity analysis for perishable inventory decisions.
-            </p>
-
-            <ul class="list-disc pl-5 text-sm text-text-secondary leading-relaxed space-y-2 mb-3">
-                <li><span class="font-semibold text-text-base">Objective:</span> Choose a weekly stocking level that maximizes expected profit while controlling risk of over- or under-stocking.</li>
-                <li><span class="font-semibold text-text-base">Methodology:</span> Built payoff and regret tables for multiple demand levels, then applied expected value, optimistic, and pessimistic criteria, followed by sensitivity analysis.</li>
-                <li><span class="font-semibold text-text-base">Result:</span> An order quantity of 35 pounds produced the highest expected weekly profit (~$79) and remained optimal under reasonable demand fluctuations.</li>
-            </ul>
-
-            <pre class="bg-secondary-bg border border-gray-700 rounded-xl p-4 overflow-x-auto text-[0.83rem]">
-<code>Expected Value(Q) = Σ [ P(demand = d) · Profit(Q, d) ]
-
-Choose Q* such that Expected Value(Q*) is maximized,
-then validate robustness with sensitivity analysis.</code>
-            </pre>
-
-            <div class="my-6 bg-secondary-bg p-6 border border-gray-700 rounded-xl text-center text-xs italic text-text-secondary">
-                [ Insert screenshot: payoff & regret table with highlighted optimal quantity ]
-            </div>
-
-            <!-- Problem C -->
-            <div class="section-title-wrapper mt-12">
-                <h2>Problem C – Profitability of a New Product</h2>
-                <span></span>
-            </div>
-
-            <p class="text-xs uppercase tracking-[0.18em] text-text-secondary mb-2">
-                Monte Carlo simulation of per-unit profit under uncertain cost structure.
-            </p>
-
-            <ul class="list-disc pl-5 text-sm text-text-secondary leading-relaxed space-y-2 mb-3">
-                <li><span class="font-semibold text-text-base">Objective:</span> Estimate expected profit per unit and risk bounds for a new product before launch.</li>
-                <li><span class="font-semibold text-text-base">Methodology:</span> Ran 20 Monte Carlo trials with random draws for purchase, labor, and transportation cost, holding demand at 1,000 units and computing per-unit profit each run.</li>
-                <li><span class="font-semibold text-text-base">Result:</span> Mean profit per unit ≈ $6.90, standard deviation ≈ $2.27, with a 95% confidence interval between ~$4.46 and ~$9.34, supporting a tentative recommendation to launch.</li>
-            </ul>
-
-            <pre class="bg-secondary-bg border border-gray-700 rounded-xl p-4 overflow-x-auto text-[0.83rem]">
-<code>For each trial i:
-    purchase_costᵢ ~ Dist(...)
-    labor_costᵢ    ~ Dist(...)
-    transport_costᵢ~ Dist(...)
-    profit_per_unitᵢ = SellingPrice
-                       - purchase_costᵢ
-                       - labor_costᵢ
-                       - transport_costᵢ
-
-Aggregate:
-    μ = mean(profit_per_unitᵢ)
-    σ = sd(profit_per_unitᵢ)
-    95% CI ≈ μ ± 1.96·σ/√n</code>
-            </pre>
-
-            <div class="my-6 bg-secondary-bg p-6 border border-gray-700 rounded-xl text-center text-xs italic text-text-secondary">
-                [ Insert screenshot: Monte Carlo simulation table and histogram ]
-            </div>
-
-            <!-- Problem D -->
-            <div class="section-title-wrapper mt-12">
-                <h2>Problem D – Copier Selection for a Law Office</h2>
-                <span></span>
-            </div>
-
-            <p class="text-xs uppercase tracking-[0.18em] text-text-secondary mb-2">
-                LP-based cost comparison between copier leasing options.
-            </p>
-
-            <ul class="list-disc pl-5 text-sm text-text-secondary leading-relaxed space-y-2 mb-3">
-                <li><span class="font-semibold text-text-base">Objective:</span> Choose between a regular copier and a high-speed copier by minimizing daily operating cost.</li>
-                <li><span class="font-semibold text-text-base">Methodology:</span> Calculated hourly operating and labor costs and used linear programming in Excel Solver to compare total daily cost for required print volumes.</li>
-                <li><span class="font-semibold text-text-base">Result:</span> The high-speed copier delivered a daily savings of ~$11.20 compared to the regular option, driven by shorter processing time and lower labor cost per page.</li>
-            </ul>
-
-            <pre class="bg-secondary-bg border border-gray-700 rounded-xl p-4 overflow-x-auto text-[0.83rem]">
-<code>Minimize:   TotalDailyCost = LeaseCost_A + Wage·Hours_A
-Subject to:  Throughput_A ≥ RequiredPages
-            Hours_A ≥ 0
-
-Solve for each copier option and select the lower TotalDailyCost.</code>
-            </pre>
-
-            <div class="my-6 bg-secondary-bg p-6 border border-gray-700 rounded-xl text-center text-xs italic text-text-secondary">
-                [ Insert screenshot: LP model and Solver output comparing copier options ]
-            </div>
-
-            <!-- Problem E -->
-            <div class="section-title-wrapper mt-12">
-                <h2>Problem E – Patent Infringement Lawsuit Decision</h2>
-                <span></span>
-            </div>
-
-            <p class="text-xs uppercase tracking-[0.18em] text-text-secondary mb-2">
-                Decision tree and EMV analysis for legal strategy (settle vs. trial).
-            </p>
-
-            <ul class="list-disc pl-5 text-sm text-text-secondary leading-relaxed space-y-2 mb-3">
-                <li><span class="font-semibold text-text-base">Objective:</span> Decide whether to settle a patent dispute or go to trial based on expected monetary value.</li>
-                <li><span class="font-semibold text-text-base">Methodology:</span> Built a decision tree with branches for settlement and trial, estimating probabilities and payoffs for outcomes like win, lose, and partial settlement; then computed EMV for each branch.</li>
-                <li><span class="font-semibold text-text-base">Result:</span> Going to trial yielded an EMV of ~$1.8M versus ~$1.5M for settling, leading to a recommendation to proceed with litigation (subject to non-financial risk considerations).</li>
-            </ul>
-
-            <pre class="bg-secondary-bg border border-gray-700 rounded-xl p-4 overflow-x-auto text-[0.83rem]">
-<code>EMV(Settle) = P(settle) · Payoff_settle
-EMV(Trial)   = P(win)·Payoff_win + P(lose)·Payoff_lose
-
-Choose the option with higher EMV, then review legal risk qualitatively.</code>
-            </pre>
-
-            <div class="my-6 bg-secondary-bg p-6 border border-gray-700 rounded-xl text-center text-xs italic text-text-secondary">
-                [ Insert screenshot: decision tree diagram with EMV calculations ]
-            </div>
-
-            <!-- Problem F -->
-            <div class="section-title-wrapper mt-12">
-                <h2>Problem F – Machine Assignment for Aircraft Part Manufacturing</h2>
-                <span></span>
-            </div>
-
-            <p class="text-xs uppercase tracking-[0.18em] text-text-secondary mb-2">
-                Binary integer linear programming for machinist–machine assignment.
-            </p>
-
-            <ul class="list-disc pl-5 text-sm text-text-secondary leading-relaxed space-y-2 mb-3">
-                <li><span class="font-semibold text-text-base">Objective:</span> Assign four machinists to four machines (metal lathe, turning, milling, radial drill) to minimize total production time.</li>
-                <li><span class="font-semibold text-text-base">Methodology:</span> Formulated a BILP in LINGO with decision variables x<sub>ij</sub> indicating whether machinist i is assigned to machine j, including a certification constraint preventing Machinist 3 from operating the turning machine.</li>
-                <li><span class="font-semibold text-text-base">Result:</span> Optimal assignment: Machinist 3 → Metal Lathe, Machinist 1 → Turning Machine, Machinist 2 → Milling Machine, Machinist 4 → Radial Drill, with a total processing time of 100 minutes.</li>
-            </ul>
-
-            <pre class="bg-secondary-bg border border-gray-700 rounded-xl p-4 overflow-x-auto text-[0.83rem]">
-<code>Minimize   Σᵢ Σⱼ (timeᵢⱼ · xᵢⱼ)
+                <p class="font-semibold text-text-base mt-4 mb-2">Representative Equation (BILP):</p>
+                <pre class="bg-secondary-bg border border-gray-700 rounded-lg p-4 overflow-x-auto">
+<code>Minimize Σᵢ Σⱼ (timeᵢⱼ · xᵢⱼ)
 
 Subject to:
-    Σⱼ xᵢⱼ = 1      for each machinist i
-    Σᵢ xᵢⱼ = 1      for each machine j
-    x₃,turning = 0  -- Machinist 3 cannot use turning machine
-    xᵢⱼ ∈ {0,1}</code>
-            </pre>
-
-            <div class="my-6 bg-secondary-bg p-6 border border-gray-700 rounded-xl text-center text-xs italic text-text-secondary">
-                [ Insert screenshot: LINGO model input and optimal assignment output ]
+Σⱼ xᵢⱼ = 1
+Σᵢ xᵢⱼ = 1
+xᵢⱼ ∈ {0,1}</code>
+                </pre>
             </div>
 
-            <!-- Usage Instructions -->
-            <div class="section-title-wrapper mt-12">
-                <h2>Usage Instructions</h2>
+            <!-- CATEGORY 2 -->
+            <div class="section-title-wrapper mb-4">
+                <h2>Simulation Models (Monte Carlo Profit Analysis)</h2>
                 <span></span>
             </div>
 
-            <ul class="list-disc pl-5 text-sm text-text-secondary leading-relaxed space-y-2 mb-6">
-                <li><span class="font-semibold text-text-base">System Requirements:</span> Excel with Solver Add-In enabled, LINGO installed on a standard workstation.</li>
-                <li><span class="font-semibold text-text-base">File Setup:</span> Download the Excel workbooks and LINGO model files, then review problem-specific tabs and documentation.</li>
-                <li><span class="font-semibold text-text-base">Configuration:</span> Adjust parameters (arrival rates, costs, demand, processing times) to match the organization’s data.</li>
-                <li><span class="font-semibold text-text-base">Execution:</span> Run Solver in Excel for LP/queue/decision problems; execute BILP and MILP models in LINGO.</li>
-                <li><span class="font-semibold text-text-base">Verification:</span> Cross-check outputs with hand calculations and perform sensitivity analysis around key assumptions.</li>
-            </ul>
+            <div class="card-section mb-10 text-text-secondary text-sm leading-relaxed">
+                <p class="mb-3">
+                    A Monte Carlo simulation estimated expected profit and uncertainty for a new product launch. Each trial
+                    generated random cost components, producing a probability distribution for per-unit profit.
+                </p>
 
-            <!-- Testing & Future Work -->
-            <div class="section-title-wrapper">
-                <h2>Testing, Debugging & Future Enhancements</h2>
+                <ul class="list-disc pl-5 space-y-2 mb-4">
+                    <li>20 simulation runs with random draws for cost variables.</li>
+                    <li>Mean profit per unit: <span class="text-text-base font-semibold">$6.90</span>.</li>
+                    <li>Profit range (95% CI): roughly <span class="text-text-base font-semibold">$4.46–$9.34</span>.</li>
+                </ul>
+
+                <pre class="bg-secondary-bg border border-gray-700 rounded-lg p-4 overflow-x-auto">
+<code>profitᵢ = SellingPrice 
+           - purchase_costᵢ 
+           - labor_costᵢ 
+           - transport_costᵢ</code>
+                </pre>
+            </div>
+
+            <!-- CATEGORY 3 -->
+            <div class="section-title-wrapper mb-4">
+                <h2>Decision Models (Payoff, Regret, EMV & Decision Trees)</h2>
                 <span></span>
             </div>
 
-            <ul class="list-disc pl-5 text-sm text-text-secondary leading-relaxed space-y-2 mb-8">
-                <li>Validated constraints and model logic by adjusting parameters and confirming solution stability.</li>
-                <li>Ran sensitivity analysis on demand, cost, and probability inputs to test robustness.</li>
-                <li>Iteratively refined models when Solver/lingo results conflicted with manual expectations.</li>
-                <li>Identified opportunities to extend models with real-time data feeds and automated reporting.</li>
-                <li>Potential future work includes layering on machine learning for demand prediction and dynamic resource allocation.</li>
-            </ul>
+            <div class="card-section text-text-secondary text-sm leading-relaxed">
+                <p class="mb-3">
+                    These models evaluate decisions under uncertainty using payoff tables, regret metrics, and expected
+                    monetary value. Used for inventory stocking and legal strategy.
+                </p>
+
+                <ul class="list-disc pl-5 space-y-2 mb-4">
+                    <li>Inventory decision using payoff + regret + sensitivity.</li>
+                    <li>Patent lawsuit decision using EMV-based decision tree.</li>
+                    <li>Evaluation of optimistic, pessimistic, and expected value criteria.</li>
+                </ul>
+
+                <pre class="bg-secondary-bg border border-gray-700 rounded-lg p-4 overflow-x-auto">
+<code>EMV(option) = Σ [P(outcomeᵢ) · payoffᵢ]
+
+Choose option with highest EMV.</code>
+                </pre>
+            </div>
 
             <!-- Skills -->
-            <div class="section-title-wrapper">
+            <div class="section-title-wrapper mt-12 mb-4">
                 <h2>Skills Demonstrated</h2>
                 <span></span>
             </div>
 
-            <div class="flex flex-wrap gap-2 mb-12">
-                <span class="px-3 py-1 text-xs font-mono rounded-full border border-accent-cyan text-accent-cyan">Linear Programming (LP)</span>
-                <span class="px-3 py-1 text-xs font-mono rounded-full border border-accent-cyan text-accent-cyan">Mixed & Binary Integer Programming</span>
-                <span class="px-3 py-1 text-xs font-mono rounded-full border border-accent-cyan text-accent-cyan">Queueing Models</span>
-                <span class="px-3 py-1 text-xs font-mono rounded-full border border-accent-cyan text-accent-cyan">Monte Carlo Simulation</span>
-                <span class="px-3 py-1 text-xs font-mono rounded-full border border-accent-cyan text-accent-cyan">Decision Trees & EMV</span>
-                <span class="px-3 py-1 text-xs font-mono rounded-full border border-accent-cyan text-accent-cyan">Excel Solver</span>
-                <span class="px-3 py-1 text-xs font-mono rounded-full border border-accent-cyan text-accent-cyan">LINGO Modeling</span>
+            <div class="card-section mb-12">
+                <div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
+                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Linear Programming</span>
+                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Queueing Theory</span>
+                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Binary Integer Programming</span>
+                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Monte Carlo Simulation</span>
+                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Decision Trees & EMV</span>
+                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Sensitivity Analysis</span>
+                </div>
             </div>
 
             <!-- Summary -->
-            <div class="bg-secondary-bg border border-accent-cyan rounded-2xl p-6 shadow-lg">
-                <h3 class="text-sm font-semibold tracking-[0.18em] uppercase text-accent-cyan mb-3">Summary</h3>
-                <p class="text-sm text-text-secondary leading-relaxed">
+            <div class="bg-secondary-bg border border-white/30 rounded-2xl p-6 shadow-lg">
+                <h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-text-base">
+                    Summary
+                </h3>
+                <p class="text-sm sm:text-[0.95rem] text-text-secondary leading-relaxed">
                     This project demonstrates how operations research techniques move from textbook formulas to practical,
-                    high-impact decisions. By combining queueing models, inventory analysis, simulation, linear programming,
-                    decision trees, and binary assignment, it shows a complete toolkit for optimizing resources,
-                    quantifying risk, and supporting data-driven strategy in real business environments.
+                    high-impact decisions. By combining queueing models, inventory analysis, simulation, linear
+                    programming, decision trees, and binary assignment, it forms a complete toolkit for optimizing
+                    resources and supporting data-driven strategy in real business environments.
                 </p>
             </div>
 
