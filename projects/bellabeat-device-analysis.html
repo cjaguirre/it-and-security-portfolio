@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BellaBeat Smart Device Usage Analysis | Christian Aguirre</title>
+    <title>Bellabeat Smart Device Usage Analysis | Christian Aguirre</title>
 
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -14,7 +14,7 @@
 
         .dark {
             --bg-default: #050814;
-            --bg-secondary: #111827;
+            --bg-secondary: #0d111f;
             --text-base: #e5e7eb;
             --text-secondary: #9ca3af;
             --accent-primary: #00ffff;
@@ -43,70 +43,84 @@
 
         .hero-grid-bg {
             background-color: var(--bg-default);
-            background-image: radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px);
+            background-image: radial-gradient(circle, rgba(148,163,184,0.12) 1px, transparent 1px);
             background-size: 22px 22px;
         }
 
         .section-title-wrapper {
             display: inline-flex;
             align-items: center;
-            margin-bottom: 1.75rem;
+            margin-bottom: 1.25rem;
             font-family: "Inconsolata", monospace;
         }
 
         .section-title-wrapper h2 {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: var(--accent-primary);
         }
 
         .section-title-wrapper span {
             margin-left: .75rem;
-            border-bottom: 2px solid var(--text-secondary);
-            width: 140px;
+            border-bottom: 1px solid var(--text-secondary);
             flex-grow: 1;
+            width: 140px;
         }
 
         .pill {
             border-radius: 999px;
-            padding: .2rem .6rem;
-            border: 1px solid rgba(148,163,184,0.4);
-            font-size: .68rem;
+            padding: 0.18rem 0.6rem;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            font-size: 0.68rem;
             text-transform: uppercase;
-            letter-spacing: .12em;
-        }
-
-        .pill-accent {
-            color: var(--accent-primary);
-            border-color: rgba(34,211,238,0.8);
+            letter-spacing: 0.12em;
         }
 
         .pill-muted {
             color: var(--text-secondary);
+            background-color: rgba(15,23,42,0.96);
         }
 
-        .card-shell {
-            border-radius: 1.25rem;
-            border: 1px solid rgba(31,41,55,0.9);
-            background: radial-gradient(circle at top left, rgba(56,189,248,0.14), transparent 60%),
-                        radial-gradient(circle at bottom right, rgba(15,23,42,0.96), #020617);
-            box-shadow: 0 22px 38px rgba(0,0,0,0.55);
+        .pill-accent {
+            color: var(--accent-primary);
+            background-color: rgba(15,23,42,0.96);
+            border-color: rgba(34,211,238,0.8);
         }
 
-        .card-shell-simple {
-            border-radius: 1.25rem;
-            background-color: rgba(15,23,42,0.98);
-            border: 1px solid rgba(31,41,55,0.9);
-            box-shadow: 0 22px 38px rgba(0,0,0,0.55);
+        /* Flat cards for uniformity */
+        .card-section {
+            border-radius: 0.9rem;
+            border-width: 1px;
+            border-color: rgba(31,41,55,0.9);
+            background-color: var(--bg-secondary);
+            padding: 1.75rem;
+            box-shadow: 0 16px 28px rgba(0,0,0,0.45);
         }
 
         pre code {
             font-family: "Inconsolata", monospace;
-            font-size: 0.86rem;
+            font-size: 0.8rem;
         }
     </style>
 
     <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-bg": "var(--bg-default)",
+                        "secondary-bg": "var(--bg-secondary)",
+                        "container-bg": "var(--container-bg)",
+                        "text-base": "var(--text-base)",
+                        "text-secondary": "var(--text-secondary)",
+                        "accent-cyan": "var(--accent-primary)",
+                        "accent-red": "var(--accent-red)"
+                    }
+                }
+            }
+        };
+
         document.addEventListener("DOMContentLoaded", () => {
             const html = document.documentElement;
             const saved = localStorage.getItem("theme") || "dark";
@@ -115,6 +129,7 @@
         });
     </script>
 </head>
+
 
 <body class="bg-primary-bg text-text-base transition-colors duration-500">
 <main class="min-h-screen bg-primary-bg">
@@ -125,195 +140,207 @@
 
             <!-- Back -->
             <a href="../index.html#projects"
-               class="inline-flex items-center text-accent-cyan text-sm mb-6 hover:text-accent-red transition">
+               class="inline-flex items-center text-accent-cyan text-xs sm:text-sm mb-6 hover:text-accent-red transition">
                 ← Back to Portfolio
             </a>
 
             <!-- Pills -->
-            <div class="flex flex-wrap gap-2 mb-4">
-                <span class="pill pill-accent">BellaBeat Analysis</span>
+            <div class="flex flex-wrap gap-2 mb-5">
+                <span class="pill pill-accent">Bellabeat Case Study</span>
                 <span class="pill pill-muted">Fitbit Dataset</span>
-                <span class="pill pill-muted">Engagement Patterns</span>
-                <span class="pill pill-muted">Behavior Analytics</span>
+                <span class="pill pill-muted">User Behavior</span>
+                <span class="pill pill-muted">Engagement Analytics</span>
             </div>
 
             <!-- Title -->
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3">
-                BellaBeat Smart Device Usage Analysis
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
+                Bellabeat Smart Device Usage Analysis
             </h1>
 
-            <p class="max-w-3xl text-sm text-text-secondary leading-relaxed">
-                A full behavioral analysis of public Fitbit activity and sleep data to understand how users engage with
-                smart wellness devices. The findings support BellaBeat’s product strategy by highlighting the habits,
-                routines, and lifestyle markers that predict consistent device engagement.
+            <p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed">
+                Analysis of activity, sleep, and wellness behavior from Fitbit data to uncover trends, improve 
+                Bellabeat product engagement, and identify marketing opportunities based on real user habits.
             </p>
 
             <!-- Meta Pills -->
-            <div class="flex flex-wrap gap-3 mt-5 text-xs text-text-secondary">
+            <div class="flex flex-wrap gap-3 mt-5 text-[0.7rem] sm:text-xs text-text-secondary">
                 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
                     <span class="w-1.5 h-1.5 rounded-full bg-accent-cyan"></span>
-                    User Segmentation
+                    Activity & Sleep Patterns
                 </span>
                 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
                     <span class="w-1.5 h-1.5 rounded-full bg-accent-cyan"></span>
-                    Activity Behavior
+                    Behavioral Insights
                 </span>
             </div>
 
-            <!-- 2 Cards -->
+            <!-- Top Split -->
             <div class="mt-10 grid md:grid-cols-2 gap-6">
-                
+
                 <!-- Narrative -->
-                <article class="card-shell p-6">
-                    <h2 class="text-xs font-bold tracking-[0.22em] uppercase mb-3">Project Narrative</h2>
-                    <p class="text-sm text-text-secondary leading-relaxed mb-3">
-                        BellaBeat relies heavily on habitual device engagement. This project examines Fitbit data to
-                        uncover the activity, sleep, and movement behaviors that differentiate high-engagement users from
-                        those who interact with their devices only occasionally.
+                <article class="card-section">
+                    <p class="text-[0.7rem] uppercase tracking-[0.22em] text-text-secondary mb-2">Project Narrative</p>
+                    <p class="text-sm leading-relaxed mb-2">
+                        This capstone analysis explores daily movement, sleep, and activity trends to understand how 
+                        Bellabeat users interact with wellness devices. Usage signals such as total steps, active minutes, 
+                        calories burned, and sleep duration reveal strong relationships between behavior and device engagement.
                     </p>
-                    <p class="text-sm text-text-secondary leading-relaxed">
-                        The analysis identifies the lifestyle signals that correlate with strong engagement and highlights
-                        opportunities for BellaBeat to improve retention through smarter notifications and personalized goals.
+                    <p class="text-sm leading-relaxed">
+                        These insights help Bellabeat refine its marketing and product strategy by identifying when and 
+                        how users rely on their smart devices the most.
                     </p>
                 </article>
 
                 <!-- What I Built -->
-                <article class="card-shell-simple p-6">
-                    <h2 class="text-xs font-bold tracking-[0.22em] uppercase mb-3">What I Built</h2>
+                <article class="card-section">
+                    <p class="text-[0.7rem] uppercase tracking-[0.22em] text-text-secondary mb-2">What I Built</p>
                     <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-base leading-relaxed">
-                        <li>Cleaned and combined Fitbit activity and sleep datasets.</li>
-                        <li>Segmented users by activity tiers and engagement consistency.</li>
-                        <li>Created visuals for steps, activity minutes, sleep behavior, and calorie trends.</li>
-                        <li>Defined insights for product design and wellness recommendations.</li>
-                        <li>Mapped clear opportunities for engagement growth.</li>
+                        <li>Imported, cleaned, and merged Fitbit activity, sleep, and calorie datasets.</li>
+                        <li>Calculated new metrics such as active minutes and weekday behavior.</li>
+                        <li>Analyzed trends across steps, active minutes, sleep duration, and calories.</li>
+                        <li>Created visuals highlighting weekday patterns and wellness habits.</li>
+                        <li>Developed insights to support Bellabeat’s strategic marketing goals.</li>
                     </ul>
                 </article>
 
             </div>
-
         </div>
     </section>
+
 
     <!-- MAIN CONTENT -->
     <section class="py-12 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4">
 
             <!-- Dataset & Tools -->
-            <div class="section-title-wrapper">
+            <div class="section-title-wrapper mb-4">
                 <h2>Dataset & Tools</h2>
                 <span></span>
             </div>
 
             <p class="text-sm text-text-secondary leading-relaxed mb-4">
-                The analysis used Fitbit activity, sleep, and daily movement data across 12,000+ records. Metrics captured
-                included intensity minutes, total steps, calories, time asleep, and sleep efficiency. Python managed the
-                cleaning, transformation, and summaries.
+                The dataset includes 30 days of Fitbit data from 30 users, covering daily steps, calories burned, active 
+                minutes, and sleep metrics. Analysis was completed using R, tidyverse, ggplot2, and Tableau for visualization.
             </p>
 
             <ul class="list-disc list-outside pl-5 space-y-1 text-sm text-text-secondary">
-                <li>12k+ rows of Fitbit device usage data</li>
-                <li>Activity intensity and energy expenditure</li>
-                <li>Sleep logs and sleep efficiency</li>
-                <li>Daily steps and calorie totals</li>
-                <li>Python, pandas, seaborn, Matplotlib</li>
+                <li>Fitbit activity, sleep, and calorie datasets</li>
+                <li>30 days of user behavior</li>
+                <li>Daily movement intensity + time asleep</li>
+                <li>R, tidyverse, ggplot2, Tableau</li>
             </ul>
 
             <div class="w-full my-6 bg-secondary-bg p-6 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
-                [ Insert screenshot: Fitbit dataset preview or dashboard panel ]
+                [ Insert dataset preview screenshot ]
             </div>
 
+
             <!-- Key Findings -->
-            <div class="section-title-wrapper mt-12">
+            <div class="section-title-wrapper mt-12 mb-4">
                 <h2>Key Findings</h2>
                 <span></span>
             </div>
 
             <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary leading-relaxed">
-                <li>High-engagement users consistently exceed 10,000 steps per day.</li>
-                <li>Sleep duration of ~6–7 hours correlated with stronger device-usage patterns.</li>
-                <li>Sedentary minutes served as the strongest negative predictor of engagement.</li>
-                <li>Calories and active minutes rose proportionally with step tiers.</li>
+                <li>Users walked the most on weekdays, with peak steps mid-week.</li>
+                <li>Sleep duration averaged 6–7.5 hours—below the recommended 8 hours.</li>
+                <li>Calories burned strongly correlated with active minutes.</li>
+                <li>Weekends showed the largest drop-off in wellness behavior.</li>
             </ul>
 
-            <!-- Sample Python Code -->
-            <div class="section-title-wrapper mt-12">
-                <h2>Sample Python Code</h2>
+
+            <!-- Sample Code -->
+            <div class="section-title-wrapper mt-12 mb-4">
+                <h2>Sample R Code</h2>
                 <span></span>
             </div>
 
             <pre class="bg-secondary-bg border border-gray-700 rounded-xl p-4 overflow-x-auto text-[0.85rem]">
-<code>import pandas as pd
+<code># Import Fitbit data
+daily_activity <- read_csv("dailyActivity_merged.csv") %>%
+  clean_names()
 
-df = pd.read_csv("dailyActivity.csv")
+daily_sleep <- read_csv("sleepDay_merged.csv") %>%
+  clean_names()
 
-# Summaries
-df_summary = df.groupby("Id")[["TotalSteps", "SedentaryMinutes", "Calories"]].mean()
+# Merge
+merged <- daily_activity %>%
+  inner_join(daily_sleep, by = c("id", "activity_date" = "sleep_day"))
 
-# Categorize users by activity
-df['activity_level'] = pd.cut(
-    df['TotalSteps'],
-    bins=[0, 5000, 10000, 20000],
-    labels=['Low activity', 'Moderate activity', 'High activity']
-)
+# Create features
+cleaned <- merged %>%
+  mutate(
+    day_of_week = wday(activity_date, label = TRUE),
+    active_minutes_total = very_active_minutes +
+                           fairly_active_minutes +
+                           lightly_active_minutes
+  )
 
-df.head()</code>
+glimpse(cleaned)</code>
             </pre>
 
             <div class="w-full my-6 bg-secondary-bg p-6 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
-                [ Insert screenshot: Python output or visual ]
+                [ Insert R output screenshot ]
             </div>
 
+
             <!-- Strategic Insights -->
-            <div class="section-title-wrapper mt-12">
-                <h2>Strategic Insights for BellaBeat</h2>
+            <div class="section-title-wrapper mt-12 mb-4">
+                <h2>Strategic Insights for Bellabeat</h2>
                 <span></span>
             </div>
 
             <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary leading-relaxed mb-10">
-                <li>Encourage daily step streaks to reinforce consistent device usage.</li>
-                <li>Promote attainable sleep-improvement goals rather than aggressive targets.</li>
-                <li>Trigger nudges during long sedentary periods.</li>
-                <li>Monitor declining step patterns as an early disengagement signal.</li>
+                <li>Promote weekday habit-tracking challenges to encourage consistent activity.</li>
+                <li>Enhance sleep coaching features to address below-average rest duration.</li>
+                <li>Use gamified step goals and streaks to increase device engagement.</li>
+                <li>Deliver weekend nudges to counter lower activity levels.</li>
             </ul>
 
+
             <!-- Skills -->
-            <div class="section-title-wrapper">
+            <div class="section-title-wrapper mb-4">
                 <h2>Skills Demonstrated</h2>
                 <span></span>
             </div>
 
-            <div class="flex flex-wrap gap-2 mb-12">
-                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Python</span>
-                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">EDA</span>
-                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Visualization</span>
-                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">User Segmentation</span>
-                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Behavioral Insights</span>
-                <span class="px-3 py-1 rounded-full border border-accent-cyan text-xs font-mono text-accent-cyan">Product Analytics</span>
+            <div class="card-section">
+                <div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
+                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">R Programming</span>
+                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Data Wrangling</span>
+                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Behavior Analytics</span>
+                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Visualization</span>
+                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">User Segmentation</span>
+                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Product Strategy</span>
+                </div>
             </div>
 
-            <!-- Summary Box -->
-            <div class="bg-secondary-bg border border-accent-cyan rounded-2xl p-6 shadow-lg">
-                <h3 class="text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-accent-cyan">
-                    Summary
-                </h3>
+
+            <!-- Summary -->
+            <div class="section-title-wrapper mt-12 mb-4">
+                <h2>Summary</h2>
+                <span></span>
+            </div>
+
+            <div class="card-section">
                 <p class="text-sm text-text-secondary leading-relaxed">
-                    This project demonstrates how raw wellness data can translate into strategic product insight. By
-                    quantifying how activity level, sleep, and daily movement influence engagement, BellaBeat can refine its
-                    device experience and create campaigns that encourage long-term user adoption.
+                    This project highlights how wellness behavior—steps, sleep, activity minutes, and calories—can guide 
+                    Bellabeat’s product strategy. Identifying user routines helps refine notifications, challenges, and 
+                    engagement workflows that strengthen long-term device usage.
                 </p>
             </div>
 
-            <!-- Back bottom -->
+
+            <!-- Back -->
             <div class="mt-10">
                 <a href="../index.html#projects"
-                   class="inline-flex items-center text-accent-cyan text-sm hover:text-accent-red transition">
+                   class="inline-flex items-center text-accent-cyan text-xs sm:text-sm hover:text-accent-red transition">
                     ← Back to Portfolio
                 </a>
             </div>
 
         </div>
     </section>
-
 </main>
 </body>
 </html>
