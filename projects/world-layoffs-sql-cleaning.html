@@ -1,12 +1,10 @@
-<!-- Updated HTML with integrated screenshots as requested -->
-<!-- NOTE: This version preserves all styling and structure, only adding screenshots + enhancing placement. -->
-
+```html
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>World Layoffs — SQL Data Cleaning | Christian Aguirre</title>
+    <title>World Layoffs SQL Data Cleaning | Christian Aguirre</title>
 
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -27,6 +25,18 @@
             color: var(--text-base);
         }
 
+        .light {
+            --bg-default: #ffffff;
+            --bg-secondary: #f3f4f6;
+            --text-base: #111827;
+            --text-secondary: #4b5563;
+            --accent-primary: #0891b2;
+            --accent-red: #dc2626;
+            --container-bg: #ffffff;
+            background-color: var(--bg-default);
+            color: var(--text-base);
+        }
+
         body {
             font-family: "Inter", sans-serif;
             transition: background-color 0.5s, color 0.5s;
@@ -34,9 +44,8 @@
 
         .hero-grid-bg {
             background-color: var(--bg-default);
-            background-image: radial-gradient(circle, rgba(148,163,184,0.12) 1px, transparent 1px);
+            background-image: radial-gradient(circle, rgba(148,163,184,.12) 1px, rgba(0,0,0,0) 1px);
             background-size: 22px 22px;
-            background-position: center;
         }
 
         .section-title-wrapper {
@@ -45,19 +54,18 @@
             margin-bottom: 1.25rem;
             font-family: "Inconsolata", monospace;
         }
-
         .section-title-wrapper h2 {
             font-size: 1.25rem;
             font-weight: 700;
             color: var(--accent-primary);
         }
-
         .section-title-wrapper span {
-            margin-left: .75rem;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-left: 0.75rem;
             border-bottom: 1px solid var(--text-secondary);
             flex-grow: 1;
             width: 140px;
-            color: var(--text-secondary);
         }
 
         .pill {
@@ -69,12 +77,10 @@
             letter-spacing: 0.12em;
             white-space: nowrap;
         }
-
         .pill-muted {
             color: var(--text-secondary);
             background-color: rgba(15,23,42,0.96);
         }
-
         .pill-accent {
             color: var(--accent-primary);
             background-color: rgba(15,23,42,0.96);
@@ -92,148 +98,614 @@
 
         pre code {
             font-family: "Inconsolata", monospace;
-            font-size: 0.8rem;
-        }
-
-        .img-card {
-            background-color: var(--bg-secondary);
-            border: 1px solid rgba(148,163,184,0.25);
-            border-radius: 0.75rem;
-            padding: 0.75rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.35);
+            font-size: .8rem;
         }
     </style>
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-bg": "var(--bg-default)",
+                        "secondary-bg": "var(--bg-secondary)",
+                        "container-bg": "var(--container-bg)",
+                        "text-base": "var(--text-base)",
+                        "text-secondary": "var(--text-secondary)",
+                        "accent-cyan": "var(--accent-primary)",
+                        "accent-red": "var(--accent-red)"
+                    }
+                }
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const html = document.documentElement;
+            const saved = localStorage.getItem("theme") || "dark";
+            html.setAttribute("data-theme", saved);
+            html.classList.add(saved);
+        });
+    </script>
 </head>
 
 <body class="bg-primary-bg text-text-base">
-<main class="min-h-screen bg-primary-bg text-text-base">
+
+<main class="min-h-screen bg-primary-bg">
 
     <!-- HERO -->
     <section class="hero-grid-bg border-b border-gray-800">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12 md:pb-16">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
 
-            <a href="../index.html#projects" class="inline-flex items-center text-accent-cyan text-xs sm:text-sm mb-6 hover:text-accent-red transition">← Back to Portfolio</a>
+            <a href="../index.html#projects"
+               class="inline-flex items-center text-accent-cyan text-xs sm:text-sm mb-6 hover:text-accent-red">
+                ← Back to Portfolio
+            </a>
 
+            <!-- Pills -->
             <div class="flex flex-wrap gap-2 mb-5">
                 <span class="pill pill-accent">SQL Data Cleaning</span>
-                <span class="pill pill-muted">Data Standardization</span>
+                <span class="pill pill-muted">MySQL</span>
                 <span class="pill pill-muted">Duplicate Removal</span>
+                <span class="pill pill-muted">Data Standardization</span>
                 <span class="pill pill-muted">Date Conversion</span>
+                <span class="pill pill-muted">Workforce Analytics</span>
             </div>
 
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3">World Layoffs — SQL Data Cleaning</h1>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
+                World Layoffs Data Cleaning for Business Analysis
+            </h1>
 
             <p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed">
-                A full SQL cleaning and restructuring of a real-world global layoffs dataset. Removed duplicates,
-                standardized categories, fixed dates, and built a clean staging pipeline ready for workforce analytics.
+                Cleaned a real world global layoffs dataset in MySQL to support reliable exploratory analysis and
+                business reporting. Built a raw to staging pipeline, removed duplicate rows, standardized text fields,
+                handled missing values, and converted dates so the table is ready for time series and trend analysis.
             </p>
 
+            <!-- Meta badges -->
+            <div class="flex flex-wrap gap-3 mt-5 text-[0.7rem] sm:text-xs text-text-secondary">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent-cyan"></span>
+                    Database Management Practice · January 2025
+                </span>
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent-cyan"></span>
+                    Tools: GitHub, MySQL, MySQL Workbench
+                </span>
+            </div>
+
+            <!-- Narrative + What I Built -->
+            <div class="mt-10 grid md:grid-cols-2 gap-6">
+
+                <!-- Narrative -->
+                <article class="card-section">
+                    <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2">Project Narrative</p>
+
+                    <p class="text-sm sm:text-[0.95rem] mb-2 leading-relaxed">
+                        The layoffs dataset was assembled from multiple public sources and news reports, which made it
+                        messy and unreliable out of the box. The table contained duplicated entries, inconsistent
+                        company and industry labels, country names with trailing punctuation, and dates stored as text.
+                    </p>
+
+                    <p class="text-sm sm:text-[0.95rem] leading-relaxed">
+                        I designed a repeatable cleaning pipeline inside MySQL that preserves the original raw table,
+                        runs all transformations in staging tables, and outputs a cleaned dataset that analysts can use
+                        for industry trends, geography based reporting, and funding related layoff patterns.
+                    </p>
+                </article>
+
+                <!-- What I Built -->
+                <article class="card-section">
+                    <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2">What I Built</p>
+
+                    <ul class="list-disc pl-5 space-y-1.5 text-sm sm:text-[0.95rem]">
+                        <li>Raw CSV import and profiling workflow inside MySQL Workbench.</li>
+                        <li>Staging and second staging tables for safe, stepwise cleaning.</li>
+                        <li>Duplicate removal using <code>ROW_NUMBER()</code> window functions.</li>
+                        <li>Standardization of company, industry, and country values.</li>
+                        <li>Logic to handle missing values and discard unusable records.</li>
+                        <li>Conversion of text dates into proper <code>DATE</code> type for time series analysis.</li>
+                        <li>Documentation of usage, testing, and future enhancement ideas.</li>
+                    </ul>
+                </article>
+
+            </div>
         </div>
     </section>
 
-
-    <!-- RAW DATA SECTION WITH SCREENSHOT -->
-    <section class="py-10 md:py-12 border-b border-gray-800">
+    <!-- WORKFLOW OVERVIEW -->
+    <section class="py-10 md:py-12 border-b border-gray-800 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div class="section-title-wrapper mb-6">
-                <h2>Raw Data Import</h2>
+                <h2>Workflow Overview</h2>
                 <span></span>
             </div>
 
-            <div class="card-section text-sm text-text-secondary leading-relaxed mb-6">
-                <p class="mb-3">The dataset was originally delivered as a CSV file with significant inconsistencies. Below is the raw CSV preview:</p>
-            </div>
+            <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
 
-            <div class="img-card mb-10">
-                <img src="assets/images/WL1_RawData_CSV.png" class="rounded-lg w-full" alt="Raw layoffs CSV" />
-            </div>
+                <div class="card-section text-xs">
+                    <p class="font-mono text-accent-cyan uppercase tracking-[.18em] mb-1">Step 1</p>
+                    <p class="text-sm font-semibold">Raw Data Import</p>
+                    <p class="text-[0.8rem] text-text-secondary">
+                        Loaded the layoffs CSV into MySQL, confirmed columns, and profiled data quality issues.
+                    </p>
+                </div>
 
-            <div class="card-section text-sm text-text-secondary leading-relaxed mb-6">
-                <p class="mb-3">After importing the CSV into MySQL, the raw table appeared as follows:</p>
-            </div>
+                <div class="card-section text-xs">
+                    <p class="font-mono text-accent-cyan uppercase tracking-[.18em] mb-1">Step 2</p>
+                    <p class="text-sm font-semibold">Staging Tables</p>
+                    <p class="text-[0.8rem] text-text-secondary">
+                        Created staging copies of the raw table to isolate transformations and preserve the source.
+                    </p>
+                </div>
 
-            <div class="img-card mb-10">
-                <img src="assets/images/WL1_RawTable_MySQL.png" class="rounded-lg w-full" alt="Raw MySQL table" />
-            </div>
+                <div class="card-section text-xs">
+                    <p class="font-mono text-accent-cyan uppercase tracking-[.18em] mb-1">Step 3</p>
+                    <p class="text-sm font-semibold">Duplicate Removal</p>
+                    <p class="text-[0.8rem] text-text-secondary">
+                        Applied window functions to identify and remove exact duplicate layoff records.
+                    </p>
+                </div>
 
+                <div class="card-section text-xs">
+                    <p class="font-mono text-accent-cyan uppercase tracking-[.18em] mb-1">Step 4</p>
+                    <p class="text-sm font-semibold">Standardization & Null Handling</p>
+                    <p class="text-[0.8rem] text-text-secondary">
+                        Cleaned company, industry, and country labels and resolved missing or unusable records.
+                    </p>
+                </div>
+
+                <div class="card-section text-xs">
+                    <p class="font-mono text-accent-cyan uppercase tracking-[.18em] mb-1">Step 5</p>
+                    <p class="text-sm font-semibold">Date Conversion & Output</p>
+                    <p class="text-[0.8rem] text-text-secondary">
+                        Converted dates to <code>DATE</code>, dropped helper columns, and finalized the analytics table.
+                    </p>
+                </div>
+
+            </div>
         </div>
     </section>
 
-
-    <!-- STAGING SECTION WITH SCREENSHOT -->
-    <section class="py-10 md:py-12 border-b border-gray-800">
+    <!-- LAB BREAKDOWN -->
+    <section class="py-10 md:py-14 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div class="section-title-wrapper mb-6">
-                <h2>Staging Setup</h2>
+                <h2>Lab Breakdown</h2>
                 <span></span>
             </div>
 
-            <div class="card-section text-text-secondary text-sm leading-relaxed mb-6">
-                <p class="mb-3">A staging table was created to safely execute transformations without altering the raw table.</p>
+            <div class="space-y-8">
 
-                <pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto text-[0.8rem]"><code>CREATE TABLE layoffs_staging LIKE layoffs;
-INSERT INTO layoffs_staging SELECT * FROM layoffs;</code></pre>
-            </div>
+                <!-- 1 Raw Dataset Overview -->
+                <section class="card-section">
+                    <h3 class="text-base font-semibold mb-1">1. Raw Dataset Overview</h3>
+                    <p class="text-xs uppercase tracking-[.16em] text-text-secondary mb-3">
+                        World layoffs CSV · company, location, industry, layoff counts, dates, funding
+                    </p>
 
-            <div class="img-card mb-10">
-                <img src="assets/images/WL1_StagingTable.png" class="rounded-lg w-full" alt="Staging table screenshot" />
-            </div>
+                    <p class="mb-3">
+                        The original dataset captured company level layoff events with columns for location, industry,
+                        total employees laid off, percent laid off, layoff date, funding stage, country, and funds raised.
+                        It arrived as a CSV file with no constraints and visible quality issues.
+                    </p>
 
-        </div>
-    </section>
+                    <ul class="list-disc pl-5 space-y-1 mb-4 text-text-secondary">
+                        <li>Duplicate rows for the same company, location, date, and layoff counts.</li>
+                        <li>Inconsistent capitalization and whitespace across text fields.</li>
+                        <li>Country names such as <em>United States.</em> with trailing punctuation.</li>
+                        <li>Dates stored as text strings instead of native date types.</li>
+                    </ul>
 
+                    <!-- Raw CSV preview -->
+                    <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4">
+                        <img src="../assets/images/WL1_RawData_CSV.png"
+                             alt="World Layoffs raw data CSV preview"
+                             class="rounded-lg mx-auto mb-2">
+                        <p class="text-xs text-text-secondary text-center italic">
+                            Preview of the world layoffs CSV as originally delivered. Columns include company, location,
+                            industry, layoff counts, date, stage, country, and funds raised.
+                        </p>
+                    </div>
 
-    <!-- SCRIPTS SECTION inserted as-is -->
-    <section class="py-10 md:py-12">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="section-title-wrapper mb-6">
-                <h2>SQL Cleaning Scripts Used</h2>
-                <span></span>
-            </div>
+                    <!-- Raw MySQL table preview -->
+                    <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 mt-4">
+                        <img src="../assets/images/WL1_RawTable_MySQL.png"
+                             alt="World Layoffs raw table in MySQL Workbench"
+                             class="rounded-lg mx-auto mb-2">
+                        <p class="text-xs text-text-secondary text-center italic">
+                            The same data imported into a MySQL database (<strong>world_layoffs</strong>) and exposed as the
+                            <strong>layoffs</strong> table. This raw table is kept unchanged as the reference source.
+                        </p>
+                    </div>
+                </section>
 
-            <div class="card-section text-sm text-text-secondary leading-relaxed space-y-6">
+                <!-- 2 Staging Setup -->
+                <section class="card-section">
+                    <h3 class="text-base font-semibold mb-1">2. Staging and Cleaning Setup</h3>
+                    <p class="text-xs uppercase tracking-[.16em] text-text-secondary mb-3">
+                        Raw table preserved · Staging tables used for all transformations
+                    </p>
 
-                <p class="text-text-base font-semibold">Duplicate Removal Script</p>
-                <pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto"><code>WITH duplicate_cte AS (
+                    <p class="mb-3">
+                        To protect the original layoff records, I created staging tables that mirror the raw structure.
+                        All cleaning steps run inside these staging layers, which makes the pipeline repeatable and easy
+                        to debug without risking the source data.
+                    </p>
+
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto">
+<code>-- Duplicate raw table into a staging table
+CREATE TABLE layoffs_staging LIKE layoffs;
+
+SELECT * FROM layoffs_staging;
+
+INSERT INTO layoffs_staging
+SELECT * FROM layoffs;
+
+-- Create a second staging table for stepwise cleaning
+CREATE TABLE layoffs_staging2 (
+  company              TEXT,
+  location             TEXT,
+  industry             TEXT,
+  total_laid_off       INT DEFAULT NULL,
+  percentage_laid_off  TEXT,
+  `date`               TEXT,
+  stage                TEXT,
+  country              TEXT,
+  funds_raised_millions INT DEFAULT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+
+INSERT INTO layoffs_staging2
+SELECT *
+FROM layoffs_staging;</code></pre>
+
+                    <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                        <img src="../assets/images/WL1_StagingTable.png"
+                             alt="Staging table for world layoffs data"
+                             class="rounded-lg mx-auto mb-2">
+                        <p class="text-xs text-text-secondary italic">
+                            View of the <strong>layoffs_staging2</strong> table in MySQL Workbench after initial copy from
+                            the raw table. This is the workspace for all subsequent cleaning logic.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- 3 Removing Duplicates -->
+                <section class="card-section">
+                    <h3 class="text-base font-semibold mb-1">3. Removing Duplicate Records</h3>
+                    <p class="text-xs uppercase tracking-[.16em] text-text-secondary mb-3">
+                        Window function based deduplication with <code>ROW_NUMBER()</code>
+                    </p>
+
+                    <p class="mb-3">
+                        Exact duplicates occur when the same company, location, industry, layoff counts, date, stage,
+                        country, and funding appear more than once. I used a common table expression with
+                        <code>ROW_NUMBER()</code> to flag these cases and then removed all but a single instance.
+                    </p>
+
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto">
+<code>-- Step 1: Removing duplicates
+
+-- Identify duplicates using ROW_NUMBER() and partition by key fields
+WITH duplicate_cte AS (
     SELECT *,
            ROW_NUMBER() OVER (
-               PARTITION BY company, location, industry, total_laid_off, percentage_laid_off, `date`, stage, country, funds_raised_millions
+               PARTITION BY company,
+                            location,
+                            industry,
+                            total_laid_off,
+                            percentage_laid_off,
+                            `date`,
+                            stage,
+                            country,
+                            funds_raised_millions
            ) AS row_num
     FROM layoffs_staging
 )
-SELECT * FROM duplicate_cte WHERE row_num > 1;</code></pre>
+SELECT *
+FROM duplicate_cte
+WHERE row_num &gt; 1;
 
-                <p class="text-text-base font-semibold">Standardization Script</p>
-                <pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto"><code>UPDATE layoffs_staging2 SET company = TRIM(company);
-UPDATE layoffs_staging2 SET industry = 'Crypto' WHERE industry LIKE 'Crypto%';
-UPDATE layoffs_staging2 SET country = TRIM(TRAILING '.' FROM country) WHERE country LIKE 'United States%';</code></pre>
+-- Insert data into layoffs_staging2 including the row number
+INSERT INTO layoffs_staging2
+SELECT *,
+       ROW_NUMBER() OVER (
+           PARTITION BY company,
+                        location,
+                        industry,
+                        total_laid_off,
+                        percentage_laid_off,
+                        `date`,
+                        stage,
+                        country,
+                        funds_raised_millions
+       ) AS row_num
+FROM layoffs_staging;
 
-                <p class="text-text-base font-semibold">Handling Missing Data</p>
-                <pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto"><code>UPDATE layoffs_staging2 t1
-JOIN layoffs_staging2 t2 ON t1.company = t2.company AND t1.location = t2.location
+-- Remove duplicate rows where row_num &gt; 1
+DELETE
+FROM layoffs_staging2
+WHERE row_num &gt; 1;
+
+-- Verify the cleaned dataset
+SELECT *
+FROM layoffs_staging2;</code></pre>
+
+                    <p class="text-xs text-text-secondary italic mt-3">
+                        After this step, every layoff event is represented once for each unique company, location,
+                        industry, date, and layoff combination.
+                    </p>
+                </section>
+
+                <!-- 4 Standardizing Data -->
+                <section class="card-section">
+                    <h3 class="text-base font-semibold mb-1">4. Standardizing Company, Industry, and Country Fields</h3>
+                    <p class="text-xs uppercase tracking-[.16em] text-text-secondary mb-3">
+                        Trimmed whitespace, consolidated industry labels, normalized country text
+                    </p>
+
+                    <p class="mb-3">
+                        Consistent text values are essential for accurate group by analysis. I standardized company names,
+                        consolidated variant industry labels for cryptocurrency firms, and removed trailing punctuation from
+                        country names.
+                    </p>
+
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto">
+<code>-- Standardize company names by trimming leading and trailing whitespace
+UPDATE layoffs_staging2
+SET company = TRIM(company);
+
+-- Consolidate variations of industries into a single category (Crypto)
+UPDATE layoffs_staging2
+SET industry = 'Crypto'
+WHERE industry LIKE 'Crypto%';
+
+-- Remove inconsistent formatting in the country field
+-- Example: "United States." becomes "United States"
+UPDATE layoffs_staging2
+SET country = TRIM(TRAILING '.' FROM country)
+WHERE country LIKE 'United States%';</code></pre>
+
+                    <p class="text-xs text-text-secondary italic mt-3">
+                        These standardization steps allow analysts to roll up layoffs by industry and country without
+                        losing records to minor spelling or punctuation differences.
+                    </p>
+                </section>
+
+                <!-- 5 Handling Missing Data -->
+                <section class="card-section">
+                    <h3 class="text-base font-semibold mb-1">5. Handling Missing Values</h3>
+                    <p class="text-xs uppercase tracking-[.16em] text-text-secondary mb-3">
+                        Filled industry gaps and removed records with no layoff information
+                    </p>
+
+                    <p class="mb-3">
+                        Some rows were missing industry values even though similar records for the same company and
+                        location had valid entries. Others had no layoff counts at all. I addressed these cases in two
+                        stages.
+                    </p>
+
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto">
+<code>-- Populate missing industry fields by self joining on company and location
+UPDATE layoffs_staging2 t1
+JOIN layoffs_staging2 t2
+  ON t1.company = t2.company
+ AND t1.location = t2.location
 SET t1.industry = t2.industry
-WHERE t1.industry IS NULL AND t2.industry IS NOT NULL;
+WHERE t1.industry IS NULL
+  AND t2.industry IS NOT NULL;
 
-DELETE FROM layoffs_staging2
-WHERE total_laid_off IS NULL AND percentage_laid_off IS NULL;</code></pre>
+-- Remove rows where both total_laid_off and percentage_laid_off are NULL
+DELETE
+FROM layoffs_staging2
+WHERE total_laid_off IS NULL
+  AND percentage_laid_off IS NULL;</code></pre>
 
-                <p class="text-text-base font-semibold">Date Conversion</p>
-                <pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto"><code>UPDATE layoffs_staging2
+                    <p class="text-xs text-text-secondary italic mt-3">
+                        This step retains informative records while discarding entries that cannot contribute to
+                        quantitative analysis.
+                    </p>
+                </section>
+
+                <!-- 6 Date Conversion & Final Cleanup -->
+                <section class="card-section">
+                    <h3 class="text-base font-semibold mb-1">6. Date Conversion and Final Cleanup</h3>
+                    <p class="text-xs uppercase tracking-[.16em] text-text-secondary mb-3">
+                        Converted date strings to DATE type and removed helper columns
+                    </p>
+
+                    <p class="mb-3">
+                        To support time based analysis, the <code>date</code> column was converted from text to a native
+                        <code>DATE</code> type using <code>STR_TO_DATE()</code>, and the temporary <code>row_num</code>
+                        helper column from deduplication was dropped.
+                    </p>
+
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto">
+<code>-- Convert the date column from TEXT to DATE format
+UPDATE layoffs_staging2
 SET `date` = STR_TO_DATE(`date`, '%m/%d/%Y');
 
+-- Modify the date column type to DATE
 ALTER TABLE layoffs_staging2
-MODIFY COLUMN `date` DATE;</code></pre>
+MODIFY COLUMN `date` DATE;
 
-                <p class="text-text-base font-semibold">Final Cleanup</p>
-                <pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto"><code>ALTER TABLE layoffs_staging2 DROP COLUMN row_num;
-SELECT * FROM layoffs_staging2;</code></pre>
+-- Drop the unnecessary row_num column from the table
+ALTER TABLE layoffs_staging2
+DROP COLUMN row_num;
+
+-- Verify the final cleaned table
+SELECT *
+FROM layoffs_staging2;</code></pre>
+
+                    <p class="text-xs text-text-secondary italic mt-3">
+                        At this point, <strong>layoffs_staging2</strong> serves as the cleaned, analysis ready table that can be
+                        queried directly or exported into BI tools such as Tableau or Power BI.
+                    </p>
+                </section>
 
             </div>
+        </div>
+    </section>
+
+    <!-- USAGE INSTRUCTIONS -->
+    <section class="py-10 md:py-12 border-t border-gray-800 bg-primary-bg">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="section-title-wrapper mb-6">
+                <h2>Usage Instructions</h2>
+                <span></span>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+
+                <div class="card-section text-sm text-text-secondary leading-relaxed">
+                    <p class="text-xs font-mono text-accent-cyan mb-2 uppercase tracking-[0.18em]">System Requirements</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>MySQL database server with support for window functions.</li>
+                        <li>GUI client such as MySQL Workbench for running scripts and viewing tables.</li>
+                        <li>Standard workstation hardware capable of handling the dataset volume.</li>
+                    </ul>
+
+                    <p class="text-xs font-mono text-accent-cyan mt-5 mb-2 uppercase tracking-[0.18em]">Setup</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Import the raw layoffs CSV into a database (schema: <strong>world_layoffs</strong>).</li>
+                        <li>Create the <strong>layoffs</strong> table and load the file.</li>
+                        <li>Run the staging, deduplication, standardization, and cleanup scripts in order.</li>
+                    </ul>
+                </div>
+
+                <div class="card-section text-sm text-text-secondary leading-relaxed">
+                    <p class="text-xs font-mono text-accent-cyan mb-2 uppercase tracking-[0.18em]">Querying the Data</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Use <strong>layoffs_staging2</strong> as the cleaned table for all analysis.</li>
+                        <li>Aggregate by industry, country, year, or funding stage to explore layoff trends.</li>
+                        <li>Export results to dashboards or notebooks for deeper business storytelling.</li>
+                    </ul>
+
+                    <p class="text-xs font-mono text-accent-cyan mt-5 mb-2 uppercase tracking-[0.18em]">Future Enhancements</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Automated ETL jobs to rerun the cleaning scripts on updated data.</li>
+                        <li>Real time integration if upstream sources are refreshed regularly.</li>
+                        <li>Direct connections to BI tools for scheduled reporting on layoff trends.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ARCHITECTURE / INSIGHTS / SKILLS -->
+    <section class="py-10 md:py-12 bg-primary-bg">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+
+            <!-- Architecture Overview -->
+            <div>
+                <div class="section-title-wrapper mb-6">
+                    <h2>Architecture Overview</h2>
+                    <span></span>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 card-section text-sm text-text-secondary">
+
+                    <div>
+                        <h3 class="text-base font-semibold text-text-base mb-2">Components</h3>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><span class="font-semibold text-text-base">Dataset</span> — World layoffs CSV file hosted in GitHub.</li>
+                            <li><span class="font-semibold text-text-base">Database</span> — MySQL schema <strong>world_layoffs</strong> with raw and staging tables.</li>
+                            <li><span class="font-semibold text-text-base">Client</span> — MySQL Workbench for SQL execution and inspection.</li>
+                            <li><span class="font-semibold text-text-base">Scripts</span> — Cleaning steps stored in version control for repeatability.</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 class="text-base font-semibold text-text-base mb-2">Data Flow</h3>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>CSV → Raw table <strong>layoffs</strong>.</li>
+                            <li>Raw table → <strong>layoffs_staging</strong> for safe experimentation.</li>
+                            <li>Staging → <strong>layoffs_staging2</strong> with deduplication and cleaning logic.</li>
+                            <li>Clean table → Analytics queries, dashboards, and exported datasets.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Key Insights -->
+            <div>
+                <div class="section-title-wrapper mb-6">
+                    <h2>Key Insights Enabled</h2>
+                    <span></span>
+                </div>
+
+                <div class="card-section">
+                    <ul class="list-disc pl-5 space-y-2 text-text-secondary text-sm">
+                        <li>Industry level trends showing which sectors experienced the most layoffs over time.</li>
+                        <li>Geographic comparisons of layoffs across countries after standardizing country names.</li>
+                        <li>Analysis by funding stage (Seed, Series A, Series B, etc.) to see how capital access relates to layoffs.</li>
+                        <li>Ability to build time series charts from the cleaned <code>DATE</code> column and group by year or quarter.</li>
+                        <li>More trustworthy totals and averages now that duplicates and unusable rows are removed.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Skills -->
+            <div>
+                <div class="section-title-wrapper mb-6">
+                    <h2>Skills Demonstrated</h2>
+                    <span></span>
+                </div>
+
+                <div class="card-section">
+                    <div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">MySQL</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">SQL data cleaning</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Window functions</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Text standardization</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Null handling</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Date conversion</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">ETL staging design</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Analytics preparation</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SUMMARY -->
+    <section class="pb-12 md:pb-14 bg-primary-bg">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Summary Card -->
+            <div class="bg-secondary-bg border border-white/30 rounded-2xl p-6 shadow-lg">
+                <h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-text-base">
+                    Summary
+                </h3>
+                <p class="text-sm sm:text-[0.95rem] text-text-secondary leading-relaxed">
+                    This World Layoffs SQL project turns a noisy, duplicate heavy CSV into a structured and dependable
+                    database table. By introducing staging layers, using window functions for deduplication, cleaning
+                    text fields, resolving missing values, and converting dates into a proper type, the final dataset
+                    now supports accurate industry, geography, and funding stage insights. It gives decision makers a
+                    solid base for dashboards, time series analysis, and deeper workforce trend investigations.
+                </p>
+            </div>
+
+            <!-- Back Link -->
+            <div class="mt-10">
+                <a href="../index.html#projects"
+                   class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition">
+                    ← Back to Portfolio
+                </a>
+            </div>
+
         </div>
     </section>
 
 </main>
 </body>
 </html>
+```
