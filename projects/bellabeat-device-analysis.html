@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" class="dark">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -43,7 +43,7 @@
 
         .hero-grid-bg {
             background-color: var(--bg-default);
-            background-image: radial-gradient(circle, rgba(148, 163, 184, 0.12) 1px, rgba(0, 0, 0, 0) 1px);
+            background-image: radial-gradient(circle, rgba(148,163,184,0.12) 1px, rgba(0,0,0,0) 1px);
             background-size: 22px 22px;
             background-position: center;
         }
@@ -297,7 +297,7 @@
                     </ul>
 
                     <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/BB1_DatasetPreview.png"
+                        <img src="../assets/images/BB1_DatasetPreview.png"
                              alt="Bellabeat Fitbit dataset preview"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
@@ -326,7 +326,7 @@
                         <li>Derived day of week for weekday versus weekend comparisons.</li>
                     </ul>
 
-                    <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-[0.78rem] mb-4">
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-[0.78rem] mb-4">
 <code># Merge and engineer core daily metrics
 daily_activity &lt;- read_csv("dailyActivity_merged.csv") %&gt;%
   clean_names()
@@ -351,7 +351,7 @@ merged &lt;- daily_activity %&gt;%
   )</code></pre>
 
                     <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/BB1_Cleaned_FeatureEngineered.png"
+                        <img src="../assets/images/BB1_Cleaned_FeatureEngineered.png"
                              alt="Cleaned and feature engineered Fitbit dataset"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
@@ -382,7 +382,7 @@ merged &lt;- daily_activity %&gt;%
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/BB1_Steps_By_Day.png"
+                            <img src="../assets/images/BB1_Steps_By_Day.png"
                                  alt="Average daily steps by day of week"
                                  class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                             <p class="mt-2 text-xs italic text-text-secondary">
@@ -391,7 +391,7 @@ merged &lt;- daily_activity %&gt;%
                         </div>
 
                         <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/BB1_Calories_vs_ActiveMinutes.png"
+                            <img src="../assets/images/BB1_Calories_vs_ActiveMinutes.png"
                                  alt="Calories burned versus total active minutes"
                                  class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                             <p class="mt-2 text-xs italic text-text-secondary">
@@ -401,7 +401,7 @@ merged &lt;- daily_activity %&gt;%
                     </div>
 
                     <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/BB1_Sleep_Duration_Distribution.png"
+                        <img src="../assets/images/BB1_Sleep_Duration_Distribution.png"
                              alt="Sleep duration distribution among Bellabeat users"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
@@ -431,7 +431,7 @@ merged &lt;- daily_activity %&gt;%
                     </ul>
 
                     <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/BB1_Calories_By_Weekday.png"
+                        <img src="../assets/images/BB1_Calories_By_Weekday.png"
                              alt="Average calories burned by weekday"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
@@ -455,7 +455,7 @@ merged &lt;- daily_activity %&gt;%
                 <p class="text-xs font-mono text-accent-cyan mb-2 uppercase tracking-[0.18em]">
                     Summary of activity and sleep by day of week
                 </p>
-                <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-[0.78rem]">
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-[0.78rem]">
 <code>library(tidyverse)
 library(lubridate)
 library(janitor)
@@ -475,7 +475,7 @@ day_summary &lt;- merged %&gt;%
 day_summary</code></pre>
 
                 <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
-                    <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/BB1_Summary_Table.png"
+                    <img src="../assets/images/BB1_Summary_Table.png"
                          alt="Summary table of wellness metrics by day of week"
                          class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                     <p class="mt-2 text-xs italic text-text-secondary">
@@ -520,7 +520,7 @@ day_summary</code></pre>
                 </div>
 
                 <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                    <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/BB1_Dashboard_Composite.png"
+                    <img src="../assets/images/BB1_Dashboard_Composite.png"
                          alt="Composite dashboard of Bellabeat behavior insights"
                          class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[900px] w-full object-contain" />
                     <p class="mt-2 text-xs italic text-text-secondary">
