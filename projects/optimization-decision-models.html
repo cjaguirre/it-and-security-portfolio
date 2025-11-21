@@ -251,7 +251,7 @@
 
                 <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
                     <p class="text-xs italic text-text-secondary">
-                        [ Insert screenshot: summary worksheet or overview page listing all six problems and techniques ]
+                        Summary worksheet (not shown here) combines all six problems and techniques into a single dashboard for quick review.
                     </p>
                 </div>
             </div>
@@ -309,9 +309,31 @@ the target waiting time (for example 5 minutes).</code>
                     line build up, at a labor cost increase that was justified by the improvement in service level.
                 </p>
 
-                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                    <p class="text-xs italic text-text-secondary">
-                        [ Insert screenshot: Excel sheet showing input parameters, queueing calculations, and a summary table for one, two, and three cashiers ]
+                <!-- Screenshots: Problem A -->
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                    <img src="../assets/images/QDM1_Modeling_Customer_Behavior.png"
+                         alt="Modeling customer behavior for queueing system"
+                         class="rounded-lg mx-auto mb-2">
+                    <p class="text-xs text-text-secondary italic">
+                        Modeling customer arrivals, service rates, and M/M/c queueing parameters that drive system performance for the checkout line.
+                    </p>
+                </div>
+
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                    <img src="../assets/images/QDM2_Scenario_Analysis.png"
+                         alt="Queueing scenarios for one, two, and three cashiers"
+                         class="rounded-lg mx-auto mb-2">
+                    <p class="text-xs text-text-secondary italic">
+                        Scenario analysis worksheet comparing utilization, waiting time, and queue length across one, two, and three cashier configurations.
+                    </p>
+                </div>
+
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                    <img src="../assets/images/QDM3_Cashier_Utilization.png"
+                         alt="Cashier utilization and performance summary"
+                         class="rounded-lg mx-auto mb-2">
+                    <p class="text-xs text-text-secondary italic">
+                        Summary table highlighting cashier utilization and wait time metrics, supporting the recommendation to staff three cashiers.
                     </p>
                 </div>
             </section>
@@ -362,9 +384,22 @@ Choose the copier with the lower TotalCost value.</code>
                     copier, which compounds significantly over a long term lease.
                 </p>
 
-                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                    <p class="text-xs italic text-text-secondary">
-                        [ Insert screenshot: Excel Solver setup comparing total daily cost for the regular and high speed copier ]
+                <!-- Screenshots: Problem D -->
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                    <img src="../assets/images/QDM12_Copier_Costs.png"
+                         alt="Input cost structure for copier options"
+                         class="rounded-lg mx-auto mb-2">
+                    <p class="text-xs text-text-secondary italic">
+                        Cost structure input sheet summarizing lease payments, operating costs, and speed parameters for each copier alternative.
+                    </p>
+                </div>
+
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                    <img src="../assets/images/QDM13_Copier_Results.png"
+                         alt="Copier cost comparison results"
+                         class="rounded-lg mx-auto mb-2">
+                    <p class="text-xs text-text-secondary italic">
+                        Daily cost comparison and Solver-backed results showing the high-speed copier as the cost-minimizing choice for the firm.
                     </p>
                 </div>
             </section>
@@ -387,7 +422,7 @@ Choose the copier with the lower TotalCost value.</code>
 
                 <ul class="list-disc list-outside pl-5 space-y-1.5 mb-4">
                     <li>Defined decision variables indicating whether machinist <em>i</em> was assigned to machine <em>j</em>.</li>
-                    <li>Used an objective function that summed processing times across all machinist machine pairs.</li>
+                    <li>Used an objective function that summed processing times across all machinist–machine pairs.</li>
                     <li>Enforced constraints that each machinist is assigned to exactly one machine and each machine is used by exactly one machinist.</li>
                     <li>Added a certification constraint that prevents an unqualified machinist from being assigned to the restricted machine.</li>
                     <li>Implemented and solved the model in LINGO as a classic assignment problem.</li>
@@ -410,9 +445,31 @@ Subject to:
                     had considered and respected all skill constraints.
                 </p>
 
-                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                    <p class="text-xs italic text-text-secondary">
-                        [ Insert screenshot: LINGO model and solution output with the optimal assignment highlighted ]
+                <!-- Screenshots: Problem F -->
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                    <img src="../assets/images/QDM15_Objective_Function.png"
+                         alt="Objective function and constraints for BILP model"
+                         class="rounded-lg mx-auto mb-2">
+                    <p class="text-xs text-text-secondary italic">
+                        Objective function and constraint structure laid out in tabular form before translating into LINGO syntax.
+                    </p>
+                </div>
+
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                    <img src="../assets/images/QDM16_LINGO_Input_Code.png"
+                         alt="LINGO input code for binary assignment problem"
+                         class="rounded-lg mx-auto mb-2">
+                    <p class="text-xs text-text-secondary italic">
+                        LINGO model input defining machinists, machines, binary decision variables, and constraints for the assignment problem.
+                    </p>
+                </div>
+
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                    <img src="../assets/images/QDM17_BILP_Assignment_Model.png"
+                         alt="LINGO output and optimal machinist–machine assignment"
+                         class="rounded-lg mx-auto mb-2">
+                    <p class="text-xs text-text-secondary italic">
+                        LINGO solution output showing the optimal machinist–machine pairing that achieves the minimum total processing time of 100 minutes.
                     </p>
                 </div>
             </section>
@@ -478,9 +535,22 @@ After n trials:
                     data informed decision to move forward while monitoring cost drivers closely.
                 </p>
 
-                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                    <p class="text-xs italic text-text-secondary">
-                        [ Insert screenshot: Excel Monte Carlo table with random draws, profit calculations, and a histogram of simulated profit per unit ]
+                <!-- Screenshots: Problem C -->
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                    <img src="../assets/images/QDM10_MonteCarlo_Part1.png"
+                         alt="Monte Carlo setup for cost components and profit formula"
+                         class="rounded-lg mx-auto mb-2">
+                    <p class="text-xs text-text-secondary italic">
+                        Monte Carlo setup in Excel defining random draws for purchase, labor, and transportation costs and computing profit per unit for each trial.
+                    </p>
+                </div>
+
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                    <img src="../assets/images/QDM11_MonteCarlo_Trials_Table.png"
+                         alt="Monte Carlo simulation trials and summary statistics"
+                         class="rounded-lg mx-auto mb-2">
+                    <p class="text-xs text-text-secondary italic">
+                        Simulation trials table and summary statistics showing mean profit, standard deviation, and the 95% confidence interval for profit per unit.
                     </p>
                 </div>
             </section>
@@ -539,9 +609,58 @@ Choose:
                     in demand probabilities. This turned a gut feel stocking decision into a clearly supported policy.
                 </p>
 
-                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                    <p class="text-xs italic text-text-secondary">
-                        [ Insert screenshot: payoff and regret tables with the recommended order quantity highlighted ]
+                <!-- Screenshots: Problem B -->
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                    <img src="../assets/images/QDM4_Payoff_Table.png"
+                         alt="Payoff table for specialty steak stocking decisions"
+                         class="rounded-lg mx-auto mb-2">
+                    <p class="text-xs text-text-secondary italic">
+                        Payoff table showing weekly profit outcomes for each stocking quantity across different demand scenarios.
+                    </p>
+                </div>
+
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                    <img src="../assets/images/QDM5_Regret_Table.png"
+                         alt="Regret table for steak inventory decisions"
+                         class="rounded-lg mx-auto mb-2">
+                    <p class="text-xs text-text-secondary italic">
+                        Regret table translating foregone profit into opportunity loss for each order quantity and demand level.
+                    </p>
+                </div>
+
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                    <img src="../assets/images/QDM6_Expected_Value_Criterion.png"
+                         alt="Expected value calculations for stocking alternatives"
+                         class="rounded-lg mx-auto mb-2">
+                    <p class="text-xs text-text-secondary italic">
+                        Expected value calculations summarizing the average weekly profit for each stocking decision based on demand probabilities.
+                    </p>
+                </div>
+
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                    <img src="../assets/images/QDM7_Optimistic_Criterion.png"
+                         alt="Optimistic decision criterion for steak stocking"
+                         class="rounded-lg mx-auto mb-2">
+                    <p class="text-xs text-text-secondary italic">
+                        Optimistic (maximax) criterion focusing on the best possible payoff for each stocking level under ideal demand.
+                    </p>
+                </div>
+
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                    <img src="../assets/images/QDM8_Pessimistic_Criterion.png"
+                         alt="Pessimistic decision criterion and minimax regret"
+                         class="rounded-lg mx-auto mb-2">
+                    <p class="text-xs text-text-secondary italic">
+                        Pessimistic and minimax regret criteria emphasizing protection against worst-case outcomes for perishable inventory.
+                    </p>
+                </div>
+
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                    <img src="../assets/images/QDM9_Conclusion_Summary.png"
+                         alt="Conclusion and recommended steak stocking quantity"
+                         class="rounded-lg mx-auto mb-2">
+                    <p class="text-xs text-text-secondary italic">
+                        Summary block confirming the 35-pound weekly order as the robust recommendation across criteria and sensitivity checks.
                     </p>
                 </div>
             </section>
@@ -589,9 +708,13 @@ then validate against the firm's risk appetite.</code>
                     the firm could tolerate the added risk.
                 </p>
 
-                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                    <p class="text-xs italic text-text-secondary">
-                        [ Insert screenshot: decision tree diagram with branch probabilities, payoffs, and EMV roll up ]
+                <!-- Screenshot: Problem E -->
+                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                    <img src="../assets/images/QDM14_Decision_Tree_Table.png"
+                         alt="Decision tree table summarizing lawsuit outcomes and EMV"
+                         class="rounded-lg mx-auto mb-2">
+                    <p class="text-xs text-text-secondary italic">
+                        Decision tree payoff and probability table used to roll back the expected monetary value of settling versus going to trial.
                     </p>
                 </div>
             </section>
