@@ -62,7 +62,7 @@
         }
 
         .section-title-wrapper span {
-            margin-left: .75rem;
+            margin-left: 0.75rem;
             border-bottom: 1px solid var(--text-secondary);
             flex-grow: 1;
             width: 140px;
@@ -90,7 +90,7 @@
             border-color: rgba(34,211,238,0.8);
         }
 
-        /* Flat Bellabeat-style card system */
+        /* Flat project card system */
         .card-section {
             border-radius: 0.9rem;
             border-width: 1px;
@@ -133,7 +133,6 @@
     </script>
 </head>
 
-
 <body class="bg-primary-bg text-text-base transition-colors duration-500">
 <main class="min-h-screen bg-primary-bg">
 
@@ -161,9 +160,9 @@
             </h1>
 
             <p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed">
-                A complete rebuild of a fragmented landscaping company database into a clean, normalized, 
-                analytics-ready SQL Server system. Standardized the schema, enforced relational integrity, 
-                and built 30+ SQL queries to uncover customer trends, service patterns, and profitability insights.
+                A complete rebuild of a fragmented landscaping company database into a clean, normalized,
+                analytics-ready SQL Server system. Standardized the schema, enforced relational integrity,
+                and built 30+ SQL queries to uncover customer trends, service patterns, and project profitability.
             </p>
 
             <!-- Meta -->
@@ -178,32 +177,39 @@
                 </span>
             </div>
 
-            <!-- Narrative + Built -->
+            <!-- Narrative + What I Built -->
             <div class="mt-10 grid md:grid-cols-2 gap-6">
 
                 <!-- Project Narrative -->
                 <article class="card-section">
-                    <p class="text-[0.7rem] uppercase tracking-[0.22em] text-text-secondary mb-2">Project Narrative</p>
+                    <p class="text-[0.7rem] uppercase tracking-[0.22em] text-text-secondary mb-2">
+                        Project Narrative
+                    </p>
                     <p class="text-sm sm:text-[0.95rem] mb-2 leading-relaxed">
-                        The original database suffered from duplicated client records, inconsistent service descriptions, 
-                        and missing relational structure between projects, materials, and labor. Reporting was slow, 
-                        unreliable, and required constant manual corrections.
+                        The original environment mixed spreadsheets, ad-hoc tables, and partially implemented
+                        schemas. Client information was repeated across multiple tables, bid amounts did not tie
+                        cleanly to labor and material costs, and basic questions like
+                        <span class="italic">“Which services are most profitable?”</span> required manual reconciliation.
                     </p>
                     <p class="text-sm sm:text-[0.95rem] leading-relaxed">
-                        I rebuilt the entire schema using an ERD-first approach, normalized the system, enforced keys, 
-                        and authored queries that transform raw operational data into clear, decision-ready business insights.
+                        I redesigned the system from the ground up using an ERD-first approach, then implemented
+                        a fully normalized SQL Server database. The new structure standardizes business entities,
+                        enforces relationships, and supports fast, reliable reporting for both day-to-day operations
+                        and higher-level strategy.
                     </p>
                 </article>
 
                 <!-- What I Built -->
                 <article class="card-section">
-                    <p class="text-[0.7rem] uppercase tracking-[0.22em] text-text-secondary mb-2">What I Built</p>
+                    <p class="text-[0.7rem] uppercase tracking-[0.22em] text-text-secondary mb-2">
+                        What I Built
+                    </p>
                     <ul class="list-disc list-outside pl-5 space-y-1.5 text-sm sm:text-[0.95rem]">
-                        <li>Normalized SQL Server schema with primary/foreign keys and constraints.</li>
-                        <li>ERD modeling for clients, projects, materials, labor, and suppliers.</li>
-                        <li>Standardized fragmented business data into clean relational tables.</li>
-                        <li>30+ analytical SQL queries targeting services, clients, and profitability.</li>
-                        <li>Documentation for schema setup, testing, and future enhancements.</li>
+                        <li>Normalized SQL Server schema with primary / foreign keys and business rules encoded as constraints.</li>
+                        <li>ERD modeling for clients, projects, bids, labor, materials, tools, and production planning.</li>
+                        <li>Standardized previously fragmented operational data into clean relational tables.</li>
+                        <li>30+ analytical SQL queries targeting customer behavior, service demand, and margin analysis.</li>
+                        <li>Deployment, testing, and usage documentation for technical and non-technical stakeholders.</li>
                     </ul>
                 </article>
 
@@ -211,82 +217,94 @@
         </div>
     </section>
 
-
     <!-- PROJECT STRUCTURE -->
     <section class="py-10 md:py-12 bg-primary-bg border-b border-gray-800">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div class="section-title-wrapper mb-6">
-                <h2>Project Structure & Modules</h2>
+                <h2>Project Structure &amp; Modules</h2>
                 <span></span>
             </div>
 
             <div class="grid md:grid-cols-3 gap-6">
 
                 <div class="card-section text-sm text-text-secondary">
-                    <h3 class="text-text-base font-semibold mb-1">1. Data Standardization</h3>
-                    <p class="text-xs uppercase tracking-[0.16em] mb-2">Consistency & normalization</p>
-                    <p>Unifies client, project, and service data into consistent formats to reduce redundancy 
-                       and support clean analysis.</p>
+                    <h3 class="text-text-base font-semibold mb-1">1. Data Standardization Module</h3>
+                    <p class="text-xs uppercase tracking-[0.16em] mb-2">Consistency &amp; normalization</p>
+                    <p>
+                        Consolidated legacy client, project, and service data into a single canonical model.
+                        Applied naming standards and enforced data types so every field has one meaning and one home.
+                    </p>
                 </div>
 
                 <div class="card-section text-sm text-text-secondary">
-                    <h3 class="text-text-base font-semibold mb-1">2. Redundancy Elimination</h3>
-                    <p class="text-xs uppercase tracking-[0.16em] mb-2">Keys & constraints</p>
-                    <p>Introduces primary keys, foreign keys, and relational constraints to enforce integrity 
-                       across business entities.</p>
+                    <h3 class="text-text-base font-semibold mb-1">2. Redundancy Elimination Module</h3>
+                    <p class="text-xs uppercase tracking-[0.16em] mb-2">Keys &amp; constraints</p>
+                    <p>
+                        Replaced duplicate records and repeated columns with relational joins.
+                        Implemented primary keys, foreign keys, unique constraints, and indexes to maintain integrity
+                        and improve query performance.
+                    </p>
                 </div>
 
                 <div class="card-section text-sm text-text-secondary">
-                    <h3 class="text-text-base font-semibold mb-1">3. Business Insights</h3>
+                    <h3 class="text-text-base font-semibold mb-1">3. Business Insights Module</h3>
                     <p class="text-xs uppercase tracking-[0.16em] mb-2">SQL analytics</p>
-                    <p>30+ SQL queries reveal customer behavior, service popularity, and profit patterns 
-                       across projects.</p>
+                    <p>
+                        Built a library of parameterized queries that surface client trends, service popularity,
+                        cost structures, and project profitability — turning the database into an internal reporting asset.
+                    </p>
                 </div>
 
-            </div>
-
-            <div class="w-full my-6 bg-secondary-bg p-6 rounded-xl border border-gray-700 text-center text-xs italic text-text-secondary">
-                [ Insert screenshot: original ERD or legacy schema ]
             </div>
 
         </div>
     </section>
-
 
     <!-- ER MODELING -->
     <section class="py-10 md:py-12 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div class="section-title-wrapper mb-4">
-                <h2>ER Modeling & Database Design</h2>
+                <h2>ER Modeling &amp; Database Design</h2>
                 <span></span>
             </div>
 
             <div class="card-section text-text-secondary text-sm sm:text-[0.95rem] leading-relaxed">
                 <p class="mb-3">
-                    Using ERDPlus, I modeled the core structure of the landscaping company. 
-                    The ER model defines how clients, projects, materials, labor, and suppliers 
-                    interact across each job.
+                    Using ERDPlus, I modeled the end-to-end lifecycle of a landscaping project —
+                    from the initial client and bid through materials, labor assignments, tools, and
+                    production scheduling. The ERD below drove the entire physical design in SQL Server.
                 </p>
 
                 <ul class="list-disc list-outside pl-5 space-y-2 mb-4">
-                    <li><span class="text-text-base font-semibold">Entities:</span> Client, Project, Material, Labor, Supplier.</li>
-                    <li><span class="text-text-base font-semibold">Attributes:</span> names, contact info, labor hours, 
-                        material costs, project dates.</li>
-                    <li><span class="text-text-base font-semibold">Relationships:</span> client–project (1:M), project–material 
-                        (M:N), project–labor (M:N).</li>
-                    <li>Refined cardinalities and dependencies to match real business workflows.</li>
+                    <li><span class="text-text-base font-semibold">Entities:</span> Client, Project, DesignBid,
+                        Material, Labor, Tools, ProductionPlan, ProjectTasks, Suppliers, and supporting link tables.</li>
+                    <li><span class="text-text-base font-semibold">Attributes:</span> bid amounts, labor rates,
+                        material units and costs, task hours, approval dates, and schedule information.</li>
+                    <li><span class="text-text-base font-semibold">Relationships:</span> client–project (1:M),
+                        project–bid (1:M), project–labor and project–materials (M:N via bridge tables),
+                        and production planning tied back to the approved bid.</li>
+                    <li>Cardinalities were refined to match real business rules (for example,
+                        a bid can be rejected multiple times but only one version is ultimately approved).</li>
                 </ul>
 
+                <!-- ERD IMAGE -->
                 <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                    <p class="text-xs italic text-text-secondary">[ Insert screenshot: ERD diagram ]</p>
+                    <img
+                        src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/LS1_ERD.png"
+                        alt="Normalized ERD diagram for the landscape services database"
+                        class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-full object-contain"
+                    />
+                    <p class="mt-2 text-xs italic text-text-secondary">
+                        Figure 1 — Normalized entity-relationship diagram for the landscape services database,
+                        showing clients, bids, labor, materials, tools, and production planning.
+                    </p>
                 </div>
             </div>
 
         </div>
     </section>
-
 
     <!-- SQL IMPLEMENTATION -->
     <section class="py-10 md:py-12 bg-primary-bg border-t border-gray-800">
@@ -298,9 +316,10 @@
             </div>
 
             <div class="card-section">
-                <p class="text-text-secondary mb-3 text-sm sm:text-[0.95rem]">
-                    Using SQL Server Management Studio, I built the schema following 
-                    normalization principles and ERD specifications.
+                <p class="text-text-secondary mb-3 text-sm sm:text-[0.95rem] leading-relaxed">
+                    The logical model was implemented in SQL Server Management Studio using a scripted, repeatable
+                    deployment. The setup script creates the database, builds core tables, establishes keys, and
+                    prepares the environment for test data and analytics.
                 </p>
 
                 <pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto text-[0.8rem]">
@@ -335,17 +354,16 @@ CREATE TABLE Project (
     Status      VARCHAR(30),
     CONSTRAINT FK_Project_Client
         FOREIGN KEY (ClientID) REFERENCES Client(ClientID)
-);</code>
-                </pre>
+);</code></pre>
 
                 <p class="text-xs italic text-center text-text-secondary mt-4">
-                    [ Insert screenshot: SSMS table view ]
+                    Schema scripts initialize the database, enforce relational integrity, and provide a clean baseline
+                    for loading sample or production data.
                 </p>
             </div>
 
         </div>
     </section>
-
 
     <!-- ANALYTICAL QUERIES -->
     <section class="py-10 md:py-12 bg-primary-bg">
@@ -359,15 +377,16 @@ CREATE TABLE Project (
             <div class="card-section text-sm sm:text-[0.95rem] text-text-secondary leading-relaxed">
 
                 <p class="mb-3">
-                    I developed 30+ queries to answer business-critical questions related to customer behavior, 
-                    service popularity, labor efficiency, and material cost patterns.
+                    On top of the normalized schema, I developed more than thirty queries to support managers,
+                    estimators, and operations leads. These queries can be used directly in SSMS or scheduled
+                    as the back end for dashboards and recurring reports.
                 </p>
 
                 <ul class="list-disc list-outside pl-5 space-y-2 mb-4">
-                    <li>Top revenue-generating services and seasonal demand changes.</li>
-                    <li>Customer trends by region, frequency, project type, and lifetime value.</li>
-                    <li>Profitability calculated from labor costs and material usage.</li>
-                    <li>Supplier cost patterns and opportunities to reduce expenses.</li>
+                    <li>Identify which services drive the most revenue and how demand shifts across seasons.</li>
+                    <li>Track high-value clients based on repeat work, total revenue, and profit contribution.</li>
+                    <li>Compare estimated versus realized margins by combining bid amounts with labor and material costs.</li>
+                    <li>Highlight suppliers or materials where cost inflation is eroding profitability.</li>
                 </ul>
 
                 <pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto text-[0.8rem]">
@@ -376,7 +395,7 @@ SELECT      s.ServiceName,
             COUNT(*) AS ProjectCount
 FROM        Project p
 JOIN        ProjectService ps ON p.ProjectID = ps.ProjectID
-JOIN        Service s ON ps.ServiceID = s.ServiceID
+JOIN        Service s         ON ps.ServiceID = s.ServiceID
 GROUP BY    s.ServiceName
 ORDER BY    ProjectCount DESC;
 
@@ -395,11 +414,10 @@ JOIN        JobMaterials jm    ON p.ProjectID = jm.ProjectID
 JOIN        Material m         ON jm.MaterialID = m.MaterialID
 JOIN        LaborAssignment l  ON p.ProjectID = l.ProjectID
 GROUP BY    c.ClientName, p.ProjectName, p.BidAmount
-ORDER BY    EstimatedProfit DESC;</code>
-                </pre>
+ORDER BY    EstimatedProfit DESC;</code></pre>
 
                 <p class="text-xs italic mt-4 text-center">
-                    [ Insert screenshot: top services and profitability results ]
+                    These patterns can be surfaced in dashboards to guide pricing, staffing, and which services to promote.
                 </p>
 
             </div>
@@ -407,32 +425,34 @@ ORDER BY    EstimatedProfit DESC;</code>
         </div>
     </section>
 
-
-    <!-- TESTING & FUTURE WORK -->
+    <!-- TESTING, FUTURE WORK, SKILLS -->
     <section class="pb-10 md:pb-12 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
 
             <!-- Testing & Debugging -->
             <div>
                 <div class="section-title-wrapper mb-4">
-                    <h2>Testing & Debugging Approach</h2>
+                    <h2>Testing &amp; Debugging Approach</h2>
                     <span></span>
                 </div>
 
                 <div class="card-section text-text-secondary text-sm sm:text-[0.95rem] leading-relaxed">
                     <ul class="list-disc list-outside pl-5 space-y-2">
-                        <li><span class="text-text-base font-semibold">Parameter variation:</span> tested queries across
-                            different date ranges and client subsets.</li>
-                        <li><span class="text-text-base font-semibold">Integrity checks:</span> validated referential 
-                            integrity after inserts, updates, and deletes.</li>
-                        <li><span class="text-text-base font-semibold">Cross-validation:</span> manually computed 
-                            profitability to confirm SQL accuracy.</li>
-                        <li>Adjusted indexing and joins to improve execution time as needed.</li>
+                        <li><span class="text-text-base font-semibold">Parameter variation:</span>
+                            validated queries using different time windows, regions, and service filters to confirm
+                            they behaved correctly under multiple scenarios.</li>
+                        <li><span class="text-text-base font-semibold">Data consistency checks:</span>
+                            cross-checked totals between modules (bids, labor, materials) to ensure that every dollar
+                            in the system reconciled back to a project and client.</li>
+                        <li><span class="text-text-base font-semibold">Constraint and referential tests:</span>
+                            exercised inserts, updates, and deletes to confirm that foreign keys and unique constraints
+                            blocked invalid states.</li>
+                        <li>Reviewed execution plans and added indexes where necessary to keep analytical queries responsive.</li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Future Improvements -->
+            <!-- Future Enhancements -->
             <div>
                 <div class="section-title-wrapper mb-4">
                     <h2>Future Enhancements</h2>
@@ -441,10 +461,16 @@ ORDER BY    EstimatedProfit DESC;</code>
 
                 <div class="card-section text-text-secondary text-sm sm:text-[0.95rem] leading-relaxed">
                     <ul class="list-disc list-outside pl-5 space-y-2">
-                        <li><span class="text-text-base font-semibold">Real-time data integration:</span> automate data refresh using ETL pipelines.</li>
-                        <li><span class="text-text-base font-semibold">Scheduled reporting:</span> weekly or monthly SQL jobs for KPIs.</li>
-                        <li><span class="text-text-base font-semibold">Forecasting models:</span> include seasonal demand prediction and margin analysis.</li>
-                        <li>Adopt a SQL style guide for collaborative schema development.</li>
+                        <li><span class="text-text-base font-semibold">Real-time data integration:</span>
+                            connect the schema to operational systems via ETL pipelines or change data capture so
+                            reports always reflect current work.</li>
+                        <li><span class="text-text-base font-semibold">Automated reporting:</span>
+                            create SQL Agent jobs or BI dashboards that deliver weekly margin and workload summaries
+                            to owners and project managers.</li>
+                        <li><span class="text-text-base font-semibold">Expanded metrics:</span>
+                            incorporate customer satisfaction scores, rework rates, and seasonal patterns for more
+                            complete performance insight.</li>
+                        <li>Extend contribution guidelines and SQL style conventions to support multi-developer collaboration.</li>
                     </ul>
                 </div>
             </div>
@@ -471,21 +497,21 @@ ORDER BY    EstimatedProfit DESC;</code>
         </div>
     </section>
 
-
     <!-- SUMMARY -->
     <section class="pb-12 md:pb-14 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            <!-- Bellabeat-style Summary Card -->
+            <!-- Summary Card -->
             <div class="bg-secondary-bg border border-white/30 rounded-2xl p-6 shadow-lg">
                 <h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-text-base">
                     Summary
                 </h3>
                 <p class="text-sm sm:text-[0.95rem] text-text-secondary leading-relaxed">
-                    This project transformed a fragmented landscaping database into a clean, normalized SQL Server 
-                    implementation. With standardized tables, enforced relationships, and analytical queries, the system 
-                    now produces accurate insights into customers, services, and profitability. The revitalized database 
-                    lays a strong foundation for dashboards, automation, and future business analytics.
+                    This project transformed a fragmented landscaping database into a clean, normalized SQL Server
+                    implementation. By grounding the design in a comprehensive ERD, enforcing relational integrity,
+                    and layering on analytical SQL, the system now produces trustworthy insight into customers,
+                    services, and profitability. The revitalized database gives the business a scalable foundation
+                    for future dashboards, automation, and decision-support tools.
                 </p>
             </div>
 
