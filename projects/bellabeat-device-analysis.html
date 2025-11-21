@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" class="dark">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,18 +8,28 @@
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Fonts + Theme -->
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
 
+        /* --- THEME VARIABLES: MATCH AZURE SENTINEL PAGE --- */
         .dark {
-            --bg-default: #050814;
-            --bg-secondary: #0d111f;
-            --text-base: #e5e7eb;
-            --text-secondary: #9ca3af;
-            --accent-primary: #00ffff;
-            --accent-red: #f97373;
-            --container-bg: #020617;
+            --bg-default: #1e1e1e;      /* Darker charcoal */
+            --bg-secondary: #30333a;    /* Card background */
+            --text-base: #ffffff;       /* Pure white */
+            --text-secondary: #abb2bf;  /* Light gray */
+
+            /* Structural accent (for headings, nav, primary links) */
+            --accent-structural: #d9d9d9;
+
+            /* Functional colors (for meaningful accent only) */
+            --functional-action: #61afef;  /* Blue */
+            --functional-success: #98c379; /* Green */
+
+            /* Mapping to old variable names for Tailwind compatibility */
+            --accent-primary: var(--accent-structural);
+            --accent-red: #e06c75;        /* Soft red */
+            --container-bg: #171717;      /* Slightly darker container bg */
+
             background-color: var(--bg-default);
             color: var(--text-base);
         }
@@ -36,45 +46,53 @@
             color: var(--text-base);
         }
 
+        /* --- GLOBAL & TYPOGRAPHY --- */
         body {
             font-family: "Inter", sans-serif;
             transition: background-color 0.5s, color 0.5s;
         }
 
-        .hero-grid-bg {
-            background-color: var(--bg-default);
-            background-image: radial-gradient(circle, rgba(148,163,184,0.12) 1px, rgba(0,0,0,0) 1px);
-            background-size: 22px 22px;
-            background-position: center;
-        }
-
+        /* --- SECTION HEADINGS (same system as Azure page) --- */
         .section-title-wrapper {
             display: inline-flex;
             align-items: center;
-            margin-bottom: 1.25rem;
+            margin-bottom: 2rem;
             font-family: "Inconsolata", monospace;
+            width: 100%;
         }
 
         .section-title-wrapper h2 {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            color: var(--accent-primary);
+            color: var(--accent-structural);
+            flex-shrink: 0;
         }
 
         .section-title-wrapper span {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
+            content: "";
+            display: block;
+            height: 2px;
+            background-color: var(--text-secondary);
             margin-left: 0.75rem;
-            border-bottom: 1px solid var(--text-secondary);
             flex-grow: 1;
-            width: 140px;
+            opacity: 0.5;
+            min-width: 150px;
         }
 
+        /* --- HERO BACKGROUND (same dotted grid as Azure page) --- */
+        .hero-grid-bg {
+            background-color: var(--bg-default);
+            background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, rgba(0,0,0,0) 1px);
+            background-size: 20px 20px;
+            background-position: center;
+        }
+
+        /* --- PILLS (matching Azure Sentinel styling) --- */
         .pill {
             border-radius: 999px;
-            padding: 0.18rem 0.6rem;
-            border: 1px solid rgba(148, 163, 184, 0.4);
-            font-size: 0.68rem;
+            padding: 0.2rem 0.7rem;
+            border: 1px solid rgba(171, 178, 191, 0.6);
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.12em;
             white-space: nowrap;
@@ -82,27 +100,13 @@
 
         .pill-muted {
             color: var(--text-secondary);
-            background-color: rgba(15, 23, 42, 0.96);
+            background-color: rgba(23, 23, 23, 0.95);
         }
 
         .pill-accent {
-            color: var(--accent-primary);
-            background-color: rgba(15, 23, 42, 0.96);
-            border-color: rgba(34, 211, 238, 0.8);
-        }
-
-        .card-shell,
-        .card-shell-simple,
-        .card-section {
-            border-radius: 0.9rem;
-            border-width: 1px;
-            border-color: rgba(31, 41, 55, 0.9);
-            background-color: var(--bg-secondary);
-            box-shadow: 0 16px 28px rgba(0, 0, 0, 0.45);
-        }
-
-        .card-section {
-            padding: 1.75rem;
+            color: var(--accent-structural);
+            background-color: rgba(23, 23, 23, 0.95);
+            border-color: rgba(217, 217, 217, 0.9);
         }
 
         pre code {
@@ -112,6 +116,7 @@
     </style>
 
     <script>
+        // Tailwind config aligned with Azure Sentinel page
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -122,37 +127,57 @@
                         "container-bg": "var(--container-bg)",
                         "text-base": "var(--text-base)",
                         "text-secondary": "var(--text-secondary)",
-                        "accent-cyan": "var(--accent-primary)",
-                        "accent-red": "var(--accent-red)"
+
+                        // Structural accent
+                        "accent-cyan": "var(--accent-structural)",
+
+                        // Functional colors
+                        "accent-red": "var(--accent-red)",
+                        "accent-action": "var(--functional-action)",
+                        "accent-success": "var(--functional-success)",
                     }
                 }
             }
         };
 
         document.addEventListener("DOMContentLoaded", () => {
-            const html = document.documentElement;
-            const saved = localStorage.getItem("theme") || "dark";
-            html.setAttribute("data-theme", saved);
-            html.classList.add(saved);
+            setInitialTheme();
         });
+
+        function setInitialTheme() {
+            const html = document.documentElement;
+            const savedTheme = localStorage.getItem("theme");
+            const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            let initialTheme = 'dark';
+            if (savedTheme) {
+                initialTheme = savedTheme;
+            } else if (!systemPrefersDark) {
+                initialTheme = 'light';
+            }
+
+            html.setAttribute("data-theme", initialTheme);
+            html.classList.add(initialTheme);
+        }
     </script>
 </head>
 
-<body class="bg-primary-bg text-text-base transition-colors duration-500">
-<main class="min-h-screen bg-primary-bg text-text-base">
+<body class="transition-colors duration-500 bg-primary-bg text-text-base">
+<main class="bg-primary-bg text-text-base min-h-screen">
 
     <!-- HERO -->
-    <section class="hero-grid-bg border-b border-gray-800">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12 md:pb-16">
+    <section id="hero"
+             class="hero-grid-bg pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16 border-b border-gray-800">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            <!-- Back link -->
+            <!-- Back link (matches Azure project style) -->
             <a href="../index.html#projects"
-               class="inline-flex items-center text-accent-cyan text-xs sm:text-sm mb-6 hover:text-accent-red transition-colors">
+               class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition mb-6">
                 ← Back to Portfolio
             </a>
 
             <!-- Pills -->
-            <div class="flex flex-wrap gap-2 mb-5">
+            <div class="flex flex-wrap gap-2 mb-6">
                 <span class="pill pill-accent">Bellabeat Case Study</span>
                 <span class="pill pill-muted">Fitbit Dataset</span>
                 <span class="pill pill-muted">R Programming</span>
@@ -160,7 +185,7 @@
             </div>
 
             <!-- Title + subtitle -->
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-text-base">
                 Bellabeat Smart Device Usage Analysis
             </h1>
             <p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed">
@@ -170,23 +195,23 @@
             </p>
 
             <!-- Meta badges -->
-            <div class="flex flex-wrap gap-3 mt-5 text-[0.7rem] sm:text-xs text-text-secondary">
+            <div class="flex flex-wrap gap-3 mt-6 text-[0.7rem] sm:text-xs text-text-secondary">
                 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
-                    <span class="w-1.5 h-1.5 rounded-full bg-accent-cyan"></span>
-                    Activity and Sleep Patterns
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>
+                    Activity and sleep patterns
                 </span>
                 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
-                    <span class="w-1.5 h-1.5 rounded-full bg-accent-cyan"></span>
-                    Behavior and Engagement Insights
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>
+                    Behavior and engagement insights
                 </span>
             </div>
 
             <!-- Top split: Narrative + What I Built -->
             <div class="mt-10 grid md:grid-cols-2 gap-6">
                 <!-- Project Narrative -->
-                <article class="card-section">
-                    <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2">
-                        Project Narrative
+                <article class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                    <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2 font-mono">
+                        Project narrative
                     </p>
                     <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-2">
                         This project explores how people actually use their wellness wearables across a typical month.
@@ -201,9 +226,9 @@
                 </article>
 
                 <!-- What I Built -->
-                <article class="card-section">
-                    <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2">
-                        What I Built
+                <article class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                    <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2 font-mono">
+                        What I built
                     </p>
                     <ul class="list-disc list-outside pl-5 space-y-1.5 text-sm sm:text-[0.95rem] text-text-base">
                         <li>End to end R workflow to import, clean, and combine multiple Fitbit tables.</li>
@@ -218,45 +243,49 @@
     </section>
 
     <!-- WORKFLOW OVERVIEW -->
-    <section class="py-10 md:py-12 border-b border-gray-800 bg-primary-bg">
+    <section class="py-12 md:py-14 border-b border-gray-800 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="section-title-wrapper mb-6">
-                <h2>Workflow Overview</h2>
+            <div class="section-title-wrapper mb-8">
+                <h2 class="font-mono">Workflow overview</h2>
                 <span></span>
             </div>
 
             <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
-                <div class="card-section text-xs">
+                <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 1</p>
-                    <p class="text-sm font-semibold mb-1">Ask</p>
+                    <p class="text-sm font-semibold mb-1 text-text-base">Ask</p>
                     <p class="text-[0.8rem] text-text-secondary">
                         Define how device usage and wellness behavior can guide Bellabeat strategy.
                     </p>
                 </div>
-                <div class="card-section text-xs">
+
+                <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 2</p>
-                    <p class="text-sm font-semibold mb-1">Prepare</p>
+                    <p class="text-sm font-semibold mb-1 text-text-base">Prepare</p>
                     <p class="text-[0.8rem] text-text-secondary">
                         Import Fitbit activity, sleep, and calories data for 30 users across 30 days.
                     </p>
                 </div>
-                <div class="card-section text-xs">
+
+                <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 3</p>
-                    <p class="text-sm font-semibold mb-1">Process</p>
+                    <p class="text-sm font-semibold mb-1 text-text-base">Process</p>
                     <p class="text-[0.8rem] text-text-secondary">
                         Clean records, engineer daily metrics, and standardize date fields.
                     </p>
                 </div>
-                <div class="card-section text-xs">
+
+                <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 4</p>
-                    <p class="text-sm font-semibold mb-1">Analyze</p>
+                    <p class="text-sm font-semibold mb-1 text-text-base">Analyze</p>
                     <p class="text-[0.8rem] text-text-secondary">
                         Explore activity and sleep trends across users and days of the week.
                     </p>
                 </div>
-                <div class="card-section text-xs">
+
+                <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 5</p>
-                    <p class="text-sm font-semibold mb-1">Share And Act</p>
+                    <p class="text-sm font-semibold mb-1 text-text-base">Share and act</p>
                     <p class="text-[0.8rem] text-text-secondary">
                         Translate findings into engagement and marketing recommendations for Bellabeat.
                     </p>
@@ -266,19 +295,20 @@
     </section>
 
     <!-- LAB BREAKDOWN -->
-    <section class="py-10 md:py-14 bg-primary-bg">
+    <section class="py-12 md:py-16 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="section-title-wrapper mb-6">
-                <h2>Lab Breakdown</h2>
+
+            <div class="section-title-wrapper mb-8">
+                <h2 class="font-mono">Lab breakdown</h2>
                 <span></span>
             </div>
 
             <div class="space-y-8 text-sm sm:text-[0.95rem] leading-relaxed text-text-secondary">
 
                 <!-- 1. Dataset Overview -->
-                <section class="card-section">
+                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
                     <h3 class="text-base font-semibold text-text-base mb-1">
-                        1. Dataset and Business Question
+                        1. Dataset and business question
                     </h3>
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
                         Fitbit data used as a proxy for Bellabeat users
@@ -293,11 +323,11 @@
                         <li>Daily activity metrics: steps, distance, calories, intensity minutes.</li>
                         <li>Sleep metrics where available: total minutes and time in bed.</li>
                         <li>User level identifiers to track behavior over time.</li>
-                        <li>Thirty day window aligned with a typical on boarding period.</li>
+                        <li>Thirty day window aligned with a typical onboarding period.</li>
                     </ul>
 
-                    <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <img src="../assets/images/BB1_DatasetPreview.png"
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
+                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/BB1_DatasetPreview.png"
                              alt="Bellabeat Fitbit dataset preview"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
@@ -307,9 +337,9 @@
                 </section>
 
                 <!-- 2. Cleaning & Feature Engineering -->
-                <section class="card-section">
+                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
                     <h3 class="text-base font-semibold text-text-base mb-1">
-                        2. Data Cleaning and Feature Engineering
+                        2. Data cleaning and feature engineering
                     </h3>
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
                         Joined activity and sleep tables and created daily wellness signals
@@ -326,7 +356,7 @@
                         <li>Derived day of week for weekday versus weekend comparisons.</li>
                     </ul>
 
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-[0.78rem] mb-4">
+                    <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-[0.78rem] mb-4">
 <code># Merge and engineer core daily metrics
 daily_activity &lt;- read_csv("dailyActivity_merged.csv") %&gt;%
   clean_names()
@@ -350,8 +380,8 @@ merged &lt;- daily_activity %&gt;%
                            lightly_active_minutes
   )</code></pre>
 
-                    <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <img src="../assets/images/BB1_Cleaned_FeatureEngineered.png"
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
+                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/BB1_Cleaned_FeatureEngineered.png"
                              alt="Cleaned and feature engineered Fitbit dataset"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
@@ -361,9 +391,9 @@ merged &lt;- daily_activity %&gt;%
                 </section>
 
                 <!-- 3. Behavior Patterns -->
-                <section class="card-section">
+                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
                     <h3 class="text-base font-semibold text-text-base mb-1">
-                        3. Daily and Weekly Behavior Patterns
+                        3. Daily and weekly behavior patterns
                     </h3>
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
                         Compared movement and rest behavior across the week
@@ -381,8 +411,8 @@ merged &lt;- daily_activity %&gt;%
                     </ul>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                        <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                            <img src="../assets/images/BB1_Steps_By_Day.png"
+                        <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
+                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/BB1_Steps_By_Day.png"
                                  alt="Average daily steps by day of week"
                                  class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                             <p class="mt-2 text-xs italic text-text-secondary">
@@ -390,8 +420,8 @@ merged &lt;- daily_activity %&gt;%
                             </p>
                         </div>
 
-                        <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                            <img src="../assets/images/BB1_Calories_vs_ActiveMinutes.png"
+                        <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
+                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/BB1_Calories_vs_ActiveMinutes.png"
                                  alt="Calories burned versus total active minutes"
                                  class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                             <p class="mt-2 text-xs italic text-text-secondary">
@@ -400,8 +430,8 @@ merged &lt;- daily_activity %&gt;%
                         </div>
                     </div>
 
-                    <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <img src="../assets/images/BB1_Sleep_Duration_Distribution.png"
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
+                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/BB1_Sleep_Duration_Distribution.png"
                              alt="Sleep duration distribution among Bellabeat users"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
@@ -411,9 +441,9 @@ merged &lt;- daily_activity %&gt;%
                 </section>
 
                 <!-- 4. Engagement Opportunities -->
-                <section class="card-section">
+                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
                     <h3 class="text-base font-semibold text-text-base mb-1">
-                        4. Engagement and Marketing Opportunities
+                        4. Engagement and marketing opportunities
                     </h3>
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
                         Mapped behavior patterns to specific Bellabeat actions
@@ -430,12 +460,13 @@ merged &lt;- daily_activity %&gt;%
                         <li>Promote long term wellness programs that track both movement and sleep quality together.</li>
                     </ul>
 
-                    <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <img src="../assets/images/BB1_Calories_By_Weekday.png"
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
+                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/BB1_Calories_By_Weekday.png"
                              alt="Average calories burned by weekday"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            Figure 6 — Calories burned by weekday highlight midweek peaks and weekend drop offs that can drive engagement timing.
+                            Figure 6 — Calories burned by weekday highlight midweek peaks and weekend drop offs that can
+                            drive engagement timing.
                         </p>
                     </div>
                 </section>
@@ -444,18 +475,19 @@ merged &lt;- daily_activity %&gt;%
     </section>
 
     <!-- SAMPLE R CODE -->
-    <section class="py-10 md:py-12 border-t border-gray-800 bg-primary-bg">
+    <section class="py-12 md:py-14 border-t border-gray-800 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="section-title-wrapper mb-6">
-                <h2>Sample R Code</h2>
+
+            <div class="section-title-wrapper mb-8">
+                <h2 class="font-mono">Sample R code</h2>
                 <span></span>
             </div>
 
-            <div class="card-section">
+            <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
                 <p class="text-xs font-mono text-accent-cyan mb-2 uppercase tracking-[0.18em]">
                     Summary of activity and sleep by day of week
                 </p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-[0.78rem]">
+                <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-[0.78rem]">
 <code>library(tidyverse)
 library(lubridate)
 library(janitor)
@@ -474,8 +506,8 @@ day_summary &lt;- merged %&gt;%
 
 day_summary</code></pre>
 
-                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
-                    <img src="../assets/images/BB1_Summary_Table.png"
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                    <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/BB1_Summary_Table.png"
                          alt="Summary table of wellness metrics by day of week"
                          class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                     <p class="mt-2 text-xs italic text-text-secondary">
@@ -487,16 +519,16 @@ day_summary</code></pre>
     </section>
 
     <!-- ARCHITECTURE / INSIGHTS / SKILLS -->
-    <section class="py-10 md:py-12 bg-primary-bg">
+    <section class="py-12 md:py-16 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
 
             <!-- Architecture -->
             <div>
-                <div class="section-title-wrapper mb-6">
-                    <h2>Architecture Overview</h2>
+                <div class="section-title-wrapper mb-8">
+                    <h2 class="font-mono">Architecture overview</h2>
                     <span></span>
                 </div>
-                <div class="grid md:grid-cols-2 gap-8 text-sm text-text-secondary card-section mb-6">
+                <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 grid md:grid-cols-2 gap-8 text-sm text-text-secondary mb-6">
                     <div>
                         <h3 class="text-base font-semibold text-text-base mb-2">Components</h3>
                         <ul class="list-disc list-outside pl-5 space-y-1">
@@ -508,7 +540,7 @@ day_summary</code></pre>
                         </ul>
                     </div>
                     <div>
-                        <h3 class="text-base font-semibold text-text-base mb-2">Data Flow</h3>
+                        <h3 class="text-base font-semibold text-text-base mb-2">Data flow</h3>
                         <ul class="list-disc list-outside pl-5 space-y-1">
                             <li>Raw Fitbit CSVs → R import and cleaning.</li>
                             <li>Cleaned activity and sleep data → joined daily view.</li>
@@ -519,8 +551,8 @@ day_summary</code></pre>
                     </div>
                 </div>
 
-                <div class="bg-secondary-bg rounded-lg border border-gray-700 p-4 text-center">
-                    <img src="../assets/images/BB1_Dashboard_Composite.png"
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
+                    <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/BB1_Dashboard_Composite.png"
                          alt="Composite dashboard of Bellabeat behavior insights"
                          class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[900px] w-full object-contain" />
                     <p class="mt-2 text-xs italic text-text-secondary">
@@ -531,11 +563,11 @@ day_summary</code></pre>
 
             <!-- Key Insights -->
             <div>
-                <div class="section-title-wrapper mb-6">
-                    <h2>Key Insights</h2>
+                <div class="section-title-wrapper mb-8">
+                    <h2 class="font-mono">Key insights</h2>
                     <span></span>
                 </div>
-                <div class="card-section">
+                <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
                     <ul class="list-disc list-outside pl-5 space-y-2 text-text-secondary text-sm sm:text-[0.95rem]">
                         <li>Most users fall short of eight hours of sleep even on low activity days.</li>
                         <li>Weekday activity is more structured, which makes it easier to anchor challenges and streaks.</li>
@@ -547,11 +579,11 @@ day_summary</code></pre>
 
             <!-- Skills -->
             <div>
-                <div class="section-title-wrapper mb-6">
-                    <h2>Skills Demonstrated</h2>
+                <div class="section-title-wrapper mb-8">
+                    <h2 class="font-mono">Skills demonstrated</h2>
                     <span></span>
                 </div>
-                <div class="card-section">
+                <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
                     <div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
                         <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">R programming</span>
                         <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">tidyverse data wrangling</span>
@@ -566,9 +598,10 @@ day_summary</code></pre>
     </section>
 
     <!-- SUMMARY -->
-    <section class="pb-12 md:pb-14 bg-primary-bg">
+    <section class="pb-12 md:pb-16 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
+            <!-- Dark card with thin white border (same style as Azure summary) -->
             <div class="bg-secondary-bg border border-white/30 rounded-2xl p-6 shadow-lg">
                 <h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-text-base">
                     Summary
@@ -581,6 +614,7 @@ day_summary</code></pre>
                 </p>
             </div>
 
+            <!-- Back link -->
             <div class="mt-10">
                 <a href="../index.html#projects"
                    class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition">
