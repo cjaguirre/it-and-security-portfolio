@@ -197,15 +197,20 @@
                     </p>
 
                     <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
-                        This project replicates a real-world churn analysis workflow: raw telecom data → cleaning → feature
-                        engineering → model training → model evaluation → explainability → business strategy. The dataset
-                        contains customer demographics, service subscriptions, billing history, and contract types.
+                        This project shows how a company can predict when a customer is likely to cancel their phone
+                        or internet service. I used real telecom-style data and walked through the full process: cleaning
+                        the data, preparing it for modeling, building prediction models, evaluating how well they work, and
+                        explaining why certain customers are at risk.
                     </p>
-
                     <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base">
-                        After preparing the data, I trained classification models, evaluated performance using standard
-                        metrics, and used SHAP values to reveal the features most responsible for churn predictions — the
-                        bridge between modeling and actionable retention decision-making.
+                        The dataset includes things like customer age, contract type, internet service, monthly charges, and
+                        payment method. After preparing the data, I trained two models — Logistic Regression and Random Forest
+                        — to learn the difference between customers who stayed and customers who left.
+                    </p>
+                    <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base">
+                        To make the results useful for business decisions, I used SHAP explainability to show which factors 
+                        influence churn the most. This helps identify problem areas (like high bills, month-to-month contracts,
+                        or specific services) so retention teams know exactly where to focus.
                     </p>
                 </article>
 
