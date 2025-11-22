@@ -288,12 +288,29 @@
             <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
                 <h3 class="text-base font-semibold text-text-base mb-1">1. Dataset Overview</h3>
                 <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                    Kaggle dataset · 7k customers · 21 fields
+                    Kaggle telecom dataset — 7,000 customers, 21 features.
                 </p>
 
                 <p class="mb-3 text-text-secondary">
-                    The dataset includes customer demographics, contract type, service subscriptions, payment methods,
-                    monthly billing, and churn labels. It supports supervised churn prediction and rich feature exploration.
+                    To begin the project, I loaded the telecom customer dataset and reviewed its structure. 
+                    It contains information about each customer’s demographics, services, billing details, 
+                    contract type, and whether they eventually left the company. This first step helps verify
+                    that the data is complete and gives a quick understanding of what variables will matter for
+                    predicting churn.
+                </p>
+                
+                <p class="mb-3 text-text-secondary">
+                    The first screenshot displays the dataset inside the Jupyter Notebook. Each row represents a
+                    customer, and each column shows a different attribute — such as gender, tenure, internet service,
+                    contract type, payment method, and whether the customer churned. This preview confirms that the 
+                    data loaded correctly and is ready for cleaning.
+                </p>
+
+                <p class="mb-3 text-text-secondary">
+                    The second screenshot is a correlation heatmap, which highlights relationships between variables
+                    across the dataset. For example, longer tenure often reduces churn, while month-to-month contracts
+                    and higher monthly charges increase churn. This visualization helps identify early patterns and guides
+                    which features may influence the models most.
                 </p>
 
                 <!-- Dataset Preview -->
