@@ -605,12 +605,12 @@ WindowsEvents</code></pre>
                     Summary
                 </h3>
                 <p class="text-sm sm:text-[0.95rem] text-text-secondary leading-relaxed">
-                    This project ties together endpoint logging, Azure monitoring, and SIEM analysis into one pipeline.
-                    I stood up a deliberately vulnerable Windows host, collected its logs in Log Analytics, analyzed
-                    the resulting events in Microsoft Sentinel using KQL, and layered on GeoIP enrichment to understand
-                    where attacks were coming from. The final attack map presents hostile activity in a format that
-                    analysts, managers, and non technical stakeholders can all understand while still reflecting the
-                    underlying technical work required to operate a modern SOC.
+                    This project shows how real attack telemetry can be captured, enriched, and visualized using
+                    Azure’s security stack. By deploying an intentionally exposed Windows host, collecting its logs,
+                    and combining them with GeoIP data in Sentinel, I created a streamlined analysis workflow that
+                    highlights global brute-force activity in a simple, understandable format. The finished workbook
+                    makes it easy for both technical and non-technical audiences to see where attacks originate and
+                    how they unfold in a cloud environment.
                 </p>
             </div>
 
