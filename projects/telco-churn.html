@@ -283,19 +283,36 @@
                     for what information is available to the model.
                 </p>
 
+                <p class="mb-3 text-text-secondary">
+                    The first image is a direct preview of the data inside the notebook. It is included to show the
+                    actual table the model is learning from. You can see each customer as a separate row and fields such
+                    as tenure, contract type, internet service, payment method, and the churn label. This helps someone
+                    who does not use Python understand that the project works with real structured data and not just
+                    abstract statistics.
+                </p>
+
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                     <img src="../assets/images/TC1_Dataset Preview.png"
                          class="rounded-lg mx-auto mb-2" />
                     <p class="text-xs text-text-secondary italic text-center">
-                        Dataset preview in pandas showing customer level records and core fields.
+                        Dataset preview in pandas showing customer level records, available services, and the churn flag
+                        that the model will learn to predict.
                     </p>
                 </div>
+
+                <p class="mb-3 text-text-secondary">
+                    The second image is a correlation heatmap. It is included to show how different numeric features move
+                    together and how they relate to churn. For example, you can see that longer tenure usually goes with
+                    lower churn, while certain payment types or contract styles are more common among customers who leave.
+                    This picture helps connect the raw table to early patterns that will matter later when building the model.
+                </p>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4">
                     <img src="../assets/images/TC1_Correlation Heatmap.png"
                          class="rounded-lg mx-auto mb-2" />
                     <p class="text-xs text-text-secondary italic text-center">
-                        Correlation heatmap highlighting early patterns, such as tenure and contract type relationships with churn.
+                        Correlation heatmap highlighting early relationships between numeric features and churn, giving a
+                        first visual hint of what might drive customers to stay or leave.
                     </p>
                 </div>
             </section>
@@ -314,11 +331,19 @@
                     the customerID column since it does not help the model learn anything about churn.
                 </p>
 
+                <p class="mb-3 text-text-secondary">
+                    The cleaning screenshot is included to prove that this step was actually done in code, not just described.
+                    It shows the logic that converts TotalCharges into a numeric field and removes rows that would cause
+                    problems later. For someone reviewing the project, this image makes it clear that the data was not taken
+                    at face value and that bad records were handled before any modeling happened.
+                </p>
+
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                     <img src="../assets/images/TC1_Data Cleaning & Transformation.png"
                          class="rounded-lg mx-auto mb-2" />
                     <p class="text-xs text-text-secondary italic text-center">
-                        Cleaning step focused on correcting TotalCharges and dropping unusable records.
+                        Data cleaning and transformation logic focused on correcting the TotalCharges field and dropping
+                        rows that could introduce noise or errors into the model.
                     </p>
                 </div>
 
@@ -369,6 +394,15 @@ X_train, X_test, y_train, y_test = train_test_split(
                     of mistakes it made.
                 </p>
 
+                <p class="mb-3 text-text-secondary">
+                    The modeling and evaluation image is included so the reader can see the real output of the model rather
+                    than just hearing that it performed well. The confusion matrix shows how many churners and non churners
+                    were predicted correctly versus incorrectly, and the classification report breaks this down into precision,
+                    recall, and F1 score. Together, they help explain not only that the model works, but how it behaves on
+                    each class, which matters when a business cares more about catching churners than misclassifying a few
+                    stable customers.
+                </p>
+
                 <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-text-secondary">
 <code>model = RandomForestClassifier(
     n_estimators=300,
@@ -387,7 +421,8 @@ print(classification_report(y_test, y_pred))</code></pre>
                     <img src="../assets/images/TC1_Modeling & Performance Evaluation.png"
                          class="rounded-lg mx-auto mb-2" />
                     <p class="text-xs text-text-secondary italic text-center">
-                        Model evaluation output, including confusion matrix and key metrics like precision, recall, and F1 score.
+                        Model evaluation output showing how often the Random Forest correctly identifies churn and non churn
+                        customers, along with detailed metrics for each class.
                     </p>
                 </div>
             </section>
@@ -407,6 +442,14 @@ print(classification_report(y_test, y_pred))</code></pre>
                     tenure, or monthly charges.
                 </p>
 
+                <p class="mb-3 text-text-secondary">
+                    The SHAP summary image is included because it acts as a bridge between the technical model and
+                    real business questions. Each bar represents a feature, and the color and spread of the points show
+                    how that feature pushes predictions toward churn or no churn. For example, high monthly charges may
+                    increase churn risk, while longer tenure may reduce it. This visual lets non technical viewers see
+                    which levers they can actually pull to keep customers from leaving.
+                </p>
+
                 <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-text-secondary">
 <code>explainer = shap.TreeExplainer(model)
 shap_values = explainer.shap_values(X_test)
@@ -418,7 +461,8 @@ shap.summary_plot(shap_values[1], X_test, plot_type="bar")</code></pre>
                     <img src="../assets/images/TC1_SHAP Summary Plot.png"
                          class="rounded-lg mx-auto mb-2" />
                     <p class="text-xs text-text-secondary italic">
-                        SHAP summary plot showing which features have the strongest impact on churn predictions.
+                        SHAP summary plot ranking the most important features for churn and showing how each one pushes
+                        individual predictions toward staying or leaving.
                     </p>
                 </div>
             </section>
