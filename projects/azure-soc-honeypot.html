@@ -320,15 +320,17 @@
                 <!-- 1. Subscription -->
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
                     <h3 class="text-base font-semibold text-text-base mb-1">
-                        1. Azure subscription setup
+                        1. Azure Environment Preparation
                     </h3>
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Verified access to VMs, NSGs, Log Analytics, and Microsoft Sentinel.
+                        Ensured full access to core cloud services required for the security lab.
                     </p>
                     <p class="mb-4">
-                        I started by confirming that my Azure tenant could deploy virtual machines, create
-                        Network Security Groups, build a Log Analytics Workspace, and onboard Microsoft Sentinel.
-                        This matches what a junior SOC analyst would inherit in a real environment.
+                        I began by verifying that my Azure subscription had everything needed
+                        for the lab. This included the ability to deploy virtual machines, create 
+                        Network Security Groups, set up a Log Analytics Workspace, and activate 
+                        Microsoft Sentinel. Confirming these core services up front mirrors the first
+                        steps a junior SOC analyst would take when preparing to work in a real cloud environment.
                     </p>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -358,18 +360,20 @@
                         2. Honeypot VM and intentional exposure
                     </h3>
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Created a Windows 10 VM, opened RDP, disabled firewall, and relaxed NSG rules.
+                        Deployed a Windows 10 VM, opened RDP, relaxed security rules, and removed host protections.
                     </p>
                     <p class="mb-3">
-                        The objective here was not to harden the host, but to safely recreate a misconfiguration.
-                        I deployed a Windows 10 VM with a public IP, opened its inbound NSG rules, and disabled the
-                        Windows firewall to invite real world brute force traffic.
+                        The goal for this step was to safely recreate what happens when a server is misconfigured on
+                        the internet. I deployed a Windows 10 VM with a public IP, opened its inbound Network Security
+                        Group rules, and disabled the Windows firewall. This allowed real attackers and automated scanners
+                        to immediately find the system, attempt logins, and generate authentic brute force activity for
+                        analysis.
                     </p>
                     <ul class="list-disc list-outside pl-5 space-y-1 mb-4">
-                        <li>Provisioned a Windows 10 VM from the gallery with RDP access enabled.</li>
-                        <li>NSG updated to allow inbound traffic from any source.</li>
-                        <li>All Windows firewall profiles disabled through <code>wf.msc</code>.</li>
-                        <li>Generated baseline failed logons using a decoy account (for example <code>employee</code>).</li>
+                        <li>Created a Windows 10 VM with RDP enabled.</li>
+                        <li>Set NSG rules to allow inbound traffic from anywhere.</li>
+                        <li>Disabled all Windows firewall profiles.<code>wf.msc</code>.</li>
+                        <li>Generated initial failed logons using a decoy user account.</li>
                     </ul>
 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
@@ -388,17 +392,20 @@
                         3. Log forwarding and Microsoft Sentinel integration
                     </h3>
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Logs ingested via Azure Monitor Agent into Log Analytics and surfaced in Sentinel.
+                        Forwarded Windows security logs into Log Analytics using the Azure Monitor
+                        Agent and connected them to Sentinel.
                     </p>
                     <p class="mb-3">
-                        Once the honeypot was generating SecurityEvent logs locally, I wired it into Azure monitoring
-                        so Sentinel could query and visualize the data.
+                        Once the honeypot began producing SecurityEvent logs, I connected the VM to
+                        Azure’s monitoring pipeline so the data could be collected, stored, and analyzed
+                        in Microsoft Sentinel. This setup allowed every failed login attempt to flow directly
+                        into Log Analytics, where Sentinel could query and visualize the activity in real time.
                     </p>
                     <ul class="list-disc list-outside pl-5 space-y-1 mb-4">
-                        <li>Created a Log Analytics Workspace as the central store for Windows logs.</li>
-                        <li>Enabled Microsoft Sentinel on that workspace.</li>
-                        <li>Configured the Windows Security Events via AMA connector to install the Azure Monitor Agent and create a data collection rule.</li>
-                        <li>Verified ingestion by querying <code>SecurityEvent</code> for Event ID 4625 (failed logons).</li>
+                        <li>Created a Log Analytics Workspace as the central logging location.</li>
+                        <li>Activated Microsoft Sentinel on that workspace.</li>
+                        <li>Used the Windows Security Events via AMA connector to install the Azure Monitor Agent and enable log collection.</li>
+                        <li>Confirmed successful ingestion by querying Event ID 4625 (failed logons).</li>
                     </ul>
 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
@@ -417,16 +424,18 @@
                         4. GeoIP watchlist and KQL enrichment
                     </h3>
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        GeoIP dataset imported as a watchlist and joined to SecurityEvent logs using KQL.
+                        Imported a GeoIP dataset and attached location data to SecurityEvent logs using KQL.
                     </p>
                     <p class="mb-3">
-                        To make attacker locations obvious, I imported a summarized GeoIP dataset and used Kusto Query
-                        Language to enrich failed logons with geographic attributes.
+                        To make the source of each attack easy to understand, I brought a GeoIP dataset into
+                        Sentinel and used KQL to add country and region details to every failed logon. This allowed
+                        each IP address to be mapped to a real location, turning raw log data into something visual 
+                        and meaningful.
                     </p>
                     <ul class="list-disc list-outside pl-5 space-y-1 mb-4">
-                        <li>Loaded a CSV mapping IPv4 ranges to countries and regions.</li>
-                        <li>Created a Sentinel watchlist named <code>geoip</code> using <code>network</code> as the key.</li>
-                        <li>Used <code>ipv4_lookup</code> to join 4625 events with GeoIP data.</li>
+                        <li>Uploaded a CSV listing IPv4 ranges and their associated countries and regions.</li>
+                        <li>Created a Sentinel watchlist named geoip, keyed by the network range.</li>
+                        <li>Enriched 4625 failed logon events by joining them with the GeoIP watchlist using ipv4_lookup.</li>
                     </ul>
 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
@@ -445,17 +454,19 @@
                         5. Sentinel workbook attack map
                     </h3>
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Workbook built to visualize attack origin points from enriched 4625 events.
+                        Built a workbook to visualize attacker locations using enriched failed-logon events.
                     </p>
                     <p class="mb-3">
-                        Finally, I created a Sentinel workbook that runs the enriched KQL query and plots attacker IPs
-                        on an Azure map visualization. Filters and time controls let me analyze different attack windows.
+                       To bring all the enriched data together, I created a custom Sentinel workbook that plots 
+                        attacker IPs on an interactive map. The workbook runs the GeoIP-enhanced KQL query, displays 
+                        each event by latitude and longitude, and includes controls that let me explore different time 
+                        ranges and attack patterns.
                     </p>
                     <ul class="list-disc list-outside pl-5 space-y-1 mb-4">
-                        <li>New workbook created from a blank canvas.</li>
-                        <li>Query visualization configured to run the GeoIP enriched KQL.</li>
-                        <li>Latitude and longitude fields mapped to the map visual.</li>
-                        <li>Controls added for time range and dynamic filtering.</li>
+                        <li>Started with a blank workbook and added a query visual.</li>
+                        <li>Connected the visual to the GeoIP-enriched KQL query.</li>
+                        <li>Mapped latitude and longitude to the Azure map component.</li>
+                        <li>Added filters for time ranges and dynamic data exploration.</li>
                     </ul>
 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
