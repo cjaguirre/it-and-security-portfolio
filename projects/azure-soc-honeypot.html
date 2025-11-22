@@ -534,22 +534,22 @@ WindowsEvents</code></pre>
                     <div>
                         <h3 class="text-base font-semibold text-text-base mb-2">Components</h3>
                         <ul class="list-disc list-outside pl-5 space-y-1">
-                            <li><span class="font-semibold text-text-base">Public internet</span> — real world brute force traffic sources.</li>
-                            <li><span class="font-semibold text-text-base">Azure NSG (allow all inbound)</span> — intentionally exposed perimeter.</li>
-                            <li><span class="font-semibold text-text-base">Windows honeypot VM</span> — generates SecurityEvent telemetry.</li>
-                            <li><span class="font-semibold text-text-base">Azure Monitor Agent</span> — forwards logs to Log Analytics.</li>
-                            <li><span class="font-semibold text-text-base">Log Analytics Workspace</span> — central store plus GeoIP reference data.</li>
-                            <li><span class="font-semibold text-text-base">Microsoft Sentinel</span> — SIEM used for KQL analysis and visualization.</li>
+                            <li><span class="font-semibold text-text-base">Public internet</span> — Source of real brute-force activity.</li>
+                            <li><span class="font-semibold text-text-base">Azure NSG (Open Inbound)</span> — Intentionally exposed to allow traffic.</li>
+                            <li><span class="font-semibold text-text-base">Windows Honeypot VM</span> — Windows host generating SecurityEvent logs.</li>
+                            <li><span class="font-semibold text-text-base">Azure Monitor Agent</span> — Sends logs to the workspace.</li>
+                            <li><span class="font-semibold text-text-base">Log Analytics Workspace</span> — Stores and indexes events.</li>
+                            <li><span class="font-semibold text-text-base">Microsoft Sentinel</span> — Runs KQL queries and visualizations.</li>
                         </ul>
                     </div>
                     <div>
                         <h3 class="text-base font-semibold text-text-base mb-2">Data flow</h3>
                         <ul class="list-disc list-outside pl-5 space-y-1">
-                            <li>Internet → VM — attackers launch automated RDP scans.</li>
-                            <li>VM → Log Analytics — AMA ships Windows SecurityEvent logs.</li>
-                            <li>Log Analytics → Sentinel — SIEM detection and analytics.</li>
-                            <li>GeoIP watchlist → KQL — IP ranges joined to enrich attacker events.</li>
-                            <li>Sentinel workbook → analyst — enriched events visualized on a global map.</li>
+                            <li>Internet Scanners → VM → Failed RDP attempts.</li>
+                            <li>VM → AMA → Log Analytics.</li>
+                            <li>Log Analytics → Sentinel → Analysis.</li>
+                            <li>GeoIP watchlist → KQL → Attacker locations added.</li>
+                            <li>Sentinel workbook → Map Visualization.</li>
                         </ul>
                     </div>
                 </div>
@@ -564,10 +564,10 @@ WindowsEvents</code></pre>
 
                 <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
                     <ul class="list-disc list-outside pl-5 space-y-2 text-text-secondary text-sm sm:text-[0.95rem]">
-                        <li>Exposed RDP hosts attract brute force traffic within minutes of going online.</li>
-                        <li>Most attacker infrastructure is automated and hosted, not individual users.</li>
-                        <li>GeoIP enrichment immediately reveals global attack clusters and patterns.</li>
-                        <li>Sentinel workbooks convert raw logs into visuals that are easy to brief and share.</li>
+                        <li>Open RDP services are found and attacked extremely quickly.</li>
+                        <li>The majority of traffic comes from automated infrastructure, not individuals.</li>
+                        <li>Adding GeoIP data shows immediate geographic trends behind the attacks.</li>
+                        <li>Visualizing events helps explain patterns clearly without reading raw logs.</li>
                     </ul>
                 </div>
             </div>
@@ -581,14 +581,14 @@ WindowsEvents</code></pre>
 
                 <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
                     <div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
-                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Azure administration</span>
-                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">NSG configuration</span>
-                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">SecurityEvent logs</span>
-                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Log Analytics Workspace</span>
-                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Microsoft Sentinel</span>
-                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">KQL querying</span>
-                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">GeoIP enrichment</span>
-                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">SOC investigation</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Azure Resource Setup</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Network Security Group Configuration</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Windows SecurityEvent Logging</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Log Analytics Workspace Usage</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Microsoft Sentinel Operations</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Kusto Query Language (KQL)</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Watchlist and Data Enrichment</span>
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-accent-cyan font-mono">Incident-style investigation Practices</span>
                     </div>
                 </div>
             </div>
