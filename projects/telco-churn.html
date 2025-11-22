@@ -406,38 +406,61 @@
                 
                 </section>
 
+            <!-- 4. Modeling & Evaluation -->
+                    <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                        <h3 class="text-base font-semibold text-text-base mb-1">4. Modeling & Evaluation</h3>
+                    
+                        <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                            Random Forest model trained and assessed on test data.
+                        </p>
+                    
+                        <p class="mb-3 text-text-secondary">
+                            After preparing the features, I trained a Random Forest classification model to predict which 
+                            customers were likely to churn. The model learned patterns from the training set and was then 
+                            tested on unseen data to measure its real-world accuracy. A confusion matrix and classification 
+                            report were used to evaluate how well the model identified churn versus non-churn customers.
+                        </p>
+                    
+                        <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-2">
+                            What’s happening in the code
+                        </p>
+                    
+                        <ul class="list-disc list-inside text-text-secondary mb-4 text-sm">
+                            <li>Initializes a Random Forest model with tuned parameters.</li>
+                            <li>Fits the model on the training data (<span class="font-semibold text-text-base">X_train</span>, <span class="font-semibold text-text-base">y_train</span>).</li>
+                            <li>Predicts churn outcomes on the test set.</li>
+                            <li>Prints a confusion matrix and classification report to assess performance.</li>
+                        </ul>
+                    
+                        <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-text-secondary">
+                    <code>model = RandomForestClassifier(
+                        n_estimators=300,
+                        max_depth=12,
+                        random_state=42
+                    )
+                    
+                    model.fit(X_train, y_train)
+                    
+                    y_pred = model.predict(X_test)
+                    
+                    print(confusion_matrix(y_test, y_pred))
+                    print(classification_report(y_test, y_pred))</code></pre>
+                    
+                        <p class="text-text-secondary mt-4 mb-2">
+                            The screenshot below shows the evaluation results, including accuracy, precision, recall, and 
+                            a confusion matrix. These metrics help measure how reliably the model detects churn.
+                        </p>
+                    
+                        <img src="/mnt/data/e0870743-64ea-4b4b-9820-4bee915ed7ca.png" 
+                             alt="Confusion matrix and classification report output" 
+                             class="rounded-lg border border-gray-800 mt-2">
+                    
+                        <p class="text-center text-xs italic text-text-secondary mt-2">
+                            Confusion matrix illustrating the model’s performance on the test set.
+                        </p>
+                    
+                    </section>
 
-            <!-- 4. Modeling -->
-            <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                <h3 class="text-base font-semibold text-text-base mb-1">4. Modeling & Evaluation</h3>
-                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                    Random Forest performance assessment
-                </p>
-
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-text-secondary">
-<code>model = RandomForestClassifier(
-    n_estimators=300,
-    max_depth=12,
-    random_state=42
-)
-model.fit(X_train, y_train)
-
-y_pred = model.predict(X_test)
-
-print(confusion_matrix(y_test, y_pred))
-print(classification_report(y_test, y_pred))</code></pre>
-
-                <!-- Confusion Matrix Screenshot -->
-                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
-                    <img src="../assets/images/TC1_Modeling & Performance Evaluation.png"
-                         class="rounded-lg mx-auto mb-2" />
-
-                    <p class="text-xs text-text-secondary italic">
-                        Confusion matrix illustrating performance on test set.
-                    </p>
-                </div>
-
-            </section>
 
             <!-- 5. SHAP Explainability -->
             <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
