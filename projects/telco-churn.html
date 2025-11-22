@@ -202,11 +202,13 @@
                         the data, preparing it for modeling, building prediction models, evaluating how well they work, and
                         explaining why certain customers are at risk.
                     </p>
+                    
                     <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base">
                         The dataset includes things like customer age, contract type, internet service, monthly charges, and
                         payment method. After preparing the data, I trained two models — Logistic Regression and Random Forest
                         — to learn the difference between customers who stayed and customers who left.
                     </p>
+                    
                     <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base">
                         To make the results useful for business decisions, I used SHAP explainability to show which factors 
                         influence churn the most. This helps identify problem areas (like high bills, month-to-month contracts,
@@ -220,13 +222,13 @@
                     </p>
 
                     <ul class="list-disc list-outside pl-5 space-y-1.5 text-sm sm:text-[0.95rem] text-text-base">
-                        <li>Full Python churn modeling pipeline in Jupyter Notebook.</li>
-                        <li>Data quality fixes, type conversions, and cleaning.</li>
-                        <li>Categorical encoding and binary mappings for Yes/No fields.</li>
-                        <li>Train/test split with stratification.</li>
-                        <li>Logistic Regression and Random Forest classification models.</li>
-                        <li>Confusion matrix and classification report evaluation.</li>
-                        <li>SHAP global importance and summary analysis.</li>
+                        <li>A full churn analysis workflow in Python/Jupyter Notebook.</li>
+                        <li>Cleaned and fixed messy data so it could be used properly.</li>
+                        <li>Converted Yes/No and text fields into numerical values models can understand.</li>
+                        <li>Split the data into training and testing groups to avoid bias.</li>
+                        <li>Built two prediction models: Logistic Regression and Random Forest.</li>
+                        <li>Evaluated accuracy using a confusion matrix and classification report.</li>
+                        <li>Used SHAP to visually explain which features drive customer churn.</li>
                     </ul>
                 </article>
 
