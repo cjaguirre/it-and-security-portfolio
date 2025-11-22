@@ -342,7 +342,7 @@
                         
                             <p class="mb-3 text-text-secondary">
                                 Before modeling, the dataset needed a quick cleanup. One of the billing fields, 
-                                <span class="font-semibold text-text-base">TotalCharges</span>, had blank values stored as text instead of 
+                                TotalCharges, had blank values stored as text instead of 
                                 numbers. These were converted into proper numeric values, and any rows that couldn’t be fixed were removed. 
                                 I also dropped columns that didn’t help with prediction, such as the customer ID.
                             </p>
@@ -352,9 +352,9 @@
                             </p>
                         
                             <ul class="list-disc list-inside text-text-secondary mb-4 text-sm">
-                                <li>Converts <span class="font-semibold text-text-base">TotalCharges</span> into a number (blank strings become “NaN”).</li>
+                                <li>Converts TotalCharges into a number (blank strings become “NaN”).</li>
                                 <li>Drops rows with missing values that could cause errors during modeling.</li>
-                                <li>Removes <span class="font-semibold text-text-base">customerID</span> since it doesn’t contribute to churn prediction.</li>
+                                <li>Removes customerID since it doesn’t contribute to churn prediction.</li>
                             </ul>
                         
                             <p class="text-text-secondary mb-3">
