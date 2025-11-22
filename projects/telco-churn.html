@@ -336,14 +336,24 @@
             <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
                 <h3 class="text-base font-semibold text-text-base mb-1">2. Cleaning & Transformation</h3>
                 <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                    Fixed numeric errors, removed invalid rows
+                    Fixed billing errors and removed unusable rows.
                 </p>
 
                 <p class="mb-3 text-text-secondary">
-                    <strong>TotalCharges</strong> contained blank strings; these were coerced to numeric and problematic
-                    rows dropped. Identifier columns were removed.
+                    Before modeling, the dataset needed a quick cleanup. One of the billing fields, TotalCharges,
+                    had blank values stored as text instead of numbers. These were converted into proper numeric 
+                    values, and any rows that still couldn’t be fixed were removed. I also dropped columns that didn’t
+                    help with prediction, such as the customer ID.
                 </p>
 
+                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                    What’s happening in the code
+                        <li>Converts TotalCharges into a number (blank strings become “NaN”).</li>
+                        <li>Drops rows with missing values that could break the model.</li>
+                        <li>Removes customerID, since it doesn’t contain useful information for churn prediction</li>
+                    This step ensures the dataset is clean, consistent, and ready for feature engineering.
+                    </ul>
+                </p>
 <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-text-secondary">
 <code>df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
 df = df.dropna()
