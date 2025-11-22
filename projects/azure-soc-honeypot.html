@@ -215,14 +215,20 @@
                         Project Narrative
                     </p>
                     <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
-                        I recreated a SOC style incident workflow by deploying a Windows honeypot VM, exposing its
-                        RDP port, collecting live SecurityEvent logs, enriching IPs with GeoIP information, and
-                        converting raw telemetry into visual intelligence using Sentinel Workbooks.
+                        I created a simple, real-world security investigation by setting up a Windows computer in
+                        the cloud and leaving its remote access port open on purpose. This acted as a “honeypot,” 
+                        attracting automated attackers from around the world.
                     </p>
-                    <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base">
-                        The lab mimics what happens when a misconfigured server is left on the internet. Automated
-                        scanners discover RDP, launch brute force attempts, and generate a stream of failed logons
-                        that can be monitored, enriched, and visualized by an analyst.
+                    <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
+                        As the attacks came in, the system recorded every failed login attempt. I then added location
+                        information to each attacker’s IP address and turned all the activity into clear visual charts 
+                        using Microsoft Sentinel.
+                    </p>
+                    <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
+                        This project shows what happens when a server is left unprotected on the internet. Scanners
+                        quickly find it, attempt to break in, and generate a steady stream of security alerts. The lab 
+                        demonstrates how an analyst collects, enriches, and visualizes this data to understand what’s 
+                        happening and respond effectively.
                     </p>
                 </article>
 
