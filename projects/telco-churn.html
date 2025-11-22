@@ -249,31 +249,31 @@
                 <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 1</p>
                     <p class="text-sm font-semibold text-text-base mb-1">Data Import</p>
-                    <p class="text-[0.8rem] text-text-secondary">Loaded and validated dataset.</p>
+                    <p class="text-[0.8rem] text-text-secondary">Loaded the customer dataset and confirmed everything was readable.</p>
                 </div>
 
                 <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 2</p>
                     <p class="text-sm font-semibold text-text-base mb-1">Cleaning</p>
-                    <p class="text-[0.8rem] text-text-secondary">Fixed TotalCharges, removed invalid rows.</p>
+                    <p class="text-[0.8rem] text-text-secondary">Fixed billing errors, handled missing values, and removed rows that couldn’t be used.</p>
                 </div>
 
                 <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 3</p>
-                    <p class="text-sm font-semibold text-text-base mb-1">Feature Engineering</p>
-                    <p class="text-[0.8rem] text-text-secondary">Encoded categories.</p>
+                    <p class="text-sm font-semibold text-text-base mb-1">Feature Preparation</p>
+                    <p class="text-[0.8rem] text-text-secondary">Converted text categories (like Yes/No or contract types) into numerical values the model can learn from.</p>
                 </div>
 
                 <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 4</p>
                     <p class="text-sm font-semibold text-text-base mb-1">Modeling</p>
-                    <p class="text-[0.8rem] text-text-secondary">Random Forest + Logistic Regression.</p>
+                    <p class="text-[0.8rem] text-text-secondary">Trained two prediction models to identify which customers are likely to leave.</p>
                 </div>
 
                 <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 5</p>
                     <p class="text-sm font-semibold text-text-base mb-1">Evaluation & SHAP</p>
-                    <p class="text-[0.8rem] text-text-secondary">Confusion matrix + explainability.</p>
+                    <p class="text-[0.8rem] text-text-secondary">Checked model accuracy and used SHAP to explain which factors influence churn the most.</p>
                 </div>
             </div>
 
