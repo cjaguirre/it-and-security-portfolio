@@ -267,7 +267,7 @@
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 1</p>
                     <p class="text-sm font-semibold mb-1 text-text-base">Azure setup</p>
                     <p class="text-[0.8rem] text-text-secondary">
-                        Subscription, NSGs, Log Analytics, and Sentinel prepared for the lab.
+                        Created the Azure subscription, security rules, Log Analytics workspace, and connected everything to Sentinel.
                     </p>
                 </div>
 
@@ -275,7 +275,7 @@
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 2</p>
                     <p class="text-sm font-semibold mb-1 text-text-base">Honeypot</p>
                     <p class="text-[0.8rem] text-text-secondary">
-                        Windows VM deployed with open inbound rules and exposed RDP.
+                       Deployed a Windows VM with open inbound traffic and exposed RDP to attract attackers.
                     </p>
                 </div>
 
@@ -283,7 +283,7 @@
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 3</p>
                     <p class="text-sm font-semibold mb-1 text-text-base">Log ingestion</p>
                     <p class="text-[0.8rem] text-text-secondary">
-                        SecurityEvent logs forwarded to Log Analytics via AMA.
+                        Sent Windows SecurityEvent logs into Log Analytics using the Azure Monitor Agent.
                     </p>
                 </div>
 
@@ -291,7 +291,7 @@
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 4</p>
                     <p class="text-sm font-semibold mb-1 text-text-base">GeoIP enrichment</p>
                     <p class="text-[0.8rem] text-text-secondary">
-                        Watchlist plus KQL join attaches country and region data.
+                        Added a GeoIP watchlist and used KQL to attach country and region data to each attacker IP.
                     </p>
                 </div>
 
@@ -299,7 +299,7 @@
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 5</p>
                     <p class="text-sm font-semibold mb-1 text-text-base">Attack map</p>
                     <p class="text-[0.8rem] text-text-secondary">
-                        Sentinel workbook visualizes attacker origin points on a map.
+                        Built a Sentinel workbook that plots all enriched attacker locations on an interactive world map.
                     </p>
                 </div>
             </div>
