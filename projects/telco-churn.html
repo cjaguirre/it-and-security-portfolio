@@ -362,11 +362,11 @@
                             </p>
                         
                             <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-text-secondary">
-                        <code>df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
+                        <code>
+                        df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
                         df = df.dropna()
                         df = df.drop(columns=["customerID"])</code></pre>
-                        
-                        </section>
+                    </section>
 
 
             <!-- 3. Feature Engineering -->
