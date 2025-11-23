@@ -410,38 +410,48 @@
                     
                     </section>
 
-
                 <!-- 3. Log + Sentinel -->
-                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                    <h3 class="text-base font-semibold text-text-base mb-1">
-                        3. Log forwarding and Microsoft Sentinel integration
-                    </h3>
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Forwarded Windows security logs into Log Analytics using the Azure Monitor
-                        Agent and connected them to Sentinel.
-                    </p>
-                    <p class="mb-3">
-                        Once the honeypot began producing SecurityEvent logs, I connected the VM to
-                        Azure’s monitoring pipeline so the data could be collected, stored, and analyzed
-                        in Microsoft Sentinel. This setup allowed every failed login attempt to flow directly
-                        into Log Analytics, where Sentinel could query and visualize the activity in real time.
-                    </p>
-                    <ul class="list-disc list-outside pl-5 space-y-1 mb-4">
-                        <li>Created a Log Analytics Workspace as the central logging location.</li>
-                        <li>Activated Microsoft Sentinel on that workspace.</li>
-                        <li>Used the Windows Security Events via AMA connector to install the Azure Monitor Agent and enable log collection.</li>
-                        <li>Confirmed successful ingestion by querying Event ID 4625 (failed logons).</li>
-                    </ul>
+                        <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                        
+                            <h3 class="text-base font-semibold text-white mb-1">
+                                3. Log forwarding and Microsoft Sentinel integration
+                            </h3>
+                        
+                            <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                                Forwarded Windows security logs into Log Analytics using the Azure Monitor Agent and connected them to Sentinel.
+                            </p>
+                        
+                            <p class="text-white mb-4">
+                                After the honeypot VM began generating real SecurityEvent activity, the next step was connecting it to Azure’s 
+                                monitoring pipeline. By linking the VM to a Log Analytics Workspace and enabling Microsoft Sentinel, every failed 
+                                login attempt and security event could be captured, stored, and analyzed in one place. This integration is what allowed 
+                                Sentinel to begin visualizing the brute-force traffic hitting the exposed VM in real time.
+                            </p>
+                        
+                            <ul class="list-disc list-outside pl-5 space-y-1 mb-6 text-white">
+                                <li>Configured a Log Analytics Workspace as the centralized collection point.</li>
+                                <li>Enabled Microsoft Sentinel on that workspace.</li>
+                                <li>Installed the Azure Monitor Agent using the <em>Windows Security Events via AMA</em> connector.</li>
+                                <li>Verified ingestion by querying Event ID 4625 (failed logons).</li>
+                            </ul>
+                        
+                            <p class="text-white mb-6">
+                                The connector view below reflects the moment ingestion was confirmed. Once the AMA pipeline was active, the workspace 
+                                immediately began capturing authentication failures from the honeypot—providing a live feed of attacker activity for 
+                                Sentinel dashboards and KQL investigations.
+                            </p>
+                        
+                            <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
+                                <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_AMA-as-Connected.png"
+                                     alt="AMA Connector Connected"
+                                     class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
+                                <p class="mt-2 text-xs italic text-text-secondary">
+                                    AMA connector showing a healthy connection from VM to Log Analytics.
+                                </p>
+                            </div>
+                        
+                        </section>
 
-                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_AMA-as-Connected.png"
-                             alt="AMA Connector Connected"
-                             class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
-                        <p class="mt-2 text-xs italic text-text-secondary">
-                            AMA connector showing a healthy connection from VM to Log Analytics.
-                        </p>
-                    </div>
-                </section>
 
                 <!-- 4. GeoIP -->
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
