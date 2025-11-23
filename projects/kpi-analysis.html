@@ -494,51 +494,47 @@
 
 
             <!-- 5. Key Formula Examples -->
-            <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-
-                <h3 class="text-base font-semibold text-text-base mb-1">5. Key Formula Examples</h3>
-
-                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                    Excel functions for data modeling and testing
-                </p>
-
-                <p class="mb-3">
-                    Although ANOVA and other complex tests used the Data Analysis ToolPak, core KPI modeling
-                    relied on standard Excel statistical and logical functions.
-                </p>
-
-                <ul class="list-disc list-outside pl-5 space-y-1 mb-4 text-text-base">
-                    <li>Proportion Test: Z-score calculation using <code>NORMSINV</code> and <code>SQRT</code>.</li>
-                    <li>Retention Metrics: Built with <code>COUNTIF</code>, <code>SUMIFS</code>, and demographic filters.</li>
-                </ul>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                    <div class="p-3 rounded-xl bg-container-bg border border-gray-800">
-                        <p class="text-xs font-mono text-accent-cyan mb-2 uppercase tracking-[0.18em]">Conditional Count</p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-[0.78rem]">
-<code>=COUNTIFS(A:A, "Complete", B:B, ">"&DATE(2018,1,1))</code>
-</pre>
-                    </div>
-
-                    <div class="p-3 rounded-xl bg-container-bg border border-gray-800">
-                        <p class="text-xs font-mono text-accent-cyan mb-2 uppercase tracking-[0.18em]">Retention Percentage</p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-[0.78rem]">
-<code>=SUMIFS(Retained, Gender, "F") / SUMIFS(Employed, Gender, "F")</code>
-</pre>
-                    </div>
-
+                    <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+        
+                        <h3 class="text-base font-semibold text-text-base mb-1">5. Key Formula Examples</h3>
+        
+                        <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                            Excel functions for data modeling and testing
+                        </p>
+        
+                        <p class="mb-3">
+                            Although ANOVA and other complex tests used the Data Analysis ToolPak, core KPI modeling
+                            relied on standard Excel statistical and logical functions.
+                        </p>
+        
+                        <ul class="list-disc list-outside pl-5 space-y-1 mb-4 text-text-base">
+                            <li>Proportion Test: Z-score calculation using <code>NORMSINV</code> and <code>SQRT</code>.</li>
+                            <li>Retention Metrics: Built with <code>COUNTIF</code>, <code>SUMIFS</code>, and demographic filters.</li>
+                        </ul>
+        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+                            <div class="p-3 rounded-xl bg-container-bg border border-gray-800">
+                                <p class="text-xs font-mono text-accent-cyan mb-2 uppercase tracking-[0.18em]">Conditional Count</p>
+        <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-[0.78rem]">
+        <code>=COUNTIFS(A:A, "Complete", B:B, ">"&DATE(2018,1,1))</code>
+        </pre>
+                            </div>
+        
+                            <div class="p-3 rounded-xl bg-container-bg border border-gray-800">
+                                <p class="text-xs font-mono text-accent-cyan mb-2 uppercase tracking-[0.18em]">Retention Percentage</p>
+        <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-[0.78rem]">
+        <code>=SUMIFS(Retained, Gender, "F") / SUMIFS(Employed, Gender, "F")</code>
+        </pre>
+                            </div>
+        
+                        </div>
+        
+                    </section>
+        
                 </div>
-
-            </section>
-
-        </div>
-    </div>
-</section>
-
-            </div> <!-- closes space-y wrapper -->
-    </div> <!-- closes container -->
-</section> <!-- closes LAB BREAKDOWN -->
+            </div>
+        </section>
 
 
             <!-- ANALYTICAL STRUCTURE -->
