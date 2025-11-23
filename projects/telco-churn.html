@@ -278,17 +278,16 @@
                 </p>
 
                 <p class="mb-3 text-text-secondary">
-                    The dataset includes one row per customer with details about their account, services, and whether
-                    they eventually churned. This step makes sure the data is loaded correctly and gives a quick feel
-                    for what information is available to the model.
+                    The dataset contains one row per customer with fields covering account details, subscribed 
+                    services, contract information, and the final churn outcome. Reviewing the raw table confirms
+                    the data loaded correctly and gives an initial sense of the structure the model will learn from.
                 </p>
 
                 <p class="mb-3 text-text-secondary">
-                    The first image is a direct preview of the data inside the notebook. It is included to show the
-                    actual table the model is learning from. You can see each customer as a separate row and fields such
-                    as tenure, contract type, internet service, payment method, and the churn label. This helps someone
-                    who does not use Python understand that the project works with real structured data and not just
-                    abstract statistics.
+                    The first screenshot shows the unprocessed dataset exactly as it appears in the notebook — each customer’s
+                    tenure, service types, payment details, and churn label. Including this view helps establish that the
+                    project is built on real, structured customer records before any cleaning or feature engineering is 
+                    applied.
                 </p>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
@@ -301,10 +300,10 @@
                 </div>
 
                 <p class="mb-3 text-text-secondary">
-                    The second image is a correlation heatmap. It is included to show how different numeric features move
-                    together and how they relate to churn. For example, you can see that longer tenure usually goes with
-                    lower churn, while certain payment types or contract styles are more common among customers who leave.
-                    This picture helps connect the raw table to early patterns that will matter later when building the model.
+                    The second image is a correlation heatmap. It’s used to get an early look at how the numeric features
+                    relate to one another and how they align with churn. Patterns like lower tenure correlating with higher
+                    churn, or certain service types clustering together, start to become visible here. This view helps 
+                    establish which variables may carry more predictive signal before moving into modeling.
                 </p>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4">
@@ -326,16 +325,16 @@
                 </p>
 
                 <p class="mb-3 text-text-secondary">
-                    One of the key billing columns, TotalCharges, had some values stored as empty strings instead of numbers.
-                    I converted that column to numeric, turned invalid entries into NaN, then removed those rows. I also dropped
-                    the customerID column since it does not help the model learn anything about churn.
+                    One of the main billing fields, TotalCharges, included some entries stored as blank strings
+                    instead of numeric values. I converted that column to a numeric type, coerced invalid values
+                    into NaN, and removed those rows to avoid feeding incomplete or misleading data into the model.
+                    I also dropped customerID, since it provides no predictive value.
                 </p>
 
                 <p class="mb-3 text-text-secondary">
-                    The cleaning screenshot is included to prove that this step was actually done in code, not just described.
-                    It shows the logic that converts TotalCharges into a numeric field and removes rows that would cause
-                    problems later. For someone reviewing the project, this image makes it clear that the data was not taken
-                    at face value and that bad records were handled before any modeling happened.
+                   This screenshot shows the actual cleaning logic executed in the notebook. It confirms that invalid
+                    billing entries were handled, missing values were checked, and unnecessary identifiers were removed
+                    before any modeling steps were performed.
                 </p>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
@@ -388,19 +387,15 @@ X_train, X_test, y_train, y_test = train_test_split(
                 </p>
 
                 <p class="mb-3 text-text-secondary">
-                    I trained a Random Forest classifier on the training data to predict whether a customer would churn.
-                    After training, I used the test set to see how well the model generalized to customers it had not seen
-                    before. A confusion matrix and classification report show how often the model was right and what kinds
-                    of mistakes it made.
+                   I trained a Random Forest classifier on the processed dataset to predict which customers are likely to
+                    churn. After fitting the model on the training split, I evaluated it on the test set to measure how well
+                    it generalizes to new data. The confusion matrix and classification report provide a clear breakdown of 
+                    the model’s accuracy, precision, recall, and F1 scores across both churn and non churn classes.
                 </p>
 
                 <p class="mb-3 text-text-secondary">
-                    The modeling and evaluation image is included so the reader can see the real output of the model rather
-                    than just hearing that it performed well. The confusion matrix shows how many churners and non churners
-                    were predicted correctly versus incorrectly, and the classification report breaks this down into precision,
-                    recall, and F1 score. Together, they help explain not only that the model works, but how it behaves on
-                    each class, which matters when a business cares more about catching churners than misclassifying a few
-                    stable customers.
+                    The image shows the actual evaluation output from the notebook. It highlights how the model distinguishes
+                    between the two classes and gives a transparent view of the metrics used to judge performance.
                 </p>
 
                 <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-text-secondary">
@@ -436,18 +431,16 @@ print(classification_report(y_test, y_pred))</code></pre>
                 </p>
 
                 <p class="mb-3 text-text-secondary">
-                    To move beyond raw accuracy and understand why the model makes its predictions, I used SHAP values.
-                    SHAP summarizes how each feature influences the churn prediction for many customers at once. This
-                    makes it easier to explain to a business audience which factors are driving churn, such as contract type,
-                    tenure, or monthly charges.
+                    To understand why the model makes its predictions, I used SHAP values. SHAP breaks down the model’s
+                    output and shows how each feature influences the churn prediction across the test set. This gives a
+                    more transparent view of the model’s decision process and highlights which factors matter most.
                 </p>
 
                 <p class="mb-3 text-text-secondary">
-                    The SHAP summary image is included because it acts as a bridge between the technical model and
-                    real business questions. Each bar represents a feature, and the color and spread of the points show
-                    how that feature pushes predictions toward churn or no churn. For example, high monthly charges may
-                    increase churn risk, while longer tenure may reduce it. This visual lets non technical viewers see
-                    which levers they can actually pull to keep customers from leaving.
+                    The SHAP summary plot helps connect the technical model to practical insight. It ranks the most
+                    influential features—such as tenure, monthly charges, and contract type—and shows how strongly each
+                    one contributes to predicting churn. This makes it easier to communicate which factors are driving
+                    customer risk in a way that both technical and non technical audiences can understand.
                 </p>
 
                 <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-text-secondary">
