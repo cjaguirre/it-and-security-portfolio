@@ -318,41 +318,54 @@
             <div class="space-y-8 text-sm sm:text-[0.95rem] leading-relaxed text-text-secondary">
 
                 <!-- 1. Subscription -->
-                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                    <h3 class="text-base font-semibold text-text-base mb-1">
-                        1. Azure Environment Preparation
-                    </h3>
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Ensured full access to core cloud services required for the security lab.
-                    </p>
-                    <p class="mb-4">
-                        I began by verifying that my Azure subscription had everything needed
-                        for the lab. This included the ability to deploy virtual machines, create 
-                        Network Security Groups, set up a Log Analytics Workspace, and activate 
-                        Microsoft Sentinel. Confirming these core services up front mirrors the first
-                        steps a junior SOC analyst would take when preparing to work in a real cloud environment.
-                    </p>
+                                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                                
+                                    <h3 class="text-base font-semibold text-white mb-1">
+                                        1. Azure Environment Preparation
+                                    </h3>
+                                
+                                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                                        Ensured full access to core cloud services required for the security lab.
+                                    </p>
+                                
+                                    <p class="text-white mb-4">
+                                        The first step was confirming that my Azure subscription exposed all of the core services needed 
+                                        for the security lab. This meant making sure I could deploy virtual machines, configure Network 
+                                        Security Groups, create a Log Analytics Workspace, and enable Microsoft Sentinel. Verifying these 
+                                        capabilities early mirrors the kind of environment checks a junior SOC analyst would perform when 
+                                        preparing to work inside a real cloud environment. 
+                                    </p>
+                                
+                                    <p class="text-white mb-6">
+                                        The screens below show the baseline view of the Azure portal and subscription settings I reviewed. Together, 
+                                        they provide a high-level snapshot of the available services, resource quotas, and platform readiness before 
+                                        building out the rest of the lab.
+                                    </p>
+                                
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                
+                                        <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
+                                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Azure-Home-Overview.png"
+                                                 alt="Azure Home Overview"
+                                                 class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[650px] w-full object-contain" />
+                                            <p class="mt-2 text-xs italic text-text-secondary">
+                                                Portal home view highlighting core Azure services available for deployment.
+                                            </p>
+                                        </div>
+                                
+                                        <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
+                                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Azure-Subscription-Overview.png"
+                                                 alt="Azure Subscription Overview"
+                                                 class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[650px] w-full object-contain" />
+                                            <p class="mt-2 text-xs italic text-text-secondary">
+                                                Subscription details confirming quotas, workloads, and resource eligibility for the lab.
+                                            </p>
+                                        </div>
+                                
+                                    </div>
+                                
+                                </section>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Azure-Home-Overview.png"
-                                 alt="Azure Home Overview"
-                                 class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[650px] w-full object-contain" />
-                            <p class="mt-2 text-xs italic text-text-secondary">
-                                Azure home overview with core services surfaced.
-                            </p>
-                        </div>
-
-                        <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Azure-Subscription-Overview.png"
-                                 alt="Azure Subscription Overview"
-                                 class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[650px] w-full object-contain" />
-                            <p class="mt-2 text-xs italic text-text-secondary">
-                                Subscription view confirming resource availability.
-                            </p>
-                        </div>
-                    </div>
-                </section>
 
                 <!-- 2. Honeypot -->
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
