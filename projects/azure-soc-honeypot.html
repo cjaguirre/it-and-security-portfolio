@@ -368,36 +368,48 @@
 
 
                 <!-- 2. Honeypot -->
-                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                    <h3 class="text-base font-semibold text-text-base mb-1">
-                        2. Honeypot VM and intentional exposure
-                    </h3>
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Deployed a Windows 10 VM, opened RDP, relaxed security rules, and removed host protections.
-                    </p>
-                    <p class="mb-3">
-                        The goal for this step was to safely recreate what happens when a server is misconfigured on
-                        the internet. I deployed a Windows 10 VM with a public IP, opened its inbound Network Security
-                        Group rules, and disabled the Windows firewall. This allowed real attackers and automated scanners
-                        to immediately find the system, attempt logins, and generate authentic brute force activity for
-                        analysis.
-                    </p>
-                    <ul class="list-disc list-outside pl-5 space-y-1 mb-4">
-                        <li>Created a Windows 10 VM with RDP enabled.</li>
-                        <li>Set NSG rules to allow inbound traffic from anywhere.</li>
-                        <li>Disabled all Windows firewall profiles.<code>wf.msc</code>.</li>
-                        <li>Generated initial failed logons using a decoy user account.</li>
-                    </ul>
-
-                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_NSG-Rule-Allow-All-Inbound.png"
-                             alt="NSG Rule Allow All Inbound"
-                             class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
-                        <p class="mt-2 text-xs italic text-text-secondary">
-                            NSG rule intentionally configured to allow all inbound traffic.
+                    <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                    
+                        <h3 class="text-base font-semibold text-white mb-1">
+                            2. Honeypot VM and intentional exposure
+                        </h3>
+                    
+                        <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                            Deployed a Windows 10 VM, opened RDP, relaxed security rules, and removed host protections.
                         </p>
-                    </div>
-                </section>
+                    
+                        <p class="text-white mb-4">
+                            To simulate how quickly an exposed system can attract unwanted activity, I deployed a Windows 10 VM 
+                            with a public IP and removed its typical safeguards. Opening RDP, loosening its Network Security Group 
+                            rules, and disabling the Windows firewall allowed the VM to behave like a misconfigured asset on the 
+                            open internet. This setup invited real scanning traffic and automated login attempts, creating an 
+                            authentic stream of security events for later analysis in Sentinel.
+                        </p>
+                    
+                        <ul class="list-disc list-outside pl-5 space-y-1 mb-6 text-white">
+                            <li>Deployed a Windows 10 VM with RDP enabled.</li>
+                            <li>Configured NSG rules to allow inbound traffic from any source.</li>
+                            <li>Disabled all Windows firewall profiles (<code>wf.msc</code>).</li>
+                            <li>Generated initial failed logons using a decoy user account.</li>
+                        </ul>
+                    
+                        <p class="text-white mb-6">
+                            The screenshot below reflects the relaxed NSG configuration used during this stage. With restrictive filters 
+                            removed, the VM became highly visible to external scanners—precisely the environment needed to collect 
+                            real-world brute force attempts and reconnaissance traffic.
+                        </p>
+                    
+                        <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
+                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_NSG-Rule-Allow-All-Inbound.png"
+                                 alt="NSG Rule Allow All Inbound"
+                                 class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
+                            <p class="mt-2 text-xs italic text-text-secondary">
+                                NSG rule intentionally configured to allow all inbound traffic.
+                            </p>
+                        </div>
+                    
+                    </section>
+
 
                 <!-- 3. Log + Sentinel -->
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
