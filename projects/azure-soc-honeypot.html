@@ -539,57 +539,58 @@
                         </section>
 
                  <!-- SAMPLE KQL (Improved Layout) -->
-                    <section class="py-20 bg-primary-bg border-t border-gray-800">
-                        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                    
-                            <!-- Title -->
-                            <div class="flex items-center gap-4 mb-10">
-                                <h2 class="font-mono text-white text-xl">Sample KQL</h2>
-                                <div class="flex-1 h-px bg-gray-700"></div>
-                            </div>
-                    
-                            <!-- Centered intro text -->
-                            <p class="text-white text-center mb-12 max-w-3xl mx-auto">
-                                These are the primary KQL queries used in the investigation. The first retrieves baseline 
-                                failed-logon events, while the second enriches them with GeoIP data to reveal attacker locations.
-                            </p>
-                    
-                            <!-- Code cards row -->
-                            <div class="grid md:grid-cols-2 gap-10">
-                    
-                                <!-- Baseline Query -->
-                                <div class="p-7 rounded-xl bg-secondary-bg border border-gray-700 shadow-lg">
-                                    <p class="text-xs font-mono text-accent-cyan mb-3 uppercase tracking-[0.18em]">
-                                        Baseline failed logons
-                                    </p>
-                    
-                                    <pre class="bg-container-bg border border-gray-800 rounded-lg p-5 overflow-x-auto text-[0.85rem] text-white h-48 flex items-start">
-                    <code>SecurityEvent
-                    | where EventID == 4625
-                    | sort by TimeGenerated desc</code>
-                                    </pre>
+                        <section class="py-20 bg-primary-bg border-t border-gray-800">
+                            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                        
+                                <!-- Title -->
+                                <div class="flex items-center gap-4 mb-10">
+                                    <h2 class="font-mono text-white text-xl">Sample KQL</h2>
+                                    <div class="flex-1 h-px bg-gray-700"></div>
                                 </div>
-                    
-                                <!-- GeoIP Query -->
-                                <div class="p-7 rounded-xl bg-secondary-bg border border-gray-700 shadow-lg">
-                                    <p class="text-xs font-mono text-accent-cyan mb-3 uppercase tracking-[0.18em]">
-                                        GeoIP enriched 4625 events
-                                    </p>
-                    
-                                    <pre class="bg-container-bg border border-gray-800 rounded-lg p-5 overflow-x-auto text-[0.85rem] text-white h-48 flex items-start">
-                    <code>let GeoIPDB_FULL = _GetWatchlist("geoip");
-                    let WindowsEvents =
-                        SecurityEvent
+                        
+                                <!-- Centered intro text -->
+                                <p class="text-white text-center mb-12 max-w-3xl mx-auto">
+                                    These are the primary KQL queries used in the investigation. The first retrieves baseline 
+                                    failed-logon events, while the second enriches them with GeoIP data to reveal attacker locations.
+                                </p>
+                        
+                                <!-- Code cards row -->
+                                <div class="grid md:grid-cols-2 gap-10">
+                        
+                                    <!-- Baseline Query -->
+                                    <div class="p-7 rounded-xl bg-secondary-bg border border-gray-700 shadow-lg">
+                                        <p class="text-xs font-mono text-accent-cyan mb-3 uppercase tracking-[0.18em]">
+                                            Baseline failed logons
+                                        </p>
+                        
+                                        <pre class="bg-container-bg border border-gray-800 rounded-lg p-5 overflow-x-auto text-[0.85rem] text-white h-48 flex items-start">
+                        <code>SecurityEvent
                         | where EventID == 4625
-                        | sort by TimeGenerated desc
-                        | evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
-                    WindowsEvents</code>
-                                    </pre>
+                        | sort by TimeGenerated desc</code>
+                                        </pre>
+                                    </div>
+                        
+                                    <!-- GeoIP Query -->
+                                    <div class="p-7 rounded-xl bg-secondary-bg border border-gray-700 shadow-lg">
+                                        <p class="text-xs font-mono text-accent-cyan mb-3 uppercase tracking-[0.18em]">
+                                            GeoIP enriched 4625 events
+                                        </p>
+                        
+                                        <pre class="bg-container-bg border border-gray-800 rounded-lg p-5 overflow-x-auto text-[0.85rem] text-white h-48 flex items-start">
+                        <code>let GeoIPDB_FULL = _GetWatchlist("geoip");
+                        let WindowsEvents =
+                            SecurityEvent
+                            | where EventID == 4625
+                            | sort by TimeGenerated desc
+                            | evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
+                        WindowsEvents</code>
+                                        </pre>
+                                    </div>
+                        
                                 </div>
-                    
                             </div>
-                        </div>
-                    </section>
+</section>
+
 
 
     <!-- ARCHITECTURE / INSIGHTS / SKILLS -->
