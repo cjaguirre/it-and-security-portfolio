@@ -539,61 +539,56 @@
                         </section>
 
                  <!-- SAMPLE KQL (Improved Layout) -->
-                               <!-- SAMPLE KQL (Corrected & Aligned) -->
-                        <section class="py-12 md:py-16 bg-primary-bg border-t border-gray-800">
-                            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                        
-                                <div class="section-title-wrapper mb-6">
-                                    <h2 class="font-mono text-white">Sample KQL</h2>
-                                    <span></span>
-                                </div>
-                        
-                                <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 space-y-8">
-                        
-                                    <p class="text-white text-sm leading-relaxed max-w-3xl">
-                                        These queries were used to analyze failed RDP logons during the lab. 
-                                        The first pulls raw 4625 events, and the second enriches those events with 
-                                        GeoIP data so attacker locations can be mapped and visualized.
-                                    </p>
-                        
-                                    <div class="grid md:grid-cols-2 gap-10">
-                        
-                                        <!-- Left column -->
-                                        <div class="space-y-3">
-                                            <p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em]">
-                                                Baseline failed logons
-                                            </p>
-                        
-                                            <pre class="bg-container-bg border border-gray-800 rounded-lg p-5 
-                                                        overflow-x-auto text-[0.85rem] text-white whitespace-pre text-left">
-                        <code>SecurityEvent
-                        | where EventID == 4625
-                        | sort by TimeGenerated desc</code>
-                                            </pre>
-                                        </div>
-                        
-                                        <!-- Right column -->
-                                        <div class="space-y-3">
-                                            <p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em]">
-                                                GeoIP enriched 4625 events
-                                            </p>
-                        
-                                            <pre class="bg-container-bg border border-gray-800 rounded-lg p-5 
-                                                        overflow-x-auto text-[0.85rem] text-white whitespace-pre text-left">
-                        <code>let GeoIPDB_FULL = _GetWatchlist("geoip");
-                        let WindowsEvents =
-                            SecurityEvent
-                            | where EventID == 4625
-                            | sort by TimeGenerated desc
-                            | evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
-                        WindowsEvents</code>
-                                            </pre>
-                                        </div>
-                        
+           <section class="py-12 md:py-16 bg-primary-bg border-t border-gray-800">
+                        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    
+                            <div class="section-title-wrapper mb-6">
+                                <h2 class="font-mono text-white">Sample KQL</h2>
+                                <span></span>
+                            </div>
+                    
+                            <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 space-y-8">
+                    
+                                <p class="text-white text-sm leading-relaxed max-w-3xl">
+                                    These queries were used to analyze failed RDP logons during the lab.
+                                    The first retrieves raw failed-logon events, and the second enriches them
+                                    with GeoIP data so attacker locations can be mapped and visualized.
+                                </p>
+                    
+                                <div class="grid md:grid-cols-2 gap-10 items-start">
+                    
+                                    <!-- Left column -->
+                                    <div class="space-y-3 w-full">
+                                        <p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em]">
+                                            Baseline failed logons
+                                        </p>
+                    
+                                        <pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.85rem] whitespace-pre">
+                    <code>SecurityEvent
+                    | where EventID == 4625
+                    | sort by TimeGenerated desc</code></pre>
                                     </div>
+                    
+                                    <!-- Right column -->
+                                    <div class="space-y-3 w-full">
+                                        <p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em]">
+                                            GeoIP enriched 4625 events
+                                        </p>
+                    
+                                        <pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.85rem] whitespace-pre">
+                    <code>let GeoIPDB_FULL = _GetWatchlist("geoip");
+                    let WindowsEvents =
+                        SecurityEvent
+                        | where EventID == 4625
+                        | sort by TimeGenerated desc
+                        | evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
+                    WindowsEvents</code></pre>
+                                    </div>
+                    
                                 </div>
                             </div>
-                        </section>
+                        </div>
+                    </section>
 
 
     <!-- ARCHITECTURE / INSIGHTS / SKILLS -->
