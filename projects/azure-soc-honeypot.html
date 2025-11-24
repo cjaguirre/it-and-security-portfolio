@@ -539,6 +539,189 @@
                         </section>
 
                  <!-- SAMPLE KQL (Improved Layout) -->
+<section class="pt-12 md:pt-14 pb-8 bg-primary-bg border-t border-gray-800">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="section-title-wrapper mb-6">
+            <h2 class="font-mono text-white">Sample KQL</h2>
+            <span></span>
+        </div>
+
+        <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 space-y-8">
+
+            <p class="text-white text-sm leading-relaxed max-w-3xl">
+                These queries were used to analyze failed RDP logons during the lab.
+                The first retrieves raw failed-logon events, and the second enriches them
+                with GeoIP data so attacker locations can be mapped and visualized.
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-10 items-start">
+
+                <!-- Left column -->
+                <div class="space-y-3 w-full">
+                    <p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em]">
+                        Baseline failed logons
+                    </p>
+
+                    <pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.85rem] whitespace-pre">
+<code>SecurityEvent
+| where EventID == 4625
+| sort by TimeGenerated desc</code></pre>
+                </div>
+
+                <!-- Right column -->
+                <div class="space-y-3 w-full">
+                    <p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em]">
+                        GeoIP enriched 4625 events
+                    </p>
+
+                    <pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.85rem] whitespace-pre">
+<code>let GeoIPDB_FULL = _GetWatchlist("geoip");
+let WindowsEvents =
+    SecurityEvent
+    | where EventID == 4625
+    | sort by TimeGenerated desc
+    | evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
+WindowsEvents</code></pre>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ARCHITECTURE / INSIGHTS / SKILLS -->
+<section class="pt-8 md:pt-10 pb-12 md:pb-16 bg-primary-bg">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+
+            <!-- Architecture -->
+                    <div>
+                        <div class="section-title-wrapper mb-8">
+                            <h2 class="font-mono text-white">Architecture overview</h2>
+                            <span></span>
+                        </div>
+                    
+                        <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 grid md:grid-cols-2 gap-10 text-sm text-white">
+                    
+                            <!-- COMPONENTS -->
+                            <div>
+                                <h3 class="text-base font-semibold text-white mb-3">Components</h3>
+                                <ul class="list-disc list-outside pl-5 space-y-2 text-white">
+                                    <li><span class="font-semibold text-white">Public Internet</span> — Real attackers scanning and brute-forcing exposed services.</li>
+                                    <li><span class="font-semibold text-white">Azure NSG (Open Inbound)</span> — Deliberately left wide-open to attract traffic.</li>
+                                    <li><span class="font-semibold text-white">Windows Honeypot VM</span> — Generates SecurityEvent logs from failed RDP attempts.</li>
+                                    <li><span class="font-semibold text-white">Azure Monitor Agent</span> — Forwards SecurityEvent logs to Log Analytics.</li>
+                                    <li><span class="font-semibold text-white">Log Analytics Workspace</span> — Central storage and query engine for collected logs.</li>
+                                    <li><span class="font-semibold text-white">Microsoft Sentinel</span> — Runs KQL, enriches data, and visualizes attacker behavior.</li>
+                                </ul>
+                            </div>
+                    
+                            <!-- DATA FLOW -->
+                            <div>
+                                <h3 class="text-base font-semibold text-white mb-3">Data flow</h3>
+                                <ul class="list-disc list-outside pl-5 space-y-2 text-white">
+                                    <li>Scanners → Honeypot VM → Failed RDP events generated.</li>
+                                    <li>Azure Monitor Agent → Log Analytics ingestion.</li>
+                                    <li>Log Analytics → Sentinel for parsing and investigation.</li>
+                                    <li>GeoIP watchlist → KQL lookup → Country & region enrichment.</li>
+                                    <li>Sentinel workbook → Global attack-map visualization.</li>
+                                </ul>
+                            </div>
+                    
+                        </div>
+                    </div>
+
+
+
+            <!-- Key Insights -->
+                <div>
+                    <div class="section-title-wrapper mb-8">
+                        <h2 class="font-mono text-white">Key insights</h2>
+                        <span></span>
+                    </div>
+                
+                    <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                        <ul class="list-disc list-outside pl-5 space-y-2 text-white text-sm sm:text-[0.95rem]">
+                            <li>Exposed RDP services attract scanning and brute-force activity within minutes of going online.</li>
+                            <li>Most attempts originate from automated infrastructure rather than human attackers.</li>
+                            <li>GeoIP enrichment immediately reveals geographic patterns and regional concentrations of activity.</li>
+                            <li>Mapping enriched events provides faster insight than reviewing raw logs, highlighting trends at a glance.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            <!-- Skills -->
+            <div>
+                    <div class="section-title-wrapper mb-8">
+                        <h2 class="font-mono text-white">Skills demonstrated</h2>
+                        <span></span>
+                    </div>
+                
+                    <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                        <div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
+                
+                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+                                Azure Resource Setup
+                            </span>
+                
+                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+                                Network Security Group Configuration
+                            </span>
+                
+                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+                                Windows SecurityEvent Logging
+                            </span>
+                
+                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+                                Log Analytics Workspace Usage
+                            </span>
+                
+                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+                                Microsoft Sentinel Operations
+                            </span>
+                
+                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+                                Kusto Query Language (KQL)
+                            </span>
+                
+                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+                                Watchlist and Data Enrichment
+                            </span>
+                
+                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+                                Incident-style Investigation Practices
+                            </span>
+                
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+    </section>
+
+    <!-- SUMMARY -->
+              <section class="pb-12 md:pb-16 bg-primary-bg">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+                    <!-- Dark card with thin white border -->
+                    <div class="bg-secondary-bg border border-white/30 rounded-2xl p-6 shadow-lg">
+                        <h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-white">
+                            Summary
+                        </h3>
+            
+                        <p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
+                            This project demonstrates how real attack telemetry can be captured, enriched, and visualized using 
+                            Azure’s security stack. By deploying an intentionally exposed Windows host, collecting its logs, 
+                            and combining them with GeoIP enrichment in Sentinel, I created a streamlined investigation workflow 
+                            that surfaces global brute-force activity in a clear and accessible format. The final workbook makes it 
+                            easy for both technical and non-technical audiences to understand where attacks originate and how they 
+                            unfold in a cloud environment.
+                        </p>
+                    </div>
+            
+                    <!-- Back link -->
+                    <div class="mt-10"><!-- SAMPLE KQL (Improved Layout) -->
        <section class="py-12 md:py-16 bg-primary-bg border-t border-gray-800">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -723,6 +906,19 @@ WindowsEvents</code></pre>
             
                     <!-- Back link -->
                     <div class="mt-10">
+                        <a href="../index.html#projects"
+                           class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition">
+                            ← Back to Portfolio
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+</main>
+</body>
+</html>
+
                         <a href="../index.html#projects"
                            class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition">
                             ← Back to Portfolio
