@@ -452,36 +452,47 @@
                         
                         </section>
 
-
                 <!-- 4. GeoIP -->
-                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                    <h3 class="text-base font-semibold text-text-base mb-1">
-                        4. GeoIP watchlist and KQL enrichment
-                    </h3>
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Imported a GeoIP dataset and attached location data to SecurityEvent logs using KQL.
-                    </p>
-                    <p class="mb-3">
-                        To make the source of each attack easy to understand, I brought a GeoIP dataset into
-                        Sentinel and used KQL to add country and region details to every failed logon. This allowed
-                        each IP address to be mapped to a real location, turning raw log data into something visual 
-                        and meaningful.
-                    </p>
-                    <ul class="list-disc list-outside pl-5 space-y-1 mb-4">
-                        <li>Uploaded a CSV listing IPv4 ranges and their associated countries and regions.</li>
-                        <li>Created a Sentinel watchlist named geoip, keyed by the network range.</li>
-                        <li>Enriched 4625 failed logon events by joining them with the GeoIP watchlist using ipv4_lookup.</li>
-                    </ul>
-
-                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Sentinel-Watchlist-GeoIP-Rows.png"
-                             alt="Sentinel Watchlist GeoIP Rows"
-                             class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
-                        <p class="mt-2 text-xs italic text-text-secondary">
-                            GeoIP watchlist loaded into Sentinel with country and region fields.
-                        </p>
-                    </div>
-                </section>
+                        <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                        
+                            <h3 class="text-base font-semibold text-white mb-1">
+                                4. GeoIP watchlist and KQL enrichment
+                            </h3>
+                        
+                            <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                                Imported a GeoIP dataset and attached location data to SecurityEvent logs using KQL.
+                            </p>
+                        
+                            <p class="text-white mb-4">
+                                After confirming that failed logons were flowing into Sentinel, the next step was making the 
+                                activity easier to interpret. Raw IP addresses don’t offer much insight on their own, so I imported 
+                                a GeoIP dataset and used KQL to enrich each event with its corresponding country and region. 
+                                This transformation turned anonymous login attempts into a clear picture of where attackers were 
+                                coming from, adding important geographic context to the investigation.
+                            </p>
+                        
+                            <ul class="list-disc list-outside pl-5 space-y-1 mb-6 text-white">
+                                <li>Uploaded a CSV containing IPv4 ranges with mapped country and region fields.</li>
+                                <li>Created a Sentinel watchlist named <em>geoip</em>, keyed by the network range.</li>
+                                <li>Joined the watchlist with Event ID 4625 entries using <code>ipv4_lookup</code> to enrich failed logons.</li>
+                            </ul>
+                        
+                            <p class="text-white mb-6">
+                                The view below shows the enriched dataset inside Sentinel. With geographic details now attached, 
+                                the SecurityEvent logs provided a much clearer narrative of attacker behavior and origin—setting the 
+                                foundation for visual dashboards and the attack-map overlay built later in the lab.
+                            </p>
+                        
+                            <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
+                                <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Sentinel-Watchlist-GeoIP-Rows.png"
+                                     alt="Sentinel Watchlist GeoIP Rows"
+                                     class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
+                                <p class="mt-2 text-xs italic text-text-secondary">
+                                    GeoIP watchlist loaded into Sentinel with country and region fields.
+                                </p>
+                            </div>
+                        
+                        </section>
 
                 <!-- 5. Workbook -->
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
