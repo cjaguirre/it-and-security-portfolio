@@ -597,36 +597,42 @@ WindowsEvents</code></pre>
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
 
             <!-- Architecture -->
-            <div>
-                <div class="section-title-wrapper mb-8">
-                    <h2 class="font-mono">Architecture overview</h2>
-                    <span></span>
-                </div>
+                    <div>
+                        <div class="section-title-wrapper mb-8">
+                            <h2 class="font-mono text-white">Architecture overview</h2>
+                            <span></span>
+                        </div>
+                    
+                        <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 grid md:grid-cols-2 gap-10 text-sm">
+                    
+                            <!-- COMPONENTS -->
+                            <div>
+                                <h3 class="text-base font-semibold text-white mb-3">Components</h3>
+                                <ul class="list-disc list-outside pl-5 space-y-2 text-white/80">
+                                    <li><span class="font-semibold text-white">Public Internet</span> — Real attackers scanning and brute-forcing exposed services.</li>
+                                    <li><span class="font-semibold text-white">Azure NSG (Open Inbound)</span> — Deliberately left wide-open to attract traffic.</li>
+                                    <li><span class="font-semibold text-white">Windows Honeypot VM</span> — Generates SecurityEvent logs from failed RDP attempts.</li>
+                                    <li><span class="font-semibold text-white">Azure Monitor Agent</span> — Forwards SecurityEvent logs to Log Analytics.</li>
+                                    <li><span class="font-semibold text-white">Log Analytics Workspace</span> — Central storage and query engine for collected logs.</li>
+                                    <li><span class="font-semibold text-white">Microsoft Sentinel</span> — Runs KQL, enriches data, and visualizes attacker behavior.</li>
+                                </ul>
+                            </div>
+                    
+                            <!-- DATA FLOW -->
+                            <div>
+                                <h3 class="text-base font-semibold text-white mb-3">Data flow</h3>
+                                <ul class="list-disc list-outside pl-5 space-y-2 text-white/80">
+                                    <li>Scanners → Honeypot VM → Failed RDP events generated.</li>
+                                    <li>Azure Monitor Agent → Log Analytics ingestion.</li>
+                                    <li>Log Analytics → Sentinel for parsing and investigation.</li>
+                                    <li>GeoIP watchlist → KQL lookup → Country & region enrichment.</li>
+                                    <li>Sentinel workbook → Global attack-map visualization.</li>
+                                </ul>
+                            </div>
+                    
+                        </div>
+                    </div>
 
-                <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 grid md:grid-cols-2 gap-8 text-sm text-text-secondary">
-                    <div>
-                        <h3 class="text-base font-semibold text-text-base mb-2">Components</h3>
-                        <ul class="list-disc list-outside pl-5 space-y-1">
-                            <li><span class="font-semibold text-text-base">Public internet</span> — Source of real brute-force activity.</li>
-                            <li><span class="font-semibold text-text-base">Azure NSG (Open Inbound)</span> — Intentionally exposed to allow traffic.</li>
-                            <li><span class="font-semibold text-text-base">Windows Honeypot VM</span> — Windows host generating SecurityEvent logs.</li>
-                            <li><span class="font-semibold text-text-base">Azure Monitor Agent</span> — Sends logs to the workspace.</li>
-                            <li><span class="font-semibold text-text-base">Log Analytics Workspace</span> — Stores and indexes events.</li>
-                            <li><span class="font-semibold text-text-base">Microsoft Sentinel</span> — Runs KQL queries and visualizations.</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="text-base font-semibold text-text-base mb-2">Data flow</h3>
-                        <ul class="list-disc list-outside pl-5 space-y-1">
-                            <li>Internet Scanners → VM → Failed RDP attempts.</li>
-                            <li>VM → AMA → Log Analytics.</li>
-                            <li>Log Analytics → Sentinel → Analysis.</li>
-                            <li>GeoIP watchlist → KQL → Attacker locations added.</li>
-                            <li>Sentinel workbook → Map Visualization.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
 
             <!-- Key Insights -->
             <div>
