@@ -540,41 +540,58 @@
 
 
     <!-- SAMPLE KQL -->
-    <section class="py-12 md:py-14 border-t border-gray-800 bg-primary-bg">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <section class="py-14 md:py-16 bg-primary-bg border-t border-gray-800">
+                        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    
+                            <!-- Title -->
+                            <div class="section-title-wrapper mb-10">
+                                <h2 class="font-mono text-white text-lg">Sample KQL</h2>
+                                <span></span>
+                            </div>
+                    
+                            <!-- Short context to make the section feel intentional -->
+                            <p class="text-white mb-8 max-w-3xl">
+                                These are the core KQL queries used during the investigation. The first retrieves raw failed-logon
+                                events, while the second applies GeoIP enrichment to map attacker IPs to real-world locations.
+                            </p>
+                    
+                            <!-- Cards -->
+                            <div class="grid md:grid-cols-2 gap-8">
+                    
+                                <!-- Baseline Query -->
+                                <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 shadow-md">
+                                    <p class="text-xs font-mono text-accent-cyan mb-3 uppercase tracking-[0.18em]">
+                                        Baseline failed logons
+                                    </p>
+                    
+                                    <pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto text-[0.85rem] text-white shadow-inner">
+                    <code>SecurityEvent
+                    | where EventID == 4625
+                    | sort by TimeGenerated desc</code>
+                                    </pre>
+                                </div>
+                    
+                                <!-- GeoIP Enriched Query -->
+                                <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 shadow-md">
+                                    <p class="text-xs font-mono text-accent-cyan mb-3 uppercase tracking-[0.18em]">
+                                        GeoIP enriched 4625 events
+                                    </p>
+                    
+                                    <pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto text-[0.85rem] text-white shadow-inner">
+                    <code>let GeoIPDB_FULL = _GetWatchlist("geoip");
+                    let WindowsEvents =
+                        SecurityEvent
+                        | where EventID == 4625
+                        | sort by TimeGenerated desc
+                        | evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
+                    WindowsEvents</code>
+                                    </pre>
+                                </div>
+                    
+                            </div>
+                        </div>
+                    </section>
 
-            <div class="section-title-wrapper mb-8">
-                <h2 class="font-mono">Sample KQL</h2>
-                <span></span>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                    <p class="text-xs font-mono text-accent-cyan mb-2 uppercase tracking-[0.18em]">
-                        Baseline failed logons
-                    </p>
-                    <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-[0.78rem]">
-<code>SecurityEvent
-| where EventID == 4625
-| sort by TimeGenerated desc</code></pre>
-                </div>
-
-                <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                    <p class="text-xs font-mono text-accent-cyan mb-2 uppercase tracking-[0.18em]">
-                        GeoIP enriched 4625 events
-                    </p>
-                    <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-[0.78rem]">
-<code>let GeoIPDB_FULL = _GetWatchlist("geoip");
-let WindowsEvents =
-    SecurityEvent
-    | where EventID == 4625
-    | sort by TimeGenerated desc
-    | evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
-WindowsEvents</code></pre>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- ARCHITECTURE / INSIGHTS / SKILLS -->
     <section class="py-12 md:py-16 bg-primary-bg">
