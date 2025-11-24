@@ -393,48 +393,48 @@
 
 
             <!-- 4. Modeling & Evaluation -->
-            <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                <h3 class="text-base font-semibold text-text-base mb-1">4. Modeling & Evaluation</h3>
+                        <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                            <h3 class="text-base font-semibold text-white mb-1">4. Modeling & Evaluation</h3>
+                        
+                            <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                                Training a Random Forest and checking how well it performs.
+                            </p>
+                        
+                            <p class="mb-3 text-white">
+                                I trained a Random Forest classifier on the cleaned and encoded dataset to predict which customers are likely
+                                to churn. After fitting the model on the training split, I evaluated its performance on the test set to see how
+                                well it generalizes to new customers. The confusion matrix and classification report show accuracy, precision,
+                                recall, and F1-scores for both churn and non-churn groups.
+                            </p>
+                        
+                            <p class="mb-3 text-white">
+                                The screenshot below displays the exact evaluation output from the notebook. It shows how the model separates
+                                the two classes and provides the key metrics used to judge overall performance.
+                            </p>
+                        
+                            <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-white">
+                        <code>model = RandomForestClassifier(
+                            n_estimators=300,
+                            max_depth=12,
+                            random_state=42
+                        )
+                        
+                        model.fit(X_train, y_train)
+                        
+                        y_pred = model.predict(X_test)
+                        
+                        print(confusion_matrix(y_test, y_pred))
+                        print(classification_report(y_test, y_pred))</code></pre>
+                        
+                            <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mt-4">
+                                <img src="../assets/images/TC1_Modeling & Performance Evaluation.png"
+                                     class="rounded-lg mx-auto mb-2" />
+                                <p class="text-xs text-text-secondary italic text-center">
+                                    Evaluation results showing how accurately the Random Forest model identifies churn and non-churn customers.
+                                </p>
+                            </div>
+                        </section>
 
-                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                    Training a Random Forest and checking how well it performs.
-                </p>
-
-                <p class="mb-3 text-text-secondary">
-                   I trained a Random Forest classifier on the processed dataset to predict which customers are likely to
-                    churn. After fitting the model on the training split, I evaluated it on the test set to measure how well
-                    it generalizes to new data. The confusion matrix and classification report provide a clear breakdown of 
-                    the model’s accuracy, precision, recall, and F1 scores across both churn and non churn classes.
-                </p>
-
-                <p class="mb-3 text-text-secondary">
-                    The image shows the actual evaluation output from the notebook. It highlights how the model distinguishes
-                    between the two classes and gives a transparent view of the metrics used to judge performance.
-                </p>
-
-                <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-text-secondary">
-<code>model = RandomForestClassifier(
-    n_estimators=300,
-    max_depth=12,
-    random_state=42
-)
-
-model.fit(X_train, y_train)
-
-y_pred = model.predict(X_test)
-
-print(confusion_matrix(y_test, y_pred))
-print(classification_report(y_test, y_pred))</code></pre>
-
-                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mt-4">
-                    <img src="../assets/images/TC1_Modeling & Performance Evaluation.png"
-                         class="rounded-lg mx-auto mb-2" />
-                    <p class="text-xs text-text-secondary italic text-center">
-                        Model evaluation output showing how often the Random Forest correctly identifies churn and non churn
-                        customers, along with detailed metrics for each class.
-                    </p>
-                </div>
-            </section>
 
             <!-- 5. SHAP Explainability -->
             <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
