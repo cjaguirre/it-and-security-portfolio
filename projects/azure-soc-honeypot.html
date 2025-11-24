@@ -603,12 +603,12 @@ WindowsEvents</code></pre>
                             <span></span>
                         </div>
                     
-                        <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 grid md:grid-cols-2 gap-10 text-sm">
+                        <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 grid md:grid-cols-2 gap-10 text-sm text-white">
                     
                             <!-- COMPONENTS -->
                             <div>
                                 <h3 class="text-base font-semibold text-white mb-3">Components</h3>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-white/80">
+                                <ul class="list-disc list-outside pl-5 space-y-2 text-white">
                                     <li><span class="font-semibold text-white">Public Internet</span> — Real attackers scanning and brute-forcing exposed services.</li>
                                     <li><span class="font-semibold text-white">Azure NSG (Open Inbound)</span> — Deliberately left wide-open to attract traffic.</li>
                                     <li><span class="font-semibold text-white">Windows Honeypot VM</span> — Generates SecurityEvent logs from failed RDP attempts.</li>
@@ -621,7 +621,7 @@ WindowsEvents</code></pre>
                             <!-- DATA FLOW -->
                             <div>
                                 <h3 class="text-base font-semibold text-white mb-3">Data flow</h3>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-white/80">
+                                <ul class="list-disc list-outside pl-5 space-y-2 text-white">
                                     <li>Scanners → Honeypot VM → Failed RDP events generated.</li>
                                     <li>Azure Monitor Agent → Log Analytics ingestion.</li>
                                     <li>Log Analytics → Sentinel for parsing and investigation.</li>
@@ -632,6 +632,7 @@ WindowsEvents</code></pre>
                     
                         </div>
                     </div>
+
 
 
             <!-- Key Insights -->
