@@ -1,1 +1,731 @@
-.gitkeep
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Active Directory Beginner Lab | Christian Aguirre</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
+
+        /* --- THEME VARIABLES: MONOCHROME BASE + FUNCTIONAL POPS --- */
+        .dark {
+            --bg-default: #1e1e1e; /* Darker Charcoal */
+            --bg-secondary: #30333a; /* Lighter Gray for Cards */
+            --text-base: #ffffff; /* Pure White */
+            --text-secondary: #abb2bf; /* Light Gray */
+
+            /* Structural Accent (Used for headers, nav text, primary links. Was Cyan, now light gray/white.) */
+            --accent-structural: #d9d9d9;
+
+            /* Functional Colors (Only used where color is meaningful: button, progress, risk) */
+            --functional-action: #61afef; /* Blue for primary CTA/Link hover */
+            --functional-success: #98c379; /* Green for progress/success status */
+
+            /* Mapping to old variable names for Tailwind compatibility */
+            --accent-primary: var(--accent-structural);
+            --accent-red: #e06c75; /* Soft Red for filters/risks */
+            --container-bg: #171717; /* Slight offset for background differentiation */
+
+            background-color: var(--bg-default);
+            color: var(--text-base);
+        }
+
+        .light {
+            --bg-default: #ffffff;
+            --bg-secondary: #f3f4f6;
+            --text-base: #111827;
+            --text-secondary: #4b5563;
+            --accent-primary: #0891b2;
+            --accent-red: #dc2626;
+            --container-bg: #ffffff;
+            background-color: var(--bg-default);
+            color: var(--text-base);
+        }
+
+        /* --- GLOBAL & TYPOGRAPHY --- */
+        body {
+            font-family: "Inter", sans-serif;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        /* --- SECTION HEADINGS (same as index) --- */
+        .section-title-wrapper {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            font-family: "Inconsolata", monospace;
+            width: 100%;
+        }
+
+        .section-title-wrapper h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-structural); /* Structural gray */
+            flex-shrink: 0;
+        }
+
+        .section-title-wrapper span {
+            content: '';
+            display: block;
+            height: 2px;
+            background-color: var(--text-secondary);
+            margin-left: 0.75rem;
+            flex-grow: 1;
+            opacity: 0.5;
+            min-width: 150px;
+        }
+
+        /* --- HERO BACKGROUND (same as index) --- */
+        .hero-grid-bg {
+            background-color: var(--bg-default);
+            background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, rgba(0,0,0,0) 1px);
+            background-size: 20px 20px;
+            background-position: center;
+        }
+
+        /* --- PILLS --- */
+        .pill {
+            border-radius: 999px;
+            padding: 0.2rem 0.7rem;
+            border: 1px solid rgba(171, 178, 191, 0.6);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            white-space: nowrap;
+        }
+
+        .pill-muted {
+            color: var(--text-secondary);
+            background-color: rgba(23, 23, 23, 0.95);
+        }
+
+        .pill-accent {
+            color: var(--accent-structural);
+            background-color: rgba(23, 23, 23, 0.95);
+            border-color: rgba(217, 217, 217, 0.9);
+        }
+
+        pre code {
+            font-family: "Inconsolata", monospace;
+            font-size: 0.8rem;
+        }
+    </style>
+
+    <script>
+        // Tailwind config aligned with index.html
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-bg": "var(--bg-default)",
+                        "secondary-bg": "var(--bg-secondary)",
+                        "container-bg": "var(--container-bg)",
+                        "text-base": "var(--text-base)",
+                        "text-secondary": "var(--text-secondary)",
+
+                        // Structural Accent
+                        "accent-cyan": "var(--accent-structural)",
+
+                        // Functional Colors
+                        "accent-red": "var(--accent-red)",
+                        "accent-action": "var(--functional-action)",
+                        "accent-success": "var(--functional-success)",
+                    }
+                }
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            setInitialTheme();
+        });
+
+        function setInitialTheme() {
+            const html = document.documentElement;
+            const savedTheme = localStorage.getItem("theme");
+            const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            let initialTheme = 'dark';
+            if (savedTheme) {
+                initialTheme = savedTheme;
+            } else if (!systemPrefersDark) {
+                initialTheme = 'light';
+            }
+
+            html.setAttribute("data-theme", initialTheme);
+            html.classList.add(initialTheme);
+        }
+    </script>
+</head>
+
+<body class="transition-colors duration-500 bg-primary-bg text-text-base">
+<main class="bg-primary-bg text-text-base min-h-screen">
+
+    <!-- HERO -->
+    <section id="hero"
+             class="hero-grid-bg pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16 border-b border-gray-800">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Back link -->
+            <a href="../index.html#projects"
+               class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition mb-6">
+                ← Back to Portfolio
+            </a>
+
+            <!-- Pills -->
+            <div class="flex flex-wrap gap-2 mb-6">
+                <span class="pill pill-accent">Active Directory Lab</span>
+                <span class="pill pill-muted">Windows Server 2022</span>
+                <span class="pill pill-muted">Identity and Access Management</span>
+                <span class="pill pill-muted">Helpdesk</span>
+                <span class="pill pill-muted">User Lifecycle</span>
+            </div>
+
+            <!-- Title + subtitle -->
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-text-base">
+                Active Directory Beginner Lab
+            </h1>
+            <p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed">
+                Built a small on premise Active Directory environment on Windows Server 2022, promoted it to a domain controller,
+                and walked through the full identity lifecycle for a new user. Created accounts, groups, and organizational units,
+                managed passwords and lockouts, and configured a shared folder to show how everyday access requests are handled.
+            </p>
+
+            <!-- Meta badges -->
+            <div class="flex flex-wrap gap-3 mt-6 text-[0.7rem] sm:text-xs text-text-secondary">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>
+                    Entry level IAM and helpdesk workflow
+                </span>
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>
+                    Tools: Windows Server 2022, AD DS, DNS, ADUC
+                </span>
+            </div>
+
+            <!-- Top split: Narrative + What I Built -->
+            <div class="mt-10 grid md:grid-cols-2 gap-6">
+                <!-- Project Narrative -->
+                <article class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                    <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2 font-mono">
+                        Project Narrative
+                    </p>
+                    <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
+                        This lab starts with a blank Windows Server 2022 installation and turns it into a working domain controller.
+                        I used Server Manager and the built in configuration tools to prepare the host, install Active Directory
+                        Domain Services and DNS, and create a new internal forest that acts as the lab domain.
+                    </p>
+                    <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
+                        Once the domain controller was online, I used Active Directory Users and Computers to create a test user,
+                        manage group membership, and organize objects into an appropriate structure. The workflow mirrors what a
+                        junior helpdesk or identity analyst would do when onboarding a new employee and handling day to day requests.
+                    </p>
+                    <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
+                        The final steps focus on access control. I created security groups, nested them, and tied them to a shared
+                        folder on the server. By resetting passwords, unlocking accounts, and granting or removing access, the lab
+                        shows how core identity and access management concepts play out in a real Active Directory environment.
+                    </p>
+                </article>
+
+                <!-- What I Built -->
+                <article class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                    <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2 font-mono">
+                        What I Built
+                    </p>
+                    <ul class="list-disc list-outside pl-5 space-y-1.5 text-sm sm:text-[0.95rem] text-text-base">
+                        <li>Installed Windows Server 2022 in a virtual machine and prepared it for domain services.</li>
+                        <li>Renamed the host to <code>DC01</code> and confirmed basic networking and management access.</li>
+                        <li>Added Active Directory Domain Services and DNS roles through Server Manager.</li>
+                        <li>Promoted the server to a domain controller and created a new forest and domain.</li>
+                        <li>Opened Active Directory Users and Computers and enabled advanced features for administration.</li>
+                        <li>Created a test user account and walked through the first logon and password change flow.</li>
+                        <li>Built a security group named <code>AI</code>, added and removed the user, and explored membership impact.</li>
+                        <li>Created a dedicated organizational unit for custom groups and moved objects into it.</li>
+                        <li>Configured a shared folder and granted access through domain groups to model resource permissions.</li>
+                        <li>Practiced resets, unlocks, and membership changes that support everyday identity requests.</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- WORKFLOW OVERVIEW -->
+    <section class="py-12 md:py-14 border-b border-gray-800 bg-primary-bg">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="section-title-wrapper mb-8">
+                <h2 class="font-mono">Workflow overview</h2>
+                <span></span>
+            </div>
+
+            <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
+                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 1</p>
+                    <p class="text-sm font-semibold mb-1 text-text-base">Server preparation</p>
+                    <p class="text-[0.8rem] text-text-secondary">
+                        Installed Windows Server 2022 in a virtual machine, confirmed access, and prepared it for domain services.
+                    </p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
+                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 2</p>
+                    <p class="text-sm font-semibold mb-1 text-text-base">AD DS and DNS</p>
+                    <p class="text-[0.8rem] text-text-secondary">
+                        Used Server Manager to add Active Directory Domain Services and DNS roles that support the new domain.
+                    </p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
+                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 3</p>
+                    <p class="text-sm font-semibold mb-1 text-text-base">Domain controller</p>
+                    <p class="text-[0.8rem] text-text-secondary">
+                        Promoted the server to a domain controller and created a fresh lab forest and domain.
+                    </p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
+                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 4</p>
+                    <p class="text-sm font-semibold mb-1 text-text-base">User and groups</p>
+                    <p class="text-[0.8rem] text-text-secondary">
+                        Created accounts, security groups, and nested memberships to model real team access.
+                    </p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
+                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 5</p>
+                    <p class="text-sm font-semibold mb-1 text-text-base">Access and resources</p>
+                    <p class="text-[0.8rem] text-text-secondary">
+                        Configured a shared folder and tied permissions to directory groups used in the lab.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LAB BREAKDOWN -->
+    <section class="py-12 md:py-16 bg-primary-bg">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="section-title-wrapper mb-8">
+                <h2 class="font-mono">Lab breakdown</h2>
+                <span></span>
+            </div>
+
+            <div class="space-y-8 text-sm sm:text-[0.95rem] leading-relaxed text-text-secondary">
+
+                <!-- 1. Server prep -->
+                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+
+                    <h3 class="text-base font-semibold text-white mb-1">
+                        1. Windows Server setup and baseline configuration
+                    </h3>
+
+                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                        Built a clean Windows Server 2022 installation and prepared it to act as a domain controller.
+                    </p>
+
+                    <p class="text-white mb-4">
+                        The lab starts with a fresh Windows Server 2022 virtual machine. From Server Manager and the built in
+                        SCONFIG tool I confirmed basic settings, renamed the host to <code>DC01</code>, and restarted to lock in the
+                        new identity. This step reflects what an admin would do when preparing a dedicated host to carry domain
+                        services for a small environment.
+                    </p>
+
+                    <p class="text-white mb-6">
+                        The views below capture the starting point for the project. One shows the Server Manager dashboard that
+                        acts as the central control panel, and the other shows SCONFIG where the computer name change and initial
+                        configuration were completed.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                        <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
+                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/AD1_Server-Manager-Dashboard.png"
+                                 alt="Windows Server Manager dashboard"
+                                 class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[650px] w-full object-contain" />
+                            <p class="mt-2 text-xs italic text-text-secondary">
+                                Server Manager view used to coordinate roles, features, and domain services.
+                            </p>
+                        </div>
+
+                        <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
+                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/AD1_SCONFIG-Rename-Server.png"
+                                 alt="SCONFIG rename server to DC01"
+                                 class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[650px] w-full object-contain" />
+                            <p class="mt-2 text-xs italic text-text-secondary">
+                                SCONFIG menu used to rename the server to DC01 and apply initial settings.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- 2. AD DS and DNS roles -->
+                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+
+                    <h3 class="text-base font-semibold text-white mb-1">
+                        2. Installing Active Directory Domain Services and DNS
+                    </h3>
+
+                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                        Added the directory and name services that support sign in and domain identity.
+                    </p>
+
+                    <p class="text-white mb-4">
+                        With the base server ready, I used the Add Roles and Features wizard in Server Manager to add Active
+                        Directory Domain Services and DNS. These two roles work together to authenticate users, track computers
+                        in the environment, and resolve names inside the lab domain.
+                    </p>
+
+                    <ul class="list-disc list-outside pl-5 space-y-1 mb-6 text-white">
+                        <li>Launched the Server Manager role wizard and selected the DC01 host.</li>
+                        <li>Enabled Active Directory Domain Services and accepted the required features.</li>
+                        <li>Added the DNS role so the domain controller could also handle internal name resolution.</li>
+                        <li>Completed installation and prepared to promote the server into a domain controller role.</li>
+                    </ul>
+
+                    <p class="text-white mb-6">
+                        The screenshot below captures the role selection screen. It documents the exact configuration used to
+                        transform a plain Windows Server instance into an environment that can host a full Active Directory domain.
+                    </p>
+
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
+                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/AD1_ADDS-DNS-Roles-Selection.png"
+                             alt="Add roles and features for AD DS and DNS"
+                             class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
+                        <p class="mt-2 text-xs italic text-text-secondary">
+                            Roles and Features wizard showing Active Directory Domain Services and DNS selected for DC01.
+                        </p>
+                    </div>
+
+                </section>
+
+                <!-- 3. Promote to domain controller -->
+                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+
+                    <h3 class="text-base font-semibold text-white mb-1">
+                        3. Promoting DC01 and creating the lab domain
+                    </h3>
+
+                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                        Turned the server into a domain controller and created a dedicated forest for the lab.
+                    </p>
+
+                    <p class="text-white mb-4">
+                        After the roles finished installing, Server Manager surfaced a notification to promote the server to a
+                        domain controller. I followed the configuration wizard, chose to add a new forest, and created a lab
+                        domain that lives entirely inside the virtual environment. A Directory Services Restore Mode password
+                        was set to support recovery operations if needed.
+                    </p>
+
+                    <ul class="list-disc list-outside pl-5 space-y-1 mb-6 text-white">
+                        <li>Selected the option to add a new forest and specified the lab domain name.</li>
+                        <li>Confirmed domain controller capabilities and DNS integration.</li>
+                        <li>Reviewed database, log, and SYSVOL paths for the directory.</li>
+                        <li>Completed the wizard and allowed the server to restart as a domain controller.</li>
+                    </ul>
+
+                    <p class="text-white mb-6">
+                        The configuration view below documents the new forest setup. It marks the point where DC01 transitions
+                        from a simple member server into the central identity provider for the lab network.
+                    </p>
+
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
+                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/AD1_ADDS-Promote-New-Forest.png"
+                             alt="AD DS configuration wizard adding a new forest"
+                             class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
+                        <p class="mt-2 text-xs italic text-text-secondary">
+                            Active Directory Domain Services configuration wizard creating a new forest for the lab domain.
+                        </p>
+                    </div>
+
+                </section>
+
+                <!-- 4. Users and groups -->
+                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+
+                    <h3 class="text-base font-semibold text-white mb-1">
+                        4. User lifecycle and group management in ADUC
+                    </h3>
+
+                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                        Practiced the daily tasks a helpdesk or IAM analyst uses to manage accounts.
+                    </p>
+
+                    <p class="text-white mb-4">
+                        With the domain controller online, I opened Active Directory Users and Computers and enabled advanced
+                        features to expose more attributes and containers. In this console I created a test user, granted and
+                        removed group membership, reset passwords, and unlocked the account to simulate common support tickets.
+                    </p>
+
+                    <ul class="list-disc list-outside pl-5 space-y-1 mb-6 text-white">
+                        <li>Created a user named Test User with a logon name of <code>test.user</code>.</li>
+                        <li>Required the user to change password at next sign in to model an onboarding flow.</li>
+                        <li>Logged in as the new user to complete the first sign in and confirm account function.</li>
+                        <li>Created a security group named <code>AI</code> and added then removed the user as a member.</li>
+                        <li>Reset the account password and simulated an unlock after repeated sign in failures.</li>
+                    </ul>
+
+                    <p class="text-white mb-6">
+                        The snapshot below shows the Test User account and AI security group inside ADUC. It highlights the
+                        objects that anchor most of the identity lifecycle work in this lab.
+                    </p>
+
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
+                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/AD1_ADUC-TestUser-and-AI-Group.png"
+                             alt="ADUC view with Test User and AI group"
+                             class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
+                        <p class="mt-2 text-xs italic text-text-secondary">
+                            Active Directory Users and Computers showing the Test User account and AI security group.
+                        </p>
+                    </div>
+
+                </section>
+
+                <!-- 5. OU structure and shared folder -->
+                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+
+                    <h3 class="text-base font-semibold text-white mb-1">
+                        5. Organizational units, nested groups, and shared resources
+                    </h3>
+
+                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                        Organized directory objects and connected group membership to a real shared folder.
+                    </p>
+
+                    <p class="text-white mb-4">
+                        To model a more realistic directory, I created a dedicated organizational unit named Custom Groups and
+                        moved the AI group into it. I then nested the AI group into a broader group and tied membership to a
+                        shared folder on the server. This demonstrates how clean structure and group based access control make
+                        permissions easier to manage over time.
+                    </p>
+
+                    <ul class="list-disc list-outside pl-5 space-y-1 mb-6 text-white">
+                        <li>Created an organizational unit named Custom Groups with protection from accidental deletion.</li>
+                        <li>Moved the AI group into the new OU to separate lab objects from built in containers.</li>
+                        <li>Nested AI into a wider group to simulate role based access for a team.</li>
+                        <li>Created a shared folder named <code>corp_shared</code> and granted access through domain groups.</li>
+                        <li>Verified that membership changes in AD controlled access to the shared network path.</li>
+                    </ul>
+
+                    <p class="text-white mb-6">
+                        The screenshot below shows the Custom Groups OU and the properties of the shared folder. Together they
+                        capture how logical structure in Active Directory connects to practical access on file resources.
+                    </p>
+
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
+                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/AD1_Custom-Groups-OU-and-Share.png"
+                             alt="Custom Groups OU and shared folder permissions"
+                             class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
+                        <p class="mt-2 text-xs italic text-text-secondary">
+                            Custom Groups organizational unit and shared folder permissions wired to directory groups.
+                        </p>
+                    </div>
+
+                </section>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SAMPLE COMMANDS -->
+    <section class="pt-12 md:pt-14 pb-8 bg-primary-bg border-t border-gray-800">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="section-title-wrapper mb-6">
+                <h2 class="font-mono text-white">Sample administrative commands</h2>
+                <span></span>
+            </div>
+
+            <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 space-y-8">
+
+                <p class="text-white text-sm leading-relaxed max-w-3xl">
+                    Although most of the lab is completed through Server Manager and ADUC, I also used PowerShell to interact
+                    with directory objects. These commands show how user and group management tasks can be scripted and
+                    automated once the basic workflow is understood.
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-10 items-start">
+
+                    <!-- Left column -->
+                    <div class="space-y-3 w-full">
+                        <p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em]">
+                            Create and enable a new user
+                        </p>
+
+                        <pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.85rem] whitespace-pre">
+<code>New-ADUser -Name "Test User" `
+           -GivenName "Test" `
+           -Surname "User" `
+           -SamAccountName "test.user" `
+           -UserPrincipalName "test.user@lab.local" `
+           -AccountPassword (Read-Host -AsSecureString "Password") `
+           -ChangePasswordAtLogon $true `
+           -Enabled $true</code></pre>
+                    </div>
+
+                    <!-- Right column -->
+                    <div class="space-y-3 w-full">
+                        <p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em]">
+                            Group membership and password reset
+                        </p>
+
+                        <pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.85rem] whitespace-pre">
+<code># Add user to AI group
+Add-ADGroupMember -Identity "AI" -Members "test.user"
+
+# Reset password and require change at next sign in
+Set-ADAccountPassword -Identity "test.user" `
+                      -Reset `
+                      -NewPassword (Read-Host -AsSecureString "NewPassword")
+Set-ADUser -Identity "test.user" -ChangePasswordAtLogon $true</code></pre>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ARCHITECTURE / INSIGHTS / SKILLS -->
+    <section class="pt-8 md:pt-10 pb-12 md:pb-16 bg-primary-bg">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+
+            <!-- Architecture -->
+            <div>
+                <div class="section-title-wrapper mb-8">
+                    <h2 class="font-mono text-white">Architecture overview</h2>
+                    <span></span>
+                </div>
+
+                <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 grid md:grid-cols-2 gap-10 text-sm text-white">
+
+                    <!-- COMPONENTS -->
+                    <div>
+                        <h3 class="text-base font-semibold text-white mb-3">Components</h3>
+                        <ul class="list-disc list-outside pl-5 space-y-2 text-white">
+                            <li><span class="font-semibold text-white">User workstation</span> — Client that signs in to the lab domain and accesses resources.</li>
+                            <li><span class="font-semibold text-white">Domain controller DC01</span> — Windows Server 2022 host that runs AD DS and DNS.</li>
+                            <li><span class="font-semibold text-white">Active Directory database</span> — Stores users, groups, computers, and organizational units.</li>
+                            <li><span class="font-semibold text-white">DNS service</span> — Resolves host names and supports domain operations for the lab.</li>
+                            <li><span class="font-semibold text-white">Shared folder <code>corp_shared</code></span> — File share secured by domain groups and used to test access control.</li>
+                        </ul>
+                    </div>
+
+                    <!-- DATA FLOW -->
+                    <div>
+                        <h3 class="text-base font-semibold text-white mb-3">Identity and access flow</h3>
+                        <ul class="list-disc list-outside pl-5 space-y-2 text-white">
+                            <li>User signs in at the workstation with credentials linked to Test User in Active Directory.</li>
+                            <li>Domain controller validates the password and group membership for the account.</li>
+                            <li>Group membership places the user in AI and other lab groups that carry permissions.</li>
+                            <li>When the user connects to <code>\\DC01\corp_shared</code>, the server checks these groups.</li>
+                            <li>Changes to membership, password, or lockout state in AD immediately change access to the share.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Key Insights -->
+            <div>
+                <div class="section-title-wrapper mb-8">
+                    <h2 class="font-mono text-white">Key insights</h2>
+                    <span></span>
+                </div>
+
+                <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                    <ul class="list-disc list-outside pl-5 space-y-2 text-white text-sm sm:text-[0.95rem]">
+                        <li>Active Directory is not only a directory service; it is the central source of truth for users, groups, and access across a Windows environment.</li>
+                        <li>Most day to day tickets for junior analysts revolve around a few core tasks: creating accounts, resetting passwords, unlocking users, and adjusting group membership.</li>
+                        <li>Organizational units and clean group design make permissions easier to reason about and reduce the chance of accidental access.</li>
+                        <li>Using groups to manage access to shared folders scales much better than assigning rights directly to individual accounts.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Skills -->
+            <div>
+                <div class="section-title-wrapper mb-8">
+                    <h2 class="font-mono text-white">Skills demonstrated</h2>
+                    <span></span>
+                </div>
+
+                <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                    <div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
+
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+                            Windows Server Administration
+                        </span>
+
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+                            Active Directory Domain Services
+                        </span>
+
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+                            DNS Configuration
+                        </span>
+
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+                            User Lifecycle Management
+                        </span>
+
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+                            Group and OU Design
+                        </span>
+
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+                            Identity and Access Management
+                        </span>
+
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+                            Helpdesk Workflow Simulation
+                        </span>
+
+                        <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+                            PowerShell for AD Administration
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SUMMARY -->
+    <section class="pb-12 md:pb-16 bg-primary-bg">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Dark card with thin white border -->
+            <div class="bg-secondary-bg border border-white/30 rounded-2xl p-6 shadow-lg">
+                <h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-white">
+                    Summary
+                </h3>
+
+                <p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
+                    This Active Directory lab walks through the full identity lifecycle that supports a small Windows domain.
+                    By turning a Windows Server instance into a domain controller, creating a test user, building groups and
+                    organizational units, and wiring them to a shared folder, the project shows how everyday access decisions
+                    are made. The result is a compact but realistic environment that mirrors the tasks handled by entry level
+                    IT, helpdesk, and identity analysts across many organizations.
+                </p>
+            </div>
+
+            <!-- Back link -->
+            <div class="mt-10">
+                <a href="../index.html#projects"
+                   class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition">
+                    ← Back to Portfolio
+                </a>
+            </div>
+        </div>
+    </section>
+
+</main>
+</body>
+</html>
