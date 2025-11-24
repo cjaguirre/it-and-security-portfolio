@@ -360,30 +360,37 @@
 
 
             <!-- 3. Feature Engineering & Split -->
-            <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                <h3 class="text-base font-semibold text-text-base mb-1">3. Feature Engineering & Split</h3>
+                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                    <h3 class="text-base font-semibold text-white mb-1">3. Feature Engineering & Split</h3>
+                
+                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                        Turning categories into numbers and preparing train and test sets.
+                    </p>
+                
+                    <p class="mb-3 text-white">
+                        Most of the features in this dataset use text labels like <em>Yes</em>, <em>No</em>, or plan names. Since machine
+                        learning models only work with numeric inputs, I converted every categorical column into numbers using
+                        one hot encoding. This creates clean binary columns the model can learn from without changing the meaning
+                        of the original data.
+                    </p>
+                
+                    <p class="mb-3 text-white">
+                        After encoding, I separated the churn label from the rest of the features and split the data into training
+                        and testing sets. The split uses <code>stratify=y</code> to ensure both sets keep the same churn ratio, which helps
+                        the evaluation stay fair and prevents the model from being trained on an unbalanced sample.
+                    </p>
+                
+                    <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-white">
+                <code>df_encoded = pd.get_dummies(df, drop_first=True)
+                
+                X = df_encoded.drop("Churn_Yes", axis=1)
+                Y = df_encoded["Churn_Yes"]
+                
+                X_train, X_test, y_train, y_test = train_test_split(
+                    X, Y, test_size=0.2, random_state=42, stratify=Y
+                )</code></pre>
+                </section>
 
-                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                    Turning categories into numbers and preparing train and test sets.
-                </p>
-
-                <p class="mb-3 text-text-secondary">
-                    Many columns in the dataset use text labels such as Yes, No, or specific plan names. Machine learning
-                    models work with numbers, so I applied one hot encoding to create numeric versions of these categories.
-                    I then separated the churn label and split the data into training and testing sets while keeping the
-                    churn rate consistent across both.
-                </p>
-
-                <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-text-secondary">
-<code>df_encoded = pd.get_dummies(df, drop_first=True)
-
-X = df_encoded.drop("Churn_Yes", axis=1)
-y = df_encoded["Churn_Yes"]
-
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42, stratify=y
-)</code></pre>
-            </section>
 
             <!-- 4. Modeling & Evaluation -->
             <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
