@@ -327,19 +327,17 @@
                         </p>
                     
                         <p class="mb-3 text-white">
-                            The billing field <span class="font-mono text-accent-cyan">TotalCharges</span> wasn’t fully reliable in its raw
-                            form. Some customers had blank strings instead of actual numbers, which would cause issues once the data reached
-                            the model. To correct this, I converted the column into a numeric type and forced any invalid entries to become
-                            <span class="font-mono text-accent-cyan">NaN</span>. Those incomplete rows were then removed so the dataset only
-                            contained clean, usable records. I also dropped the <span class="font-mono text-accent-cyan">customerID</span>
-                            column since it’s just an identifier and contributes no predictive signal.
+                            The billing field <span class="font-semibold">TotalCharges</span> wasn’t fully reliable in its raw state. 
+                            Some customers had blank strings instead of actual numbers, which would cause issues once the data reached the model. 
+                            To correct this, I converted the column into a numeric type and forced any invalid entries to become <em>NaN</em>. 
+                            Those incomplete rows were then removed so the dataset only contained clean, usable records. 
+                            I also dropped the <span class="font-semibold">customerID</span> column since it’s just an identifier and doesn’t contribute any predictive value.
                         </p>
                     
                         <p class="mb-3 text-white">
-                            The screenshot below reflects the exact cleaning steps executed inside the notebook. You can see invalid billing
-                            values being converted, missing entries being checked, and the removal of fields that don’t support the model’s
-                            learning process. This helps verify that the dataset was properly prepared before any feature engineering or
-                            training steps.
+                            The screenshot below shows the exact cleaning steps executed inside the notebook. You can see invalid billing values being 
+                            converted, missing entries being checked, and the removal of fields that don’t support the model’s learning process. This helps 
+                            confirm that the dataset was properly prepared before moving into feature engineering or model training.
                         </p>
                     
                         <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
@@ -354,6 +352,13 @@
                     <code>df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
                     df = df.dropna()
                     df = df.drop(columns=["customerID"])</code></pre>
+                    
+                        <p class="mt-3 text-white text-sm leading-relaxed">
+                            <span class="font-semibold">Purpose of the code:</span>  
+                            These three lines finalize the cleanup: they convert the <em>TotalCharges</em> field into a proper numeric format, 
+                            remove any rows with missing values created during that fix, and drop the <em>customerID</em> column to prevent identifiers 
+                            from influencing the model. This ensures the training data is accurate, consistent, and free of structural noise.
+                        </p>
                     </section>
 
 
