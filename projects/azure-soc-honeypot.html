@@ -494,39 +494,50 @@
                         
                         </section>
 
-                <!-- 5. Workbook -->
-                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                    <h3 class="text-base font-semibold text-text-base mb-1">
-                        5. Sentinel workbook attack map
-                    </h3>
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Built a workbook to visualize attacker locations using enriched failed-logon events.
-                    </p>
-                    <p class="mb-3">
-                       To bring all the enriched data together, I created a custom Sentinel workbook that plots 
-                        attacker IPs on an interactive map. The workbook runs the GeoIP-enhanced KQL query, displays 
-                        each event by latitude and longitude, and includes controls that let me explore different time 
-                        ranges and attack patterns.
-                    </p>
-                    <ul class="list-disc list-outside pl-5 space-y-1 mb-4">
-                        <li>Started with a blank workbook and added a query visual.</li>
-                        <li>Connected the visual to the GeoIP-enriched KQL query.</li>
-                        <li>Mapped latitude and longitude to the Azure map component.</li>
-                        <li>Added filters for time ranges and dynamic data exploration.</li>
-                    </ul>
 
-                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Clean-Attack-Map-Visualization.png"
-                             alt="Attack Map Visualization"
-                             class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
-                        <p class="mt-2 text-xs italic text-text-secondary">
-                            Sentinel workbook map showing global failed logon activity.
-                        </p>
-                    </div>
-                </section>
-            </div>
-        </div>
-    </section>
+                <!-- 5. Workbook -->
+                        <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                        
+                            <h3 class="text-base font-semibold text-white mb-1">
+                                5. Sentinel workbook attack map
+                            </h3>
+                        
+                            <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                                Built a workbook to visualize attacker locations using enriched failed-logon events.
+                            </p>
+                        
+                            <p class="text-white mb-4">
+                                With geographic enrichment complete, I used a Sentinel workbook to turn the failed-logon data 
+                                into a visual map of attacker activity. By connecting the workbook to the GeoIP-enhanced KQL query, 
+                                each event could be plotted by latitude and longitude, revealing clear clusters of activity and 
+                                patterns in where the attacks originated. The workbook also included time filters and interactive 
+                                controls, making it easy to explore how attack volume changed throughout the day.
+                            </p>
+                        
+                            <ul class="list-disc list-outside pl-5 space-y-1 mb-6 text-white">
+                                <li>Began with a blank Sentinel workbook and added a KQL query visual.</li>
+                                <li>Linked the visual to the GeoIP-enriched SecurityEvent query.</li>
+                                <li>Mapped latitude and longitude fields to the Azure Maps component.</li>
+                                <li>Added filters for time ranges, event counts, and dynamic exploration.</li>
+                            </ul>
+                        
+                            <p class="text-white mb-6">
+                                The map below represents the final visualization. By placing each failed-logon attempt on the 
+                                world map, the workbook provided a clear, real-time view of attacker distribution and helped 
+                                highlight which regions were generating the most persistent brute-force attempts.
+                            </p>
+                        
+                            <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
+                                <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Clean-Attack-Map-Visualization.png"
+                                     alt="Attack Map Visualization"
+                                     class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
+                                <p class="mt-2 text-xs italic text-text-secondary">
+                                    Sentinel workbook map showing global failed-logon activity.
+                                </p>
+                            </div>
+                        
+                        </section>
+
 
     <!-- SAMPLE KQL -->
     <section class="py-12 md:py-14 border-t border-gray-800 bg-primary-bg">
