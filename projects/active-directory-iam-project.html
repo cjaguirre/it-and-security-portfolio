@@ -1,24 +1,3 @@
-It looks like your image paths are incorrect because you are using **absolute paths** that include the full repository name: `/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/ADL1_server_manager_dashboard.png`.
-
-The correct pathing method, based on the working example you provided (which uses root-relative paths like `src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Azure-Home-Overview.png"` in the *other* project), is to ensure your current Active Directory project file uses a **relative path** to the images since the file you provided in the last turn was using a dot-relative path (`./assets/images/...`).
-
-For the images to appear correctly in the current document (which I will assume is structured as: `../[project-folder]/ad-lab.html`), you should use the relative path starting from the current directory, which should be **`./assets/images/`** if the `assets` folder is a sibling of the current HTML file, or **`../assets/images/`** if the HTML file is one level down.
-
-Since the document structure you provided in the previous turn suggests a path like:
-`[Repo Root]/[HTML File]`
-and the image paths you provided in the *current* question are like:
-`src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/ADL1_Server-Manager-Dashboard.png"`
-...it appears the safest bet, assuming your portfolio is served via GitHub Pages from a subdirectory, is the **root-relative path** starting with your repository name, which you already had, but with the **correct case** as identified in the previous response's filename list (e.g., **`ADL1_server_manager_dashboard.png`**).
-
-**I will update your paths to use the correct case and the root-relative path structure based on your working example, but I will strip out the broken placeholder images you had in the original template (e.g., the ones with the caption "Note: The screenshot is actually SCONFIG before rename...").**
-
------
-
-## 🛠️ Corrected HTML with Working Image Paths
-
-I have corrected the `src` attributes of all the image tags to ensure the case sensitivity matches the files in your repository and the path matches the successful template you provided.
-
-```html
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -613,7 +592,7 @@ Set-ADUser -Identity "test.user" -ChangePasswordAtLogon $true</code></pre>
                     <h2 class="font-mono text-white">Architecture overview</h2>
                     <span></span>
                 </div>
-
+                
                 <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 grid md:grid-cols-2 gap-10 text-sm text-white">
 
                     <div>
@@ -743,4 +722,3 @@ Set-ADUser -Identity "test.user" -ChangePasswordAtLogon $true</code></pre>
 </main>
 </body>
 </html>
-```
