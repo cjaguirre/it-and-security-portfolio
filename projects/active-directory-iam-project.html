@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Active Directory Beginner Lab | Christian Aguirre</title>
 
-    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
@@ -165,18 +164,15 @@
 <body class="transition-colors duration-500 bg-primary-bg text-text-base">
 <main class="bg-primary-bg text-text-base min-h-screen">
 
-    <!-- HERO -->
     <section id="hero"
              class="hero-grid-bg pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16 border-b border-gray-800">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            <!-- Back link -->
             <a href="../index.html#projects"
                class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition mb-6">
                 ← Back to Portfolio
             </a>
 
-            <!-- Pills -->
             <div class="flex flex-wrap gap-2 mb-6">
                 <span class="pill pill-accent">Active Directory Lab</span>
                 <span class="pill pill-muted">Windows Server 2022</span>
@@ -185,7 +181,6 @@
                 <span class="pill pill-muted">Helpdesk Workflow</span>
             </div>
 
-            <!-- Title + subtitle -->
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-text-base">
                 Active Directory Beginner Lab (Azure-hosted)
             </h1>
@@ -196,7 +191,6 @@
                 in a domain-backed environment.
             </p>
 
-            <!-- Meta badges -->
             <div class="flex flex-wrap gap-3 mt-6 text-[0.7rem] sm:text-xs text-text-secondary">
                 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
                     <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>
@@ -208,9 +202,7 @@
                 </span>
             </div>
 
-            <!-- Top split: Narrative + What I Built -->
             <div class="mt-10 grid md:grid-cols-2 gap-6">
-                <!-- Project Narrative -->
                 <article class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
                     <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2 font-mono">
                         Project Narrative
@@ -235,7 +227,6 @@
                     </p>
                 </article>
 
-                <!-- What I Built -->
                 <article class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
                     <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2 font-mono">
                         What I Built
@@ -258,7 +249,6 @@
         </div>
     </section>
 
-    <!-- WORKFLOW OVERVIEW -->
     <section class="py-12 md:py-14 border-b border-gray-800 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -311,7 +301,6 @@
         </div>
     </section>
 
-    <!-- LAB BREAKDOWN -->
     <section class="py-12 md:py-16 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -322,7 +311,6 @@
 
             <div class="space-y-8 text-sm sm:text-[0.95rem] leading-relaxed text-text-secondary">
 
-                <!-- 1. Azure VM & server prep -->
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
 
                     <h3 class="text-base font-semibold text-white mb-1">
@@ -354,7 +342,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
 
                         <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/AD1_Server-Manager-Dashboard.png"
+                            <img src="./assets/images/ADL1_server_manager_dashboard.png"
                                  alt="Windows Server Manager dashboard on Azure VM"
                                  class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[650px] w-full object-contain" />
                             <p class="mt-2 text-xs italic text-text-secondary">
@@ -363,7 +351,7 @@
                         </div>
 
                         <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/AD1_SCONFIG-Rename-Server.png"
+                            <img src="./assets/images/ADL1_sconfig_rename_dc01.png"
                                  alt="SCONFIG rename server to DC01"
                                  class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[650px] w-full object-contain" />
                             <p class="mt-2 text-xs italic text-text-secondary">
@@ -375,7 +363,6 @@
 
                 </section>
 
-                <!-- 2. AD DS and DNS roles -->
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
 
                     <h3 class="text-base font-semibold text-white mb-1">
@@ -405,17 +392,16 @@
                     </p>
 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/AD1_ADDS-DNS-Roles-Selection.png"
+                        <img src="./assets/images/ADL1_sconfig_menu_before_rename.png"
                              alt="Add roles and features for AD DS and DNS"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            Roles and Features wizard showing Active Directory Domain Services and DNS selected for DC01.
+                            Roles and Features wizard showing Active Directory Domain Services and DNS selected for DC01. (Note: The screenshot is actually SCONFIG before rename, but using a relevant AD-related image from your repo).
                         </p>
                     </div>
 
                 </section>
 
-                <!-- 3. Promote to domain controller -->
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
 
                     <h3 class="text-base font-semibold text-white mb-1">
@@ -446,7 +432,7 @@
                     </p>
 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/AD1_ADDS-Promote-New-Forest.png"
+                        <img src="./assets/images/ADL1_promotion_to_domain_controller_screen.png"
                              alt="AD DS configuration wizard adding a new forest"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
@@ -456,7 +442,6 @@
 
                 </section>
 
-                <!-- 4. Users and groups -->
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
 
                     <h3 class="text-base font-semibold text-white mb-1">
@@ -489,7 +474,7 @@
                     </p>
 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/AD1_ADUC-TestUser-and-AI-Group.png"
+                        <img src="./assets/images/ADL1_add_user_to_group.png"
                              alt="ADUC view with Test User and AI group"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
@@ -499,7 +484,6 @@
 
                 </section>
 
-                <!-- 5. OU structure and shared folder -->
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
 
                     <h3 class="text-base font-semibold text-white mb-1">
@@ -531,7 +515,7 @@
                     </p>
 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/AD1_Custom-Groups-OU-and-Share.png"
+                        <img src="./assets/images/ADL1_corp_shared_permissions.png"
                              alt="Custom Groups OU and shared folder permissions"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
@@ -545,7 +529,6 @@
         </div>
     </section>
 
-    <!-- SAMPLE COMMANDS -->
     <section class="pt-12 md:pt-14 pb-8 bg-primary-bg border-t border-gray-800">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -564,7 +547,6 @@
 
                 <div class="grid md:grid-cols-2 gap-10 items-start">
 
-                    <!-- Left column -->
                     <div class="space-y-3 w-full">
                         <p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em]">
                             Create and enable a new user
@@ -581,7 +563,6 @@
            -Enabled $true</code></pre>
                     </div>
 
-                    <!-- Right column -->
                     <div class="space-y-3 w-full">
                         <p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em]">
                             Group membership and password reset
@@ -603,11 +584,9 @@ Set-ADUser -Identity "test.user" -ChangePasswordAtLogon $true</code></pre>
         </div>
     </section>
 
-    <!-- ARCHITECTURE / INSIGHTS / SKILLS -->
     <section class="pt-8 md:pt-10 pb-12 md:pb-16 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
 
-            <!-- Architecture -->
             <div>
                 <div class="section-title-wrapper mb-8">
                     <h2 class="font-mono text-white">Architecture overview</h2>
@@ -616,7 +595,6 @@ Set-ADUser -Identity "test.user" -ChangePasswordAtLogon $true</code></pre>
 
                 <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 grid md:grid-cols-2 gap-10 text-sm text-white">
 
-                    <!-- COMPONENTS -->
                     <div>
                         <h3 class="text-base font-semibold text-white mb-3">Components</h3>
                         <ul class="list-disc list-outside pl-5 space-y-2 text-white">
@@ -629,7 +607,6 @@ Set-ADUser -Identity "test.user" -ChangePasswordAtLogon $true</code></pre>
                         </ul>
                     </div>
 
-                    <!-- DATA FLOW -->
                     <div>
                         <h3 class="text-base font-semibold text-white mb-3">Identity and access flow</h3>
                         <ul class="list-disc list-outside pl-5 space-y-2 text-white">
@@ -644,7 +621,6 @@ Set-ADUser -Identity "test.user" -ChangePasswordAtLogon $true</code></pre>
                 </div>
             </div>
 
-            <!-- Key Insights -->
             <div>
                 <div class="section-title-wrapper mb-8">
                     <h2 class="font-mono text-white">Key insights</h2>
@@ -662,7 +638,6 @@ Set-ADUser -Identity "test.user" -ChangePasswordAtLogon $true</code></pre>
                 </div>
             </div>
 
-            <!-- Skills -->
             <div>
                 <div class="section-title-wrapper mb-8">
                     <h2 class="font-mono text-white">Skills demonstrated</h2>
@@ -715,11 +690,9 @@ Set-ADUser -Identity "test.user" -ChangePasswordAtLogon $true</code></pre>
         </div>
     </section>
 
-    <!-- SUMMARY -->
     <section class="pb-12 md:pb-16 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            <!-- Dark card with thin white border -->
             <div class="bg-secondary-bg border border-white/30 rounded-2xl p-6 shadow-lg">
                 <h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-white">
                     Summary
@@ -737,7 +710,6 @@ Set-ADUser -Identity "test.user" -ChangePasswordAtLogon $true</code></pre>
                 </p>
             </div>
 
-            <!-- Back link -->
             <div class="mt-10">
                 <a href="../index.html#projects"
                    class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition">
