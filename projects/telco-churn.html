@@ -319,40 +319,43 @@
 
 
             <!-- 2. Cleaning -->
-            <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                <h3 class="text-base font-semibold text-text-base mb-1">2. Cleaning & Transformation</h3>
+                    <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                        <h3 class="text-base font-semibold text-white mb-1">2. Cleaning & Transformation</h3>
+                    
+                        <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                            Fixing billing fields and removing unreliable rows.
+                        </p>
+                    
+                        <p class="mb-3 text-white">
+                            The billing field <span class="font-mono text-accent-cyan">TotalCharges</span> wasn’t fully reliable in its raw
+                            form. Some customers had blank strings instead of actual numbers, which would cause issues once the data reached
+                            the model. To correct this, I converted the column into a numeric type and forced any invalid entries to become
+                            <span class="font-mono text-accent-cyan">NaN</span>. Those incomplete rows were then removed so the dataset only
+                            contained clean, usable records. I also dropped the <span class="font-mono text-accent-cyan">customerID</span>
+                            column since it’s just an identifier and contributes no predictive signal.
+                        </p>
+                    
+                        <p class="mb-3 text-white">
+                            The screenshot below reflects the exact cleaning steps executed inside the notebook. You can see invalid billing
+                            values being converted, missing entries being checked, and the removal of fields that don’t support the model’s
+                            learning process. This helps verify that the dataset was properly prepared before any feature engineering or
+                            training steps.
+                        </p>
+                    
+                        <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
+                            <img src="../assets/images/TC1_Data Cleaning & Transformation.png"
+                                 class="rounded-lg mx-auto mb-2" />
+                            <p class="text-xs text-text-secondary italic text-center">
+                                Cleaning logic applied to address malformed TotalCharges values and remove rows that could introduce noise or degrade model accuracy.
+                            </p>
+                        </div>
+                    
+                        <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-white">
+                    <code>df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
+                    df = df.dropna()
+                    df = df.drop(columns=["customerID"])</code></pre>
+                    </section>
 
-                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                    Fixing billing fields and removing unreliable rows.
-                </p>
-
-                <p class="mb-3 text-text-secondary">
-                    One of the main billing fields, TotalCharges, included some entries stored as blank strings
-                    instead of numeric values. I converted that column to a numeric type, coerced invalid values
-                    into NaN, and removed those rows to avoid feeding incomplete or misleading data into the model.
-                    I also dropped customerID, since it provides no predictive value.
-                </p>
-
-                <p class="mb-3 text-text-secondary">
-                   This screenshot shows the actual cleaning logic executed in the notebook. It confirms that invalid
-                    billing entries were handled, missing values were checked, and unnecessary identifiers were removed
-                    before any modeling steps were performed.
-                </p>
-
-                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-                    <img src="../assets/images/TC1_Data Cleaning & Transformation.png"
-                         class="rounded-lg mx-auto mb-2" />
-                    <p class="text-xs text-text-secondary italic text-center">
-                        Data cleaning and transformation logic focused on correcting the TotalCharges field and dropping
-                        rows that could introduce noise or errors into the model.
-                    </p>
-                </div>
-
-                <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-text-secondary">
-<code>df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
-df = df.dropna()
-df = df.drop(columns=["customerID"])</code></pre>
-            </section>
 
             <!-- 3. Feature Engineering & Split -->
             <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
