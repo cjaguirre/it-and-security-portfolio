@@ -280,44 +280,43 @@
                     </p>
                 
                     <p class="mb-3 text-white">
-                        The dataset contains one row per customer with fields covering account details, subscribed 
-                        services, contract information, and the final churn outcome. Reviewing the raw table confirms
-                        the data loaded correctly and gives an initial sense of the structure the model will learn from.
+                        The dataset includes one row per customer and captures details about account history, subscribed
+                        services, contract type, payment methods, and whether the customer eventually churned. Viewing the
+                        dataset in its raw form helps confirm everything imported correctly and provides a clear sense of 
+                        what information the model will be learning from.
                     </p>
                 
                     <p class="mb-3 text-white">
-                        The first screenshot shows the unprocessed dataset exactly as it appears in the notebook — each customer’s
-                        tenure, service types, payment details, and churn label. Including this view helps establish that the
-                        project is built on real, structured customer records before any cleaning or feature engineering is 
-                        applied.
+                        The first screenshot shows the untouched dataset as it appears in the notebook. Seeing all fields 
+                        together — such as tenure, service combinations, monthly charges, and churn status — gives a grounded 
+                        understanding of how customers vary and what patterns might influence their likelihood to leave.
                     </p>
                 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                         <img src="../assets/images/TC1_Dataset Preview.png"
                              class="rounded-lg mx-auto mb-2" />
                         <p class="text-xs text-text-secondary italic text-center">
-                            Dataset preview in pandas showing customer level records, available services, and the churn flag
-                            that the model will learn to predict.
+                            A preview of the raw customer-level dataset used for churn modeling.
                         </p>
                     </div>
                 
                     <p class="mb-3 text-white">
-                        The second image is a correlation heatmap. It’s used to get an early look at how the numeric features
-                        relate to one another and how they align with churn. Patterns like lower tenure correlating with higher
-                        churn, or certain service types clustering together, start to become visible here. This view helps 
-                        establish which variables may carry more predictive signal before moving into modeling.
+                        The second image highlights the correlations among the numeric features. This initial look at 
+                        relationships — such as shorter tenure aligning with higher churn or certain service attributes clustering 
+                        together — provides a helpful starting point for identifying which variables may carry stronger predictive 
+                        value before modeling begins.
                     </p>
                 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4">
                         <img src="../assets/images/TC1_Correlation Heatmap.png"
                              class="rounded-lg mx-auto mb-2" />
                         <p class="text-xs text-text-secondary italic text-center">
-                            Correlation heatmap highlighting early relationships between numeric features and churn, giving a
-                            first visual hint of what might drive customers to stay or leave.
+                            Correlation heatmap showing early feature relationships and their alignment with churn.
                         </p>
                     </div>
                 
                 </section>
+
 
             <!-- 2. Cleaning -->
             <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
