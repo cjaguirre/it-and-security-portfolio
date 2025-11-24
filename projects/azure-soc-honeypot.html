@@ -591,16 +591,18 @@
                                     GeoIP enriched 4625 events
                                 </p>
             
-                                <pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto
-                                            text-[0.85rem] text-white whitespace-pre">
-            <code>let GeoIPDB_FULL = _GetWatchlist("geoip");
-            let WindowsEvents =
-                SecurityEvent
-                | where EventID == 4625
-                | sort by TimeGenerated desc
-                | evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
-            WindowsEvents</code>
+                                <pre class="bg-container-bg border border-gray-800 rounded-lg p-5 md:p-6 
+                                            overflow-x-auto text-[0.85rem] text-white 
+                                            whitespace-pre-wrap break-words">
+                                <code>let GeoIPDB_FULL = _GetWatchlist("geoip");
+                                let WindowsEvents =
+                                    SecurityEvent
+                                    | where EventID == 4625
+                                    | sort by TimeGenerated desc
+                                    | evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
+                                WindowsEvents</code>
                                 </pre>
+
             
                                 <p class="text-xs text-text-secondary italic mt-2">
                                     Joins failed-logon events with the GeoIP watchlist to attach real-world location 
