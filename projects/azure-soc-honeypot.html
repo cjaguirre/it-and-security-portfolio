@@ -254,43 +254,82 @@
     </section>
 
     <!-- WORKFLOW OVERVIEW -->
-           <section class="py-12 md:py-14 border-b border-gray-800 bg-primary-bg">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-                <div class="section-title-wrapper mb-8">
-                    <h2 class="font-mono">Workflow overview</h2>
-                    <span></span>
-                </div>
-        
-                <div class="mb-10 text-center">
-                    <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Arc_Diagram.png"
-                         alt="Azure Honeypot Security Architecture Diagram"
-                         class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[800px] w-full object-contain" />
-                </div>
-                <h3 class="font-semibold text-xl mb-4 text-text-base border-b border-gray-700 pb-2">Technical Workflow Phases</h3>
-                
-                <ul class="space-y-4 text-text-secondary text-sm">
-                    <li>
-                        <strong class="text-accent-cyan">Phase 1: AZURE SETUP & EXPOSURE</strong> — Created Azure resources and subscription. Setup requires unrestricting NSG rules and disabling the Windows Firewall for intentional vulnerability.
-                    </li>
-                    <li>
-                        <strong class="text-accent-cyan">Phase 2: HONEYPOT DEPLOYMENT</strong> — Deployed a Windows 10 VM** with exposed RDP/SMB ports. This configuration acts as the honeypot endpoint, attracting automated attackers from the public internet.
-                    </li>
-                    <li>
-                        <strong class="text-accent-cyan">Phase 3: LOG INGESTION</strong> — Security event logs** are collected and forwarded to the Log Analytics Workspace (LAW). Logs are ingested using the Azure Monitor Agent (AMA) for centralized SIEM analysis.
-                    </li>
-                    <li>
-                        <strong class="text-accent-cyan">Phase 4: GEOIP WATCHLIST ADDITION</strong> — Prepared data for enrichment by **uploading and importing a GeoIP dataset as a Sentinel watchlist, providing IP-to-country/region mapping data.
-                    </li>
-                    <li>
-                        <strong class="text-accent-cyan">Phase 5: KQL ENRICHMENT & FILTERING</strong> — Kusto Query Language (KQL) is used to execute an `ipv4_lookup` join. This action attaches geographic data to security events (e.g., Event ID 4625), filtering for relevant attacks.
-                    </li>
-                    <li>
-                        <strong class="text-accent-cyan">Phase 6: ATTACK MAP & ACTION</strong> — Built a Sentinel workbook to visualize the enriched data as a global Attack Map. The resulting threat intelligence is delivered to the SOC Analyst for response.
-                    </li>
-                </ul>
-                </div>
-        </section>
+                    <section class="py-12 md:py-14 border-b border-gray-800 bg-primary-bg">
+                        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    
+                            <div class="section-title-wrapper mb-8">
+                                <h2 class="font-mono">Workflow overview</h2>
+                                <span></span>
+                            </div>
+                    
+                            <!-- SOC Architecture Diagram -->
+                            <div class="mb-10 text-center">
+                                <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_SOCArc_Diagram.png"
+                                     alt="SOC Architecture Diagram"
+                                     class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[850px] w-full object-contain" />
+                                <p class="mt-3 text-xs text-text-secondary">
+                                    High level security architecture showing how the honeypot VM, NSG exposure, Log Analytics Workspace, and Microsoft Sentinel integrate.
+                                </p>
+                            </div>
+                    
+                            <!-- Honeypot Pipeline Diagram -->
+                            <div class="mb-12 text-center">
+                                <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Honeypot_Diagram.png"
+                                     alt="Honeypot Pipeline Diagram"
+                                     class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[850px] w-full object-contain" />
+                                <p class="mt-3 text-xs text-text-secondary">
+                                    End to end honeypot workflow: exposure, log ingestion, data enrichment, and actionable threat intelligence.
+                                </p>
+                            </div>
+                    
+                            <!-- Phases -->
+                            <h3 class="font-semibold text-xl mb-4 text-text-base border-b border-gray-700 pb-2">
+                                Technical Workflow Phases
+                            </h3>
+                    
+                            <ul class="space-y-4 text-text-secondary text-sm">
+                    
+                                <li>
+                                    <strong class="text-accent-cyan">Phase 1: Azure Setup & Exposure</strong> —
+                                    Created an Azure subscription, resource group, and virtual network.  
+                                    Applied an intentionally unrestricted NSG rule and disabled the VM firewall to expose the honeypot to real world attacks.
+                                </li>
+                    
+                                <li>
+                                    <strong class="text-accent-cyan">Phase 2: Honeypot Deployment</strong> —
+                                    Deployed a Windows 10 VM configured with open RDP and SMB ports.  
+                                    This VM acted as a public facing endpoint to attract automated threat actors from the internet.
+                                </li>
+                    
+                                <li>
+                                    <strong class="text-accent-cyan">Phase 3: Log Ingestion</strong> —
+                                    Forwarded Windows Security logs into the Log Analytics Workspace using the Azure Monitor Agent.  
+                                    This established the event pipeline into Microsoft Sentinel.
+                                </li>
+                    
+                                <li>
+                                    <strong class="text-accent-cyan">Phase 4: GeoIP Watchlist</strong> —
+                                    Uploaded a GeoIP dataset into Sentinel’s Watchlist feature to support automatic IP to country lookups during enrichment.
+                                </li>
+                    
+                                <li>
+                                    <strong class="text-accent-cyan">Phase 5: KQL Enrichment & Filtering</strong> —
+                                    Used KQL queries to join inbound attack logs (e.g., failed RDP attempts) with the GeoIP watchlist using  
+                                    <code>ipv4_lookup</code>. This added geographic metadata for every malicious IP.
+                                </li>
+                    
+                                <li>
+                                    <strong class="text-accent-cyan">Phase 6: Attack Map & Analyst Output</strong> —
+                                    Built an interactive Attack Map workbook inside Sentinel.  
+                                    Geo enriched events were visualized to show real time attacker origin points.  
+                                    The resulting threat intelligence was delivered to the SOC analyst for assessment and action.
+                                </li>
+                    
+                            </ul>
+                    
+                        </div>
+                    </section>
+
     <!-- LAB BREAKDOWN -->
     <section class="py-12 md:py-16 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
