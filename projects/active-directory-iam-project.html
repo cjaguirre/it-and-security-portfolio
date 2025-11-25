@@ -204,47 +204,43 @@
 
             <div class="mt-10 grid md:grid-cols-2 gap-6">
                 <article class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                    <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2 font-mono">
-                        Project Narrative
-                    </p>
-                    <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
-                        This lab begins in Microsoft Azure, where I provisioned a Windows Server 2022 Datacenter virtual machine
-                        and prepared it to act as a domain controller. From there I used Server Manager, SCONFIG, and the
-                        Add Roles and Features wizard to install Active Directory Domain Services (AD DS) and DNS, then promoted
-                        the server into a new forest and domain for the lab.
-                    </p>
-                    <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
-                        After the promotion and reboot, the Azure VM functioned as DC01 for the <code>adlab.local</code> domain.
-                        I created a dedicated domain administrator account, then used Active Directory Users and Computers (ADUC)
-                        to build out a realistic identity workflow: creating a test user, enforcing a first-logon password change,
-                        and managing group membership to control access.
-                    </p>
-                    <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
-                        The final part of the lab focused on access control. I created a security group, organized it into a
-                        custom OU, and wired it to a shared folder on the domain controller. By resetting passwords, unlocking
-                        accounts, and adding or removing users from groups, I simulated the day-to-day identity tickets that
-                        entry-level IT, helpdesk, and IAM analysts handle in a Windows domain backed by Active Directory.
-                    </p>
-                </article>
+                <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2 font-mono">
+                    Project Narrative
+                </p>
+                <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
+                    This lab starts in Microsoft Azure, where I deployed a Windows Server 2022 Datacenter
+                    VM and configured it as a domain controller. Using Server Manager, SCONFIG, and the Add
+                    Roles and Features wizard, I installed Active Directory Domain Services (AD DS) and DNS,
+                    then promoted the server into a new forest and domain for the environment.
+                </p>
+                <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
+                    Once promoted, the VM operated as DC01 for the <code>adlab.local</code> domain. I created
+                    a domain admin account and used Active Directory Users and Computers (ADUC) to walk through
+                    a basic identity lifecycle: provisioning a user, enforcing first-logon password setup, and
+                    assigning group membership to manage access.
+                </p>
+                <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
+                    To demonstrate access control, I built a security group, placed it in a custom OU, and linked
+                    it to a shared folder on the domain controller. By performing tasks such as password resets,
+                    account unlocks, and group changes, I simulated the everyday identity and access workflows handled
+                    by helpdesk, IAM, and junior IT analysts in a domain-backed environment.
+                </p>
+            </article>
 
                 <article class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                    <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2 font-mono">
-                        What I Built
-                    </p>
-                    <ul class="list-disc list-outside pl-5 space-y-1.5 text-sm sm:text-[0.95rem] text-text-base">
-                        <li>Provisioned a Windows Server 2022 Datacenter virtual machine in Microsoft Azure and connected via RDP.</li>
-                        <li>Renamed the server to <code>DC01</code> using SCONFIG and restarted to lock in the new identity.</li>
-                        <li>Installed Active Directory Domain Services and DNS roles through Server Manager.</li>
-                        <li>Promoted DC01 to a domain controller and created a new forest and domain (<code>adlab.local</code>).</li>
-                        <li>Created a dedicated domain admin account (<code>dcadmin</code>) and used it for ongoing administration.</li>
-                        <li>Opened Active Directory Users and Computers and enabled Advanced Features to expose full directory details.</li>
-                        <li>Created a test user account, enforced “change password at next logon”, and validated the sign-in flow.</li>
-                        <li>Built a security group named <code>AI</code>, managed membership, and connected it to file share permissions.</li>
-                        <li>Created a dedicated organizational unit for custom groups and moved lab objects into it.</li>
-                        <li>Configured a shared folder (<code>corp_shared</code>) and granted access via domain groups instead of direct user permissions.</li>
-                        <li>Practiced password resets, unlocks, and membership changes to model everyday helpdesk and IAM requests.</li>
-                    </ul>
-                </article>
+                <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2 font-mono">
+                    What I Built
+                </p>
+                <ul class="list-disc list-outside pl-5 space-y-1.5 text-sm sm:text-[0.95rem] text-text-base">
+                    <li>Deployed a Windows Server 2022 VM in Azure and configured it as <code>DC01</code>.</li>
+                    <li>Installed AD DS and DNS, then promoted the server to a new <code>adlab.local</code> domain.</li>
+                    <li>Created a domain admin account and set up basic user and group management in ADUC.</li>
+                    <li>Built a security group and a custom OU to organize users and permissions.</li>
+                    <li>Configured a shared folder and assigned access through domain groups.</li>
+                    <li>Practiced core helpdesk tasks like password resets, account unlocks, and group changes.</li>
+                </ul>
+            </article>
+
             </div>
         </div>
     </section>
