@@ -245,58 +245,60 @@
         </div>
     </section>
 
+        <!--Workflow Overview-->
     <section class="py-12 md:py-14 border-b border-gray-800 bg-primary-bg">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
-            <div class="section-title-wrapper mb-8">
-                <h2 class="font-mono">Workflow overview</h2>
-                <span></span>
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+                <div class="section-title-wrapper mb-8">
+                    <h2 class="font-mono">Workflow overview</h2>
+                    <span></span>
+                </div>
+        
+                <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
+                    <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
+                        <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 1</p>
+                        <p class="text-sm font-semibold mb-1 text-text-base">Azure VM setup</p>
+                        <p class="text-[0.8rem] text-text-secondary">
+                            Deployed a Windows Server 2022 VM, connected over RDP, renamed it to <code>DC01</code>, and verified networking.
+                        </p>
+                    </div>
+        
+                    <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
+                        <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 2</p>
+                        <p class="text-sm font-semibold mb-1 text-text-base">AD DS & DNS</p>
+                        <p class="text-[0.8rem] text-text-secondary">
+                            Installed the domain services roles needed to support identity and directory operations.
+                        </p>
+                    </div>
+        
+                    <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
+                        <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 3</p>
+                        <p class="text-sm font-semibold mb-1 text-text-base">Domain controller</p>
+                        <p class="text-[0.8rem] text-text-secondary">
+                            Promoted the server to a domain controller and stood up the <code>adlab.local</code> forest.
+                        </p>
+                    </div>
+        
+                    <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
+                        <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 4</p>
+                        <p class="text-sm font-semibold mb-1 text-text-base">Users & groups</p>
+                        <p class="text-[0.8rem] text-text-secondary">
+                            Added users and security groups in ADUC and structured them to mirror real access workflows.
+                        </p>
+                    </div>
+        
+                    <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
+                        <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 5</p>
+                        <p class="text-sm font-semibold mb-1 text-text-base">Access control</p>
+                        <p class="text-[0.8rem] text-text-secondary">
+                            Linked a shared folder to domain groups to demonstrate clean, role based permissions.
+                        </p>
+                    </div>
+                </div>
             </div>
+        </section>
 
-            <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
-                <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 1</p>
-                    <p class="text-sm font-semibold mb-1 text-text-base">Azure VM & server prep</p>
-                    <p class="text-[0.8rem] text-text-secondary">
-                        Deployed a Windows Server 2022 VM in Azure, connected over RDP, renamed it to DC01, and confirmed baseline networking.
-                    </p>
-                </div>
-
-                <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 2</p>
-                    <p class="text-sm font-semibold mb-1 text-text-base">AD DS and DNS</p>
-                    <p class="text-[0.8rem] text-text-secondary">
-                        Used Server Manager to install Active Directory Domain Services and DNS roles to support domain identity.
-                    </p>
-                </div>
-
-                <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 3</p>
-                    <p class="text-sm font-semibold mb-1 text-text-base">Domain controller</p>
-                    <p class="text-[0.8rem] text-text-secondary">
-                        Promoted DC01 to a domain controller, created the adlab.local forest, and restarted into the new domain.
-                    </p>
-                </div>
-
-                <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 4</p>
-                    <p class="text-sm font-semibold mb-1 text-text-base">Users and groups</p>
-                    <p class="text-[0.8rem] text-text-secondary">
-                        Created domain users and security groups in ADUC and managed membership to model real team access.
-                    </p>
-                </div>
-
-                <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-                    <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 5</p>
-                    <p class="text-sm font-semibold mb-1 text-text-base">Access and resources</p>
-                    <p class="text-[0.8rem] text-text-secondary">
-                        Configured a shared folder and wired permissions to domain groups to demonstrate group-based access control.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    <!--Lab Breakdowm-->
     <section class="py-12 md:py-16 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
