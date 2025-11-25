@@ -253,7 +253,7 @@
         </div>
     </section>
 
-    <!-- WORKFLOW OVERVIEW -->
+    <!-- Architecture OVERVIEW -->
     <section class="py-12 md:py-14 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -295,6 +295,49 @@
         </div>
     </section>
 
+     <!-- WORKFLOW OVERVIEW -->
+    <section class="py-12 md:py-14 bg-primary-bg">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Title OUTSIDE the box (matches other sections) -->
+            <div class="section-title-wrapper mb-8">
+                <h2 class="font-mono text-white">Workflow Overview</h2>
+                <span></span>
+            </div>
+
+            <!-- MAIN BOX -->
+            <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+
+                <!-- Subtitle -->
+                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-6">
+                    FULL PIPELINE VIEW OF THE AZURE HONEYPOT SECURITY LAB
+                </p>
+
+                <!-- Intro paragraph -->
+                <p class="text-white text-sm sm:text-[0.95rem] leading-relaxed mb-8">
+                    This workflow brings together Azure networking, honeypot configuration, log collection, threat-intelligence 
+                    enrichment, and Microsoft Sentinel visualization to create an attacker-to-analysis pipeline. The diagrams below 
+                    show how traffic reaches the exposed VM, how logs move through Azure resources, and how Sentinel transforms raw 
+                    events into meaningful threat intelligence.
+                </p>
+
+                <!-- IMAGE 1: SOC Architecture -->
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-10 text-center">
+                    <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_SOCArc_Diagram.png"
+                         alt="Azure SOC Architecture Diagram"
+                         class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[850px] w-full object-contain" />
+
+                    <p class="mt-2 text-xs italic text-text-secondary">
+                        SOC architecture map illustrating how the honeypot VM, NSG exposure, Log Analytics Workspace, and Microsoft 
+                        Sentinel work together to produce actionable threat intelligence.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    
     <!-- LAB BREAKDOWN -->
     <section class="py-12 md:py-16 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
