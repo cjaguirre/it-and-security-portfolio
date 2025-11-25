@@ -545,15 +545,14 @@
 
                 <!-- 4. GeoIP -->
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-
                     <h3 class="text-base font-semibold text-white mb-1">
                         4. GeoIP watchlist and KQL enrichment
                     </h3>
-
+                
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
                         Imported a GeoIP dataset and attached location data to SecurityEvent logs using KQL.
                     </p>
-
+                
                     <p class="text-white mb-4">
                         After confirming that failed logons were flowing into Sentinel, the next step was making the 
                         activity easier to interpret. Raw IP addresses don’t offer much insight on their own, so I imported 
@@ -561,33 +560,31 @@
                         This transformation turned anonymous login attempts into a clear picture of where attackers were 
                         coming from, adding important geographic context to the investigation.
                     </p>
-
+                
                     <ul class="list-disc list-outside pl-5 space-y-1 mb-6 text-white">
                         <li>Uploaded a CSV containing IPv4 ranges with mapped country and region fields.</li>
                         <li>Created a Sentinel watchlist named <em>geoip</em>, keyed by the network range.</li>
                         <li>Joined the watchlist with Event ID 4625 entries using <code>ipv4_lookup</code> to enrich failed logons.</li>
                     </ul>
-
+                
                     <p class="text-white mb-6">
                         The screenshots below walk through the enrichment workflow—from loading the watchlist, to running the KQL 
                         lookup, to viewing the fully enriched attack table that feeds the final workbook.
                     </p>
-
-                    <!-- Watchlist views -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
-
-                        <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Sentinel-Watchlist-GeoIP-Rows.png"
-                                 alt="Sentinel Watchlist GeoIP Rows"
-                                 class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
-                            <p class="mt-2 text-xs italic text-text-secondary">
-                                GeoIP watchlist rows loaded into Sentinel, including IP ranges mapped to country and region fields.
-                            </p>
-                        </div>
+                
+                    <!-- Watchlist view -->
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center mb-10">
+                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Sentinel-Watchlist-GeoIP-Rows.png"
+                             alt="Sentinel Watchlist GeoIP Rows"
+                             class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
+                        <p class="mt-2 text-xs italic text-text-secondary">
+                            GeoIP watchlist rows loaded into Sentinel, including IP ranges mapped to country and region fields.
+                        </p>
                     </div>
-
-                    <!-- KQL + enriched output -->
-
+                
+                    <!-- KQL + enriched output (two-column grid) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                
                         <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
                             <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_KQL-Enrichment-Query-Close-Up.png"
                                  alt="KQL Enrichment Query Close-Up"
@@ -596,7 +593,7 @@
                                 Close-up of the enrichment query, highlighting key columns used for mapping attacks to geography.
                             </p>
                         </div>
-
+                
                         <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
                             <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Fully-Enriched-Attacker-Table.png"
                                  alt="Fully Enriched Attacker Table"
@@ -605,9 +602,11 @@
                                 Resulting table of fully enriched attacker events, including IP, country, region, and logon details.
                             </p>
                         </div>
+                
                     </div>
-
+                
                 </section>
+
 
                 <!-- 5. Workbook -->
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
