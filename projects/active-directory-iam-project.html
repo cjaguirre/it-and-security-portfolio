@@ -347,45 +347,46 @@
                 
                 </section>
 
-
+<!--STEP 2-->
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-
+                
                     <h3 class="text-base font-semibold text-white mb-1">
                         2. Installing Active Directory Domain Services and DNS
                     </h3>
-
+                
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Added the directory and name services that support sign-in and domain identity.
+                        Adding the core directory and name services that power authentication and domain identity.
                     </p>
-
+                
                     <p class="text-white mb-4">
-                        With the base Azure server ready, I used the **Add Roles and Features wizard** in Server Manager. This core process is essential, as AD DS handles authentication and identity, while DNS resolves hostnames and supports domain operations. The wizard first highlights the crucial configuration prerequisites.
+                        With the server prepared, I opened the <strong>Add Roles and Features</strong> tool in Server Manager to install the components required for a functional domain: <strong>Active Directory Domain Services</strong> and <strong>DNS Server</strong>. AD DS provides identity and authentication, while DNS enables name resolution and domain operations. The wizard begins by outlining configuration requirements before role installation.
                     </p>
-
+                
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4 text-center">
                         <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/ADUC1_AddRoles_Wizard_Before_You_Begin.png"
                              alt="Add Roles Wizard Before You Begin"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            **3. Add Roles and Features:** Launching the roles wizard, which highlights the prerequisites for installing AD DS, such as configuring a strong administrator password and a static IP address.
+                            Initial screen for adding roles, highlighting prerequisites for AD DS such as secure administrator credentials and proper network configuration.
                         </p>
                     </div>
-
+                
                     <p class="text-white mb-4">
-                        After selecting the **Active Directory Domain Services** and **DNS Server** roles and completing the installation, the Server Manager dashboard notifies the user that the next step—promoting the server—is required.
+                        After selecting the roles, Server Manager completed the installation and displayed the next required action: promoting the server to a domain controller. This step transitions the VM from a basic Windows server into the core identity provider for the environment.
                     </p>
-
+                
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
                         <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/ADUC1_AddRoles_Results_Promote_to_DC_Prompt.png"
                              alt="Add Roles Results Promote To DC Prompt"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            **4. Role Installation Complete:** The **Results** screen confirming the successful installation of the AD DS and DNS features and prompting to **"Promote this server to a domain controller."**
+                            Role installation results, confirming AD DS and DNS were added successfully and prompting to <strong>Promote this server to a domain controller</strong>.
                         </p>
                     </div>
-
+                
                 </section>
 
+<!--STEP 3-->
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
 
                     <h3 class="text-base font-semibold text-white mb-1">
