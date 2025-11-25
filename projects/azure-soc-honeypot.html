@@ -271,22 +271,22 @@
                 
                 <ul class="space-y-4 text-text-secondary text-sm">
                     <li>
-                        <strong class="text-accent-cyan">Phase 1: AZURE SETUP & EXPOSURE</strong> — Created Azure resources and subscription. Setup requires **unrestricting NSG rules** and disabling the Windows Firewall for intentional vulnerability.
+                        <strong class="text-accent-cyan">Phase 1: AZURE SETUP & EXPOSURE</strong> — Created Azure resources and subscription. Setup requires unrestricting NSG rules and disabling the Windows Firewall for intentional vulnerability.
                     </li>
                     <li>
-                        <strong class="text-accent-cyan">Phase 2: HONEYPOT DEPLOYMENT</strong> — Deployed a **Windows 10 VM** with exposed RDP/SMB ports. This configuration acts as the **honeypot endpoint**, attracting automated attackers from the public internet.
+                        <strong class="text-accent-cyan">Phase 2: HONEYPOT DEPLOYMENT</strong> — Deployed a Windows 10 VM** with exposed RDP/SMB ports. This configuration acts as the honeypot endpoint, attracting automated attackers from the public internet.
                     </li>
                     <li>
-                        <strong class="text-accent-cyan">Phase 3: LOG INGESTION</strong> — **Security event logs** are collected and forwarded to the **Log Analytics Workspace (LAW)**. Logs are ingested using the **Azure Monitor Agent (AMA)** for centralized SIEM analysis.
+                        <strong class="text-accent-cyan">Phase 3: LOG INGESTION</strong> — Security event logs** are collected and forwarded to the Log Analytics Workspace (LAW). Logs are ingested using the Azure Monitor Agent (AMA) for centralized SIEM analysis.
                     </li>
                     <li>
-                        <strong class="text-accent-cyan">Phase 4: GEOIP WATCHLIST ADDITION</strong> — Prepared data for enrichment by **uploading and importing a GeoIP dataset** as a Sentinel watchlist, providing IP-to-country/region mapping data.
+                        <strong class="text-accent-cyan">Phase 4: GEOIP WATCHLIST ADDITION</strong> — Prepared data for enrichment by **uploading and importing a GeoIP dataset as a Sentinel watchlist, providing IP-to-country/region mapping data.
                     </li>
                     <li>
-                        <strong class="text-accent-cyan">Phase 5: KQL ENRICHMENT & FILTERING</strong> — **Kusto Query Language (KQL)** is used to execute an `ipv4_lookup` join. This action **attaches geographic data** to security events (e.g., Event ID 4625), filtering for relevant attacks.
+                        <strong class="text-accent-cyan">Phase 5: KQL ENRICHMENT & FILTERING</strong> — Kusto Query Language (KQL) is used to execute an `ipv4_lookup` join. This action attaches geographic data to security events (e.g., Event ID 4625), filtering for relevant attacks.
                     </li>
                     <li>
-                        <strong class="text-accent-cyan">Phase 6: ATTACK MAP & ACTION</strong> — Built a **Sentinel workbook** to visualize the enriched data as a global **Attack Map**. The resulting threat intelligence is delivered to the SOC Analyst for response.
+                        <strong class="text-accent-cyan">Phase 6: ATTACK MAP & ACTION</strong> — Built a Sentinel workbook to visualize the enriched data as a global Attack Map. The resulting threat intelligence is delivered to the SOC Analyst for response.
                     </li>
                 </ul>
                 </div>
