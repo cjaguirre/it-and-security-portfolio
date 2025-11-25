@@ -601,39 +601,53 @@ Set-ADUser -Identity "test.user" -ChangePasswordAtLogon $true</code></pre>
             </div>
 
             <!-- Architecture Overview -->
-                <div>
-                    <div class="section-title-wrapper mb-8">
-                        <h2 class="font-mono text-white">Architecture overview</h2>
-                        <span></span>
-                    </div>
-                <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 grid md:grid-cols-2 gap-10 text-sm text-white">
+                    <div>
+                        <div class="section-title-wrapper mb-8">
+                            <h2 class="font-mono text-white">Architecture overview</h2>
+                            <span></span>
+                        </div>
                     
-                <!--Components-->
-                        <div>
-                            <h3 class="text-base font-semibold text-white mb-3">Components</h3>
-                            <ul class="list-disc list-outside pl-5 space-y-2 text-white">
-                                <li><span class="font-semibold text-white">Azure Virtual Machine</span> — Windows Server 2022 Datacenter VM providing the compute layer for the entire lab.</li>
-                                <li><span class="font-semibold text-white">Domain controller (DC01)</span> — Hosts AD DS and DNS, forming the core identity and directory services for <code>adlab.local</code>.</li>
-                                <li><span class="font-semibold text-white">Active Directory database</span> — Stores all identity objects including users, groups, computers, and organizational units.</li>
-                                <li><span class="font-semibold text-white">DNS service</span> — Provides name resolution and supports all domain-based lookups and authentication workflows.</li>
-                                <li><span class="font-semibold text-white">Shared folder <code>corp_shared</code></span> — Network share protected by the AI security group, used to validate permission boundaries.</li>
-                                <li><span class="font-semibold text-white">RDP client session</span> — Represents the admin or end user connecting into the environment to authenticate and access resources.</li>
-                            </ul>
+                        <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 grid md:grid-cols-2 gap-10 text-sm text-white">
+                    
+                            <div>
+                                <h3 class="text-base font-semibold text-white mb-3">Components</h3>
+                                <ul class="list-disc list-outside pl-5 space-y-2 text-white">
+                    
+                                    <li><span class="font-semibold text-white">Azure Virtual Machine</span> — The Windows Server 2022 machine where the entire lab runs. This is the physical “box” in the cloud.</li>
+                    
+                                    <li><span class="font-semibold text-white">Domain controller (DC01)</span> — The server responsible for logins, authentication, and enforcing security policies for <code>adlab.local</code>.</li>
+                    
+                                    <li><span class="font-semibold text-white">Active Directory database</span> — Stores everything the domain needs: user accounts, groups, computers, and OU structure.</li>
+                    
+                                    <li><span class="font-semibold text-white">DNS service</span> — Lets machines in the domain find each other by name (required for logins, Group Policy, and all domain operations).</li>
+                    
+                                    <li><span class="font-semibold text-white">Shared folder <code>corp_shared</code></span> — A network file share used to test how group membership controls access to resources.</li>
+                    
+                                    <li><span class="font-semibold text-white">RDP client session</span> — Represents the user or admin connecting to DC01 to sign in, manage AD, or test permissions.</li>
+                    
+                                </ul>
+                            </div>
+                    
+                            <div>
+                                <h3 class="text-base font-semibold text-white mb-3">Identity and access flow</h3>
+                                <ul class="list-disc list-outside pl-5 space-y-2 text-white">
+                    
+                                    <li>The user signs in over RDP using an account stored in Active Directory.</li>
+                    
+                                    <li>DC01 checks the username and password against the AD database and loads the user’s assigned groups.</li>
+                    
+                                    <li>These groups determine what the user is allowed to access — including the AI group used in this lab.</li>
+                    
+                                    <li>When the user opens <code>\\DC01\corp_shared</code>, Windows compares their group memberships with the folder’s share and NTFS permissions.</li>
+                    
+                                    <li>Any changes made in AD — password reset, adding/removing groups, enabling or disabling the account — take effect immediately and change what the user can access.</li>
+                    
+                                </ul>
+                            </div>
+                    
                         </div>
-                <!--Identity and access flow-->
-                        <div>
-                            <h3 class="text-base font-semibold text-white mb-3">Identity and access flow</h3>
-                            <ul class="list-disc list-outside pl-5 space-y-2 text-white">
-                                <li>The user signs in through RDP using credentials stored in Active Directory.</li>
-                                <li>DC01 processes the authentication request, verifies the password, and loads the user’s group memberships.</li>
-                                <li>These group memberships determine which resources the user is authorized to access, including the AI group for lab permissions.</li>
-                                <li>When the user attempts to reach <code>\\DC01\corp_shared</code>, Windows evaluates their group tokens against both share-level and NTFS permissions.</li>
-                                <li>Any updates in AD — password resets, group changes, lockouts, or re-enables — take effect immediately and change what the user can access.</li>
-                            </ul>
-                        </div>
-                
                     </div>
-                </div>
+
 
 
             <!-- Key Insights -->
