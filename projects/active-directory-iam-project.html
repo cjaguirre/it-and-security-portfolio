@@ -203,23 +203,24 @@
                         Project Narrative
                     </p>
                     <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
-                        This lab starts in Microsoft Azure, where I deployed a Windows Server 2022 Datacenter
-                        VM and prepared it to operate as a domain controller. Using Server Manager, SCONFIG, and the
-                        Add Roles and Features wizard, I installed Active Directory Domain Services (AD DS) and DNS,
-                        then promoted the server into a new forest and domain dedicated to the environment.
+                        This lab begins in Microsoft Azure, where I deployed a Windows Server 2022 Datacenter
+                        VM and prepared it to operate as the domain controller. Using Server Manager, SCONFIG,
+                        and the Add Roles and Features wizard, I installed Active Directory Domain Services (AD DS)
+                        and DNS, then promoted the server to a new forest named <code>adlab.local</code>.
                     </p>
+                    
                     <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
-                        Once promoted, the VM operated as DC01 for the <code>adlab.local</code> domain. I created
-                        a domain admin account and used Active Directory Users and Computers (ADUC) to walk through
-                        a basic identity lifecycle: provisioning a user, enforcing first-logon password setup, and
-                        assigning group membership to manage access.
+                        Once the server was promoted, I created a domain admin account and used Active Directory
+                        Users and Computers (ADUC) to walk through a basic identity lifecycle—onboarding a test user,
+                        enforcing first-logon password change, and assigning group membership for access control.
                     </p>
+                    
                     <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
-                        To demonstrate access control, I built a security group, placed it in a custom OU, and linked
-                        it to a shared folder on the domain controller. By performing tasks such as password resets,
-                        account unlocks, and group changes, I simulated the everyday identity and access workflows handled
-                        by helpdesk, IAM, and junior IT analysts in a domain-backed environment.
+                        To demonstrate permission management, I created a security group, placed it inside a custom OU,
+                        and tied it to a shared folder on the domain controller. Tasks like password resets, account unlocks,
+                        and adjusting group membership simulate the everyday workflow handled by helpdesk, IAM, and junior IT analysts.
                     </p>
+
                 </article>
 
                 <!-- What I Built -->
