@@ -254,52 +254,93 @@
     </section>
 
     <!-- WORKFLOW OVERVIEW -->
-            <section class="py-12 md:py-14 border-b border-gray-800 bg-primary-bg">
-                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-                    <div class="section-title-wrapper mb-8">
-                        <h2 class="font-mono">Workflow overview</h2>
-                        <span></span>
-                    </div>
-            
-                    <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 space-y-10">
-            
-                        <!-- Diagram 1 -->
-                        <div class="text-center">
-                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Honeypot_Diagram.png"
-                                 alt="Honeypot Workflow Map"
-                                 class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[850px] w-full object-contain" />
-                            <p class="mt-2 text-xs italic text-text-secondary">
-                                Honeypot workflow pipeline illustrating attacker flow, log ingestion, and enrichment steps.
-                            </p>
+                <section class="py-12 md:py-14 border-b border-gray-800 bg-primary-bg">
+                    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                        <div class="section-title-wrapper mb-8">
+                            <h2 class="font-mono text-white">Workflow overview</h2>
+                            <span></span>
                         </div>
-            
-                        <!-- Diagram 2 -->
-                        <div class="text-center">
-                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_SOCArc_Diagram.png"
-                                 alt="Azure SOC Environment Map"
-                                 class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[850px] w-full object-contain" />
-                            <p class="mt-2 text-xs italic text-text-secondary">
-                                High-level view of Azure resources used for threat ingestion, analysis, and visualization.
-                            </p>
+                
+                        <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 space-y-12">
+                
+                            <!-- IMAGE 1: Honeypot Workflow Pipeline -->
+                            <div class="text-center">
+                                <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Honeypot_Diagram.png"
+                                     alt="Honeypot Workflow Pipeline Diagram"
+                                     class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[850px] w-full object-contain" />
+                
+                                <p class="mt-3 text-xs italic text-text-secondary">
+                                    This diagram illustrates the full attacker-to-pipeline flow. It shows how the exposed VM attracts 
+                                    real attacks, how logs are collected in the Log Analytics Workspace, and how enrichment steps (GeoIP 
+                                    lookup & KQL filtering) prepare the data for analyst-ready visualization in Microsoft Sentinel.
+                                </p>
+                            </div>
+                
+                            <!-- IMAGE 2: SOC Architecture Environment Map -->
+                            <div class="text-center">
+                                <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_SOCArc_Diagram.png"
+                                     alt="Azure SOC Architecture Environment Map"
+                                     class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[850px] w-full object-contain" />
+                
+                                <p class="mt-3 text-xs italic text-text-secondary">
+                                    This architecture map provides the high-level structure of the environment. It shows how the Azure 
+                                    subscription, resource group, Virtual Machine, NSG exposure, Log Analytics Workspace, and Sentinel 
+                                    instance connect together to form a real threat-intelligence pipeline.
+                                </p>
+                            </div>
+                
+                            <!-- Technical Workflow Phases -->
+                            <h3 class="font-semibold text-xl text-white border-b border-gray-700 pb-2">Technical Workflow Phases</h3>
+                
+                            <div class="space-y-4 text-sm leading-relaxed text-white">
+                
+                                <p>
+                                    <strong class="text-accent-cyan">Phase 1 — Exposure Configuration</strong><br/>
+                                    NSG rules were intentionally opened and the Windows Firewall was disabled. This replicates 
+                                    real-world misconfigurations and allows automated bots on the public internet to immediately 
+                                    target the VM.
+                                </p>
+                
+                                <p>
+                                    <strong class="text-accent-cyan">Phase 2 — Honeypot Endpoint Deployment</strong><br/>
+                                    A Windows 10 VM was deployed with exposed RDP and SMB ports. This machine becomes the 
+                                    attack surface, attracting credential-stuffing attempts, brute-force attacks, and unauthorized 
+                                    connection probes.
+                                </p>
+                
+                                <p>
+                                    <strong class="text-accent-cyan">Phase 3 — Log Collection Pipeline</strong><br/>
+                                    Security events (notably failed logons) are forwarded to the Log Analytics Workspace using the Azure 
+                                    Monitor Agent. This centralizes all raw attack data for analysis.
+                                </p>
+                
+                                <p>
+                                    <strong class="text-accent-cyan">Phase 4 — GeoIP Enrichment</strong><br/>
+                                    A GeoIP dataset is imported into Sentinel as a watchlist. This allows each attacking IP to be mapped 
+                                    back to its country, region, and ASN for threat-intel visibility.
+                                </p>
+                
+                                <p>
+                                    <strong class="text-accent-cyan">Phase 5 — KQL Correlation & Filtering</strong><br/>
+                                    Kusto Query Language (KQL) joins the raw events with the GeoIP watchlist using the 
+                                    <code>ipv4_lookup</code> function. This enriches each log entry and filters for actionable attack data 
+                                    (for example, event ID 4625 for failed RDP logons).
+                                </p>
+                
+                                <p>
+                                    <strong class="text-accent-cyan">Phase 6 — Attack Map Visualization</strong><br/>
+                                    A custom Sentinel workbook renders the enriched events on a real-time world map, giving a clear picture 
+                                    of attacker origins, frequency, and patterns — similar to what a SOC analyst would review during active 
+                                    monitoring.
+                                </p>
+                
+                            </div>
+                
                         </div>
-            
-                        <!-- Technical Phase Breakdown -->
-                        <h3 class="font-semibold text-xl text-text-base border-b border-gray-700 pb-2">Technical Workflow Phases</h3>
-            
-                        <ul class="space-y-4 text-text-secondary text-sm">
-                            <li><strong class="text-accent-cyan">Phase 1: Azure Exposure Setup</strong> — NSG rules were intentionally opened and the Windows Firewall disabled to attract automated attacks.</li>
-                            <li><strong class="text-accent-cyan">Phase 2: Honeypot Endpoint</strong> — A Windows 10 VM was deployed with exposed RDP/SMB ports to serve as the attack surface.</li>
-                            <li><strong class="text-accent-cyan">Phase 3: Log Collection</strong> — Security events were forwarded into the Log Analytics Workspace via AMA.</li>
-                            <li><strong class="text-accent-cyan">Phase 4: GeoIP Enrichment</strong> — A GeoIP dataset was imported into Sentinel to enable attacker country mapping.</li>
-                            <li><strong class="text-accent-cyan">Phase 5: KQL Analysis</strong> — KQL queries joined attack logs with the GeoIP watchlist using ipv4_lookup.</li>
-                            <li><strong class="text-accent-cyan">Phase 6: Attack Map Visualization</strong> — A Sentinel workbook displayed global attacker activity for analyst review.</li>
-                        </ul>
                     </div>
-            
-                </div>
-            </section>
-            
+                </section>
+
 
 
     <!-- LAB BREAKDOWN -->
