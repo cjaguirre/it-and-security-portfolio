@@ -308,46 +308,45 @@
             </div>
 
             <div class="space-y-8 text-sm sm:text-[0.95rem] leading-relaxed text-text-secondary">
-
+                
+<!--STEP 1-->
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-
                     <h3 class="text-base font-semibold text-white mb-1">
                         1. Azure VM deployment and baseline server configuration
                     </h3>
-
+                
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Deployed a Windows Server 2022 VM in Azure and prepared it to act as a domain controller.
+                        Setting up the Windows Server 2022 VM that becomes the lab’s domain controller.
                     </p>
-
+                
                     <p class="text-white mb-4">
-                        The lab starts in the **Azure portal** by creating a new Windows Server 2022 virtual machine. I selected a
-                        region close to my location, chose an appropriate VM size, and enabled RDP access so I could administer
-                        the machine remotely. The first step was to define the server's identity and parameters for the cloud environment.
+                        The lab begins in the Azure portal with the deployment of a Windows Server 2022 VM. I selected the region, VM size, enabled RDP, and assigned the machine name <code>DC01</code> to establish its identity from the start. This forms the foundation for promoting the server into a domain controller later in the workflow.
                     </p>
-
+                
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4 text-center">
                         <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/ADUC1_Azure_VM_Creation_Parameters_DC01.png"
                              alt="Azure VM Creation Parameters DC01"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[650px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            **1. Azure VM Deployment:** Setting the initial configuration, including selecting Windows Server 2022, naming the VM **DC01**, and defining the administrator account within the Azure Portal.
+                            Azure VM creation settings for the lab server, including the Windows Server 2022 image and initial configuration for <strong>DC01</strong>.
                         </p>
                     </div>
-
+                
                     <p class="text-white mb-4">
-                        Once the VM booted, I connected over Remote Desktop and landed in **Server Manager**. From there I opened the SCONFIG utility to perform initial hardening and identity work. I confirmed basic network configuration and renamed the computer to <code>DC01</code>, then restarted the server. This confirms the machine's base identity before installing critical roles.
+                        After the VM deployed, I connected via RDP and used <strong>Server Manager</strong> and <strong>SCONFIG</strong> to apply baseline configuration: confirming networking, renaming the machine to <code>DC01</code>, and restarting to finalize the identity. With the server prepared, it was ready for AD DS and DNS role installation.
                     </p>
-
+                
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
                         <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/ADUC1_ServerManager_Dashboard_Fresh_Install.png"
                              alt="Windows Server Manager dashboard on Azure VM"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[650px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            **2. Initial Server State:** The **Server Manager Dashboard** immediately after RDP connection, showing the fresh Windows Server 2022 VM is ready for role installation (Roles: 0).
+                            Fresh Server Manager dashboard after first RDP login, showing the server ready for domain services installation.
                         </p>
                     </div>
-
+                
                 </section>
+
 
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
 
