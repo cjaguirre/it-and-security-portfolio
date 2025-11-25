@@ -254,72 +254,43 @@
     </section>
 
     <!-- WORKFLOW OVERVIEW -->
-    <section class="py-12 md:py-14 border-b border-gray-800 bg-primary-bg">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        <div class="section-title-wrapper mb-8">
-            <h2 class="font-mono">Workflow overview</h2>
-            <span></span>
-        </div>
-
-        <div class="mb-10">
-            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Arc_Diagram.png"
-     alt="Azure Honeypot Security Architecture Diagram"
-     class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[650px] w-full object-contain" />
-        </div>
-        <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-            <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-                <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Phase 1</p>
-                <p class="text-sm font-semibold mb-1 text-text-base">AZURE SETUP & EXPOSURE</p>
-                <p class="text-[0.8rem] text-text-secondary">
-                    Created Azure resources and subscription. Setup requires unrestricting NSG rules and disabling the Windows Firewall for intentional vulnerability.
-                </p>
-            </div>
-
-            <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-                <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Phase 2</p>
-                <p class="text-sm font-semibold mb-1 text-text-base">HONEYPOT DEPLOYMENT</p>
-                <p class="text-[0.8rem] text-text-secondary">
-                    Deployed a Windows 10 VM with exposed RDP/SMB ports. This configuration acts as the honeypot endpoint, attracting automated attackers from the public internet.
-                </p>
-            </div>
-
-            <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-                <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Phase 3</p>
-                <p class="text-sm font-semibold mb-1 text-text-base">LOG INGESTION</p>
-                <p class="text-[0.8rem] text-text-secondary">
-                    Security event logs are collected and forwarded to the Log Analytics Workspace (LAW). Logs are ingested using the Azure Monitor Agent (AMA) for centralized SIEM analysis.
-                </p>
-            </div>
-
-            <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-                <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Phase 4</p>
-                <p class="text-sm font-semibold mb-1 text-text-base">GEOIP WATCHLIST ADDITION</p>
-                <p class="text-[0.8rem] text-text-secondary">
-                    Prepared data for enrichment by uploading and importing a GeoIP dataset as a Sentinel watchlist. This provides IP-to-country/region mapping data.
-                </p>
-            </div>
-
-            <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-                <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Phase 5</p>
-                <p class="text-sm font-semibold mb-1 text-text-base">KQL ENRICHMENT & FILTERING</p>
-                <p class="text-[0.8rem] text-text-secondary">
-                    Kusto Query Language (KQL) is used to execute an ipv4_lookup join. This action attaches geographic data to security events (e.g., Event ID 4625), filtering for relevant attacks.
-                </p>
-            </div>
-
-            <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-                <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Phase 6</p>
-                <p class="text-sm font-semibold mb-1 text-text-base">ATTACK MAP & ACTION</p>
-                <p class="text-[0.8rem] text-text-secondary">
-                    Built a Sentinel workbook to visualize the enriched data as a global Attack Map. The resulting threat intelligence is delivered to the SOC Analyst for response.
-                </p>
-            </div>
-            
-        </div>
-    </div>
-</section>
-
+           <section class="py-12 md:py-14 border-b border-gray-800 bg-primary-bg">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+                <div class="section-title-wrapper mb-8">
+                    <h2 class="font-mono">Workflow overview</h2>
+                    <span></span>
+                </div>
+        
+                <div class="mb-10 text-center">
+                    <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Arc_Diagram.png"
+                         alt="Azure Honeypot Security Architecture Diagram"
+                         class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[800px] w-full object-contain" />
+                </div>
+                <h3 class="font-semibold text-xl mb-4 text-text-base border-b border-gray-700 pb-2">Technical Workflow Phases</h3>
+                
+                <ul class="space-y-4 text-text-secondary text-sm">
+                    <li>
+                        <strong class="text-accent-cyan">Phase 1: AZURE SETUP & EXPOSURE</strong> — Created Azure resources and subscription. Setup requires **unrestricting NSG rules** and disabling the Windows Firewall for intentional vulnerability.
+                    </li>
+                    <li>
+                        <strong class="text-accent-cyan">Phase 2: HONEYPOT DEPLOYMENT</strong> — Deployed a **Windows 10 VM** with exposed RDP/SMB ports. This configuration acts as the **honeypot endpoint**, attracting automated attackers from the public internet.
+                    </li>
+                    <li>
+                        <strong class="text-accent-cyan">Phase 3: LOG INGESTION</strong> — **Security event logs** are collected and forwarded to the **Log Analytics Workspace (LAW)**. Logs are ingested using the **Azure Monitor Agent (AMA)** for centralized SIEM analysis.
+                    </li>
+                    <li>
+                        <strong class="text-accent-cyan">Phase 4: GEOIP WATCHLIST ADDITION</strong> — Prepared data for enrichment by **uploading and importing a GeoIP dataset** as a Sentinel watchlist, providing IP-to-country/region mapping data.
+                    </li>
+                    <li>
+                        <strong class="text-accent-cyan">Phase 5: KQL ENRICHMENT & FILTERING</strong> — **Kusto Query Language (KQL)** is used to execute an `ipv4_lookup` join. This action **attaches geographic data** to security events (e.g., Event ID 4625), filtering for relevant attacks.
+                    </li>
+                    <li>
+                        <strong class="text-accent-cyan">Phase 6: ATTACK MAP & ACTION</strong> — Built a **Sentinel workbook** to visualize the enriched data as a global **Attack Map**. The resulting threat intelligence is delivered to the SOC Analyst for response.
+                    </li>
+                </ul>
+                </div>
+        </section>
     <!-- LAB BREAKDOWN -->
     <section class="py-12 md:py-16 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
