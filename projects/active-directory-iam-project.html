@@ -301,18 +301,16 @@
                 <!-- STEP 1 -->
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
                     <h3 class="text-base font-semibold text-white mb-1">
-                        1. Azure VM deployment and baseline server configuration
+                        1. Azure VM Deployment and Baseline Server Configuration
                     </h3>
 
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Setting up the Windows Server 2022 VM that becomes the lab’s domain controller.
+                       Set up the Windows Server 2022 VM that becomes the domain controller.
                     </p>
 
                     <p class="text-white mb-4">
-                        The lab begins in the Azure portal with the deployment of a Windows Server 2022 virtual machine.
-                        I selected the region, VM size, enabled RDP, and assigned the machine name <code>DC01</code> to
-                        establish its identity from the start. This forms the foundation for promoting the server into a
-                        domain controller later in the workflow.
+                        The lab starts by deploying a Windows Server 2022 VM in Azure. I selected the region, size, enabled RDP,
+                        and configured the machine name (DC01) as the foundation for promoting it to a domain controller later in the workflow.
                     </p>
 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4 text-center">
@@ -320,16 +318,13 @@
                              alt="Azure VM Creation Parameters DC01"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[650px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            Azure VM creation settings for the lab server, including the Windows Server 2022 image, the
-                            <strong>DC01</strong> hostname, and the base configuration used to host the future domain controller.
+                           Azure VM creation settings for the Windows Server 2022 host, including region, size, OS image, and initial configuration.
                         </p>
                     </div>
 
                     <p class="text-white mb-4">
-                        After the VM deployed, I connected via RDP and used <strong>Server Manager</strong> and
-                        <strong>SCONFIG</strong> to apply baseline configuration: confirming networking, renaming the machine
-                        to <code>DC01</code>, and restarting to finalize the identity. With the server prepared, it was ready
-                        for AD DS and DNS role installation.
+                        After deployment, I connected over RDP and used Server Manager + SCONFIG to confirm networking, rename the server, and restart
+                        it to apply changes. With the baseline configuration complete, the VM was ready for AD DS and DNS installation.
                     </p>
 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
@@ -337,8 +332,7 @@
                              alt="Windows Server Manager dashboard on Azure VM"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[650px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            Server Manager dashboard after the first RDP login, showing a clean Windows Server 2022 installation
-                            ready to have domain services added.
+                            Server Manager dashboard after first RDP login, showing the server ready for role installation.
                         </p>
                     </div>
 
@@ -352,14 +346,13 @@
                     </h3>
 
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Adding the core directory and name services that power authentication and domain identity.
+                        Added the core directory and name services required for authentication.
                     </p>
 
                     <p class="text-white mb-4">
-                        With the server prepared, I opened the <strong>Add Roles and Features</strong> tool in Server Manager
-                        to install the components required for a functional domain: <strong>Active Directory Domain Services</strong>
-                        and <strong>DNS Server</strong>. AD DS provides identity and authentication, while DNS enables name
-                        resolution and domain operations. The wizard begins by outlining configuration requirements before role installation.
+                        With the server prepared, I opened Add Roles and Features in Server Manager and installed the components needed for a
+                        functional domain: Active Directory Domain Services (AD DS) and DNS Server. AD DS provides identity and authentication,
+                        while DNS supports name resolution and domain operations.
                     </p>
 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4 text-center">
@@ -367,15 +360,13 @@
                              alt="Add Roles Wizard Before You Begin"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            Initial Add Roles and Features screen, summarizing prerequisites for AD DS and DNS such as proper
-                            network configuration and secure administrator credentials before installation.
+                            Add Roles and Features wizard showing prerequisites and configuration settings for AD DS and DNS installation.
                         </p>
                     </div>
 
                     <p class="text-white mb-4">
-                        After selecting the roles, Server Manager completed the installation and displayed the next required action:
-                        promoting the server to a domain controller. This step transitions the VM from a standalone Windows server
-                        into the core identity provider for the lab environment.
+                        After the roles installed, Server Manager prompted the next required step—promoting the server to a domain controller—transitioning
+                        the VM from a standalone server to the identity provider for the lab.
                     </p>
 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
@@ -383,8 +374,7 @@
                              alt="Add Roles Results Promote to DC Prompt"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            Role installation results showing AD DS and DNS added successfully, along with the prompt to
-                            <strong>Promote this server to a domain controller</strong>, which kicks off domain configuration.
+                            Installation results confirming successful setup and prompting for domain controller promotion.
                         </p>
                     </div>
 
@@ -394,17 +384,17 @@
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
 
                     <h3 class="text-base font-semibold text-white mb-1">
-                        3. Promoting DC01 and creating the adlab.local domain
+                        3. Promoting DC01 and Creating the 'adlab.local' Domain
                     </h3>
 
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Turning the Azure VM into a domain controller and creating a dedicated forest for the lab.
+                        Turned the Azure VM into a domain controller and created the forest for the lab.
                     </p>
 
                     <p class="text-white mb-4">
-                        From the AD DS post-installation task, I launched the <strong>Active Directory Domain Services Configuration Wizard</strong>,
-                        chose to <strong>add a new forest</strong>, and created the <code>adlab.local</code> domain. This is the point where
-                        DC01 is defined as the first domain controller in the environment and becomes responsible for authentication.
+                       From the AD DS installation, I launched the Active Directory Domain Services Configuration Wizard, chose a new forest,
+                        and created the adlab.local domain. This step officially defined DC01 as the domain controller responsible for
+                        authentication and identity in the lab.
                     </p>
 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4 text-center">
@@ -412,14 +402,13 @@
                              alt="AD DS configuration wizard adding a new forest"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            Configuring the AD DS deployment to <strong>Add a new forest</strong> and defining the root domain
-                            name <strong>adlab.local</strong> for the lab.
+                            Domain Services Configuration Wizard showing new forest creation and domain setup.
                         </p>
                     </div>
 
                     <p class="text-white mb-4">
-                        Before the configuration is committed, the wizard runs a prerequisite check. This validation ensures
-                        the server can safely host the domain controller role, verifying DNS, credentials, and key AD settings.
+                        Before completing the configuration, Windows ran a prerequisites check to ensure the server was ready for domain 
+                        controller duties, including DNS updates and security settings.
                     </p>
 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4 text-center">
@@ -427,15 +416,13 @@
                              alt="AD DS Prerequisites Check Passed"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            The AD DS prerequisites check completing successfully, confirming DC01 is ready to become the domain controller
-                            for the new <strong>adlab.local</strong> forest.
+                            Prerequisite checks confirming readiness for domain controller promotion.
                         </p>
                     </div>
 
                     <p class="text-white mb-6">
-                        After the required reboot, the Azure VM was a fully functional domain controller. I signed in and verified the
-                        new domain structure using <strong>Active Directory Users and Computers (ADUC)</strong>, confirming that DC01 was
-                        now managing the <code>adlab.local</code> environment.
+                        After the required reboot, the server came back as a fully functional domain controller. I verified the new domain 
+                        structure using Active Directory Users and Computers (ADUC), confirming that DC01 was now managing the adlab.local environment.
                     </p>
 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
@@ -443,8 +430,7 @@
                              alt="ADUC DC01 Initial View"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            Initial ADUC view after promotion, showing the <strong>adlab.local</strong> domain and confirming that
-                            <strong>DC01</strong> is now operating as the domain controller.
+                            ADUC view after promotion, showing the newly created domain structure.
                         </p>
                     </div>
 
@@ -454,17 +440,16 @@
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
 
                     <h3 class="text-base font-semibold text-white mb-1">
-                        4. User lifecycle and group management in ADUC
+                        4. User Lifecycle and Group Management in ADUC
                     </h3>
 
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Practicing the daily tasks a helpdesk or IAM analyst uses to manage accounts.
+                       Practiced the daily identity tasks handled by helpdesk and IAM analysts.
                     </p>
 
                     <p class="text-white mb-4">
-                        With the domain online, I used ADUC to walk through the lifecycle of a typical user account. I created
-                        a test user to represent a new hire and enforced the standard security policy requiring a password change
-                        at first logon, mirroring real onboarding requirements in many enterprises.
+                        With the domain online, I used Active Directory Users and Computers (ADUC) to walk through the lifecycle
+                        of a typical user account. I created a Test User and enforced a first-logon password change, mirroring real onboarding requirements.
                     </p>
 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4 text-center">
@@ -472,15 +457,13 @@
                              alt="ADUC New User Password Configuration"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            New user creation in ADUC, including the password configuration step with
-                            <strong>User must change password at next logon</strong> enabled to model secure onboarding.
+                           User creation in ADUC, including password configuration and first-logon reset requirements.
                         </p>
                     </div>
 
                     <p class="text-white mb-6">
-                        I then created a security group named <strong>AI</strong> to represent a team or role in the organization.
-                        Together, the Test User account and the AI group form the core identity objects used for all subsequent
-                        access, troubleshooting, and group-based permission testing in the lab.
+                        I also created a security group named All to represent a role or team in the organization. Together, the Test User and the All
+                        group formed the core identity objects used for access testing, troubleshooting, and group-based permissions throughout the lab.
                     </p>
 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
@@ -488,8 +471,7 @@
                              alt="ADUC Domain Objects User Group Created"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            ADUC view showing the created Test User and the <strong>AI</strong> security group, which are used to
-                            simulate common helpdesk and IAM operations throughout the lab.
+                            ADUC view showing the Test User and All security group used for role-based access testing.
                         </p>
                     </div>
 
@@ -499,26 +481,29 @@
                 <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
 
                     <h3 class="text-base font-semibold text-white mb-1">
-                        5. Organizational units, nested groups, and shared resources
+                        5. OUs, Security Groups & Shared Folder Access
                     </h3>
 
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Organizing directory objects and connecting group membership to a real shared folder.
+                        Organized directory objects and applied group-based permissions to a real shared resource.
                     </p>
 
                     <p class="text-white mb-4">
-                        The final part of the lab focused on <strong>group-based access control</strong>. I organized custom
-                        security groups into a dedicated OU, then created a shared folder named <code>corp_shared</code> on DC01
-                        and tied access to the <strong>AI</strong> security group. This setup ensures that membership in Active Directory
-                        directly controls access to the resource.
+                    The final part of the lab focused on access control. I created a dedicated Custom Groups OU, built the All security group inside
+                        it, and then created a shared folder named corp_shared on DC01. Group membership determined who could access the share—mirroring
+                        real-world RBAC practices.
+                    </p>
+
+                    <p class="text-white mb-4">
+                        Key Steps:
                     </p>
 
                     <ul class="list-disc list-outside pl-5 space-y-1 mb-6 text-white">
-                        <li>Created an OU named <strong>Custom Groups</strong> with protection from accidental deletion enabled.</li>
-                        <li>Moved the <code>AI</code> security group into the Custom Groups OU to separate lab objects from built-in containers.</li>
-                        <li>Created a shared folder named <code>corp_shared</code> on DC01 and published it as a network share.</li>
-                        <li>Granted access to <code>corp_shared</code> by assigning permissions to the <code>AI</code> group instead of individual users.</li>
-                        <li>Verified that adding or removing the Test User from the AI group immediately affected access to <code>\\DC01\corp_shared</code>.</li>
+                        <li>Created a Custom Groups OU with accidental-deletion protection enabled.</li>
+                        <li>Moved the All security group into the new OU.</li>
+                        <li>Created the corp_shared folder and published it as a network share.</li>
+                        <li>Granted access by assigning permissions to the All group instead of individuals.</li>
+                        <li>Verified that adding/removing the Test User from the group updated access immediately.</li>
                     </ul>
 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
@@ -526,8 +511,7 @@
                              alt="FileShare Select AD Object Permissions"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            Configuring the shared folder’s permissions by selecting the <strong>AI</strong> security group from
-                            <strong>adlab.local</strong>, demonstrating clean group-based access control for the <code>corp_shared</code> resource.
+                           Shared folder permissions assigned through the All security group, demonstrating clean group-based access control.
                         </p>
                     </div>
                 </section>
@@ -684,6 +668,7 @@ Set-ADUser -Identity "test.user" -ChangePasswordAtLogon $true</code></pre>
                     VM in Azure, I promoted the server to a domain controller, created a domain admin, onboarded a test user, organized objects
                     into OUs, and applied group-based permissions to a shared folder.
                 </p>
+                
                 <p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
                     Together, these steps demonstrate how authentication, authorization, and directory structure work in practice—mirroring
                     the daily responsibilities of entry-level IT, helpdesk, and identity analysts, including password resets, account management,
