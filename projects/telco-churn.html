@@ -206,7 +206,7 @@
         </div>
     </section>
 
-    <!-- WORKFLOW OVERVIEW -->
+        <!-- WORKFLOW OVERVIEW -->
     <section class="py-12 md:py-14 border-b border-gray-800 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -265,234 +265,238 @@
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
 
             <!-- 1. Dataset Overview -->
-                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                
-                    <h3 class="text-base font-semibold text-white mb-1">1. Dataset Overview</h3>
-                
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Understanding the raw customer data
+            <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+
+                <h3 class="text-base font-semibold text-white mb-1">1. Dataset Overview</h3>
+
+                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                    Understanding the raw customer data
+                </p>
+
+                <p class="mb-3 text-white">
+                    The dataset includes one row per customer with details about their account history, subscribed services,
+                    contract type, payment method, monthly charges, and whether they eventually churned. Looking at the raw data
+                    helps confirm everything loaded correctly and shows what the model will learn from.
+                </p>
+
+                <p class="mb-3 text-white">
+                    The first image shows the unprocessed dataset as it appears in the notebook — things like tenure, service
+                    combinations, charges, and churn status all visible in one place.
+                </p>
+
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
+                    <img src="../assets/images/TC1_Dataset Preview.png"
+                         class="rounded-lg mx-auto mb-2" />
+                    <p class="text-xs text-text-secondary italic text-center">
+                        A preview of the raw customer dataset used for churn modeling.
                     </p>
-                
-                    <p class="mb-3 text-white">
-                        The dataset includes one row per customer with details about their account history, subscribed services,
-                        contract type, payment method, monthly charges, and whether they eventually churned. Looking at the raw data
-                        helps confirm everything loaded correctly and shows what the model will learn from.
+                </div>
+
+                <p class="mb-3 text-white">
+                    The second image shows a correlation heatmap of the numeric features. This gives a quick read on early relationships
+                    — for example, shorter tenure linking to higher churn — and helps identify which variables may carry stronger predictive
+                    value before modeling.
+                </p>
+
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4">
+                    <img src="../assets/images/TC1_Correlation Heatmap.png"
+                         class="rounded-lg mx-auto mb-2" />
+                    <p class="text-xs text-text-secondary italic text-center">
+                        Correlation heatmap showing early feature relationships and their alignment with churn.
                     </p>
-                
-                    <p class="mb-3 text-white">
-                        The first image shows the unprocessed dataset as it appears in the notebook — things like tenure, service
-                        combinations, charges, and churn status all visible in one place.
-                    </p>
-                
-                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-                        <img src="../assets/images/TC1_Dataset Preview.png"
-                             class="rounded-lg mx-auto mb-2" />
-                        <p class="text-xs text-text-secondary italic text-center">
-                            A preview of the raw customer dataset used for churn modeling.
-                        </p>
-                    </div>
-                
-                    <p class="mb-3 text-white">
-                        The second image shows a correlation heatmap of the numeric features. This gives a quick read on early relationships
-                        — for example, shorter tenure linking to higher churn — and helps identify which variables may carry stronger predictive
-                        value before modeling.
-                    </p>
-                
-                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-                        <img src="../assets/images/TC1_Correlation Heatmap.png"
-                             class="rounded-lg mx-auto mb-2" />
-                        <p class="text-xs text-text-secondary italic text-center">
-                            Correlation heatmap showing early feature relationships and their alignment with churn.
-                        </p>
-                    </div>
-                
-                </section>
+                </div>
+
+            </section>
 
 
             <!-- 2. Cleaning -->
-                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                    <h3 class="text-base font-semibold text-white mb-1">2. Cleaning & Transformation</h3>
-                
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Fixing billing fields and removing unreliable rows
+            <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+
+                <h3 class="text-base font-semibold text-white mb-1">2. Cleaning & Transformation</h3>
+
+                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                    Fixing billing fields and removing unreliable rows
+                </p>
+
+                <p class="mb-3 text-white">
+                    The TotalCharges column wasn’t always numeric — blank strings and invalid entries would break the model.
+                    Converting it to a numeric field forced those errors into NaN, making them easy to filter out. After that,
+                    incomplete rows were removed, and the customerID column was dropped since it doesn’t help predict churn.
+                </p>
+
+                <p class="mb-3 text-white">
+                    The screenshot below shows the cleaning steps in the notebook and confirms that invalid billing entries were fixed,
+                    missing values were checked, and unnecessary columns were removed before modeling.
+                </p>
+
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
+                    <img src="../assets/images/TC1_Data Cleaning & Transformation.png"
+                         class="rounded-lg mx-auto mb-2" />
+                    <p class="text-xs text-text-secondary italic text-center">
+                        Cleaning logic applied to convert TotalCharges, drop incomplete rows, and remove non-predictive identifiers.
                     </p>
-                
-                    <p class="mb-3 text-white">
-                        The TotalCharges column wasn’t always numeric — blank strings and invalid entries would break the model.
-                        Converting it to a numeric field forced those errors into NaN, making them easy to filter out. After that,
-                        incomplete rows were removed, and the customerID column was dropped since it doesn’t help predict churn.
-                    </p>
-                
-                    <p class="mb-3 text-white">
-                        The screenshot below shows the cleaning steps in the notebook and confirms that invalid billing entries were fixed,
-                        missing values were checked, and unnecessary columns were removed before modeling.
-                    </p>
-                
-                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-                        <img src="../assets/images/TC1_Data Cleaning & Transformation.png"
-                             class="rounded-lg mx-auto mb-2" />
-                        <p class="text-xs text-text-secondary italic text-center">
-                            Cleaning logic applied to convert TotalCharges, drop incomplete rows, and remove non-predictive identifiers.
-                        </p>
-                    </div>
-                
-                    <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-white">
-                <code>df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
-                df = df.dropna()
-                df = df.drop(columns=["customerID"])</code></pre>
-                
-                    <p class="mt-3 text-white text-sm">
-                        These steps ensure the model trains only on complete, meaningful features.
-                    </p>
-                </section>
+                </div>
+
+                <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-white">
+<code>df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
+df = df.dropna()
+df = df.drop(columns=["customerID"])</code></pre>
+
+            </section>
 
 
 
             <!-- 3. Feature Engineering & Split -->
-                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                    <h3 class="text-base font-semibold text-white mb-1">3. Feature Engineering & Split</h3>
-                
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Converting categories and preparing train/test sets
-                    </p>
-                
-                    <p class="mb-3 text-white">
-                        Most features in the dataset were text labels (like Yes, No, or plan names), so I converted all categorical columns
-                        into numeric values using one-hot encoding. This gives the model clean binary inputs without changing the meaning of the original data.
-                    </p>
-                
-                    <p class="mb-3 text-white">
-                       After encoding, I separated the churn label from the rest of the features and split the data into training and testing sets. Using 
-                       stratify=y keeps the churn ratio consistent in both sets, preventing the model from training on an unbalanced sample.
-                    </p>
-                
-                    <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-white">
-                <code>df_encoded = pd.get_dummies(df, drop_first=True)
-                
-                X = df_encoded.drop("Churn_Yes", axis=1)
-                Y = df_encoded["Churn_Yes"]
-                
-                X_train, X_test, y_train, y_test = train_test_split(
-                    X, Y, test_size=0.2, random_state=42, stratify=Y
-                )</code></pre>
-                </section>
+            <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+
+                <h3 class="text-base font-semibold text-white mb-1">3. Feature Engineering & Split</h3>
+
+                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                    Converting categories and preparing train/test sets
+                </p>
+
+                <p class="mb-3 text-white">
+                    Most features in the dataset were text labels (like Yes, No, or plan names), so I converted all categorical columns
+                    into numeric values using one-hot encoding. This gives the model clean binary inputs without changing the meaning of the original data.
+                </p>
+
+                <p class="mb-3 text-white">
+                   After encoding, I separated the churn label from the rest of the features and split the data into training and testing sets. Using 
+                   stratify=y keeps the churn ratio consistent in both sets, preventing the model from training on an unbalanced sample.
+                </p>
+
+                <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-white">
+<code>df_encoded = pd.get_dummies(df, drop_first=True)
+
+X = df_encoded.drop("Churn_Yes", axis=1)
+Y = df_encoded["Churn_Yes"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, Y, test_size=0.2, random_state=42, stratify=Y
+)</code></pre>
+
+            </section>
 
 
             <!-- 4. Modeling & Evaluation -->
-                        <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                            <h3 class="text-base font-semibold text-white mb-1">4. Modeling & Evaluation</h3>
-                        
-                            <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                                Training a Random Forest and checking performance
-                            </p>
-                        
-                            <p class="mb-3 text-white">
-                                I trained a Random Forest classifier on the cleaned, encoded dataset to predict which customers are likely to churn.
-                                After fitting the model on the training split, I evaluated it on the test set to see how well it generalizes to unseen
-                                customers.
-                            </p>
-                        
-                            <p class="mb-3 text-white">
-                                The evaluation uses a confusion matrix and classification report, which provide accuracy, precision, recall, and
-                                F1-scores for both churn and non-churn classes.
-                            </p>
-                        
-                            <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-white">
-                        <code>model = RandomForestClassifier(
-                            n_estimators=300,
-                            max_depth=12,
-                            random_state=42
-                        )
-                        
-                        model.fit(X_train, y_train)
-                        
-                        y_pred = model.predict(X_test)
-                        
-                        print(confusion_matrix(y_test, y_pred))
-                        print(classification_report(y_test, y_pred))</code></pre>
-                        
-                            <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mt-4">
-                                <img src="../assets/images/TC1_Modeling & Performance Evaluation.png"
-                                     class="rounded-lg mx-auto mb-2" />
-                                <p class="text-xs text-text-secondary italic text-center">
-                                   Evaluation results showing how accurately the model identifies churn and non-churn customers.
-                                </p>
-                            </div>
-                        </section>
+            <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
 
-            <!-- 5. SHAP Explainability -->
-                    <section class="pb-12 md:pb-16 bg-primary-bg">
-                        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    
-                            <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                                <h3 class="text-base font-semibold text-white mb-1">5. SHAP Explainability</h3>
-                    
-                                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                                    Showing which features push churn risk up or down.
-                                </p>
-                    
-                                <p class="mb-3 text-white">
-                                    To understand why the model makes its predictions, I used SHAP values, which show how much each feature increases
-                                    or decreases the likelihood of churn. This adds transparency to the Random Forest and helps highlight the main drivers
-                                    behind customer behavior.
-                                </p>
-                    
-                                <p class="mb-3 text-white">
-                                    The SHAP summary plot ranks the most influential features—such as tenure, monthly charges, and contract type—and shows their
-                                    overall impact on churn. This makes it easy to translate a technical model into clear, practical insight for both technical
-                                    and non-technical audiences.
-                                </p>
-                    
-                                <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-white">
-                    <code>explainer = shap.TreeExplainer(model)
-                    shap_values = explainer.shap_values(X_test)
-                    
-                    shap.summary_plot(shap_values[1], X_test)
-                    shap.summary_plot(shap_values[1], X_test, plot_type="bar")</code></pre>
-                    
-                                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
-                                    <img src="../assets/images/TC1_SHAP Summary Plot.png"
-                                         class="rounded-lg mx-auto mb-2" />
-                                    <p class="text-xs text-text-secondary italic">
-                                        SHAP summary plot showing which features have the strongest impact on churn predictions.
-                                    </p>
-                                </div>
-                            </div>
-                    
-                        </div>
-                    </section>
+                <h3 class="text-base font-semibold text-white mb-1">4. Modeling & Evaluation</h3>
 
+                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                    Training a Random Forest and checking performance
+                </p>
 
-    <!-- SUMMARY -->
-            <section class="pb-12 md:pb-16 bg-primary-bg">
-                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-                    <div class="bg-secondary-bg border border-white/30 rounded-2xl p-6 shadow-lg">
-                        <h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-white">
-                            Summary
-                        </h3>
-            
-                        <p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
-                            This project walks through the full churn prediction workflow—from raw telecom data to a trained model
-                            that can identify at-risk customers and explain why they may leave. By cleaning the dataset, engineering
-                            meaningful features, training a Random Forest classifier, and applying SHAP for interpretability, the
-                            analysis delivers a clear and practical understanding of customer behavior. The result highlights how
-                            data science can support retention strategy by showing both who is likely to churn and which factors
-                            drive those decisions.
-                        </p>
-                    </div>
-            
-                    <div class="mt-10">
-                        <a href="../index.html#projects"
-                           class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition">
-                            ← Back to Portfolio
-                        </a>
-                    </div>
-            
+                <p class="mb-3 text-white">
+                    I trained a Random Forest classifier on the cleaned, encoded dataset to predict which customers are likely to churn.
+                    After fitting the model on the training split, I evaluated it on the test set to see how well it generalizes to unseen
+                    customers.
+                </p>
+
+                <p class="mb-3 text-white">
+                    The evaluation uses a confusion matrix and classification report, which provide accuracy, precision, recall, and
+                    F1-scores for both churn and non-churn classes.
+                </p>
+
+                <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-white">
+<code>model = RandomForestClassifier(
+    n_estimators=300,
+    max_depth=12,
+    random_state=42
+)
+
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+print(confusion_matrix(y_test, y_pred))
+print(classification_report(y_test, y_pred))</code></pre>
+
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mt-4">
+                    <img src="../assets/images/TC1_Modeling & Performance Evaluation.png"
+                         class="rounded-lg mx-auto mb-2" />
+                    <p class="text-xs text-text-secondary italic text-center">
+                       Evaluation results showing how accurately the model identifies churn and non-churn customers.
+                    </p>
                 </div>
+
             </section>
+
+                        <!-- 5. SHAP Explainability -->
+            <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+
+                <h3 class="text-base font-semibold text-white mb-1">5. SHAP Explainability</h3>
+
+                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                    Showing which features push churn risk up or down.
+                </p>
+
+                <p class="mb-3 text-white">
+                    To understand why the model makes its predictions, I used SHAP values, which show how much each feature increases
+                    or decreases the likelihood of churn. This adds transparency to the Random Forest and helps highlight the main drivers
+                    behind customer behavior.
+                </p>
+
+                <p class="mb-3 text-white">
+                    The SHAP summary plot ranks the most influential features—such as tenure, monthly charges, and contract type—and shows their
+                    overall impact on churn. This makes it easy to translate a technical model into clear, practical insight for both technical
+                    and non-technical audiences.
+                </p>
+
+                <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-white">
+<code>explainer = shap.TreeExplainer(model)
+shap_values = explainer.shap_values(X_test)
+
+shap.summary_plot(shap_values[1], X_test)
+shap.summary_plot(shap_values[1], X_test, plot_type="bar")</code></pre>
+
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                    <img src="../assets/images/TC1_SHAP Summary Plot.png"
+                         class="rounded-lg mx-auto mb-2" />
+                    <p class="text-xs text-text-secondary italic">
+                        SHAP summary plot showing which features have the strongest impact on churn predictions.
+                    </p>
+                </div>
+
+            </section>
+
+
+            <!-- SUMMARY -->
+            <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+
+                <h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-white">
+                    Summary
+                </h3>
+
+                <p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
+                    This project walks through the full churn prediction workflow—from raw telecom data to a trained model
+                    that can identify at-risk customers and explain why they may leave. By cleaning the dataset, engineering
+                    meaningful features, training a Random Forest classifier, and applying SHAP for interpretability, the
+                    analysis delivers a clear and practical understanding of customer behavior. The result highlights how
+                    data science can support retention strategy by showing both who is likely to churn and which factors
+                    drive those decisions.
+                </p>
+
+            </section>
+
+        </div>
+    </section>
+
+
+    <!-- BACK TO PORTFOLIO LINK -->
+    <section class="py-12 bg-primary-bg">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <a href="../index.html#projects"
+               class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition">
+                ← Back to Portfolio
+            </a>
+
+        </div>
+    </section>
 
 
 </main>
 </body>
 </html>
+
