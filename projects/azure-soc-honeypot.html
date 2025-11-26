@@ -302,11 +302,9 @@
         
                     <!-- Intro paragraph -->
                     <p class="text-white text-sm sm:text-[0.95rem] leading-relaxed mb-8">
-                        This section breaks down the full workflow of the Azure honeypot—from exposing the VM to attacker 
-                        traffic, to collecting logs, enriching them with threat-intelligence data, and preparing them for KQL 
-                        analysis and visualization. The diagram below illustrates how attacker activity moves through each 
-                        phase of the pipeline, showing the transformation from raw brute-force attempts into meaningful 
-                        security insights.
+                       This section summarizes how attacker traffic moves through the honeypot setup — from exposing the VM,
+                        to collecting and enriching logs, to visualizing the final attack map in Microsoft Sentinel. The diagram
+                        shows each stage of the pipeline and how raw brute-force attempts are transformed into usable security insights.
                     </p>
         
                     <!-- IMAGE: Honeypot Workflow Map -->
@@ -315,8 +313,8 @@
                              alt="Honeypot Workflow Diagram"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[850px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            Honeypot workflow map showing attacker exposure, VM deployment, log ingestion, GeoIP enrichment, 
-                            KQL processing, and final attack-map output.
+                            Workflow map showing VM exposure, log ingestion, GeoIP enrichment, KQL processing, and the final attack-map
+                            output.
                         </p>
                     </div>
         
