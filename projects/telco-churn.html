@@ -422,40 +422,46 @@
 
 
             <!-- 5. SHAP Explainability -->
-                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                    <h3 class="text-base font-semibold text-white mb-1">5. SHAP Explainability</h3>
-                
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Showing which features push churn risk up or down.
-                    </p>
-                
-                    <p class="mb-3 text-white">
-                        To understand why the model makes its predictions, I used SHAP values, which show how much each feature increases
-                        or decreases the likelihood of churn. This adds transparency to the Random Forest and helps highlight the main drivers
-                        behind customer behavior.
-                    </p>
-                
-                    <p class="mb-3 text-white">
-                        The SHAP summary plot ranks the most influential features—such as tenure, monthly charges, and contract type—and shows their
-                        overall impact on churn. This makes it easy to translate a technical model into clear, practical insight for both technical
-                        and non-technical audiences.
-                    </p>
-                
-                    <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-white">
-                <code>explainer = shap.TreeExplainer(model)
-                shap_values = explainer.shap_values(X_test)
-                
-                shap.summary_plot(shap_values[1], X_test)
-                shap.summary_plot(shap_values[1], X_test, plot_type="bar")</code></pre>
-                
-                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
-                        <img src="../assets/images/TC1_SHAP Summary Plot.png"
-                             class="rounded-lg mx-auto mb-2" />
-                        <p class="text-xs text-text-secondary italic">
-                            SHAP summary plot showing which features have the strongest impact on churn predictions.
-                        </p>
-                    </div>
-                </section>
+                    <section class="pb-12 md:pb-16 bg-primary-bg">
+                        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    
+                            <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                                <h3 class="text-base font-semibold text-white mb-1">5. SHAP Explainability</h3>
+                    
+                                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                                    Showing which features push churn risk up or down.
+                                </p>
+                    
+                                <p class="mb-3 text-white">
+                                    To understand why the model makes its predictions, I used SHAP values, which show how much each feature increases
+                                    or decreases the likelihood of churn. This adds transparency to the Random Forest and helps highlight the main drivers
+                                    behind customer behavior.
+                                </p>
+                    
+                                <p class="mb-3 text-white">
+                                    The SHAP summary plot ranks the most influential features—such as tenure, monthly charges, and contract type—and shows their
+                                    overall impact on churn. This makes it easy to translate a technical model into clear, practical insight for both technical
+                                    and non-technical audiences.
+                                </p>
+                    
+                                <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-white">
+                    <code>explainer = shap.TreeExplainer(model)
+                    shap_values = explainer.shap_values(X_test)
+                    
+                    shap.summary_plot(shap_values[1], X_test)
+                    shap.summary_plot(shap_values[1], X_test, plot_type="bar")</code></pre>
+                    
+                                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
+                                    <img src="../assets/images/TC1_SHAP Summary Plot.png"
+                                         class="rounded-lg mx-auto mb-2" />
+                                    <p class="text-xs text-text-secondary italic">
+                                        SHAP summary plot showing which features have the strongest impact on churn predictions.
+                                    </p>
+                                </div>
+                            </div>
+                    
+                        </div>
+                    </section>
 
 
     <!-- SUMMARY -->
