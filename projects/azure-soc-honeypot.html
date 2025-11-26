@@ -342,21 +342,18 @@
                     </h3>
 
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Ensured full access to core cloud services required for the security lab.
+                        Confirmed access to core Azure services needed for the lab.
                     </p>
 
                     <p class="text-white mb-4">
-                        The first step was confirming that my Azure subscription exposed all of the core services needed 
-                        for the security lab. This meant making sure I could deploy virtual machines, configure Network 
-                        Security Groups, create a Log Analytics Workspace, and enable Microsoft Sentinel. Verifying these 
-                        capabilities early mirrors the kind of environment checks a junior SOC analyst would perform when 
-                        preparing to work inside a real cloud environment. 
+                        Before building the honeypot, I verified that my Azure subscription allowed me to deploy VMs, configure NSGs,
+                        use Log Analytics, and enable Microsoft Sentinel. This quick check ensured the environment was ready for the
+                        rest of the setup. 
                     </p>
 
                     <p class="text-white mb-6">
-                        The screens below show the baseline view of the Azure portal and subscription settings I reviewed. Together, 
-                        they provide a high-level snapshot of the available services, resource quotas, and platform readiness before 
-                        building out the rest of the lab.
+                        The screenshots show the Azure portal and subscription overview I reviewed to confirm service availability,
+                        quotas, and overall readiness.
                     </p>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -366,7 +363,7 @@
                                  alt="Azure Home Overview"
                                  class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[650px] w-full object-contain" />
                             <p class="mt-2 text-xs italic text-text-secondary">
-                                Portal home view highlighting core Azure services available for deployment.
+                                Azure portal home view showing available core services.
                             </p>
                         </div>
 
@@ -375,7 +372,7 @@
                                  alt="Azure Subscription Overview"
                                  class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[650px] w-full object-contain" />
                             <p class="mt-2 text-xs italic text-text-secondary">
-                                Subscription details confirming quotas, workloads, and resource eligibility for the lab.
+                                Subscription overview confirming quotas and resource eligibility.
                             </p>
                         </div>
 
@@ -390,28 +387,25 @@
                     </h3>
 
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Deployed a Windows 10 VM, opened RDP, relaxed security rules, and removed host protections.
+                       Deployed a Windows 10 VM, opened RDP, and removed default protections
                     </p>
 
                     <p class="text-white mb-4">
-                        To simulate how quickly an exposed system can attract unwanted activity, I deployed a Windows 10 VM 
-                        with a public IP and removed its typical safeguards. Opening RDP, loosening its Network Security Group 
-                        rules, and disabling the Windows firewall allowed the VM to behave like a misconfigured asset on the 
-                        open internet. This setup invited real scanning traffic and automated login attempts, creating an 
-                        authentic stream of security events for later analysis in Sentinel.
+                        To capture real attacker activity, I deployed a Windows 10 VM with a public IP and intentionally
+                        relaxed its security. Opening RDP, loosening the NSG rules, and disabling the Windows firewall made
+                        the VM easy to find and target—creating a steady stream of authentic brute-force attempts for analysis
+                        in Sentinel.
                     </p>
 
                     <ul class="list-disc list-outside pl-5 space-y-1 mb-6 text-white">
                         <li>Deployed a Windows 10 VM with RDP enabled.</li>
-                        <li>Configured NSG rules to allow inbound traffic from any source.</li>
-                        <li>Disabled all Windows firewall profiles (<code>wf.msc</code>).</li>
-                        <li>Generated initial failed logons using a decoy user account.</li>
+                        <li>Allowed inbound traffic from any source through the NSG</li>
+                        <li>Disabled all Windows firewall profiles</li>
+                        <li>Generated initial failed logons using a decoy account.</li>
                     </ul>
 
                     <p class="text-white mb-6">
-                        The screenshots below show the key exposure decisions. Relaxing the NSG and turning off the Windows 
-                        firewall ensured that the VM was highly visible to external scanners—exactly the environment needed to 
-                        collect real-world brute-force attempts and reconnaissance traffic.
+                        These changes ensured the VM was highly visible to internet scanners and automated attack traffic.
                     </p>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -421,7 +415,7 @@
                                  alt="NSG Rule Allow All Inbound"
                                  class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                             <p class="mt-2 text-xs italic text-text-secondary">
-                                NSG rule intentionally configured to allow all inbound traffic to the honeypot VM.
+                                NSG rule configured to allow all inbound traffic to the honeypot.
                             </p>
                         </div>
 
@@ -430,7 +424,7 @@
                                  alt="Turned Off Windows VM Firewall"
                                  class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                             <p class="mt-2 text-xs italic text-text-secondary">
-                                Windows firewall profiles disabled on the VM, removing host-level protections and increasing exposure.
+                                Windows firewall disabled to increase host exposure.
                             </p>
                         </div>
 
@@ -445,27 +439,29 @@
                     </h3>
 
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Forwarded Windows security logs into Log Analytics using the Azure Monitor Agent and connected them to Sentinel.
+                       Forwarded Windows security logs to Log Analytics and connected them to Sentinel
                     </p>
 
                     <p class="text-white mb-4">
-                        After the honeypot VM began generating real SecurityEvent activity, the next step was connecting it to Azure’s 
-                        monitoring pipeline. By linking the VM to a Log Analytics Workspace and enabling Microsoft Sentinel, every failed 
-                        login attempt and security event could be captured, stored, and analyzed in one place. This integration is what allowed 
-                        Sentinel to begin visualizing the brute-force traffic hitting the exposed VM in real time.
+                        Once the honeypot began generating failed logons, I connected the VM to Azure’s monitoring pipeline so
+                        all activity could be captured and analyzed in one place. Log Analytics handled the ingestion, and
+                        Microsoft Sentinel provided the analysis and visualization layer.
+                    </p>
+
+                    <p class="text-white mb-4">
+                        Key Steps:
                     </p>
 
                     <ul class="list-disc list-outside pl-5 space-y-1 mb-6 text-white">
-                        <li>Configured a Log Analytics Workspace as the centralized collection point.</li>
+                        <li>Set up a Log Analytics Workspace as the central log collector.</li>
                         <li>Enabled Microsoft Sentinel on that workspace.</li>
-                        <li>Installed the Azure Monitor Agent using the <em>Windows Security Events via AMA</em> connector.</li>
-                        <li>Verified ingestion by querying Event ID 4625 (failed logons).</li>
+                        <li>Installed the Azure Monitor Agent using the Windows Security Events via AMA connector.</li>
+                        <li>Verified that logs were flowing by querying Event ID 4625 (failed logons).</li>
                     </ul>
 
                     <p class="text-white mb-6">
-                        The views below show both the data path and its result. Once the AMA pipeline was active, the workspace 
-                        immediately began capturing authentication failures from the honeypot—providing a live feed of attacker activity 
-                        for Sentinel dashboards and KQL investigations.
+                        After the AMA pipeline was active, Log Analytics immediately began receiving authentication failures
+                        from the exposed VM, giving Sentinel a real time feed of attacker activity.
                     </p>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -474,7 +470,7 @@
                                  alt="AMA Connector Connected"
                                  class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                             <p class="mt-2 text-xs italic text-text-secondary">
-                                Azure Monitor Agent connector showing a healthy connection from the honeypot VM to Log Analytics.
+                                Azure Monitor Agent connector showing a healthy VM connection to Log Analytics.
                             </p>
                         </div>
 
@@ -483,7 +479,7 @@
                                  alt="Raw Attacker Logs"
                                  class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                             <p class="mt-2 text-xs italic text-text-secondary">
-                                Raw SecurityEvent records in Log Analytics, capturing repeated failed RDP logons from external IPs.
+                                Raw SecurityEvent logs in Log Analytics, capturing repeated failed RDP attempts
                             </p>
                         </div>
                     </div>
@@ -497,26 +493,27 @@
                     </h3>
                 
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Imported a GeoIP dataset and attached location data to SecurityEvent logs using KQL.
+                        Added location data to failed-logon events using a GeoIP watchlist
                     </p>
                 
                     <p class="text-white mb-4">
-                        After confirming that failed logons were flowing into Sentinel, the next step was making the 
-                        activity easier to interpret. Raw IP addresses don’t offer much insight on their own, so I imported 
-                        a GeoIP dataset and used KQL to enrich each event with its corresponding country and region. 
-                        This transformation turned anonymous login attempts into a clear picture of where attackers were 
-                        coming from, adding important geographic context to the investigation.
+                        Once logs were flowing into Sentinel, I enriched the attacker IPs with geographic data
+                        to make the activity easier to interpret. A GeoIP CSV was imported as a Sentinel watchlist,
+                        and KQL was used to match each failed logon with its country and region.
+                    </p>
+
+                    <p class="text-white mb-4">
+                        Key Steps:
                     </p>
                 
                     <ul class="list-disc list-outside pl-5 space-y-1 mb-6 text-white">
-                        <li>Uploaded a CSV containing IPv4 ranges with mapped country and region fields.</li>
-                        <li>Created a Sentinel watchlist named <em>geoip</em>, keyed by the network range.</li>
-                        <li>Joined the watchlist with Event ID 4625 entries using <code>ipv4_lookup</code> to enrich failed logons.</li>
+                        <li>Uploaded a CSV containing IPv4 ranges with country and region fields.</li>
+                        <li>Created a Sentinel watchlist named geoip.</li>
+                        <li>Used ipv4_lookup in KQL to join the watchlist with Event ID 4625 logs.</li>
                     </ul>
                 
                     <p class="text-white mb-6">
-                        The screenshots below walk through the enrichment workflow—from loading the watchlist, to running the KQL 
-                        lookup, to viewing the fully enriched attack table that feeds the final workbook.
+                       This turned raw IP addresses into clear, location-based insights for the attack map.
                     </p>
                 
                     <!-- Watchlist view -->
@@ -525,7 +522,7 @@
                              alt="Sentinel Watchlist GeoIP Rows"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            GeoIP watchlist rows loaded into Sentinel, including IP ranges mapped to country and region fields.
+                            GeoIP watchlist loaded into Sentinel with mapped IP ranges.
                         </p>
                     </div>
                 
@@ -537,7 +534,7 @@
                                  alt="KQL Enrichment Query Close-Up"
                                  class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                             <p class="mt-2 text-xs italic text-text-secondary">
-                                Close-up of the enrichment query, highlighting key columns used for mapping attacks to geography.
+                                Close-up of the KQL enrichment query using ipv4_lookup.
                             </p>
                         </div>
                 
@@ -546,7 +543,7 @@
                                  alt="Fully Enriched Attacker Table"
                                  class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                             <p class="mt-2 text-xs italic text-text-secondary">
-                                Resulting table of fully enriched attacker events, including IP, country, region, and logon details.
+                                Resulting table of enriched attacker events with IP, country, and region.
                             </p>
                         </div>
                 
@@ -563,28 +560,29 @@
                     </h3>
 
                     <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Built a workbook to visualize attacker locations using enriched failed-logon events.
+                        Visualized attacker locations using GeoIP-enriched logon events
                     </p>
 
                     <p class="text-white mb-4">
-                        With geographic enrichment complete, I used a Sentinel workbook to turn the failed-logon data 
-                        into a visual map of attacker activity. By connecting the workbook to the GeoIP-enhanced KQL query, 
-                        each event could be plotted by latitude and longitude, revealing clear clusters of activity and 
-                        patterns in where the attacks originated. The workbook also included time filters and interactive 
-                        controls, making it easy to explore how attack volume changed throughout the day.
+                        With the GeoIP enrichment complete, I used a Sentinel workbook to turn the failed-logon data into
+                        a world map of attacker activity. By connecting the workbook to the enriched KQL query, each event 
+                        could be placed on the map using latitude and longitude, making it easy to see where attacks were coming from.
+                    </p>
+
+                    <p class="text-white mb-4">
+                       Key Steps:
                     </p>
 
                     <ul class="list-disc list-outside pl-5 space-y-1 mb-6 text-white">
-                        <li>Began with a blank Sentinel workbook and added a KQL query visual.</li>
-                        <li>Linked the visual to the GeoIP-enriched SecurityEvent query.</li>
-                        <li>Mapped latitude and longitude fields to the Azure Maps component.</li>
-                        <li>Added filters for time ranges, event counts, and dynamic exploration.</li>
+                        <li>Started a blank Sentinel workbook and added a KQL visual.</li>
+                        <li>Connected it to the GeoIP-enhanced SecurityEvent query.</li>
+                        <li>Mapped latitude and longitude fields to Azure Maps.</li>
+                        <li>Added filters for time ranges and event counts.</li>
                     </ul>
 
                     <p class="text-white mb-6">
-                        The map below represents the final visualization. By placing each failed-logon attempt on the 
-                        world map, the workbook provided a clear, real-time view of attacker distribution and helped 
-                        highlight which regions were generating the most persistent brute-force attempts.
+                        The final workbook shows real-time attacker distribution, highlighting which regions generated the most
+                        persistent brute-force attempts.
                     </p>
 
                     <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
@@ -592,7 +590,7 @@
                              alt="Attack Map Visualization"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            Sentinel workbook map showing global failed-logon activity derived from enriched SecurityEvent logs.
+                            Sentinel workbook map showing global failed-logon activity from enriched SecurityEvent logs.
                         </p>
                     </div>
 
