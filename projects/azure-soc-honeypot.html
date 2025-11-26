@@ -190,20 +190,20 @@
                 Azure Sentinel Threat Analysis
             </h1>
             <p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed">
-                Designed and deployed a Windows honeypot in Azure to capture and analyze global attack traffic.
-                Forwarded event logs into Microsoft Sentinel, enriched malicious IPs with threat intelligence,
-                and visualized real time attacker activity through an interactive world map.
+                Designed and deployed a Windows honeypot in Azure to capture global attack traffic.
+                Forwarded logs into Microsoft Sentinel, enriched attacker IPs with threat intel, and
+                built an interactive world map to visualize real time security events.
             </p>
 
             <!-- Meta badges -->
             <div class="flex flex-wrap gap-3 mt-6 text-[0.7rem] sm:text-xs text-text-secondary">
                 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
                     <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>
-                    Realistic SOC workflow simulation
+                    SOC Investigation Workflow
                 </span>
                 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
                     <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>
-                    Tools: Azure, Log Analytics, Sentinel, KQL
+                    Tech Stack: Azure VM, Sentinel, Log Analytics, KQL, Watchlists
                 </span>
             </div>
 
@@ -215,20 +215,12 @@
                         Project Narrative
                     </p>
                     <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
-                        I created a simple, real-world security investigation by setting up a Windows computer in
-                        the cloud and leaving its remote access port open on purpose. This acted as a “honeypot,” 
-                        attracting automated attackers from around the world.
+                        I deployed a Windows VM in Azure, opened it fully to the internet, and turned off protections so it would attract automated attackers.
+                        As attacks hit the system, each failed login attempt and source IP was logged into Microsoft Sentinel.
                     </p>
                     <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
-                        As the attacks came in, the system recorded every failed login attempt. I then added location
-                        information to each attacker’s IP address and turned all the activity into clear visual charts 
-                        using Microsoft Sentinel.
-                    </p>
-                    <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
-                        This project shows what happens when a server is left unprotected on the internet. Scanners
-                        quickly find it, attempt to break in, and generate a steady stream of security alerts. The lab 
-                        demonstrates how an analyst collects, enriches, and visualizes this data to understand what’s 
-                        happening and respond effectively.
+                       I then enriched attacker IPs with geolocation data and visualized everything in charts and a global threat map.
+                        This project shows how quickly an exposed machine is found and exploited online, and how SOC analysts investigate and interpret that data.
                     </p>
                 </article>
 
@@ -238,15 +230,11 @@
                         What I Built
                     </p>
                     <ul class="list-disc list-outside pl-5 space-y-1.5 text-sm sm:text-[0.95rem] text-text-base">
-                        <li>Set up an Azure account and all required resources.</li>
-                        <li>Deployed a Windows 10 honeypot that was fully open to the internet.</li>
-                        <li>Configured the network rules to allow all traffic in.</li>
-                        <li>Turned off the Windows firewall to make the system intentionally vulnerable.</li>
-                        <li>Connected the VM to a Log Analytics Workspace to collect live security logs.</li>
-                        <li>Added the VM into Microsoft Sentinel for monitoring and analysis.</li>
-                        <li>Uploaded a GeoIP file to identify where attacks were coming from.</li>
-                        <li>Used a KQL function to match attacker IPs with their location.</li>
-                        <li>Built a global attack map showing over 4,600 enriched security events.</li>
+                        <li>Deployed an Azure Windows honeypot fully exposed to the internet</li>
+                        <li>Configured networking + disabled protections to capture real attack traffic</li>
+                        <li>Connected the VM to Log Analytics and Microsoft Sentinel</li>
+                        <li>Enriched attacker IPs with GeoIP data using a custom KQL function</li>
+                        <li>Built an interactive global map visualizing 4,600+ security events</li>
                     </ul>
                 </article>
             </div>
