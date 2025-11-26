@@ -261,11 +261,9 @@
         
                     <!-- Intro paragraph -->
                     <p class="text-white text-sm sm:text-[0.95rem] leading-relaxed mb-8">
-                        This workflow brings together Azure networking, honeypot configuration, log collection, 
-                        threat-intelligence enrichment, and Microsoft Sentinel visualization to create an 
-                        attacker-to-analysis pipeline. The diagram below shows how traffic reaches the exposed VM, 
-                        how logs move through Azure resources, and how Sentinel transforms raw events into 
-                        meaningful threat intelligence.
+                        This diagram shows how the exposed Windows VM receives attacker traffic, how its security logs flow
+                        into Log Analytics, and how Microsoft Sentinel enriches and visualizes that data. It highlights the
+                        full path from raw brute-force attempts to a mapped, analyst-ready threat view.
                     </p>
         
                     <!-- IMAGE 1: SOC Architecture -->
@@ -274,8 +272,8 @@
                              alt="Azure SOC Architecture Diagram"
                              class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[850px] w-full object-contain" />
                         <p class="mt-2 text-xs italic text-text-secondary">
-                            SOC architecture map illustrating how the honeypot VM, NSG exposure, Log Analytics Workspace, 
-                            and Microsoft Sentinel work together to produce actionable threat intelligence.
+                            Architecture map showing attacker traffic hitting the VM, logs moving through Azure, and Sentinel 
+                            generating the final attack map.
                         </p>
                     </div>
         
