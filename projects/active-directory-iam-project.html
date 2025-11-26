@@ -593,54 +593,6 @@ Set-ADUser -Identity "test.user" -ChangePasswordAtLogon $true</code></pre>
                 </div>
             </div>
 
-            <!-- Architecture Overview -->
-                    <div>
-                        <div class="section-title-wrapper mb-8">
-                            <h2 class="font-mono text-white">Architecture overview</h2>
-                            <span></span>
-                        </div>
-                    
-                        <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 grid md:grid-cols-2 gap-10 text-sm text-white">
-                    
-                            <div>
-                                <h3 class="text-base font-semibold text-white mb-3">Components</h3>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-white">
-                    
-                                    <li><span class="font-semibold text-white">Azure Virtual Machine</span> — The Windows Server 2022 machine where the entire lab runs. This is the physical “box” in the cloud.</li>
-                    
-                                    <li><span class="font-semibold text-white">Domain controller (DC01)</span> — The server responsible for logins, authentication, and enforcing security policies for <code>adlab.local</code>.</li>
-                    
-                                    <li><span class="font-semibold text-white">Active Directory database</span> — Stores everything the domain needs: user accounts, groups, computers, and OU structure.</li>
-                    
-                                    <li><span class="font-semibold text-white">DNS service</span> — Lets machines in the domain find each other by name (required for logins, Group Policy, and all domain operations).</li>
-                    
-                                    <li><span class="font-semibold text-white">Shared folder <code>corp_shared</code></span> — A network file share used to test how group membership controls access to resources.</li>
-                    
-                                    <li><span class="font-semibold text-white">RDP client session</span> — Represents the user or admin connecting to DC01 to sign in, manage AD, or test permissions.</li>
-                    
-                                </ul>
-                            </div>
-                    
-                            <div>
-                                <h3 class="text-base font-semibold text-white mb-3">Identity and access flow</h3>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-white">
-                    
-                                    <li>The user signs in over RDP using an account stored in Active Directory.</li>
-                    
-                                    <li>DC01 checks the username and password against the AD database and loads the user’s assigned groups.</li>
-                    
-                                    <li>These groups determine what the user is allowed to access — including the AI group used in this lab.</li>
-                    
-                                    <li>When the user opens <code>\\DC01\corp_shared</code>, Windows compares their group memberships with the folder’s share and NTFS permissions.</li>
-                    
-                                    <li>Any changes made in AD — password reset, adding/removing groups, enabling or disabling the account — take effect immediately and change what the user can access.</li>
-                    
-                                </ul>
-                            </div>
-                    
-                        </div>
-                    </div>
-
             <!-- Key Insights -->
                 <div>
                     <div class="section-title-wrapper mb-8">
@@ -651,15 +603,15 @@ Set-ADUser -Identity "test.user" -ChangePasswordAtLogon $true</code></pre>
                     <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
                         <ul class="list-disc list-outside pl-5 space-y-2 text-white text-sm sm:text-[0.95rem]">
                 
-                            <li>Active Directory serves as the core system for authentication and access control in Windows environments, regardless of whether the domain controller lives on-premises or in Azure.</li>
+                            <li>Active Directory is the core identity system for authentication and access control in Windows environments.</li>
                 
-                            <li>Most real-world helpdesk and IAM tickets center on a predictable set of tasks: onboarding users, resetting passwords, unlocking accounts, and fixing group membership to restore access.</li>
+                            <li>Most helpdesk and IAM tasks revolve around user onboarding, password resets, unlocks, and group membership fixes.</li>
                 
-                            <li>Clear OU structure and thoughtful group design make permission management easier to understand, reduce mistakes, and create a strong foundation for future automation.</li>
+                            <li>Clean OU structure and group-based permissions make access easier to manage and reduce mistakes.</li>
                 
-                            <li>Using security groups to manage access—rather than assigning permissions directly to individuals—keeps environments cleaner, scales better, and aligns with enterprise best practices.</li>
+                            <li>Using security groups instead of assigning permissions individually keeps environments cleaner and scalable.</li>
                 
-                            <li>Running this lab in Azure provides a safe, isolated environment to practice real identity workflows end-to-end without risking production data or systems.</li>
+                            <li>Running this lab in Azure provides a safe place to practice real identity workflows without impacting production systems.</li>
                 
                         </ul>
                     </div>
@@ -728,14 +680,14 @@ Set-ADUser -Identity "test.user" -ChangePasswordAtLogon $true</code></pre>
                 </h3>
 
                 <p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
-                    This Active Directory lab provides a complete walkthrough of how identity is created,
-                    managed, and enforced inside a small Windows domain. Built on a Windows Server 2022 VM in
-                    Microsoft Azure, the project covers every core component of the identity lifecycle: promoting
-                    the server to a domain controller, creating a domain admin, onboarding a test user, organizing
-                    objects into OUs, and applying group-based permissions to a shared folder. Together, these steps
-                    show how authentication, authorization, and directory structure work in practice. The result is a
-                    realistic environment that reflects the daily responsibilities of entry-level IT, helpdesk, and identity
-                    analysts—resetting passwords, managing accounts, and controlling access through Active Directory group membership.
+                    This lab walks through how identity is created, managed, and secured inside a Windows domain. Using a Windows Server 2022
+                    VM in Azure, I promoted the server to a domain controller, created a domain admin, onboarded a test user, organized objects
+                    into OUs, and applied group-based permissions to a shared folder.
+                </p>
+                <p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
+                    Together, these steps demonstrate how authentication, authorization, and directory structure work in practice—mirroring
+                    the daily responsibilities of entry-level IT, helpdesk, and identity analysts, including password resets, account management,
+                    and access control through AD group membership.
                 </p>
 
             </div>
