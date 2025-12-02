@@ -428,7 +428,7 @@
     </section>    
     
     <!-- PROJECTS -->
-           <section id="projects" class="hero-grid-bg py-16 sm:py-20 md:py-24 bg-primary-bg border-t border-gray-800 transition-colors duration-500">
+        <section id="projects" class="hero-grid-bg py-16 sm:py-20 md:py-24 bg-primary-bg border-t border-gray-800 transition-colors duration-500">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="section-title-wrapper mx-auto">
                     <h2 class="font-mono">03. Selected Projects</h2>
@@ -446,33 +446,41 @@
         
                 <div class="grid md:grid-cols-2 gap-8">
         
+                    <!-- Nessus Vulnerability Scanning Lab -->
                     <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="vulnerability scanning nessus">
                         <div class="flex justify-between items-center mb-1">
                             <h3 class="text-xl font-semibold text-text-base m-0 p-0">Nessus Vulnerability Scanning Lab</h3>
-                            <i class="fas fa-shield-alt text-xl text-text-secondary opacity-80"></i>
+                            <!-- Shield Scan Icon -->
+                            <svg class="h-6 w-6 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 3l7 4v5c0 5-3.5 9-7 9s-7-4-7-9V7l7-4z" />
+                                <path d="M9 12l2 2 4-4" />
+                            </svg>
                         </div>
                         <p class="text-xs font-mono text-accent-cyan mb-3">Vul Scanning · Nessus Essentials · Network Discovery · Reporting</p>
-                    
+        
                         <p class="text-sm text-text-secondary mb-3">
                             Set up Nessus Essentials on Kali and scanned a two-machine lab (Kali and Metasploitable) for vulnerabilities and malware. Performed host discovery, authenticated scans, policy tuning, plugin updates, and generated PDF reports with prioritized remediation guidance.
                         </p>
-                    
+        
                         <p class="text-xs text-text-secondary">
                             Skills: Vulnerability Scanning, Host Discovery, Authenticated SSH Scanning, Malware Detection, Remediation Analysis.
                         </p>
-                    
+        
                         <a href="./projects/nessus-vulnerability-scanning-lab.html"
-                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                            style="color: var(--functional-success);">
+                           class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                           style="color: var(--functional-success);">
                             ➜ Learn more
                         </a>
                     </article>
         
-                    
+                    <!-- Azure Sentinel Threat Analysis -->
                     <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="soc analytics">
                         <div class="flex justify-between items-center mb-1">
                             <h3 class="text-xl font-semibold text-text-base m-0 p-0">Azure Sentinel Threat Analysis</h3>
-                            <i class="fas fa-cloud text-xl text-text-secondary opacity-80"></i>
+                            <!-- Cloud Icon -->
+                            <svg class="h-6 w-6 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 16a4 4 0 014-4 4.5 4.5 0 018.5 1H18a3 3 0 010 6H7a3 3 0 01-2-3z" />
+                            </svg>
                         </div>
                         <p class="text-xs font-mono text-accent-cyan mb-3">SOC Lab · Azure VM · Microsoft Sentinel · KQL</p>
                         <p class="text-sm text-text-secondary mb-3">
@@ -481,16 +489,23 @@
                         <p class="text-xs text-text-secondary">Skills: Azure administration, NSG configuration, Windows event logging, KQL analytics, SIEM operations.</p>
         
                         <a href="projects/azure-soc-honeypot.html"
-                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                            style="color: var(--functional-success);">
+                           class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                           style="color: var(--functional-success);">
                             ➜ Learn more
                         </a>
                     </article>
         
+                    <!-- Active Directory Beginner Lab -->
                     <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="soc">
                         <div class="flex justify-between items-center mb-1">
                             <h3 class="text-xl font-semibold text-text-base m-0 p-0">Active Directory Beginner Lab</h3>
-                            <i class="fas fa-users text-xl text-text-secondary opacity-80"></i>
+                            <!-- Windows / Grid Icon -->
+                            <svg class="h-6 w-6 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.6">
+                                <rect x="3" y="3" width="8" height="8" rx="1" />
+                                <rect x="13" y="3" width="8" height="8" rx="1" />
+                                <rect x="3" y="13" width="8" height="8" rx="1" />
+                                <rect x="13" y="13" width="8" height="8" rx="1" />
+                            </svg>
                         </div>
                         <p class="text-xs font-mono text-accent-cyan mb-3">Windows Server · AD DS · DNS · IAM · Helpdesk</p>
                         <p class="text-sm text-text-secondary mb-3">
@@ -499,19 +514,24 @@
                         <p class="text-xs text-text-secondary">
                             Skills: AD DS configuration, DNS setup, user lifecycle management, group/OU design, IAM fundamentals, helpdesk operations.
                         </p>
-                    
+        
                         <a href="projects/active-directory-iam-project.html"
-                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                            style="color: var(--functional-success);">
+                           class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                           style="color: var(--functional-success);">
                             ➜ Learn more
                         </a>
                     </article>
         
-        
+                    <!-- Telco Customer Churn Analysis -->
                     <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="ml analytics">
                         <div class="flex justify-between items-center mb-1">
                             <h3 class="text-xl font-semibold text-text-base m-0 p-0">Telco Customer Churn Analysis</h3>
-                            <i class="fas fa-brain text-xl text-text-secondary opacity-80"></i>
+                            <!-- Line Chart Icon -->
+                            <svg class="h-6 w-6 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 18V6" />
+                                <path d="M4 18h16" />
+                                <path d="M7 14l3-4 4 3 4-6" />
+                            </svg>
                         </div>
                         <p class="text-xs font-mono text-accent-cyan mb-3">Python · ML · SHAP</p>
                         <p class="text-sm text-text-secondary mb-3">
@@ -520,38 +540,51 @@
                         <p class="text-xs text-text-secondary">Skills: Pandas, Scikit-Learn, Feature Engineering, Model Evaluation, SHAP Explainability.</p>
         
                         <a href="projects/telco-churn.html"
-                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                            style="color: var(--functional-success);">
+                           class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                           style="color: var(--functional-success);">
                             ➜ Learn more
                         </a>
                     </article>
         
+                    <!-- Windows Sysmon Threat Detection Lab -->
                     <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="soc detection blue-team">
                         <div class="flex justify-between items-center mb-1">
                             <h3 class="text-xl font-semibold text-text-base m-0 p-0">Windows Sysmon Threat Detection Lab</h3>
-                            <i class="fas fa-terminal text-xl text-text-secondary opacity-80"></i>
+                            <!-- Terminal Icon -->
+                            <svg class="h-6 w-6 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="16" rx="2" />
+                                <path d="M8 10l2 2-2 2" />
+                                <path d="M13 14h3" />
+                            </svg>
                         </div>
                         <p class="text-xs font-mono text-accent-cyan mb-3">Windows 10 · Sysmon · MITRE ATT</p>
-                    
+        
                         <p class="text-sm text-text-secondary mb-3">
                             Deployed Sysmon on a Windows 10 VM, enabled advanced PowerShell and event logging, and simulated attacker behavior to detect process creation, network connections, registry changes, and file activity mapped to MITRE ATT&CK.
                         </p>
-                    
+        
                         <p class="text-xs text-text-secondary">
                             Skills: Sysmon, Windows Logging, Threat Detection, MITRE Mapping, Reporting.
                         </p>
-                    
+        
                         <a href="projects/sysmon-lab.html"
-                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                            style="color: var(--functional-success);">
+                           class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                           style="color: var(--functional-success);">
                             ➜ Learn more
                         </a>
                     </article>
         
+                    <!-- Operations Management Analysis -->
                     <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="analytics">
                         <div class="flex justify-between items-center mb-1">
                             <h3 class="text-xl font-semibold text-text-base m-0 p-0">Operations Management Analysis</h3>
-                            <i class="fas fa-chart-line text-xl text-text-secondary opacity-80"></i>
+                            <!-- Bar Chart Icon -->
+                            <svg class="h-6 w-6 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 19V5" />
+                                <rect x="6" y="11" width="3" height="8" rx="0.5" />
+                                <rect x="11" y="8" width="3" height="11" rx="0.5" />
+                                <rect x="16" y="6" width="3" height="13" rx="0.5" />
+                            </svg>
                         </div>
                         <p class="text-xs font-mono text-accent-cyan mb-3">Excel · KPI dashboards</p>
                         <p class="text-sm text-text-secondary mb-3">
@@ -560,16 +593,23 @@
                         <p class="text-xs text-text-secondary">Skills: KPI Development, Excel Modeling, Advanced Formulas, Dashboard Design.</p>
         
                         <a href="projects/kpi-analysis.html"
-                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                            style="color: var(--functional-success);">
+                           class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                           style="color: var(--functional-success);">
                             ➜ Learn more
                         </a>
                     </article>
         
+                    <!-- Cyclistic Rider Behavior Analysis -->
                     <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="analytics">
                         <div class="flex justify-between items-center mb-1">
                             <h3 class="text-xl font-semibold text-text-base m-0 p-0">Cyclistic Rider Behavior Analysis</h3>
-                            <i class="fas fa-biking text-xl text-text-secondary opacity-80"></i>
+                            <!-- Bike / Wheel Icon -->
+                            <svg class="h-6 w-6 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="7" cy="16" r="2.7" />
+                                <circle cx="17" cy="16" r="2.7" />
+                                <path d="M9 16l3-6 3 6" />
+                                <path d="M12 10h3" />
+                            </svg>
                         </div>
                         <p class="text-xs font-mono text-accent-cyan mb-3">R · Tableau</p>
                         <p class="text-sm text-text-secondary mb-3">
@@ -578,16 +618,20 @@
                         <p class="text-xs text-text-secondary">Skills: R Programming, Data Manipulation, Cohort Analysis, Tableau Visualization.</p>
         
                         <a href="projects/cyclist-analysis.html"
-                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                            style="color: var(--functional-success);">
+                           class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                           style="color: var(--functional-success);">
                             ➜ Learn more
                         </a>
                     </article>
         
+                    <!-- Bellabeat Smart Device Usage Analysis -->
                     <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="analytics">
                         <div class="flex justify-between items-center mb-1">
                             <h3 class="text-xl font-semibold text-text-base m-0 p-0">Bellabeat Smart Device Usage Analysis</h3>
-                            <i class="fas fa-heart text-xl text-text-secondary opacity-80"></i>
+                            <!-- Heart / Wellness Icon -->
+                            <svg class="h-6 w-6 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4.5 9A3.5 3.5 0 018.7 6.2L10 7.3l1-1 1-1a3.5 3.5 0 015 4.9L12 19 4.5 10.5" />
+                            </svg>
                         </div>
                         <p class="text-xs font-mono text-accent-cyan mb-3">Fitbit Data · Story Insights</p>
                         <p class="text-sm text-text-secondary mb-3">
@@ -596,16 +640,22 @@
                         <p class="text-xs text-text-secondary">Skills: Exploratory Data Analysis, Data Cleaning, User Segmentation, Data Storytelling.</p>
         
                         <a href="projects/bellabeat-device-analysis.html"
-                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                            style="color: var(--functional-success);">
+                           class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                           style="color: var(--functional-success);">
                             ➜ Learn more
                         </a>
                     </article>
         
+                    <!-- Landscape Database Revitalization -->
                     <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="sql">
                         <div class="flex justify-between items-center mb-1">
                             <h3 class="text-xl font-semibold text-text-base m-0 p-0">Landscape Database Revitalization</h3>
-                            <i class="fas fa-database text-xl text-text-secondary opacity-80"></i>
+                            <!-- Database Icon -->
+                            <svg class="h-6 w-6 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <ellipse cx="12" cy="5" rx="6" ry="2.5" />
+                                <path d="M6 5v5c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5V5" />
+                                <path d="M6 10v5c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-5" />
+                            </svg>
                         </div>
                         <p class="text-xs font-mono text-accent-cyan mb-3">SQL Server · ETL</p>
                         <p class="text-sm text-text-secondary mb-3">
@@ -614,16 +664,24 @@
                         <p class="text-xs text-text-secondary">Skills: Relational Schema Design, Data Normalization, SQL Optimization, ETL Development.</p>
         
                         <a href="projects/landscape-database-revitalization.html"
-                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                            style="color: var(--functional-success);">
+                           class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                           style="color: var(--functional-success);">
                             ➜ Learn more
                         </a>
                     </article>
         
+                    <!-- World Layoffs SQL Data Cleaning -->
                     <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="sql analytics">
                         <div class="flex justify-between items-center mb-1">
                             <h3 class="text-xl font-semibold text-text-base m-0 p-0">World Layoffs SQL Data Cleaning</h3>
-                            <i class="fas fa-globe text-xl text-text-secondary opacity-80"></i>
+                            <!-- Globe Icon -->
+                            <svg class="h-6 w-6 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="7" />
+                                <path d="M12 5c-2 2.2-3 4.6-3 7s1 4.8 3 7" />
+                                <path d="M12 5c2 2.2 3 4.6 3 7s-1 4.8-3 7" />
+                                <path d="M6 10h12" />
+                                <path d="M6 14h12" />
+                            </svg>
                         </div>
                         <p class="text-xs font-mono text-accent-cyan mb-3">SQL pipeline · Standardization</p>
                         <p class="text-sm text-text-secondary mb-3">
@@ -632,16 +690,28 @@
                         <p class="text-xs text-text-secondary">Skills: SQL, SSMS, Window Functions, Data Quality, Data Standardization.</p>
         
                         <a href="projects/world-layoffs-sql-cleaning.html"
-                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                            style="color: var(--functional-success);">
+                           class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                           style="color: var(--functional-success);">
                             ➜ Learn more
                         </a>
                     </article>
         
+                    <!-- Quantitative Decision Modeling -->
                     <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="or analytics">
                         <div class="flex justify-between items-center mb-1">
                             <h3 class="text-xl font-semibold text-text-base m-0 p-0">Quantitative Decision Modeling</h3>
-                            <i class="fas fa-cogs text-xl text-text-secondary opacity-80"></i>
+                            <!-- Gear / Optimization Icon -->
+                            <svg class="h-6 w-6 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="3.2" />
+                                <path d="M12 5v2" />
+                                <path d="M12 17v2" />
+                                <path d="M6.6 7l1.4 1.4" />
+                                <path d="M16 16l1.4 1.4" />
+                                <path d="M5 12h2" />
+                                <path d="M17 12h2" />
+                                <path d="M7 17l1.4-1.4" />
+                                <path d="M15.6 8.4L17 7" />
+                            </svg>
                         </div>
                         <p class="text-xs font-mono text-accent-cyan mb-3">Excel · Modeling</p>
                         <p class="text-sm text-text-secondary mb-3">
@@ -650,11 +720,12 @@
                         <p class="text-xs text-text-secondary">Skills: Optimization, Simulation, Decision Modeling.</p>
         
                         <a href="projects/optimization-decision-models.html"
-                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                            style="color: var(--functional-success);">
+                           class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                           style="color: var(--functional-success);">
                             ➜ Learn more
                         </a>
                     </article>
+        
                 </div>
         
                 <div class="mt-8 text-sm text-text-secondary">
