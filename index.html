@@ -301,49 +301,64 @@
     </section>
 
     <!-- ABOUT -->
-    <section id="about" 
-           class="hero-grid-bg py-16 sm:py-20 md:py-24 bg-primary-bg border-t border-gray-800 transition-colors duration-500">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="section-title-wrapper mx-auto">
-                <h2 class="font-mono">01. About Me</h2>
-                <span></span>
-            </div>
-
-            <div class="grid lg:grid-cols-3 gap-12 items-start">
-                <div class="lg:col-span-2 space-y-4 text-text-secondary text-base leading-relaxed">
-                    <p>I am an entry level cybersecurity and IT professional with hands on experience in SIEM monitoring, Sysmon based threat detection,
-                        Windows event analysis, Nessus scanning, Active Directory, SQL, and Python. My projects strengthened my understanding of how systems
-                        generate telemetry and how to investigate suspicious behavior with structure and clarity.</p>
-
-                    <p>Alongside these labs, I support daily operations at the Defense Health Headquarters, where I troubleshoot technical issues, coordinate
-                        vendors, and maintain accurate, secure workflows. This combination of real world operations and technical project work prepared me for
-                        entry level roles in security operations and IT analysis.</p>
-
-                    <div class="flex flex-wrap gap-2 pt-4">
-                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Microsoft Azure</span>
-                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Microsoft Sentinel (KQL)</span>
-                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">CompTIA Security+ (SYO-701)</span>
-                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Security Monitoring & Triage</span>
-                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Log Investigation & SIEM</span>
-                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">SQL (CTEs, Joins, Pipelines)</span>
-                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Python (Pandas & Analysis)</span>
-                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Tableau & Data Visualization</span>
-                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Process Improvement</span>
-                        <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Operations Coordination</span>
-
+            <section id="about" 
+                     class="hero-grid-bg py-16 sm:py-20 md:py-24 bg-primary-bg border-t border-gray-800 transition-colors duration-500">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+                    <div class="section-title-wrapper mx-auto">
+                        <h2 class="font-mono">01. About Me</h2>
+                        <span></span>
+                    </div>
+            
+                    <div class="grid lg:grid-cols-3 gap-12 items-start">
+            
+                        <!-- BLACK BOX ABOUT ME -->
+                        <div class="lg:col-span-2">
+                            <div class="bg-container-bg border border-gray-700 rounded-xl p-6 space-y-4">
+            
+                                <p class="text-text-secondary text-base leading-relaxed">
+                                    I am an entry level cybersecurity and IT professional with hands on experience in SIEM monitoring,
+                                    Sysmon based threat detection, Windows event analysis, Nessus scanning, Active Directory, SQL, and Python.
+                                    My projects strengthened my understanding of how systems generate telemetry and how to investigate
+                                    suspicious behavior with structure and clarity.
+                                </p>
+            
+                                <p class="text-text-secondary text-base leading-relaxed">
+                                    Alongside these labs, I support daily operations at the Defense Health Headquarters, where I troubleshoot
+                                    technical issues, coordinate vendors, and maintain accurate, secure workflows. This combination of real world
+                                    operations and technical project work prepared me for entry level roles in security operations and IT analysis.
+                                </p>
+            
+                                <!-- Skills inside black box -->
+                                <div class="flex flex-wrap gap-2 pt-2">
+                                    <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Microsoft Azure</span>
+                                    <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Microsoft Sentinel (KQL)</span>
+                                    <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">CompTIA Security+ (SYO-701)</span>
+                                    <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Security Monitoring & Triage</span>
+                                    <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Log Investigation & SIEM</span>
+                                    <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">SQL (CTEs, Joins, Pipelines)</span>
+                                    <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Python (Pandas & Analysis)</span>
+                                    <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Tableau & Data Visualization</span>
+                                    <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Process Improvement</span>
+                                    <span class="text-xs font-mono text-accent-cyan border border-accent-cyan px-3 py-1 rounded-full">Operations Coordination</span>
+                                </div>
+            
+                            </div>
+                        </div>
+            
+                        <!-- PROFILE IMAGE -->
+                        <div class="flex justify-center lg:justify-end mt-0 pt-0">
+                            <img src="assets/images/professional photo of myself.jpg"
+                                 alt="Christian Aguirre"
+                                 onerror="this.onerror=null;this.src='https://placehold.co/420x550/30333a/D9D9D9?text=Image+Placeholder';"
+                                 class="rounded-xl shadow-lg object-cover border border-gray-700 hover:border-accent-action transition duration-300"
+                                 style="width: 420px; height: auto; object-position: center;">
+                        </div>
+            
                     </div>
                 </div>
+            </section>
 
-                <div class="flex justify-center lg:justify-end mt-0 pt-0">
-                    <img src="assets/images/professional photo of myself.jpg"
-                          alt="Christian Aguirre"
-                          onerror="this.onerror=null;this.src='https://placehold.co/420x550/30333a/D9D9D9?text=Image+Placeholder';"
-                          class="rounded-xl shadow-lg object-cover border border-gray-700 hover:border-accent-action transition duration-300"
-                          style="width: 420px; height: auto; object-position: center;">
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- SKILLS -->
                 <section id="skills" class="hero-grid-bg py-16 sm:py-20 md:py-24 border-t border-gray-700 transition-colors duration-500">
