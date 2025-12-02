@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Telco Customer Churn Analysis | Christian Aguirre</title>
+    <title>Windows Sysmon Threat Detection Lab | Christian Aguirre</title>
 
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -134,32 +134,33 @@
             </a>
 
             <div class="flex flex-wrap gap-2 mb-6">
-                <span class="pill pill-accent">Machine Learning</span>
-                <span class="pill pill-muted">Python</span>
-                <span class="pill pill-muted">scikit-learn</span>
-                <span class="pill pill-muted">SHAP</span>
-                <span class="pill pill-muted">Feature Engineering</span>
-                <span class="pill pill-muted">Telco Churn</span>
+                <span class="pill pill-accent">Threat Detection</span>
+                <span class="pill pill-muted">Windows Sysmon</span>
+                <span class="pill pill-muted">Blue Team</span>
+                <span class="pill pill-muted">MITRE ATT&amp;CK</span>
+                <span class="pill pill-muted">Event Viewer</span>
+                <span class="pill pill-muted">PowerShell</span>
             </div>
 
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-text-base">
-                Telco Customer Churn Analysis
+                Windows Sysmon Threat Detection Lab
             </h1>
 
             <p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed">
-                Analyzed telecom customer data to understand why people cancel service and built a model that predicts
-                which customers are likely to leave so the business can act before they churn.
+                Built a beginner friendly Windows Sysmon lab based on the TryHackMe room to detect real attacker activity.
+                Deployed and tuned Sysmon, hunted through high value event IDs, investigated multiple attacks, and produced
+                a SOC style incident report with MITRE ATT&amp;CK mapping and portfolio ready screenshots.
             </p>
 
             <div class="flex flex-wrap gap-3 mt-6 text-[0.7rem] sm:text-xs text-text-secondary">
                 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
                     <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>
-                    Churn Risk Analysis · Predictive Modeling
+                    Endpoint Telemetry · SOC Reporting
                 </span>
 
                 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
                     <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>
-                    Tools Used: Python, Pandas, Scikit-Learn, SHAP, Jupyter Notebook
+                    Tools: Sysmon, Windows 10, Event Viewer, PowerShell, MITRE ATT&amp;CK
                 </span>
             </div>
 
@@ -172,17 +173,19 @@
                     </p>
 
                     <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
-                        I used a telecom customer dataset to identify which customers stay, which ones leave, and what patterns
-                        predict churn. After cleaning and preparing the data, I converted text fields into numeric features and 
-                        split the dataset into training and testing sets so the model could learn patterns without being biased.
+                        This lab focuses on Windows Sysmon, a telemetry engine from Microsoft Sysinternals that captures
+                        detailed process, network, registry, and file activity. I worked with a Windows host that already had
+                        Sysmon installed and logging, then used Event Viewer and PowerShell to hunt through the Operational
+                        log for attacker behavior.
                     </p>
 
                     <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
-                        I trained classification models and used SHAP explainability to see which factors influence churn the most.
-                        This makes the model transparent and gives a business team clear insights to guide retention strategies and
-                        focus on high-risk customers.
+                        The walkthrough moves from fundamentals to real investigations. After understanding high value event
+                        IDs and configuration files, I used Sysmon logs to track malware like Mimikatz and Metasploit beacons,
+                        discover persistence, and confirm command and control traffic. The final deliverable is a structured
+                        SOC style report that maps findings to MITRE ATT&amp;CK techniques and explains exactly how each attack
+                        was detected.
                     </p>
-
                 </article>
 
                 <!-- What I Built -->
@@ -192,13 +195,13 @@
                     </p>
 
                     <ul class="list-disc list-outside pl-5 space-y-1.5 text-sm sm:text-[0.95rem] text-text-base">
-                        <li>A full churn-analysis workflow in Jupyter Notebook.</li>
-                        <li>Data cleaning to fix billing issues and remove unusable rows.</li>
-                        <li>Feature engineering to convert categories into model-ready inputs.</li>
-                        <li>A balanced train/test split for fair evaluation.</li>
-                        <li>Classification models (Logistic Regression + Random Forest)</li>
-                        <li>Confusion matrix + classification report for performance.</li>
-                        <li>SHAP explainability to highlight the strongest churn drivers.</li>
+                        <li>A guided Sysmon detection lab based on the TryHackMe Sysmon room.</li>
+                        <li>Custom Event Viewer filters and PowerShell plus XPath queries for targeted hunting.</li>
+                        <li>Four complete incident investigations with timelines, findings, and screenshots.</li>
+                        <li>A breakdown of high value Sysmon event IDs aligned to attacker behavior.</li>
+                        <li>A MITRE ATT&amp;CK mapping table that ties each simulation to a technique and event ID.</li>
+                        <li>A structured SOC report template with executive summary, environment, and cases.</li>
+                        <li>Optional extension to send logs to a SIEM and build a threat hunting dashboard.</li>
                     </ul>
                 </article>
 
@@ -206,7 +209,7 @@
         </div>
     </section>
 
-        <!-- WORKFLOW OVERVIEW -->
+    <!-- WORKFLOW OVERVIEW -->
     <section class="py-12 md:py-14 border-b border-gray-800 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -218,41 +221,41 @@
             <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
                 <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 1</p>
-                    <p class="text-sm font-semibold text-text-base mb-1">Data Import</p>
+                    <p class="text-sm font-semibold text-text-base mb-1">Lab Goal</p>
                     <p class="text-[0.8rem] text-text-secondary">
-                        Loaded the dataset into pandas and verified columns, data types, and row counts.
+                        Defined the objective: use Sysmon to detect real world malware, persistence, and command and control activity.
                     </p>
                 </div>
 
                 <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 2</p>
-                    <p class="text-sm font-semibold text-text-base mb-1">Cleaning</p>
+                    <p class="text-sm font-semibold text-text-base mb-1">Environment Setup</p>
                     <p class="text-[0.8rem] text-text-secondary">
-                        Fixed the TotalCharges field, handled missing values, and removed unusable rows.
+                        Connected to the Windows host, located the Sysmon Operational log, and confirmed event volume and baselines.
                     </p>
                 </div>
 
                 <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 3</p>
-                    <p class="text-sm font-semibold text-text-base mb-1">Feature Prep</p>
+                    <p class="text-sm font-semibold text-text-base mb-1">Sysmon Basics</p>
                     <p class="text-[0.8rem] text-text-secondary">
-                        Converted categorical text fields into numeric features and isolated the churn label.
+                        Reviewed how Sysmon works, studied popular configuration files, and focused on key event IDs for hunting.
                     </p>
                 </div>
 
                 <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 4</p>
-                    <p class="text-sm font-semibold text-text-base mb-1">Modeling</p>
+                    <p class="text-sm font-semibold text-text-base mb-1">Threat Hunting</p>
                     <p class="text-[0.8rem] text-text-secondary">
-                        Trained a Random Forest model and generated predictions on the test set.
+                        Used Event Viewer and PowerShell to locate beacon traffic, credential access, persistence, and evasion.
                     </p>
                 </div>
 
                 <div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
                     <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 5</p>
-                    <p class="text-sm font-semibold text-text-base mb-1">Evaluation & SHAP</p>
+                    <p class="text-sm font-semibold text-text-base mb-1">Reporting & Mapping</p>
                     <p class="text-[0.8rem] text-text-secondary">
-                        Measured model performance and used SHAP to identify which features influence churn.
+                        Documented each case, mapped to MITRE ATT&amp;CK, and built a SOC style report with screenshots and notes.
                     </p>
                 </div>
             </div>
@@ -264,237 +267,437 @@
     <section class="py-12 md:py-16 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
 
-            <!-- 1. Dataset Overview -->
+            <!-- 1. Lab and Environment Overview -->
             <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-
-                <h3 class="text-base font-semibold text-white mb-1">1. Dataset Overview</h3>
+                <h3 class="text-base font-semibold text-white mb-1">1. Lab and Environment Overview</h3>
 
                 <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                    Understanding the raw customer data
+                    Beginner friendly, based on TryHackMe’s Sysmon room
                 </p>
 
                 <p class="mb-3 text-white">
-                    The dataset includes one row per customer with details about their account history, subscribed services,
-                    contract type, payment method, monthly charges, and whether they eventually churned. Looking at the raw data
-                    helps confirm everything loaded correctly and shows what the model will learn from.
+                    This project is built around a Windows environment instrumented with Sysmon and preloaded event logs. The lab
+                    uses a separate attack box and a Windows server to simulate a small enterprise scenario where an analyst
+                    reviews telemetry rather than building an entire network from scratch.
                 </p>
 
                 <p class="mb-3 text-white">
-                    The first image shows the unprocessed dataset as it appears in the notebook — things like tenure, service
-                    combinations, charges, and churn status all visible in one place.
+                    The Windows machine exposes Sysmon logs under the standard path in Event Viewer. All hunting in this lab pivots
+                    around the Operational channel, where high fidelity process, network, registry, and file events are recorded.
                 </p>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-                    <img src="../assets/images/TC1_Dataset Preview.png"
+                    <img src="../assets/images/SY1_Environment_Overview.png"
                          class="rounded-lg mx-auto mb-2" />
                     <p class="text-xs text-text-secondary italic text-center">
-                        A preview of the raw customer dataset used for churn modeling.
+                        Windows Sysmon lab environment with Event Viewer open to the Operational log.
                     </p>
                 </div>
 
-                <p class="mb-3 text-white">
-                    The second image shows a correlation heatmap of the numeric features. This gives a quick read on early relationships
-                    — for example, shorter tenure linking to higher churn — and helps identify which variables may carry stronger predictive
-                    value before modeling.
+                <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-white">
+<code>Event Viewer
+  └─ Applications and Services Logs
+       └─ Microsoft
+            └─ Windows
+                 └─ Sysmon
+                      └─ Operational</code></pre>
+
+                <p class="mt-3 mb-1 text-white font-semibold text-sm">
+                    Lab components
                 </p>
+
+                <ul class="list-disc list-outside pl-5 text-sm text-white space-y-1">
+                    <li>Attack box (Linux) to act as the attacker side.</li>
+                    <li>Windows host with Sysmon installed and configured.</li>
+                    <li>Preloaded attack activity to investigate with Event Viewer and PowerShell.</li>
+                    <li>Notebook of questions guiding four complete incident investigations.</li>
+                </ul>
+            </section>
+
+            <!-- 2. Sysmon Fundamentals and Configuration -->
+            <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                <h3 class="text-base font-semibold text-white mb-1">2. Sysmon Fundamentals and Configuration</h3>
+
+                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                    What Sysmon does and why configuration matters
+                </p>
+
+                <p class="mb-3 text-white">
+                    Sysmon is a Windows system service and driver that persists across reboots and logs rich security telemetry.
+                    It supplements standard Windows event logs with detailed information about process creation, network connections,
+                    module loads, registry changes, and more. In real environments this data is usually forwarded into a SIEM like
+                    Splunk, Sentinel, or Elastic.
+                </p>
+
+                <p class="mb-3 text-white">
+                    Configuration is what turns Sysmon from noise into signal. This lab references two widely used configuration
+                    projects to show how enterprise defenders tune their environments.
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-sm text-white">
+                        <p class="font-semibold mb-1">SwiftOnSecurity config</p>
+                        <ul class="list-disc list-outside pl-5 space-y-1 text-text-secondary text-[0.85rem]">
+                            <li>Well commented and easy to read.</li>
+                            <li>Focuses on smart exclusions to cut down noise.</li>
+                            <li>Good baseline for many enterprise deployments.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-sm text-white">
+                        <p class="font-semibold mb-1">Olaf Hartong modular config</p>
+                        <ul class="list-disc list-outside pl-5 space-y-1 text-text-secondary text-[0.85rem]">
+                            <li>Maps event IDs to MITRE ATT&amp;CK techniques.</li>
+                            <li>Highly modular and customizable.</li>
+                            <li>Geared toward analysts already comfortable with Sysmon.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <p class="mb-3 text-white">
+                    In the portfolio report, I explain which events were most valuable in this lab and how a tuned configuration
+                    helps separate everyday noise from real attacker behavior.
+                </p>
+            </section>
+
+            <!-- 3. High Value Event IDs and Filtering -->
+            <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                <h3 class="text-base font-semibold text-white mb-1">3. High Value Event IDs and Filtering</h3>
+
+                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                    Process, network, registry, and file telemetry for hunting
+                </p>
+
+                <p class="mb-3 text-white">
+                    The lab focuses on a core set of Sysmon event IDs that map directly to common attack techniques.
+                    These events are where most of the hunting and investigation takes place.
+                </p>
+
+                <div class="overflow-x-auto mb-4">
+                    <table class="min-w-full text-left text-xs text-text-secondary border border-gray-700 rounded-lg overflow-hidden">
+                        <thead class="bg-container-bg text-[0.7rem] uppercase tracking-[0.16em]">
+                            <tr>
+                                <th class="px-3 py-2 border-b border-gray-700">Event ID</th>
+                                <th class="px-3 py-2 border-b border-gray-700">Meaning</th>
+                                <th class="px-3 py-2 border-b border-gray-700">Use in Lab</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-secondary-bg">
+                            <tr>
+                                <td class="px-3 py-2 border-b border-gray-700 text-white">1</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Process creation</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Detects malware, LOLBins, and first stage payloads.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-3 py-2 border-b border-gray-700 text-white">3</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Network connection</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Identifies beacons, callbacks, and suspicious ports.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-3 py-2 border-b border-gray-700 text-white">7</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Image loaded</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Helps spot unusual DLL loads and injection patterns.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-3 py-2 border-b border-gray-700 text-white">8</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Create remote thread</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Signals memory injection inside other processes.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-3 py-2 border-b border-gray-700 text-white">10</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Process access</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Used in the lab to detect Mimikatz touching LSASS.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-3 py-2 border-b border-gray-700 text-white">11</td>
+                                <td class="px-3 py-2 border-b border-gray-700">File creation</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Surfaces droppers, payload files, and suspicious tools.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-3 py-2 border-b border-gray-700 text-white">12 / 13 / 14</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Registry events</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Tracks persistence keys and malware configuration.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-3 py-2 border-b border-gray-700 text-white">15</td>
+                                <td class="px-3 py-2 border-b border-gray-700">File stream created</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Used for alternate data streams abuse.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-3 py-2 border-b border-gray-700 text-white">22</td>
+                                <td class="px-3 py-2 border-b border-gray-700">DNS query</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Helps identify suspicious domains and C2 infrastructure.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="mb-3 text-white">
+                    I used both Event Viewer filters and PowerShell with XPath queries to narrow down telemetry and answer the
+                    investigation questions. PowerShell is especially useful when hunting for specific ports or processes.
+                </p>
+
+                <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-white mb-3">
+<code># Example: hunt for Sysmon network events on port 4444
+Get-WinEvent -Path "C:\Windows\System32\Winevt\Logs\Microsoft-Windows-Sysmon%4Operational.evtx" `
+-FilterXPath "*[System[EventID=3]] and *[EventData[Data[@Name='DestinationPort']='4444']]"</code></pre>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-                    <img src="../assets/images/TC1_Correlation Heatmap.png"
+                    <img src="../assets/images/SY2_Filtering_and_Queries.png"
                          class="rounded-lg mx-auto mb-2" />
                     <p class="text-xs text-text-secondary italic text-center">
-                        Correlation heatmap showing early feature relationships and their alignment with churn.
+                        Using Event Viewer and PowerShell to filter Sysmon events by event ID, port, and process.
                     </p>
                 </div>
-
             </section>
 
-
-            <!-- 2. Cleaning -->
+            <!-- 4. Threat Hunting Techniques -->
             <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-
-                <h3 class="text-base font-semibold text-white mb-1">2. Cleaning & Transformation</h3>
+                <h3 class="text-base font-semibold text-white mb-1">4. Threat Hunting Techniques</h3>
 
                 <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                    Fixing billing fields and removing unreliable rows
+                    Beaconing, credential theft, persistence, and evasion
                 </p>
 
                 <p class="mb-3 text-white">
-                    The TotalCharges column wasn’t always numeric — blank strings and invalid entries would break the model.
-                    Converting it to a numeric field forced those errors into NaN, making them easy to filter out. After that,
-                    incomplete rows were removed, and the customerID column was dropped since it doesn’t help predict churn.
+                    The lab walks through several hunting patterns that analysts use in real environments. Each technique focuses on
+                    a small set of event IDs, fields, and behaviors to keep the workflow repeatable and practical.
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-sm text-white">
+                        <p class="font-semibold mb-1">Metasploit beacon detection</p>
+                        <ul class="list-disc list-outside pl-5 space-y-1 text-text-secondary text-[0.85rem]">
+                            <li>Start with Sysmon Event ID 3 to find unusual ports like 4444 or 5555.</li>
+                            <li>Pivot into Event ID 1 to see which process owns the connection.</li>
+                            <li>Trace the parent process to understand how the payload started.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-sm text-white">
+                        <p class="font-semibold mb-1">Mimikatz detection</p>
+                        <ul class="list-disc list-outside pl-5 space-y-1 text-text-secondary text-[0.85rem]">
+                            <li>Focus on Event ID 10 for process access.</li>
+                            <li>Look for any process that accesses lsass.exe without a good reason.</li>
+                            <li>Correlate with Event ID 1 to identify the calling binary and its parent.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-sm text-white">
+                        <p class="font-semibold mb-1">Persistence detection</p>
+                        <ul class="list-disc list-outside pl-5 space-y-1 text-text-secondary text-[0.85rem]">
+                            <li>Use registry events (12, 13, 14) to find Run keys and hidden payload storage.</li>
+                            <li>Hunt for scheduled tasks that launch PowerShell with encoded commands.</li>
+                            <li>Flag file writes to startup locations or roaming profiles as potential persistence.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-sm text-white">
+                        <p class="font-semibold mb-1">Evasion and alternate data streams</p>
+                        <ul class="list-disc list-outside pl-5 space-y-1 text-text-secondary text-[0.85rem]">
+                            <li>Event ID 15 surfaces alternate data stream usage.</li>
+                            <li>Event IDs 7 and 8 help catch code that injects into other processes.</li>
+                            <li>Combined with file creation and network events, this shows how the attacker hides.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. Practical Investigations -->
+            <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                <h3 class="text-base font-semibold text-white mb-1">5. Practical Investigations</h3>
+
+                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                    Four full investigations based on real attack chains
                 </p>
 
                 <p class="mb-3 text-white">
-                    The screenshot below shows the cleaning steps in the notebook and confirms that invalid billing entries were fixed,
-                    missing values were checked, and unnecessary columns were removed before modeling.
+                    The core of the lab is a series of investigations where Sysmon is used to answer very specific incident response
+                    questions. Each investigation becomes a case in the final SOC style report with commands, event IDs, and clear conclusions.
                 </p>
 
-                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-                    <img src="../assets/images/TC1_Data Cleaning & Transformation.png"
-                         class="rounded-lg mx-auto mb-2" />
-                    <p class="text-xs text-text-secondary italic text-center">
-                        Cleaning logic applied to convert TotalCharges, drop incomplete rows, and remove non-predictive identifiers.
-                    </p>
+                <div class="space-y-5">
+
+                    <!-- Investigation 1 -->
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-sm text-white">
+                        <p class="font-semibold mb-1">Investigation 1 — Malicious USB device</p>
+                        <p class="text-xs text-text-secondary mb-2">
+                            Goal: understand what happened when a malicious USB device was inserted.
+                        </p>
+                        <ul class="list-disc list-outside pl-5 space-y-1 text-text-secondary text-[0.85rem]">
+                            <li>Used registry events to find keys under <span class="text-white">HKLM\SYSTEM\CurrentControlSet\Enum\USBSTOR</span>.</li>
+                            <li>Reviewed raw access read events to identify the volume name.</li>
+                            <li>Correlated with Event ID 1 to see rundll32.exe executing the payload from the USB.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Investigation 2 -->
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-sm text-white">
+                        <p class="font-semibold mb-1">Investigation 2 — HTML file dropping a payload</p>
+                        <p class="text-xs text-text-secondary mb-2">
+                            Goal: identify a masquerading HTML or HTA file that delivers a payload.
+                        </p>
+                        <ul class="list-disc list-outside pl-5 space-y-1 text-text-secondary text-[0.85rem]">
+                            <li>Tracked file creation events in temporary internet folders.</li>
+                            <li>Found an HTA that pretended to be a downloaded HTML update.</li>
+                            <li>Used Event ID 1 to confirm Microsoft signed mshta.exe launched the payload.</li>
+                            <li>Mapped destination IP and port from Event ID 3 to show possible command and control traffic.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Investigation 3 -->
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-sm text-white">
+                        <p class="font-semibold mb-1">Investigation 3 — Registry and scheduled task persistence</p>
+                        <p class="text-xs text-text-secondary mb-2">
+                            Goal: uncover long term persistence through registry keys and scheduled tasks.
+                        </p>
+                        <ul class="list-disc list-outside pl-5 space-y-1 text-text-secondary text-[0.85rem]">
+                            <li>Located a registry key under <span class="text-white">HKLM\Software\Microsoft\Network\Debug</span> that held a base64 payload.</li>
+                            <li>Pivoted to PowerShell command lines that queried the registry value and executed the content.</li>
+                            <li>Identified scheduled tasks that launched encoded PowerShell at a fixed time each day.</li>
+                            <li>Used Event ID 10 to show the scheduled task eventually accessed lsass.exe, hinting at credential theft.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Investigation 4 -->
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-sm text-white">
+                        <p class="font-semibold mb-1">Investigation 4 — Botnet and command and control activity</p>
+                        <p class="text-xs text-text-secondary mb-2">
+                            Goal: confirm command and control behavior and infrastructure.
+                        </p>
+                        <ul class="list-disc list-outside pl-5 space-y-1 text-text-secondary text-[0.85rem]">
+                            <li>Used Event ID 3 to tie victim IP to an adversary controlled address and port.</li>
+                            <li>Confirmed that the traffic matched a known Empire framework pattern.</li>
+                            <li>Linked the network events back to the original process creation and parent chain.</li>
+                        </ul>
+                    </div>
                 </div>
 
-                <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-white">
-<code>df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
-df = df.dropna()
-df = df.drop(columns=["customerID"])</code></pre>
-
-            </section>
-
-
-
-            <!-- 3. Feature Engineering & Split -->
-            <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-
-                <h3 class="text-base font-semibold text-white mb-1">3. Feature Engineering & Split</h3>
-
-                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                    Converting categories and preparing train/test sets
-                </p>
-
-                <p class="mb-3 text-white">
-                    Most features in the dataset were text labels (like Yes, No, or plan names), so I converted all categorical columns
-                    into numeric values using one-hot encoding. This gives the model clean binary inputs without changing the meaning of the original data.
-                </p>
-
-                <p class="mb-3 text-white">
-                   After encoding, I separated the churn label from the rest of the features and split the data into training and testing sets. Using 
-                   stratify=y keeps the churn ratio consistent in both sets, preventing the model from training on an unbalanced sample.
-                </p>
-
-                <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-white">
-<code>df_encoded = pd.get_dummies(df, drop_first=True)
-
-X = df_encoded.drop("Churn_Yes", axis=1)
-Y = df_encoded["Churn_Yes"]
-
-X_train, X_test, y_train, y_test = train_test_split(
-    X, Y, test_size=0.2, random_state=42, stratify=Y
-)</code></pre>
-
-            </section>
-
-
-            <!-- 4. Modeling & Evaluation -->
-            <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-
-                <h3 class="text-base font-semibold text-white mb-1">4. Modeling & Evaluation</h3>
-
-                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                    Training a Random Forest and checking performance
-                </p>
-
-                <p class="mb-3 text-white">
-                    I trained a Random Forest classifier on the cleaned, encoded dataset to predict which customers are likely to churn.
-                    After fitting the model on the training split, I evaluated it on the test set to see how well it generalizes to unseen
-                    customers.
-                </p>
-
-                <p class="mb-3 text-white">
-                    The evaluation uses a confusion matrix and classification report, which provide accuracy, precision, recall, and
-                    F1-scores for both churn and non-churn classes.
-                </p>
-
-                <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-white">
-<code>model = RandomForestClassifier(
-    n_estimators=300,
-    max_depth=12,
-    random_state=42
-)
-
-model.fit(X_train, y_train)
-
-y_pred = model.predict(X_test)
-
-print(confusion_matrix(y_test, y_pred))
-print(classification_report(y_test, y_pred))</code></pre>
-
-                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mt-4">
-                    <img src="../assets/images/TC1_Modeling & Performance Evaluation.png"
-                         class="rounded-lg mx-auto mb-2" />
-                    <p class="text-xs text-text-secondary italic text-center">
-                       Evaluation results showing how accurately the model identifies churn and non-churn customers.
-                    </p>
-                </div>
-
-            </section>
-
-                        <!-- 5. SHAP Explainability -->
-            <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-
-                <h3 class="text-base font-semibold text-white mb-1">5. SHAP Explainability</h3>
-
-                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                    Showing which features push churn risk up or down.
-                </p>
-
-                <p class="mb-3 text-white">
-                    To understand why the model makes its predictions, I used SHAP values, which show how much each feature increases
-                    or decreases the likelihood of churn. This adds transparency to the Random Forest and helps highlight the main drivers
-                    behind customer behavior.
-                </p>
-
-                <p class="mb-3 text-white">
-                    The SHAP summary plot ranks the most influential features—such as tenure, monthly charges, and contract type—and shows their
-                    overall impact on churn. This makes it easy to translate a technical model into clear, practical insight for both technical
-                    and non-technical audiences.
-                </p>
-
-                <pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-white">
-<code>explainer = shap.TreeExplainer(model)
-shap_values = explainer.shap_values(X_test)
-
-shap.summary_plot(shap_values[1], X_test)
-shap.summary_plot(shap_values[1], X_test, plot_type="bar")</code></pre>
-
-                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center mt-4">
-                    <img src="../assets/images/TC1_SHAP Summary Plot.png"
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center mt-5">
+                    <img src="../assets/images/SY3_Investigation_Timeline.png"
                          class="rounded-lg mx-auto mb-2" />
                     <p class="text-xs text-text-secondary italic">
-                        SHAP summary plot showing which features have the strongest impact on churn predictions.
+                        Example investigation timeline built from Sysmon events: process, file, registry, and network activity aligned.
                     </p>
                 </div>
-
             </section>
 
+            <!-- 6. SOC Style Report and MITRE ATT&CK Mapping -->
+            <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+                <h3 class="text-base font-semibold text-white mb-1">6. SOC Style Report and MITRE ATT&amp;CK Mapping</h3>
+
+                <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+                    From raw telemetry to an analyst ready incident report
+                </p>
+
+                <p class="mb-3 text-white">
+                    The final phase of the lab turns all investigations into a structured incident report similar to what a
+                    SOC analyst would write. It includes an executive summary for leadership and deep technical details for
+                    security teams.
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-sm text-white">
+                        <p class="font-semibold mb-1">Report structure</p>
+                        <ul class="list-disc list-outside pl-5 space-y-1 text-text-secondary text-[0.85rem]">
+                            <li>Executive summary with the overall story of the attacks and detections.</li>
+                            <li>Environment section describing the Windows host, Sysmon setup, and logging paths.</li>
+                            <li>Sysmon event breakdown for core event IDs used in the investigation.</li>
+                            <li>Individual cases for each attack with commands, event IDs, indicators, and analysis.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-sm text-white">
+                        <p class="font-semibold mb-1">MITRE ATT&amp;CK mapping</p>
+                        <ul class="list-disc list-outside pl-5 space-y-1 text-text-secondary text-[0.85rem]">
+                            <li>Encoded PowerShell mapped to T1059.001 with ScriptBlock and Sysmon process events.</li>
+                            <li>Run key persistence mapped to T1547.001 using registry modification events.</li>
+                            <li>certutil or other LOLBins downloading payloads mapped to T1105 with process and network events.</li>
+                            <li>Identity discovery commands like whoami mapped to T1033 using process creation events.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto mb-4">
+                    <table class="min-w-full text-left text-xs text-text-secondary border border-gray-700 rounded-lg overflow-hidden">
+                        <thead class="bg-container-bg text-[0.7rem] uppercase tracking-[0.16em]">
+                            <tr>
+                                <th class="px-3 py-2 border-b border-gray-700">Simulation</th>
+                                <th class="px-3 py-2 border-b border-gray-700">Technique</th>
+                                <th class="px-3 py-2 border-b border-gray-700">Sysmon / Log Source</th>
+                                <th class="px-3 py-2 border-b border-gray-700">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-secondary-bg">
+                            <tr>
+                                <td class="px-3 py-2 border-b border-gray-700 text-white">Encoded PowerShell</td>
+                                <td class="px-3 py-2 border-b border-gray-700">T1059.001</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Event ID 1 + ScriptBlock (4104)</td>
+                                <td class="px-3 py-2 border-b border-gray-700">PowerShell command line and script content recorded.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-3 py-2 border-b border-gray-700 text-white">Run key persistence</td>
+                                <td class="px-3 py-2 border-b border-gray-700">T1547.001</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Event ID 13</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Registry value set to launch a payload at startup.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-3 py-2 border-b border-gray-700 text-white">certutil style download</td>
+                                <td class="px-3 py-2 border-b border-gray-700">T1105</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Event ID 1 and 3</td>
+                                <td class="px-3 py-2 border-b border-gray-700">LOLBin used to fetch a remote payload over the network.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-3 py-2 border-b border-gray-700 text-white">Account discovery</td>
+                                <td class="px-3 py-2 border-b border-gray-700">T1033</td>
+                                <td class="px-3 py-2 border-b border-gray-700">Event ID 1</td>
+                                <td class="px-3 py-2 border-b border-gray-700">whoami and related commands used for local account discovery.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="mb-3 text-white">
+                    An optional advanced step is to forward Sysmon logs into a SIEM like Elastic, Splunk, or Microsoft Sentinel and
+                    build dashboards for process trees, command line usage, and LOLBin executions. The same data then supports more
+                    scalable threat hunting and alerting.
+                </p>
+
+                <p class="mb-3 text-white">
+                    For an additional extension, a Linux system can be introduced as an external attacker. Simple actions like ping,
+                    curl, port scans, or brute force attempts generate traffic and events that Sysmon and Windows Defender will surface
+                    on the Windows host, creating a realistic attacker versus defender cycle for the portfolio.
+                </p>
+            </section>
 
             <!-- SUMMARY -->
             <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-
                 <h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-white">
                     Summary
                 </h3>
 
                 <p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
-                    This project walks through the full churn prediction workflow—from raw telecom data to a trained model
-                    that can identify at-risk customers and explain why they may leave. By cleaning the dataset, engineering
-                    meaningful features, training a Random Forest classifier, and applying SHAP for interpretability, the
-                    analysis delivers a clear and practical understanding of customer behavior. The result highlights how
-                    data science can support retention strategy by showing both who is likely to churn and which factors
-                    drive those decisions.
+                    This project shows the complete journey from raw Windows telemetry to a polished SOC style deliverable.
+                    Working with Sysmon logs, I identified key event IDs, used Event Viewer filters and PowerShell queries to
+                    hunt for malicious activity, and completed four detailed investigations that cover USB based malware,
+                    HTML and HTA payloads, registry and scheduled task persistence, and command and control traffic.
+                    The final report ties everything together with MITRE ATT&amp;CK mapping and clear analyst commentary,
+                    making it easy for a hiring manager or security team to see how I approach threat detection, log analysis,
+                    and incident response on Windows systems.
                 </p>
-
             </section>
 
         </div>
     </section>
 
-
     <!-- BACK TO PORTFOLIO LINK -->
     <section class="py-12 bg-primary-bg">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
             <a href="../index.html#projects"
                class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition">
                 ← Back to Portfolio
             </a>
-
         </div>
     </section>
-
 
 </main>
 </body>
