@@ -275,15 +275,16 @@
                 </p>
 
                 <p class="mb-3 text-white">
-                    I started with a fresh Windows 10 virtual machine that is used only as the monitored host. Before touching
-                    any security tooling, I walked through the standard setup screens and adjusted privacy options so only the
-                    minimum data is sent out. From there I confirmed the hardware profile and display settings so Event Viewer
-                    and PowerShell would be comfortable to work in for long sessions.
+                    This first phase prepares a clean Windows 10 virtual machine that will act as the monitored endpoint.
+                    I wanted the machine to feel like a realistic corporate workstation, but stripped down so that security
+                    artifacts are easy to understand. The next screenshots walk through how I hardened privacy, tuned the
+                    hardware profile, and opened an initial PowerShell session that I will later use as a baseline.
                 </p>
 
                 <p class="mb-3 text-white">
-                    These images show the transition from a standard installation to a lab ready monitoring machine. Capturing
-                    this phase makes it clear what changed before Sysmon and attacker activity are introduced.
+                    The first screenshot focuses on privacy options. Here I deliberately reduced data sharing settings so the
+                    machine behaves more like a locked down workstation. Getting this step right is important because it limits
+                    unnecessary background network noise, which makes real attacker traffic easier to pick out later.
                 </p>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
@@ -294,6 +295,13 @@
                     </p>
                 </div>
 
+                <p class="mb-3 text-white">
+                    Next I adjusted the VM hardware and display configuration. This screenshot shows how I balanced memory and
+                    CPU for the lab while also choosing a resolution that keeps Event Viewer and PowerShell readable in a single
+                    view. For real investigations, comfort matters. If the console is hard to read, analysts are less likely to
+                    dig into details and follow events to completion.
+                </p>
+
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                     <img src="../assets/images/WS1_VM_Hardware_Display.png"
                          class="rounded-lg mx-auto mb-2" />
@@ -302,7 +310,13 @@
                     </p>
                 </div>
 
-                <div class="bg-container-bg rounded-lg border border-gray-700 p-4">
+                <p class="mb-3 text-white">
+                    With the VM tuned, I logged in and opened a PowerShell window pinned to the taskbar. This forms my primary
+                    working surface for the rest of the lab. The screenshot below captures that initial desktop state before any
+                    Sysmon configuration or attack activity, giving me a visual baseline to compare against later.
+                </p>
+
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                     <img src="../assets/images/WS1_WindowsHost_LabEnvironment.png"
                          class="rounded-lg mx-auto mb-2" />
                     <p class="text-xs text-text-secondary italic text-center">
@@ -310,13 +324,56 @@
                     </p>
                 </div>
 
+                <p class="mb-3 text-white">
+                    To close out environment setup, I ran a small set of harmless PowerShell commands and captured the running
+                    process list. This establishes which shells and supporting processes are normal on the machine. Later, when
+                    suspicious commands and encoded payloads appear, I can compare them directly against this baseline.
+                </p>
+
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
+                    <img src="../assets/images/WS1_Final_PowerShell_ProcessList.png"
+                         class="rounded-lg mx-auto mb-2" />
+                    <p class="text-xs text-text-secondary italic text-center">
+                        Baseline PowerShell process list, used later to spot unusual shells spawned during simulated attacks.
+                    </p>
+                </div>
+
+                <p class="mb-3 text-white">
+                    I also used simple commands like <code>whoami</code> to confirm the logged in identity and verify that
+                    Sysmon will later record even basic discovery behavior. This screenshot is intentionally mundane. When the
+                    same command appears again inside a more complex script, the contrast helps highlight how attacker tooling
+                    chains normal actions together to reach their goal.
+                </p>
+
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
+                    <img src="../assets/images/WS1_Hunting_ProcessSearch_Whoami.png"
+                         class="rounded-lg mx-auto mb-2" />
+                    <p class="text-xs text-text-secondary italic text-center">
+                        Running whoami as a simple discovery command that will later be used as a reference in Sysmon logs.
+                    </p>
+                </div>
+
+                <p class="mb-3 text-white">
+                    Finally, I searched for PowerShell processes from within the shell itself. This reinforces how analysts can
+                    pivot between the host and logs to build the full picture. It also confirms that PowerShell is running with
+                    the expected parameters before any encoded commands or advanced payloads are introduced.
+                </p>
+
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4">
+                    <img src="../assets/images/WS1_Hunting_ProcessSearch_PowerShell.png"
+                         class="rounded-lg mx-auto mb-2" />
+                    <p class="text-xs text-text-secondary italic text-center">
+                        PowerShell based process search, confirming which shells are active on the host before the lab simulations.
+                    </p>
+                </div>
+
                 <p class="mt-4 text-sm text-white font-semibold">
                     Key actions in this step
                 </p>
                 <ul class="list-disc list-outside pl-5 text-sm text-white space-y-1">
-                    <li>Confirmed Windows privacy, hardware, and display choices on the monitoring VM.</li>
-                    <li>Kept the machine focused on security work instead of day to day tasks.</li>
-                    <li>Captured a clean baseline view of the host before any security changes or attacks.</li>
+                    <li>Prepared a dedicated Windows monitoring VM with tuned privacy and hardware settings.</li>
+                    <li>Established a baseline desktop layout and PowerShell workflow for later comparison.</li>
+                    <li>Captured simple discovery commands and process lists to anchor future investigations.</li>
                 </ul>
 
             </section>
@@ -331,15 +388,29 @@
                 </p>
 
                 <p class="mb-3 text-white">
-                    With the host ready, I installed Sysmon as an administrator and applied a community configuration that matches
-                    what many security teams use in production. This configuration focuses on high value process, network, file,
-                    registry, and DNS events while cutting down normal background noise. After installation I confirmed that the
-                    Sysmon service started correctly and that the Operational log began recording new entries.
+                    With the host ready, I shifted focus to installing Sysmon and understanding the configuration that controls
+                    what it logs. The goal here is not only to get events flowing, but to prove that I can read and reason about
+                    the configuration file that drives those events.
                 </p>
 
                 <p class="mb-3 text-white">
-                    I also reviewed the configuration file itself to understand which event IDs are enabled and which conditions
-                    trigger logging. That context makes it easier to explain exactly why a given alert appears later in the lab.
+                    I started by reviewing a popular community configuration on GitHub. The screenshot below shows that context.
+                    Comments in the file explain which event IDs are enabled and how noisy scenarios are filtered out. Reading
+                    the configuration up front helps me later explain why a given attack does or does not generate logs.
+                </p>
+
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
+                    <img src="../assets/images/WS1_Sysmon_Config_GitHub_Context.png"
+                         class="rounded-lg mx-auto mb-2" />
+                    <p class="text-xs text-text-secondary italic text-center">
+                        Reviewing a community Sysmon configuration from GitHub to see which events are enabled and how noise is filtered.
+                    </p>
+                </div>
+
+                <p class="mb-3 text-white">
+                    After confirming the configuration, I installed Sysmon from an elevated prompt. This screenshot captures the
+                    successful install message. It is important to show that the service and driver registered correctly, since
+                    misconfiguration at this step would silently prevent the rest of the lab from generating useful telemetry.
                 </p>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
@@ -350,23 +421,27 @@
                     </p>
                 </div>
 
-                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-                    <img src="../assets/images/WS1_Sysmon_Config_GitHub_Context.png"
-                         class="rounded-lg mx-auto mb-2" />
-                    <p class="text-xs text-text-secondary italic text-center">
-                        Reviewing a community Sysmon configuration from GitHub to see which events are enabled and how noise is filtered.
-                    </p>
-                </div>
+                <p class="mb-3 text-white">
+                    Before customizing any views, I opened Event Viewer to see the default state. The next screenshot shows the
+                    generic Windows logs that ship with the operating system. Capturing this view creates a clear contrast once
+                    the Sysmon Operational log is enabled and starts filling with higher fidelity events.
+                </p>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                     <img src="../assets/images/WS1_EventViewer_Initial_View.png"
                          class="rounded-lg mx-auto mb-2" />
                     <p class="text-xs text-text-secondary italic text-center">
-                        Initial Event Viewer layout before tuning, used as a reference to show how much data Sysmon generates.
+                        Initial Event Viewer layout before tuning, used as a reference to show how much data Sysmon adds.
                     </p>
                 </div>
 
-                <div class="bg-container-bg rounded-lg border border-gray-700 p-4">
+                <p class="mb-3 text-white">
+                    I then navigated to the Sysmon Operational channel under Applications and Services Logs. The screenshot below
+                    confirms that the channel exists and that events are streaming in. This is the main source I use for process,
+                    network, file, registry, and DNS telemetry throughout the rest of the project.
+                </p>
+
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                     <img src="../assets/images/WS1_EventViewer_Operational_Log.png"
                          class="rounded-lg mx-auto mb-2" />
                     <p class="text-xs text-text-secondary italic text-center">
@@ -374,13 +449,27 @@
                     </p>
                 </div>
 
+                <p class="mb-3 text-white">
+                    Finally, I filtered the view down to the Sysmon provider. This step makes sure that the console shows only
+                    Sysmon events rather than a mix of different sources. It sounds small, but it prevents confusion once I start
+                    hunting on specific IDs and need to know exactly which component produced each record.
+                </p>
+
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4">
+                    <img src="../assets/images/WS1_EventViewer_Filter_EventSources.png"
+                         class="rounded-lg mx-auto mb-2" />
+                    <p class="text-xs text-text-secondary italic text-center">
+                        Filtering Event Viewer by event sources so the view stays focused on Sysmon rather than every Windows provider.
+                    </p>
+                </div>
+
                 <p class="mt-4 text-sm text-white font-semibold">
                     Key actions in this step
                 </p>
                 <ul class="list-disc list-outside pl-5 text-sm text-white space-y-1">
-                    <li>Installed Sysmon as a persistent service and confirmed it survives reboots.</li>
-                    <li>Used a known community configuration as the baseline for event coverage.</li>
-                    <li>Verified that the Sysmon Operational log is present and receiving events before hunting begins.</li>
+                    <li>Selected and reviewed a community Sysmon configuration before deployment.</li>
+                    <li>Installed Sysmon as a persistent service and confirmed it successfully registered.</li>
+                    <li>Verified that the Sysmon Operational channel is present, active, and filtered correctly.</li>
                 </ul>
 
             </section>
@@ -395,23 +484,16 @@
                 </p>
 
                 <p class="mb-3 text-white">
-                    Sysmon can easily produce a huge volume of logs, so I narrowed my view to a small group of event IDs that are
-                    especially useful for detection. I then created a custom view plus filters to keep investigations centered on
-                    these entries instead of scrolling through every event.
+                    Once Sysmon was generating data, I tuned my views so that hunting sessions stayed focused on high value
+                    telemetry. Rather than scrolling through every event, I built a custom view anchored around a small set of
+                    event IDs that align with common attack techniques.
                 </p>
 
                 <p class="mb-3 text-white">
-                    The screenshots below show the progression from a generic view to a carefully filtered security view, along
-                    with detailed examples of the core event types I rely on later in the lab.
+                    The first screenshot here shows the creation of a custom view in Event Viewer. I selected Sysmon as the source
+                    and then specified only the event IDs that I planned to use throughout the lab. This turns Event Viewer into a
+                    security focused dashboard instead of a general purpose log browser.
                 </p>
-
-                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-                    <img src="../assets/images/WS1_EventViewer_Filter_EventSources.png"
-                         class="rounded-lg mx-auto mb-2" />
-                    <p class="text-xs text-text-secondary italic text-center">
-                        Filtering Event Viewer by event sources so the view stays focused on Sysmon rather than every Windows provider.
-                    </p>
-                </div>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                     <img src="../assets/images/WS1_Filtering_CustomView_SelectingKeywords.png"
@@ -421,6 +503,12 @@
                     </p>
                 </div>
 
+                <p class="mb-3 text-white">
+                    Next, I built a filter specifically for network events. The screenshot below shows a view restricted to
+                    Event ID 3, which logs outbound and inbound connections. Focusing on this ID makes it easier to spot beacon
+                    patterns, unusual ports, or connections tied to persistence mechanisms later on.
+                </p>
+
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                     <img src="../assets/images/WS1_EventViewer_EID3_Network_Filter.png"
                          class="rounded-lg mx-auto mb-2" />
@@ -428,6 +516,12 @@
                         Example filter that isolates Event ID 3 network connection events, ready for hunting on specific ports or IPs.
                     </p>
                 </div>
+
+                <p class="mb-3 text-white">
+                    To understand why filtering is necessary, I also captured a view that shows how noisy some IDs can be. The
+                    screenshot below highlights a high volume of Event ID 13 entries, which record registry value changes.
+                    Without filtering and context, this amount of data would quickly overwhelm an analyst.
+                </p>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                     <img src="../assets/images/WS1_EventViewer_HighVolume_EID13.png"
@@ -437,6 +531,12 @@
                     </p>
                 </div>
 
+                <p class="mb-3 text-white">
+                    I then walked through examples of each core event type. The process creation screenshot shows how Sysmon
+                    records not only the new process, but also the parent, full image path, and command line. These fields are
+                    critical for reconstructing the story behind an attack chain.
+                </p>
+
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                     <img src="../assets/images/WS1_EID1_ProcessCreate_Details.png"
                          class="rounded-lg mx-auto mb-2" />
@@ -444,6 +544,12 @@
                         Sysmon Event ID 1 process creation, including parent process, image path, and full command line for context.
                     </p>
                 </div>
+
+                <p class="mb-3 text-white">
+                    The next example focuses on Event ID 11, which tracks file creations. Here, I highlighted a DLL being written
+                    to disk. In a real case, changes like this could indicate a dropper, side loaded component, or payload for
+                    later execution.
+                </p>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                     <img src="../assets/images/WS1_EID11_FileCreate_DLL_Download.png"
@@ -453,6 +559,11 @@
                     </p>
                 </div>
 
+                <p class="mb-3 text-white">
+                    I then returned to Event ID 13, but this time zoomed in on a single registry value set that is directly related
+                    to persistence. This screenshot is used later in the lab when I build out a full Run key case from the logs.
+                </p>
+
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                     <img src="../assets/images/WS1_EID13_RegistryValue_Set.png"
                          class="rounded-lg mx-auto mb-2" />
@@ -460,6 +571,12 @@
                         Sysmon Event ID 13 registry value set, later used to track Run key persistence attempts in investigations.
                     </p>
                 </div>
+
+                <p class="mb-3 text-white">
+                    Finally, I examined Event ID 22, which logs DNS queries. The screenshot below shows the properties for a
+                    single lookup. Combined with Event ID 3, these entries help link host processes to the remote infrastructure
+                    they contact, which is essential for identifying command and control.
+                </p>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4">
                     <img src="../assets/images/WS1_EID22_DNSQuery_Properties.png"
@@ -473,9 +590,9 @@
                     Key actions in this step
                 </p>
                 <ul class="list-disc list-outside pl-5 text-sm text-white space-y-1">
-                    <li>Selected process, network, file, registry, and DNS event IDs as primary hunting signals.</li>
-                    <li>Created a custom view and filters so investigations begin from relevant telemetry.</li>
-                    <li>Captured clear examples of each event type for use later in case write ups.</li>
+                    <li>Built a custom Event Viewer view centered on a small set of high value Sysmon event IDs.</li>
+                    <li>Demonstrated why raw registry and network logs need filtering before analysis.</li>
+                    <li>Captured detailed examples of process, file, registry, and DNS events for later case work.</li>
                 </ul>
 
             </section>
@@ -490,17 +607,18 @@
                 </p>
 
                 <p class="mb-3 text-white">
-                    Once logging and filters were in place, I introduced activity on the host and watched how Sysmon recorded it.
-                    I began with normal behavior like a standard browser launch and simple file creation so I could recognize a
-                    clean baseline. Then I moved into more suspicious behavior, including the use of trusted tools to download
-                    payloads, registry changes for persistence, and post exploitation commands.
+                    With telemetry tuned, I moved into active hunting. This part of the lab introduces realistic behavior in
+                    phases, starting with harmless actions, then escalating to LOLBin based downloads, registry persistence,
+                    and command and control style traffic. Each screenshot represents a moment in the story that I later
+                    convert into a SOC case.
                 </p>
 
                 <p class="mb-3 text-white">
-                    Each group of screenshots below represents a mini investigation and later becomes a case in the SOC style report.
+                    To establish a baseline, I began with a simple web browsing session. The screenshot below shows a normal
+                    browser launch. The point here is not the website itself, but rather how standard user activity appears in
+                    Sysmon so that abnormal network patterns will stand out later.
                 </p>
 
-                <!-- Baseline: browser and simple file create -->
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                     <img src="../assets/images/WS1_Investigation_BrowserLaunch_Baseline.png"
                          class="rounded-lg mx-auto mb-2" />
@@ -508,6 +626,12 @@
                         Baseline investigation of a normal browser launch to see what clean, non malicious web usage looks like in Sysmon.
                     </p>
                 </div>
+
+                <p class="mb-3 text-white">
+                    I then created a simple test file and watched Sysmon record the file creation event. By starting with a
+                    harmless file, I can later compare how malicious payload drops or DLL downloads differ in path, naming, and
+                    parent process relationships.
+                </p>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                     <img src="../assets/images/WS1_Investigation_FileCreate_TestFile.png"
@@ -517,7 +641,12 @@
                     </p>
                 </div>
 
-                <!-- LOLBin download tests -->
+                <p class="mb-3 text-white">
+                    After baselining, I moved into LOLBin based downloads. The next screenshot shows the use of a curl style
+                    command from PowerShell to pull a file from a remote server. This is a common attacker pattern because it
+                    blends into administrative behavior while still retrieving an external payload.
+                </p>
+
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                     <img src="../assets/images/WS1_Investigation_LOLBinDownload_CurlCmd.png"
                          class="rounded-lg mx-auto mb-2" />
@@ -525,6 +654,12 @@
                         Using a trusted tool with a curl style command to download a file, then validating that Sysmon captures the process and network details.
                     </p>
                 </div>
+
+                <p class="mb-3 text-white">
+                    I repeated the download using <code>Invoke-WebRequest</code> to show how a similar technique can appear with
+                    different command lines. Comparing these two screenshots side by side with the logs teaches how a defender
+                    can build signatures that focus on behavior rather than a single exact string.
+                </p>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                     <img src="../assets/images/WS1_Investigation_LOLBinDownload_IWRCmd.png"
@@ -534,39 +669,12 @@
                     </p>
                 </div>
 
-                <!-- Process hunting with PowerShell and whoami -->
-                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-                    <img src="../assets/images/WS1_Hunting_ProcessSearch_Whoami.png"
-                         class="rounded-lg mx-auto mb-2" />
-                    <p class="text-xs text-text-secondary italic text-center">
-                        Basic whoami command run so that I can later search the logs for simple discovery actions tied to account context.
-                    </p>
-                </div>
-
-                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-                    <img src="../assets/images/WS1_Hunting_ProcessSearch_PowerShell.png"
-                         class="rounded-lg mx-auto mb-2" />
-                    <p class="text-xs text-text-secondary italic text-center">
-                        PowerShell process search used to locate active shells and support later hunting for suspicious command lines.
-                    </p>
-                </div>
-
-                <!-- C2 and persistence investigations -->
-                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-                    <img src="../assets/images/WS1_Investigation2_C2_NetworkEvent3.png"
-                         class="rounded-lg mx-auto mb-2" />
-                    <p class="text-xs text-text-secondary italic text-center">
-                        Investigation of Sysmon Event ID 3 entries that show a beacon style network connection to a command and control server.
-                    </p>
-                </div>
-
-                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-                    <img src="../assets/images/WS1_Investigation3_Persistence_RegistryValueSet.png"
-                         class="rounded-lg mx-auto mb-2" />
-                    <p class="text-xs text-text-secondary italic text-center">
-                        Registry value set observed in Sysmon that stores a payload path, forming the basis of a Run key persistence case.
-                    </p>
-                </div>
+                <p class="mb-3 text-white">
+                    Next, I focused on persistence through the registry. The first screenshot in this mini sequence shows a
+                    PowerShell command that sets a Run key value by modifying the registry with <code>Set-ItemProperty</code>.
+                    This operation is later recorded in Sysmon as Event ID 13 and becomes one of the key indicators in the
+                    persistence case.
+                </p>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                     <img src="../assets/images/WS1_Persistence_RunKey_SetItemProperty.png"
@@ -576,6 +684,12 @@
                     </p>
                 </div>
 
+                <p class="mb-3 text-white">
+                    The second screenshot shows the registry based Run key entry as seen from a defender perspective. Here the
+                    value points to the payload that will execute at logon. This view is much closer to what an analyst would
+                    see during a real response effort.
+                </p>
+
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                     <img src="../assets/images/WS1_Investigation_Persistence_RunKeySetup.png"
                          class="rounded-lg mx-auto mb-2" />
@@ -583,6 +697,12 @@
                         View inside Event Viewer showing how the new Run key entry appears from a defender perspective.
                     </p>
                 </div>
+
+                <p class="mb-3 text-white">
+                    To test detection of cleanup attempts, I tried removing the persistence key and watched how Sysmon recorded
+                    the change. The screenshot below captures that removal attempt. In a real case, this type of log can reveal
+                    where an attacker tried to cover their tracks but left partial artifacts behind.
+                </p>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
                     <img src="../assets/images/WS1_Investigation_Persistence_RunKeyRemovalFailure.png"
@@ -592,20 +712,72 @@
                     </p>
                 </div>
 
-                <!-- Post exploitation commands -->
+                <p class="mb-3 text-white">
+                    I then pivoted back into Sysmon to view the registry value set that represents this persistence in more
+                    detail. The next screenshot highlights the exact Event ID 13 record that ties the Run key path to the
+                    payload. This is the log entry I reference later in my written case summary.
+                </p>
+
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-                    <img src="../assets/images/WS1_PostExploitation_SystemInfo.png"
+                    <img src="../assets/images/WS1_Investigation3_Persistence_RegistryValueSet.png"
                          class="rounded-lg mx-auto mb-2" />
                     <p class="text-xs text-text-secondary italic text-center">
-                        Post exploitation use of systeminfo to pull host details, represented by process creation events in Sysmon.
+                        Registry value set observed in Sysmon that stores a payload path, forming the basis of a Run key persistence case.
                     </p>
                 </div>
 
-                <div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-                    <img src="../assets/images/WS1_PostExploitation_WhoamiCmdOverview.png"
+                <p class="mb-3 text-white">
+                    After persistence, I moved into simulated command and control traffic. The next screenshot shows a Sysmon
+                    Event ID 3 entry that records a network connection to a remote host. This becomes the network pivot point
+                    that links registry changes and encoded commands to external infrastructure.
+                </p>
+
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
+                    <img src="../assets/images/WS1_CommandAndControl_NetworkEventID3.png"
                          class="rounded-lg mx-auto mb-2" />
                     <p class="text-xs text-text-secondary italic text-center">
-                        Overview of post exploitation whoami usage which, combined with prior events, forms a clear discovery case.
+                        Sysmon Event ID 3 network connection that links PowerShell activity to an external command and control server.
+                    </p>
+                </div>
+
+                <p class="mb-3 text-white">
+                    I then zoomed in on a separate network event representing a beacon style connection. Here the focus is on the
+                    repeated communication to the same host and port, which is characteristic of many C2 frameworks and botnets.
+                </p>
+
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
+                    <img src="../assets/images/WS1_Investigation2_C2_NetworkEvent3.png"
+                         class="rounded-lg mx-auto mb-2" />
+                    <p class="text-xs text-text-secondary italic text-center">
+                        Investigation of Sysmon Event ID 3 entries that show a beacon style network connection to a command and control server.
+                    </p>
+                </div>
+
+                <p class="mb-3 text-white">
+                    To tie everything together, I executed an encoded PowerShell command. The next screenshot shows the script
+                    block view of that payload. From here I can decode the command, identify the intent, and match it to the
+                    registry changes and network traffic captured earlier in the lab.
+                </p>
+
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
+                    <img src="../assets/images/WS1_Case_EncodedCommand_ScriptBlock.png"
+                         class="rounded-lg mx-auto mb-2" />
+                    <p class="text-xs text-text-secondary italic text-center">
+                        Script block view of an encoded PowerShell command that is later tied to persistence and network activity.
+                    </p>
+                </div>
+
+                <p class="mb-3 text-white">
+                    The final screenshot in this section captures the moment that encoded command executes. This gives me the
+                    exact process details and timing needed to correlate the event with registry writes and network connections,
+                    forming a complete attack storyline from a single host.
+                </p>
+
+                <div class="bg-container-bg rounded-lg border border-gray-700 p-4">
+                    <img src="../assets/images/WS1_Case_EncodedCommand_ExecutionAttempt.png"
+                         class="rounded-lg mx-auto mb-2" />
+                    <p class="text-xs text-text-secondary italic text-center">
+                        Execution attempt for the encoded command, including process context that will be referenced in the SOC report.
                     </p>
                 </div>
 
@@ -613,9 +785,9 @@
                     Key actions in this step
                 </p>
                 <ul class="list-disc list-outside pl-5 text-sm text-white space-y-1">
-                    <li>Captured baseline activity so suspicious events have a clear reference point.</li>
-                    <li>Simulated file downloads, persistence, and simple discovery commands using trusted tools.</li>
-                    <li>Practiced reading process, file, registry, and network logs as a connected story rather than isolated entries.</li>
+                    <li>Established normal browsing and file activity as a baseline for comparison.</li>
+                    <li>Simulated attacker behavior with LOLBins, registry persistence, and beacon style network traffic.</li>
+                    <li>Captured encoded PowerShell usage that ties process, registry, and network events into a single narrative.</li>
                 </ul>
 
             </section>
@@ -630,56 +802,60 @@
                 </p>
 
                 <p class="mb-3 text-white">
-                    The final layer of the project is documentation. I took the investigations above and turned each into a case
-                    that looks like something a SOC analyst would hand off to a lead. For each case I captured the commands used,
-                    the Sysmon event IDs that exposed them, and a short analysis of why the behavior is suspicious. I then mapped
-                    each case to its matching MITRE ATT&amp;CK technique.
+                    The last stage of the lab is reporting. Here I treat each simulation as if it were a real ticket and
+                    document the key findings for a senior analyst. That includes the commands used, the Sysmon event IDs that
+                    revealed the activity, and a short explanation of why the behavior is suspicious. I then tie these findings
+                    back to MITRE ATT&amp;CK techniques.
                 </p>
 
                 <p class="mb-3 text-white">
-                    These screenshots show the core pieces of one of those cases, centered on encoded PowerShell, network activity,
-                    and a persistent payload stored in the registry.
+                    The first screenshot in this section shows a post exploitation view of <code>whoami</code> usage. Seeing the
+                    same command appear again at this phase helps emphasize how attackers chain simple discovery with more
+                    advanced techniques, and why even basic events can matter when placed in context.
                 </p>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-                    <img src="../assets/images/WS1_Case_EncodedCommand_ScriptBlock.png"
+                    <img src="../assets/images/WS1_PostExploitation_WhoamiCmdOverview.png"
                          class="rounded-lg mx-auto mb-2" />
                     <p class="text-xs text-text-secondary italic text-center">
-                        Script block and command line view of an encoded PowerShell command that is later tied to persistence activity.
+                        Post exploitation use of whoami, revisited as part of a larger sequence of discovery and persistence steps.
                     </p>
                 </div>
+
+                <p class="mb-3 text-white">
+                    The next screenshot captures <code>systeminfo</code> being run after the host is already under attacker
+                    control. Together with the process creation logs from earlier, this reinforces how Sysmon can reconstruct
+                    the full discovery phase even when the attacker uses native tools.
+                </p>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-                    <img src="../assets/images/WS1_Case_EncodedCommand_ExecutionAttempt.png"
+                    <img src="../assets/images/WS1_PostExploitation_SystemInfo.png"
                          class="rounded-lg mx-auto mb-2" />
                     <p class="text-xs text-text-secondary italic text-center">
-                        Execution attempt for the encoded command, giving the exact process details needed to correlate events in Sysmon.
+                        Post exploitation use of systeminfo to pull host details, recorded as additional process creation events.
                     </p>
                 </div>
+
+                <p class="mb-3 text-white">
+                    Finally, I pulled everything into a SOC style reporting template. The screenshot below shows one of the
+                    cases built around persistence. It documents the registry path, payload, supporting Sysmon event IDs, and
+                    mapped MITRE techniques. This is the type of artifact that can be attached directly to a ticket or used as a
+                    training example for other analysts.
+                </p>
 
                 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-                    <img src="../assets/images/WS1_CommandAndControl_NetworkEventID3.png"
-                         class="rounded-lg mx-auto mb-2" />
-                    <p class="text-xs text-text-secondary italic text-center">
-                        Sysmon Event ID 3 network connection that links the PowerShell activity to an external command and control server.
-                    </p>
-                </div>
-
-                <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-                    <img src="../assets/images/WS1_Final_PowerShell_ProcessList.png"
-                         class="rounded-lg mx-auto mb-2" />
-                    <p class="text-xs text-text-secondary italic text-center">
-                        Final PowerShell process list used to confirm which sessions are still active after simulated post exploitation steps.
-                    </p>
-                </div>
-
-                <div class="bg-container-bg rounded-lg border border-gray-700 p-4">
                     <img src="../assets/images/WS1_Reporting_SOCTemplate_PersistencePayload.png"
                          class="rounded-lg mx-auto mb-2" />
                     <p class="text-xs text-text-secondary italic text-center">
                         SOC style report template capturing the persistence payload, key events, indicators, and mapped MITRE techniques.
                     </p>
                 </div>
+
+                <p class="mb-3 text-white">
+                    From here it is straightforward to extend the report with more simulations or to adapt the template to other
+                    hosts. The combination of structured narrative, screenshots, and event references makes it easy for someone
+                    who did not run the lab to still understand what happened and why it matters.
+                </p>
 
                 <p class="mt-4 text-sm text-white font-semibold mb-2">
                     Example MITRE ATT&amp;CK mapping used in this lab
@@ -733,8 +909,8 @@
                 </div>
 
                 <p class="text-sm text-white">
-                    Using this structure, it is easy to add more simulations later and extend the table with new techniques, while
-                    still keeping everything grounded in the same Sysmon event categories used throughout the lab.
+                    This mapping framework can be extended with additional techniques as more simulations are added, while still
+                    staying grounded in the same Sysmon telemetry that powers the rest of the lab.
                 </p>
 
             </section>
