@@ -428,225 +428,243 @@
     </section>    
     
     <!-- PROJECTS -->
-    <section id="projects" class="hero-grid-bg py-16 sm:py-20 md:py-24 bg-primary-bg border-t border-gray-800 transition-colors duration-500">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="section-title-wrapper mx-auto">
-                <h2 class="font-mono">03. Selected projects</h2>
-                <span></span>
+           <section id="projects" class="hero-grid-bg py-16 sm:py-20 md:py-24 bg-primary-bg border-t border-gray-800 transition-colors duration-500">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="section-title-wrapper mx-auto">
+                    <h2 class="font-mono">03. Selected projects</h2>
+                    <span></span>
+                </div>
+        
+                <div class="flex flex-wrap gap-3 mb-8 text-sm">
+                    <button class="filter-btn bg-accent-red text-white px-4 py-1 rounded-full" data-filter="all">All</button>
+                    <button class="filter-btn bg-secondary-bg text-text-secondary px-4 py-1 rounded-full" data-filter="soc">Cybersecurity & SOC</button>
+                    <button class="filter-btn bg-secondary-bg text-text-secondary px-4 py-1 rounded-full" data-filter="ml">Machine Learning & Modeling</button>
+                    <button class="filter-btn bg-secondary-bg text-text-secondary px-4 py-1 rounded-full" data-filter="analytics">Data Analytics</button>
+                    <button class="filter-btn bg-secondary-bg text-text-secondary px-4 py-1 rounded-full" data-filter="sql">SQL & Databases</button>
+                    <button class="filter-btn bg-secondary-bg text-text-secondary px-4 py-1 rounded-full" data-filter="or">Optimization & Operations Research</button>
+                </div>
+        
+                <div class="grid md:grid-cols-2 gap-8">
+        
+                    <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="vulnerability scanning nessus">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="text-xl font-semibold text-text-base m-0 p-0">Nessus Vulnerability Scanning Lab</h3>
+                            <i class="fas fa-shield-alt text-xl text-text-secondary opacity-80"></i>
+                        </div>
+                        <p class="text-xs font-mono text-accent-cyan mb-3">Vul Scanning · Nessus Essentials · Network Discovery · Reporting</p>
+                    
+                        <p class="text-sm text-text-secondary mb-3">
+                            Set up Nessus Essentials on Kali and scanned a two-machine lab (Kali and Metasploitable) for vulnerabilities and malware. Performed host discovery, authenticated scans, policy tuning, plugin updates, and generated PDF reports with prioritized remediation guidance.
+                        </p>
+                    
+                        <p class="text-xs text-text-secondary">
+                            Skills: Vulnerability Scanning, Host Discovery, Authenticated SSH Scanning, Malware Detection, Remediation Analysis.
+                        </p>
+                    
+                        <a href="./projects/nessus-vulnerability-scanning-lab.html"
+                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                            style="color: var(--functional-success);">
+                            ➜ Learn more
+                        </a>
+                    </article>
+        
+                    
+                    <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="soc analytics">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="text-xl font-semibold text-text-base m-0 p-0">Azure Sentinel Threat Analysis</h3>
+                            <i class="fas fa-cloud text-xl text-text-secondary opacity-80"></i>
+                        </div>
+                        <p class="text-xs font-mono text-accent-cyan mb-3">SOC Lab · Azure VM · Microsoft Sentinel · KQL</p>
+                        <p class="text-sm text-text-secondary mb-3">
+                            Designed and deployed a Windows honeypot in Azure to capture and analyze global attack traffic. Forwarded event logs into Microsoft Sentinel, enriched malicious IPs with threat intelligence, and visualized real time attacker activity through an interactive world map.
+                        </p>
+                        <p class="text-xs text-text-secondary">Skills: Azure administration, NSG configuration, Windows event logging, KQL analytics, SIEM operations.</p>
+        
+                        <a href="projects/azure-soc-honeypot.html"
+                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                            style="color: var(--functional-success);">
+                            ➜ Learn more
+                        </a>
+                    </article>
+        
+                    <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="soc">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="text-xl font-semibold text-text-base m-0 p-0">Active Directory Beginner Lab</h3>
+                            <i class="fas fa-users text-xl text-text-secondary opacity-80"></i>
+                        </div>
+                        <p class="text-xs font-mono text-accent-cyan mb-3">Windows Server · AD DS · DNS · IAM · Helpdesk</p>
+                        <p class="text-sm text-text-secondary mb-3">
+                            Built a full on premise Active Directory environment using Windows Server 2022. Created and managed users, security groups, OUs, shared folders, password resets, unlocks, and group based access to simulate realistic IT and identity workflows.
+                        </p>
+                        <p class="text-xs text-text-secondary">
+                            Skills: AD DS configuration, DNS setup, user lifecycle management, group/OU design, IAM fundamentals, helpdesk operations.
+                        </p>
+                    
+                        <a href="projects/active-directory-iam-project.html"
+                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                            style="color: var(--functional-success);">
+                            ➜ Learn more
+                        </a>
+                    </article>
+        
+        
+                    <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="ml analytics">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="text-xl font-semibold text-text-base m-0 p-0">Telco Customer Churn Analysis</h3>
+                            <i class="fas fa-brain text-xl text-text-secondary opacity-80"></i>
+                        </div>
+                        <p class="text-xs font-mono text-accent-cyan mb-3">Python · ML · SHAP</p>
+                        <p class="text-sm text-text-secondary mb-3">
+                            Cleaned and engineered telecom customer data, built predictive machine learning models, assessed performance, and used SHAP values to explain the main drivers of customer churn.
+                        </p>
+                        <p class="text-xs text-text-secondary">Skills: Pandas, Scikit-Learn, Feature Engineering, Model Evaluation, SHAP Explainability.</p>
+        
+                        <a href="projects/telco-churn.html"
+                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                            style="color: var(--functional-success);">
+                            ➜ Learn more
+                        </a>
+                    </article>
+        
+                    <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="soc detection blue-team">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="text-xl font-semibold text-text-base m-0 p-0">Windows Sysmon Threat Detection Lab</h3>
+                            <i class="fas fa-terminal text-xl text-text-secondary opacity-80"></i>
+                        </div>
+                        <p class="text-xs font-mono text-accent-cyan mb-3">Windows 10 · Sysmon · MITRE ATT</p>
+                    
+                        <p class="text-sm text-text-secondary mb-3">
+                            Deployed Sysmon on a Windows 10 VM, enabled advanced PowerShell and event logging, and simulated attacker behavior to detect process creation, network connections, registry changes, and file activity mapped to MITRE ATT&CK.
+                        </p>
+                    
+                        <p class="text-xs text-text-secondary">
+                            Skills: Sysmon, Windows Logging, Threat Detection, MITRE Mapping, Reporting.
+                        </p>
+                    
+                        <a href="projects/sysmon-lab.html"
+                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                            style="color: var(--functional-success);">
+                            ➜ Learn more
+                        </a>
+                    </article>
+        
+                    <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="analytics">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="text-xl font-semibold text-text-base m-0 p-0">Operations Management Analysis</h3>
+                            <i class="fas fa-chart-line text-xl text-text-secondary opacity-80"></i>
+                        </div>
+                        <p class="text-xs font-mono text-accent-cyan mb-3">Excel · KPI dashboards</p>
+                        <p class="text-sm text-text-secondary mb-3">
+                            Built a complete KPI reporting story that highlighted manufacturing performance trends and operational bottlenecks. Designed metrics, automated calculations, and produced clear Excel dashboards for leadership visibility.
+                        </p>
+                        <p class="text-xs text-text-secondary">Skills: KPI Development, Excel Modeling, Advanced Formulas, Dashboard Design.</p>
+        
+                        <a href="projects/kpi-analysis.html"
+                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                            style="color: var(--functional-success);">
+                            ➜ Learn more
+                        </a>
+                    </article>
+        
+                    <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="analytics">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="text-xl font-semibold text-text-base m-0 p-0">Cyclistic Rider Behavior Analysis</h3>
+                            <i class="fas fa-biking text-xl text-text-secondary opacity-80"></i>
+                        </div>
+                        <p class="text-xs font-mono text-accent-cyan mb-3">R · Tableau</p>
+                        <p class="text-sm text-text-secondary mb-3">
+                            Analyzed Chicago ridership patterns across customer types, identified demographic and seasonal trends, and created Tableau dashboards to support targeted marketing decisions.
+                        </p>
+                        <p class="text-xs text-text-secondary">Skills: R Programming, Data Manipulation, Cohort Analysis, Tableau Visualization.</p>
+        
+                        <a href="projects/cyclist-analysis.html"
+                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                            style="color: var(--functional-success);">
+                            ➜ Learn more
+                        </a>
+                    </article>
+        
+                    <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="analytics">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="text-xl font-semibold text-text-base m-0 p-0">Bellabeat Smart Device Usage Analysis</h3>
+                            <i class="fas fa-heart text-xl text-text-secondary opacity-80"></i>
+                        </div>
+                        <p class="text-xs font-mono text-accent-cyan mb-3">Fitbit Data · Story Insights</p>
+                        <p class="text-sm text-text-secondary mb-3">
+                            Explored Fitbit activity data to uncover user engagement trends, segmented behavior patterns, and delivered insights to guide product and wellness recommendations.
+                        </p>
+                        <p class="text-xs text-text-secondary">Skills: Exploratory Data Analysis, Data Cleaning, User Segmentation, Data Storytelling.</p>
+        
+                        <a href="projects/bellabeat-device-analysis.html"
+                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                            style="color: var(--functional-success);">
+                            ➜ Learn more
+                        </a>
+                    </article>
+        
+                    <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="sql">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="text-xl font-semibold text-text-base m-0 p-0">Landscape Database Revitalization</h3>
+                            <i class="fas fa-database text-xl text-text-secondary opacity-80"></i>
+                        </div>
+                        <p class="text-xs font-mono text-accent-cyan mb-3">SQL Server · ETL</p>
+                        <p class="text-sm text-text-secondary mb-3">
+                            Redesigned a fragmented database into a clean, normalized, analytics-ready schema. Established proper relationships, built optimized SQL views, and improved long-term performance and maintainability.
+                        </p>
+                        <p class="text-xs text-text-secondary">Skills: Relational Schema Design, Data Normalization, SQL Optimization, ETL Development.</p>
+        
+                        <a href="projects/landscape-database-revitalization.html"
+                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                            style="color: var(--functional-success);">
+                            ➜ Learn more
+                        </a>
+                    </article>
+        
+                    <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="sql analytics">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="text-xl font-semibold text-text-base m-0 p-0">World Layoffs SQL Data Cleaning</h3>
+                            <i class="fas fa-globe text-xl text-text-secondary opacity-80"></i>
+                        </div>
+                        <p class="text-xs font-mono text-accent-cyan mb-3">SQL pipeline · Standardization</p>
+                        <p class="text-sm text-text-secondary mb-3">
+                            Built a SQL pipeline to clean global layoffs data, resolve inconsistencies, standardize fields, and generate rolling metrics for trend analysis.
+                        </p>
+                        <p class="text-xs text-text-secondary">Skills: SQL, SSMS, Window Functions, Data Quality, Data Standardization.</p>
+        
+                        <a href="projects/world-layoffs-sql-cleaning.html"
+                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                            style="color: var(--functional-success);">
+                            ➜ Learn more
+                        </a>
+                    </article>
+        
+                    <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="or analytics">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="text-xl font-semibold text-text-base m-0 p-0">Quantitative Decision Modeling</h3>
+                            <i class="fas fa-cogs text-xl text-text-secondary opacity-80"></i>
+                        </div>
+                        <p class="text-xs font-mono text-accent-cyan mb-3">Excel · Modeling</p>
+                        <p class="text-sm text-text-secondary mb-3">
+                            Applied operations research techniques including Monte Carlo simulation, linear programming, payoff tables, and decision tree modeling to support data-driven decision making.
+                        </p>
+                        <p class="text-xs text-text-secondary">Skills: Optimization, Simulation, Decision Modeling.</p>
+        
+                        <a href="projects/optimization-decision-models.html"
+                            class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
+                            style="color: var(--functional-success);">
+                            ➜ Learn more
+                        </a>
+                    </article>
+                </div>
+        
+                <div class="mt-8 text-sm text-text-secondary">
+                    Full project write ups and code live in this repository:
+                    <a href="https://github.com/cjaguirre/Cybersecurity-and-Data-Analytics-Portfolio" target="_blank" class="text-accent-cyan hover:text-accent-red">
+                        Cybersecurity and Data Analytics Portfolio on GitHub
+                    </a>.
+                </div>
             </div>
-
-            <!-- filters -->
-            <div class="flex flex-wrap gap-3 mb-8 text-sm">
-                <!-- Uses accent-red for the active filter color -->
-                <button class="filter-btn bg-accent-red text-white px-4 py-1 rounded-full" data-filter="all">All</button>
-                <button class="filter-btn bg-secondary-bg text-text-secondary px-4 py-1 rounded-full" data-filter="soc">Cybersecurity & SOC</button>
-                <button class="filter-btn bg-secondary-bg text-text-secondary px-4 py-1 rounded-full" data-filter="ml">Machine Learning & Modeling</button>
-                <button class="filter-btn bg-secondary-bg text-text-secondary px-4 py-1 rounded-full" data-filter="analytics">Data Analytics</button>
-                <button class="filter-btn bg-secondary-bg text-text-secondary px-4 py-1 rounded-full" data-filter="sql">SQL & Databases</button>
-                <button class="filter-btn bg-secondary-bg text-text-secondary px-4 py-1 rounded-full" data-filter="or">Optimization & Operations Research</button>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-8">
-
-                <!-- Nessus Vulnerability Scanning Lab -->
-                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="vulnerability scanning nessus">
-                    <h3 class="text-xl font-semibold text-text-base mb-1">Nessus Vulnerability Scanning Lab</h3>
-                    <p class="text-xs font-mono text-accent-cyan mb-3">Vul Scanning · Nessus Essentials · Network Discovery · Reporting</p>
-                
-                    <p class="text-sm text-text-secondary mb-3">
-                        Set up Nessus Essentials on Kali and scanned a two-machine lab (Kali and Metasploitable) for vulnerabilities and malware. Performed host discovery, authenticated scans, policy tuning, plugin updates, and generated PDF reports with prioritized remediation guidance.
-                    </p>
-                
-                    <p class="text-xs text-text-secondary">
-                        Skills: Vulnerability Scanning, Host Discovery, Authenticated SSH Scanning, Malware Detection, Remediation Analysis.
-                    </p>
-                
-                    <a href="./projects/nessus-vulnerability-scanning-lab.html"
-                       class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                       style="color: var(--functional-success);">
-                        ➜ Learn more
-                    </a>
-                </article>
-
-
-                
-                <!-- Azure SOC Honeypot -->
-                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="soc analytics">
-                    <h3 class="text-xl font-semibold text-text-base mb-1">Azure Sentinel Threat Analysis</h3>
-                    <p class="text-xs font-mono text-accent-cyan mb-3">SOC Lab · Azure VM · Microsoft Sentinel · KQL</p>
-                    <p class="text-sm text-text-secondary mb-3">
-                        Designed and deployed a Windows honeypot in Azure to capture and analyze global attack traffic. Forwarded event logs into Microsoft Sentinel, enriched malicious IPs with threat intelligence, and visualized real time attacker activity through an interactive world map.
-                    </p>
-                    <p class="text-xs text-text-secondary">Skills: Azure administration, NSG configuration, Windows event logging, KQL analytics, SIEM operations.</p>
-
-                    <!-- Link uses functional success color for subtle callout -->
-                    <a href="projects/azure-soc-honeypot.html"
-                       class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                       style="color: var(--functional-success);">
-                        ➜ Learn more
-                    </a>
-                </article>
-
-                <!-- Active Directory Beginner Lab -->
-                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="soc">
-                    <h3 class="text-xl font-semibold text-text-base mb-1">Active Directory Beginner Lab</h3>
-                    <p class="text-xs font-mono text-accent-cyan mb-3">Windows Server · AD DS · DNS · IAM · Helpdesk</p>
-                    <p class="text-sm text-text-secondary mb-3">
-                        Built a full on premise Active Directory environment using Windows Server 2022. Created and managed users, security groups, OUs, shared folders, password resets, unlocks, and group based access to simulate realistic IT and identity workflows.
-                    </p>
-                    <p class="text-xs text-text-secondary">
-                        Skills: AD DS configuration, DNS setup, user lifecycle management, group/OU design, IAM fundamentals, helpdesk operations.
-                    </p>
-                
-                    <a href="projects/active-directory-iam-project.html"
-                       class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                       style="color: var(--functional-success);">
-                        ➜ Learn more
-                    </a>
-                </article>
-
-
-                <!-- Telco churn -->
-                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="ml analytics">
-                    <h3 class="text-xl font-semibold text-text-base mb-1">Telco Customer Churn Analysis</h3>
-                    <p class="text-xs font-mono text-accent-cyan mb-3">Python · ML · SHAP</p>
-                    <p class="text-sm text-text-secondary mb-3">
-                        Cleaned and engineered telecom customer data, built predictive machine learning models, assessed performance, and used SHAP values to explain the main drivers of customer churn.
-                    </p>
-                    <p class="text-xs text-text-secondary">Skills: Pandas, Scikit-Learn, Feature Engineering, Model Evaluation, SHAP Explainability.</p>
-
-                    <a href="projects/telco-churn.html"
-                       class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                       style="color: var(--functional-success);">
-                        ➜ Learn more
-                    </a>
-                </article>
-
-                <!-- Windows Sysmon Threat Detection Lab -->
-                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="soc detection blue-team">
-                    <h3 class="text-xl font-semibold text-text-base mb-1">Windows Sysmon Threat Detection Lab</h3>
-                    <p class="text-xs font-mono text-accent-cyan mb-3">Windows 10 · Sysmon · MITRE ATT</p>
-                
-                    <p class="text-sm text-text-secondary mb-3">
-                        Deployed Sysmon on a Windows 10 VM, enabled advanced PowerShell and event logging, and simulated attacker behavior to detect process creation, network connections, registry changes, and file activity mapped to MITRE ATT&CK.
-                    </p>
-                
-                    <p class="text-xs text-text-secondary">
-                        Skills: Sysmon, Windows Logging, Threat Detection, MITRE Mapping, Reporting.
-                    </p>
-                
-                    <a href="projects/sysmon-lab.html"
-                       class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                       style="color: var(--functional-success);">
-                        ➜ Learn more
-                    </a>
-                </article>
-
-                <!-- KPI Analysis -->
-                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="analytics">
-                    <h3 class="text-xl font-semibold text-text-base mb-1">Operations Management Analysis</h3>
-                    <p class="text-xs font-mono text-accent-cyan mb-3">Excel · KPI dashboards</p>
-                    <p class="text-sm text-text-secondary mb-3">
-                        Built a complete KPI reporting story that highlighted manufacturing performance trends and operational bottlenecks. Designed metrics, automated calculations, and produced clear Excel dashboards for leadership visibility.
-                    </p>
-                    <p class="text-xs text-text-secondary">Skills: KPI Development, Excel Modeling, Advanced Formulas, Dashboard Design.</p>
-
-                    <a href="projects/kpi-analysis.html"
-                       class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                       style="color: var(--functional-success);">
-                        ➜ Learn more
-                    </a>
-                </article>
-
-                <!-- Cyclistic -->
-                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="analytics">
-                    <h3 class="text-xl font-semibold text-text-base mb-1">Cyclistic Rider Behavior Analysis</h3>
-                    <p class="text-xs font-mono text-accent-cyan mb-3">R · Tableau</p>
-                    <p class="text-sm text-text-secondary mb-3">
-                        Analyzed Chicago ridership patterns across customer types, identified demographic and seasonal trends, and created Tableau dashboards to support targeted marketing decisions.
-                    </p>
-                    <p class="text-xs text-text-secondary">Skills: R Programming, Data Manipulation, Cohort Analysis, Tableau Visualization.</p>
-
-                    <a href="projects/cyclist-analysis.html"
-                       class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                       style="color: var(--functional-success);">
-                        ➜ Learn more
-                    </a>
-                </article>
-
-                <!-- Bellabeat -->
-                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="analytics">
-                    <h3 class="text-xl font-semibold text-text-base mb-1">Bellabeat Smart Device Usage Analysis</h3>
-                    <p class="text-xs font-mono text-accent-cyan mb-3">Fitbit Data · Story Insights</p>
-                    <p class="text-sm text-text-secondary mb-3">
-                        Explored Fitbit activity data to uncover user engagement trends, segmented behavior patterns, and delivered insights to guide product and wellness recommendations.
-                    </p>
-                    <p class="text-xs text-text-secondary">Skills: Exploratory Data Analysis, Data Cleaning, User Segmentation, Data Storytelling.</p>
-
-                    <a href="projects/bellabeat-device-analysis.html"
-                       class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                       style="color: var(--functional-success);">
-                        ➜ Learn more
-                    </a>
-                </article>
-
-                <!-- Landscape DB -->
-                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="sql">
-                    <h3 class="text-xl font-semibold text-text-base mb-1">Landscape Database Revitalization</h3>
-                    <p class="text-xs font-mono text-accent-cyan mb-3">SQL Server · ETL</p>
-                    <p class="text-sm text-text-secondary mb-3">
-                        Redesigned a fragmented database into a clean, normalized, analytics-ready schema. Established proper relationships, built optimized SQL views, and improved long-term performance and maintainability.
-                    </p>
-                    <p class="text-xs text-text-secondary">Skills: Relational Schema Design, Data Normalization, SQL Optimization, ETL Development.</p>
-
-                    <a href="projects/landscape-database-revitalization.html"
-                       class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                       style="color: var(--functional-success);">
-                        ➜ Learn more
-                    </a>
-                </article>
-
-                <!-- World Layoffs -->
-                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="sql analytics">
-                    <h3 class="text-xl font-semibold text-text-base mb-1">World Layoffs SQL Data Cleaning</h3>
-                    <p class="text-xs font-mono text-accent-cyan mb-3">SQL pipeline · Standardization</p>
-                    <p class="text-sm text-text-secondary mb-3">
-                        Built a SQL pipeline to clean global layoffs data, resolve inconsistencies, standardize fields, and generate rolling metrics for trend analysis.
-                    </p>
-                    <p class="text-xs text-text-secondary">Skills: SQL, SSMS, Window Functions, Data Quality, Data Standardization.</p>
-
-                    <a href="projects/world-layoffs-sql-cleaning.html"
-                       class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                       style="color: var(--functional-success);">
-                        ➜ Learn more
-                    </a>
-                </article>
-
-                <!-- Optimization Models -->
-                <article class="project-card p-6 rounded-xl bg-secondary-bg border border-gray-700 hover:border-accent-cyan transition duration-300" data-tags="or analytics">
-                    <h3 class="text-xl font-semibold text-text-base mb-1">Quantitative Decision Modeling</h3>
-                    <p class="text-xs font-mono text-accent-cyan mb-3">Excel · Modeling</p>
-                    <p class="text-sm text-text-secondary mb-3">
-                        Applied operations research techniques including Monte Carlo simulation, linear programming, payoff tables, and decision tree modeling to support data-driven decision making.
-                    </p>
-                    <p class="text-xs text-text-secondary">Skills: Optimization, Simulation, Decision Modeling.</p>
-
-                    <a href="projects/optimization-decision-models.html"
-                       class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-                       style="color: var(--functional-success);">
-                        ➜ Learn more
-                    </a>
-                </article>
-            </div>
-
-            <div class="mt-8 text-sm text-text-secondary">
-                Full project write ups and code live in this repository:
-                <a href="https://github.com/cjaguirre/Cybersecurity-and-Data-Analytics-Portfolio" target="_blank" class="text-accent-cyan hover:text-accent-red">
-                    Cybersecurity and Data Analytics Portfolio on GitHub
-                </a>.
-            </div>
-        </div>
-    </section>
+        </section>
 
     <!-- EXPERIENCE -->
     <section id="experience" 
