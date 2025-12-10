@@ -641,79 +641,82 @@ activity deserved attention first.
 </div>
 
   
-<div class="grid md:grid-cols-2 gap-8 mb-10">
-<div id=severity-donut class="bg-secondary-bg border border-gray-700 rounded-xl p-8 opacity-0 transition-opacity duration-700">
-<div class="flex flex-col md:flex-row items-center justify-center gap-10">
-<div class="relative w-48 h-48 flex-shrink-0">
-<div class="absolute inset-0 flex flex-col items-center justify-center z-10">
-<span class="text-4xl font-bold text-white font-mono">72</span>
-<span class="text-[0.65rem] text-white uppercase tracking-widest mt-1">Total Incidents</span>
+<div class="bg-secondary-bg border border-gray-700 rounded-xl p-8 mb-10">
+  <div class="flex flex-col md:flex-row items-center justify-center gap-10">
+
+    <!-- Donut Chart Center Text -->
+    <div class="relative w-48 h-48 flex-shrink-0">
+      <div class="absolute inset-0 flex flex-col items-center justify-center z-10">
+        <span class="text-4xl font-bold text-white font-mono">62.6K</span>
+        <span class="text-[0.65rem] text-text-secondary uppercase tracking-widest mt-1">Total Attempts</span>
+      </div>
+
+      <!-- SVG Donut -->
+      <svg width="100%" height="100%" viewBox="0 0 42 42" class="transform -rotate-90">
+        <!-- Background Circle -->
+        <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="rgba(255,255,255,0.05)" stroke-width="4"></circle>
+
+        <!-- Poland -->
+        <circle class="ring-anim" cx="21" cy="21" r="15.915"
+          fill="transparent" stroke="#ef4444" stroke-width="4"
+          stroke-dasharray="57 43" stroke-dashoffset="0"></circle>
+
+        <!-- Netherlands -->
+        <circle class="ring-anim" cx="21" cy="21" r="15.915"
+          fill="transparent" stroke="#fb923c" stroke-width="4"
+          stroke-dasharray="41 59" stroke-dashoffset="-57"></circle>
+
+        <!-- Argentina -->
+        <circle class="ring-anim" cx="21" cy="21" r="15.915"
+          fill="transparent" stroke="#3b82f6" stroke-width="4"
+          stroke-dasharray="8 92" stroke-dashoffset="-98"></circle>
+      </svg>
+    </div>
+
+    <!-- Legend -->
+    <div class="w-full max-w-xs space-y-3">
+      <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 border-b border-gray-800 pb-2">
+        Attack Source Breakdown
+      </h3>
+
+      <div class="flex items-center justify-between text-sm">
+        <div class="flex items-center gap-3">
+          <span class="w-2 h-2 rounded-full bg-red-500"></span>
+          <span class="text-text-secondary">Jordanow, Poland</span>
+        </div>
+        <div class="flex items-center gap-4 font-mono">
+          <span class="text-white font-bold">33.7K</span>
+          <span class="text-xs text-text-secondary w-8 text-right">57%</span>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between text-sm">
+        <div class="flex items-center gap-3">
+          <span class="w-2 h-2 rounded-full bg-orange-400"></span>
+          <span class="text-text-secondary">Tilburg, Netherlands</span>
+        </div>
+        <div class="flex items-center gap-4 font-mono">
+          <span class="text-white font-bold">24.1K</span>
+          <span class="text-xs text-text-secondary w-8 text-right">41%</span>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between text-sm">
+        <div class="flex items-center gap-3">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+          <span class="text-text-secondary">Ranchos, Argentina</span>
+        </div>
+        <div class="flex items-center gap-4 font-mono">
+          <span class="text-white font-bold">4.82K</span>
+          <span class="text-xs text-text-secondary w-8 text-right">8%</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>
-<svg width=100% height=100% viewBox="0 0 42 42" class="transform -rotate-90">
-<circle cx=21 cy=21 r=15.915 fill=transparent stroke=rgba(255,255,255,0.05) stroke-width=4></circle>
-<circle class=ring-anim cx=21 cy=21 r=15.915 fill=transparent stroke=#3b82f6 stroke-width=4 stroke-dasharray="57 43" stroke-dashoffset=0></circle>
-<circle class=ring-anim cx=21 cy=21 r=15.915 fill=transparent stroke=#f97316 stroke-width=4 stroke-dasharray="17 83" stroke-dashoffset=-57></circle>
-<circle class=ring-anim cx=21 cy=21 r=15.915 fill=transparent stroke=#ef4444 stroke-width=4 stroke-dasharray="10 90" stroke-dashoffset=-74></circle>
-<circle class=ring-anim cx=21 cy=21 r=15.915 fill=transparent stroke=#ea580c stroke-width=4 stroke-dasharray="8 92" stroke-dashoffset=-84></circle>
-<circle class=ring-anim cx=21 cy=21 r=15.915 fill=transparent stroke=#eab308 stroke-width=4 stroke-dasharray="8 92" stroke-dashoffset=-92></circle>
-</svg>
-</div>
-<div class="w-full max-w-xs space-y-3">
-<h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 border-b border-gray-800 pb-2">
-Distribution Breakdown
-</h3>
-<div class="flex items-center justify-between text-sm">
-<div class="flex items-center gap-3">
-<span class="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]"></span>
-<span class=text-white>Critical</span>
-</div>
-<div class="flex items-center gap-4 font-mono">
-<span class="text-white font-bold">7</span>
-<span class="text-xs text-white w-8 text-right">10%</span>
-</div>
-</div>
-<div class="flex items-center justify-between text-sm">
-<div class="flex items-center gap-3">
-<span class="w-2 h-2 rounded-full bg-orange-600"></span>
-<span class=text-white>High</span>
-</div>
-<div class="flex items-center gap-4 font-mono">
-<span class="text-white font-bold">6</span>
-<span class="text-xs text-white w-8 text-right">8%</span>
-</div>
-</div>
-<div class="flex items-center justify-between text-sm">
-<div class="flex items-center gap-3">
-<span class="w-2 h-2 rounded-full bg-orange-500"></span>
-<span class=text-white>Medium</span>
-</div>
-<div class="flex items-center gap-4 font-mono">
-<span class="text-white font-bold">12</span>
-<span class="text-xs text-white w-8 text-right">17%</span>
-</div>
-</div>
-<div class="flex items-center justify-between text-sm">
-<div class="flex items-center gap-3">
-<span class="w-2 h-2 rounded-full bg-yellow-500"></span>
-<span class=text-white>Low</span>
-</div>
-<div class="flex items-center gap-4 font-mono">
-<span class="text-white font-bold">6</span>
-<span class="text-xs text-white w-8 text-right">8%</span>
-</div>
-</div>
-<div class="flex items-center justify-between text-sm">
-<div class="flex items-center gap-3">
-<span class="w-2 h-2 rounded-full bg-blue-500"></span>
-<span class=text-white>Info</span>
-</div>
-<div class="flex items-center gap-4 font-mono">
-<span class="text-white font-bold">41</span>
-<span class="text-xs text-white w-8 text-right">57%</span>
-</div>
-</div>
-</div>
-</div>
+
+  
 <style>.ring-anim{stroke-dasharray:0 100;animation:fillChart 1.5s ease-out forwards}.ring-anim:nth-child(2){animation-delay:.1s;stroke-dasharray:57 43}.ring-anim:nth-child(3){animation-delay:.3s;stroke-dasharray:17 83}.ring-anim:nth-child(4){animation-delay:.5s;stroke-dasharray:10 90}.ring-anim:nth-child(5){animation-delay:.7s;stroke-dasharray:8 92}.ring-anim:nth-child(6){animation-delay:.9s;stroke-dasharray:8 92}@keyframes fillChart{from{stroke-dasharray:0 100}}</style>
 </div>
 <div class="bg-secondary-bg border border-gray-700 rounded-xl p-5 shadow-lg flex flex-col justify-center">
