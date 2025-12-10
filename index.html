@@ -575,84 +575,137 @@ Coursera & Google
 <div class="absolute w-[900px] h-[900px] -top-40 -left-40 bg-accent-cyan/10 blur-[200px] rounded-full"></div>
 <div class="absolute w-[700px] h-[700px] -bottom-40 right-0 bg-accent-cyan/5 blur-[180px] rounded-full"></div>
 </div>
-<div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 w-full">
-<div class="section-title-wrapper mx-auto mb-20 text-center">
-<h2 class=font-mono>06. Contact</h2>
-<span></span>
-</div>
-<div class="grid lg:grid-cols-2 gap-20 items-start">
-<div class="relative p-10 rounded-2xl bg-[var(--bg-secondary)] border border-gray-800 transition duration-300 group hover:border-[var(--accent-action)]">
-<div class="absolute -left-4 top-0 bottom-0 w-1.5 bg-accent-cyan rounded-full"></div>
 
-<h3 class="text-4xl font-bold mb-4 text-text-base tracking-tight">
-    Let’s connect
-</h3>
+    
+<section id="contact" class="pt-32 pb-24">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+        
+        <!-- Title -->
+        <h2 class="text-3xl font-mono text-accent-structural mb-12">
+            06. Contact
+        </h2>
 
-<p class="text-text-secondary leading-relaxed text-[1.05rem] max-w-[520px] mb-10">
-    I’m open to new roles in security operations, IT systems analysis, or data analytics.
-    If you'd like to discuss opportunities, collaborate on projects, or compare notes on labs
-    and investigations, feel free to reach out anytime.
-</p>
+        <div class="grid lg:grid-cols-2 gap-20 items-start">
 
-<div class="space-y-5">
-    <!-- Email -->
-    <div class="flex items-center gap-3 group cursor-default">
-        <div class="text-[var(--accent-structural)] text-xl">✉️</div>
-        <p class="text-text-secondary group-hover:text-text-base transition">
-            cj.aguirr3@gmail.com
-        </p>
+            <!-- LEFT PANEL -->
+            <div class="relative p-10 rounded-2xl bg-[var(--bg-secondary)] border border-gray-800">
+                <!-- Accent bar -->
+                <div class="absolute -left-4 top-6 bottom-6 w-1.5 bg-[var(--accent-action)] rounded-full"></div>
+
+                <h3 class="text-4xl font-bold mb-6 text-text-base">
+                    Let’s connect
+                </h3>
+
+                <p class="text-text-secondary leading-relaxed text-[1.05rem] max-w-[90%] mb-10">
+                    I’m open to new roles in security operations, IT systems analysis, or data analytics.
+                    If you'd like to discuss opportunities, collaborate on projects, or compare notes on labs
+                    and investigations, feel free to reach out anytime.
+                </p>
+
+                <div class="space-y-7">
+
+                    <!-- EMAIL -->
+                    <div class="flex items-start gap-4">
+                        <div class="text-[var(--accent-structural)] text-xl mt-1">📧</div>
+                        <div class="flex flex-col">
+                            <p class="text-text-base font-medium">Email</p>
+                            <p class="text-text-secondary">cj.aguirr3@gmail.com</p>
+                        </div>
+                    </div>
+
+                    <!-- LOCATION -->
+                    <div class="flex items-start gap-4">
+                        <div class="text-[var(--accent-structural)] text-xl mt-1">📍</div>
+                        <div class="flex flex-col">
+                            <p class="text-text-base font-medium">Location</p>
+                            <p class="text-text-secondary">Fairfax, Virginia, United States</p>
+                        </div>
+                    </div>
+
+                    <!-- LINKEDIN -->
+                    <div class="flex items-start gap-4">
+                        <div class="text-[var(--accent-structural)] text-xl mt-1">🔗</div>
+                        <div class="flex flex-col">
+                            <p class="text-text-base font-medium">LinkedIn</p>
+                            <a 
+                                href="https://www.linkedin.com/in/christianaguirre/"
+                                target="_blank"
+                                class="text-text-secondary hover:text-[var(--accent-action)] transition"
+                            >
+                                linkedin.com/in/christianaguirre
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- RIGHT: FORM PANEL -->
+            <div class="p-[2px] rounded-2xl bg-[var(--bg-secondary)]">
+                <div class="p-10 rounded-2xl bg-[var(--bg-default)] border border-gray-800">
+
+                    <form name="contact" data-netlify="true" netlify-honeypot="bot-field">
+                        <input type="hidden" name="form-name" value="contact">
+
+                        <p class="hidden"><input name="bot-field"></p>
+
+                        <!-- NAME + EMAIL -->
+                        <div class="grid sm:grid-cols-2 gap-6 mb-6">
+                            <input 
+                                type="text" 
+                                name="name" 
+                                placeholder="Name"
+                                class="w-full p-4 rounded-lg bg-[var(--bg-secondary)] border border-gray-700 text-text-base placeholder-text-secondary focus:border-[var(--accent-action)] transition"
+                                required
+                            />
+                            <input 
+                                type="email" 
+                                name="email" 
+                                placeholder="Email"
+                                class="w-full p-4 rounded-lg bg-[var(--bg-secondary)] border border-gray-700 text-text-base placeholder-text-secondary focus:border-[var(--accent-action)] transition"
+                                required
+                            />
+                        </div>
+
+                        <!-- SUBJECT -->
+                        <div class="mb-6">
+                            <input 
+                                type="text" 
+                                name="subject" 
+                                placeholder="Subject"
+                                class="w-full p-4 rounded-lg bg-[var(--bg-secondary)] border border-gray-700 text-text-base placeholder-text-secondary focus:border-[var(--accent-action)] transition"
+                                required
+                            />
+                        </div>
+
+                        <!-- MESSAGE -->
+                        <div class="mb-10">
+                            <textarea 
+                                name="message" 
+                                rows="7" 
+                                placeholder="Your message"
+                                class="w-full p-4 rounded-lg bg-[var(--bg-secondary)] border border-gray-700 text-text-base placeholder-text-secondary focus:border-[var(--accent-action)] transition"
+                                required
+                            ></textarea>
+                        </div>
+
+                        <!-- BUTTON -->
+                        <button 
+                            type="submit" 
+                            class="w-full py-4 rounded-lg font-semibold shadow-lg transition bg-[var(--accent-action)] text-[var(--bg-default)] hover:scale-[1.03]"
+                        >
+                            Send message
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
     </div>
-
-    <!-- Location -->
-    <div class="flex items-center gap-3 group cursor-default">
-        <div class="text-[var(--accent-structural)] text-xl">📍</div>
-        <p class="text-text-secondary">
-            Fairfax, Virginia, United States
-        </p>
-    </div>
-
-    <!-- LinkedIn -->
-    <a 
-        href="https://www.linkedin.com/in/christianaguirre/"
-        target="_blank"
-        class="flex items-center gap-3 group"
-    >
-        <div class="text-[var(--accent-structural)] text-xl">🔗</div>
-        <span class="text-text-secondary group-hover:text-[var(--accent-action)] transition">
-            linkedin.com/in/christianaguirre
-        </span>
-    </a>
-</div>
-
-  
-</div>
-</div>
-<div class="p-[2px] rounded-2xl bg-secondary-bg">
-<div class="p-10 rounded-2xl bg-[var(--bg-secondary)] border border-gray-800">
-<form name=contact data-netlify=true netlify-honeypot=bot-field>
-<input type=hidden name=form-name value=contact />
-<p class=hidden>
-<label>Ignore this: <input name=bot-field /></label>
-</p>
-<div class="grid sm:grid-cols-2 gap-6 mb-6">
-<input type=text name=name placeholder=Name class="w-full p-4 rounded-lg bg-primary-bg border border-gray-700 focus:border-accent-cyan text-text-base placeholder-text-secondary transition" required />
-<input type=email name=email placeholder=Email class="w-full p-4 rounded-lg bg-primary-bg border border-gray-700 focus:border-accent-cyan text-text-base placeholder-text-secondary transition" required />
-</div>
-<div class=mb-6>
-<input type=text name=subject placeholder=Subject class="w-full p-4 rounded-lg bg-primary-bg border border-gray-700 focus:border-accent-cyan text-text-base placeholder-text-secondary transition" required />
-</div>
-<div class=mb-10>
-<textarea name=message rows=7 placeholder="Your message" class="w-full p-4 rounded-lg bg-primary-bg border border-gray-700 focus:border-accent-cyan text-text-base placeholder-text-secondary transition" required></textarea>
-</div>
-<button type=submit class="w-full py-4 rounded-lg bg-accent-cyan text-primary-bg font-semibold shadow-lg hover:scale-[1.03] transition" style=background-color:var(--functional-action);color:var(--bg-default) onmouseover="this.style.backgroundColor='#4f96e4'" onmouseout="this.style.backgroundColor='var(--functional-action)'">
-Send message
-</button>
-</form>
-</div>
-</div>
-</div>
-</div>
 </section>
+
+    
 <footer class="bg-primary-bg text-gray-500 text-center py-4 text-sm border-t border-gray-800 transition-colors duration-500">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-2">
 <div class=text-left>
