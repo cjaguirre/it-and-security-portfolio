@@ -600,150 +600,47 @@ The exposed honeypot generated over four thousand failed RDP attempts which were
 severity based on volume, persistence, and attack characteristics, giving a SOC-style view of which
 activity deserved attention first.
 </p>
-<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
-<div onclick="toggleSeverity('critical')" class="severity-box bg-secondary-bg rounded-xl border border-gray-700 p-6 text-center cursor-pointer hover:border-red-400 transition">
-<p class="text-white text-3xl font-bold mb-1">7</p>
-<p class="text-xs tracking-wide text-white">CRITICAL</p>
+<!-- TELEMETRY METRIC ROW -->
+<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
+
+    <!-- Failed Logons -->
+    <div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
+        <p class="text-3xl font-bold text-red-400 mb-1">4,623</p>
+        <p class="text-xs tracking-widest text-white uppercase">Failed RDP Logons</p>
+        <p class="text-[0.68rem] text-text-secondary mt-2">Real attacker attempts on the honeypot</p>
+    </div>
+
+    <!-- Unique IPs -->
+    <div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
+        <p class="text-3xl font-bold text-orange-300 mb-1">126</p>
+        <p class="text-xs tracking-widest text-white uppercase">Unique IPs</p>
+        <p class="text-[0.68rem] text-text-secondary mt-2">Distinct external sources observed</p>
+    </div>
+
+    <!-- Countries -->
+    <div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
+        <p class="text-3xl font-bold text-yellow-300 mb-1">32</p>
+        <p class="text-xs tracking-widest text-white uppercase">Countries</p>
+        <p class="text-[0.68rem] text-text-secondary mt-2">Global spread of attack origins</p>
+    </div>
+
+    <!-- Collection Days -->
+    <div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
+        <p class="text-3xl font-bold text-green-300 mb-1">7</p>
+        <p class="text-xs tracking-widest text-white uppercase">Collection Days</p>
+        <p class="text-[0.68rem] text-text-secondary mt-2">Continuous telemetry window</p>
+    </div>
+
+    <!-- Correlated Incidents -->
+    <div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
+        <p class="text-3xl font-bold text-blue-400 mb-1">72</p>
+        <p class="text-xs tracking-widest text-white uppercase">Correlated Incidents</p>
+        <p class="text-[0.68rem] text-text-secondary mt-2">Grouped campaigns and attack patterns</p>
+    </div>
+
 </div>
-<div onclick="toggleSeverity('high')" class="severity-box bg-secondary-bg rounded-xl border border-gray-700 p-6 text-center cursor-pointer hover:border-orange-400 transition">
-<p class="text-white text-3xl font-bold mb-1">6</p>
-<p class="text-xs tracking-wide text-white">HIGH</p>
-</div>
-<div onclick="toggleSeverity('medium')" class="severity-box bg-secondary-bg rounded-xl border border-gray-700 p-6 text-center cursor-pointer hover:border-orange-500 transition">
-<p class="text-white text-3xl font-bold mb-1">12</p>
-<p class="text-xs tracking-wide text-white">MEDIUM</p>
-</div>
-<div onclick="toggleSeverity('low')" class="severity-box bg-secondary-bg rounded-xl border border-gray-700 p-6 text-center cursor-pointer hover:border-yellow-500 transition">
-<p class="text-white text-3xl font-bold mb-1">6</p>
-<p class="text-xs tracking-wide text-white">LOW</p>
-</div>
-<div onclick="toggleSeverity('info')" class="severity-box bg-secondary-bg rounded-xl border border-gray-700 p-6 text-center cursor-pointer hover:border-blue-400 transition">
-<p class="text-white text-3xl font-bold mb-1">41</p>
-<p class="text-xs tracking-wide text-white">INFORMATIONAL</p>
-</div>
-</div>
-<div id=panel-critical class="collapsible-content mt-2 mb-6">
-<div class="bg-secondary-bg border border-red-900/40 rounded-xl p-5">
-<h3 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-<span class=severity-critical>Critical</span>
-High-volume campaigns and aggressive brute-force activity
-</h3>
-<p class="text-xs text-white mb-4">
-Critical incidents represent sustained, automated campaigns generating large volumes of failed
-logons over short time windows. These patterns most closely resemble real-world attack operations
-that would warrant immediate SOC attention in a production environment.
-</p>
-<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-lg p-3" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Raw-Attacker-Logs.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Raw-Attacker-Logs.png class="rounded-md w-full object-contain" alt="High-volume failed logon stream">
-<p class="mt-2 text-[0.68rem] text-white italic text-center">
-High-rate stream of Event ID 4625 entries indicating automated brute-force campaigns.
-</p>
-</div>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-lg p-3" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Fully-Enriched-Attacker-Table.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Fully-Enriched-Attacker-Table.png class="rounded-md w-full object-contain" alt="Clustered enriched attacker table">
-<p class="mt-2 text-[0.68rem] text-white italic text-center">
-Enriched view showing clustered high-volume attacker IPs and their geographic footprint.
-</p>
-</div>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-lg p-3" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Clean-Attack-Map-Visualization.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Clean-Attack-Map-Visualization.png class="rounded-md w-full object-contain" alt="Map hotspots for critical incidents">
-<p class="mt-2 text-[0.68rem] text-white italic text-center">
-Map hotspots where critical brute-force campaigns concentrated around the honeypot.
-</p>
-</div>
-</div>
-</div>
-</div>
-<div id=panel-high class="collapsible-content mt-2 mb-6">
-<div class="bg-secondary-bg border border-orange-900/40 rounded-xl p-5">
-<h3 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-<span class=severity-high>High</span>
-Persistent scanning and focused attack sources
-</h3>
-<p class="text-xs text-white mb-4">
-High severity incidents capture IPs and regions that attempted repeated logons over longer time
-periods but at lower volume than the critical campaigns. These are still meaningful for detection
-tuning, IP blocking, and threat hunting.
-</p>
-<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-lg p-3" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_KQL-Enrichment-Query-Close-Up.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_KQL-Enrichment-Query-Close-Up.png class="rounded-md w-full object-contain" alt="KQL used to analyze persistent sources">
-<p class="mt-2 text-[0.68rem] text-white italic text-center">
-KQL query inspecting repeated failed logons grouped by attacking IP and region.
-</p>
-</div>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-lg p-3" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Sentinel-Watchlist-GeoIP-Rows.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Sentinel-Watchlist-GeoIP-Rows.png class="rounded-md w-full object-contain" alt="GeoIP data shaping high severity incidents">
-<p class="mt-2 text-[0.68rem] text-white italic text-center">
-GeoIP data that underpins the severity decisioning for repeated attacker locations.
-</p>
-</div>
-</div>
-</div>
-</div>
-<div id=panel-medium class="collapsible-content mt-2 mb-6">
-<div class="bg-secondary-bg border border-orange-500/40 rounded-xl p-5">
-<h3 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-<span class=severity-medium>Medium</span>
-Opportunistic scanners and background noise
-</h3>
-<p class="text-xs text-white mb-4">
-Medium incidents represent opportunistic activity — scanners and bots that hit the honeypot a few
-times and then moved on. While individually low-risk, they provide valuable signal about the
-baseline noise level on the public internet.
-</p>
-<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-lg p-3" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Raw-Attacker-Logs.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Raw-Attacker-Logs.png class="rounded-md w-full object-contain" alt="Opportunistic failed logons">
-<p class="mt-2 text-[0.68rem] text-white italic text-center">
-Short-lived, low-volume failed logons typical of opportunistic scanning activity.
-</p>
-</div>
-</div>
-</div>
-</div>
-<div id=panel-low class="collapsible-content mt-2 mb-6">
-<div class="bg-secondary-bg border border-yellow-900/40 rounded-xl p-5">
-<h3 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-<span class=severity-low>Low</span>
-Hygiene, mis-typed creds, and benign noise
-</h3>
-<p class="text-xs text-white mb-4">
-Low-level incidents include benign or expected noise — mis-typed credentials during testing, local
-administrative activity, or isolated failed logons that do not fit a larger attack pattern.
-</p>
-<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-lg p-3" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Azure-Home-Overview.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Azure-Home-Overview.png class="rounded-md w-full object-contain" alt="Portal context around low-level events">
-<p class="mt-2 text-[0.68rem] text-white italic text-center">
-Portal view used to cross-check benign administrative actions against low severity events.
-</p>
-</div>
-</div>
-</div>
-</div>
-<div id=panel-info class="collapsible-content mt-2 mb-8">
-<div class="bg-secondary-bg border border-blue-900/40 rounded-xl p-5">
-<h3 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-<span class=severity-info>Informational</span>
-Background telemetry and reconnaissance context
-</h3>
-<p class="text-xs text-white mb-4">
-Informational records capture the supporting telemetry around the honeypot — metadata, system
-context, and non-malicious events that still help analysts understand what “normal” looks like in
-this lab environment.
-</p>
-<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-lg p-3" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_SOCArc_Diagram.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_SOCArc_Diagram.png class="rounded-md w-full object-contain" alt="Architecture context for informational events">
-<p class="mt-2 text-[0.68rem] text-white italic text-center">
-Architecture view providing context for informational and supporting telemetry.
-</p>
-</div>
-</div>
-</div>
-</div>
+
+  
 <div class="grid md:grid-cols-2 gap-8 mb-10">
 <div id=severity-donut class="bg-secondary-bg border border-gray-700 rounded-xl p-8 opacity-0 transition-opacity duration-700">
 <div class="flex flex-col md:flex-row items-center justify-center gap-10">
