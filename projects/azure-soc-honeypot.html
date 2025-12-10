@@ -655,32 +655,42 @@ Visual summary of all enriched 4625 events plotted on a world map, grouped by in
 <div class="grid md:grid-cols-2 gap-6 mb-12">
 
   <!-- Top attack origins bar chart -->
-  <div class="bg-secondary-bg border border-gray-700 rounded-xl p-6 shadow">
-    <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">
-      Top Attack Origins (by attempts)
-    </h3>
-    <p class="text-xs text-text-secondary leading-relaxed mb-3">
-      Aggregated view of total brute-force attempts from the most active geographic sources observed during the collection window.
-    </p>
-    <canvas id="attackOriginChart" class="mt-2"></canvas>
-    <p class="mt-3 text-[0.7rem] text-text-secondary italic">
-      Jordanów (Poland), Tilburg (Netherlands), and Ranchos (Argentina) generated the majority of observed RDP traffic.
-    </p>
-  </div>
+      <div class="bg-secondary-bg border border-gray-700 rounded-xl p-6 shadow">
+      <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">
+        Top Attack Origins (by attempts)
+      </h3>
+      <p class="text-xs text-text-secondary leading-relaxed mb-3">
+        Aggregated view of total brute-force attempts from major geographic sources.
+      </p>
+    
+      <div class="chart-container">
+        <canvas id="attackOriginChart"></canvas>
+      </div>
+    
+      <p class="mt-3 text-[0.7rem] text-text-secondary italic">
+        Jordanów (Poland), Tilburg (Netherlands), and Ranchos (Argentina) generated the majority of RDP traffic.
+      </p>
+    </div>
+
 
   <!-- Daily attempts line chart -->
-  <div class="bg-secondary-bg border border-gray-700 rounded-xl p-6 shadow">
-    <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">
-      Failed RDP Logons by Day
-    </h3>
-    <p class="text-xs text-text-secondary leading-relaxed mb-3">
-      Time-series breakdown of failed logons across the seven-day collection period, highlighting sustained automated activity.
-    </p>
-    <canvas id="dailyAttemptsChart" class="mt-2"></canvas>
-    <p class="mt-3 text-[0.7rem] text-text-secondary italic">
-      A sharp spike in early days is followed by a steady baseline of ongoing automated brute-force attempts.
-    </p>
-  </div>
+      <div class="bg-secondary-bg border border-gray-700 rounded-xl p-6 shadow">
+      <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">
+        Failed RDP Logons by Day
+      </h3>
+      <p class="text-xs text-text-secondary leading-relaxed mb-3">
+        Time-series breakdown of failed logons across the seven-day collection period.
+      </p>
+    
+      <div class="chart-container">
+        <canvas id="dailyAttemptsChart"></canvas>
+      </div>
+    
+      <p class="mt-3 text-[0.7rem] text-text-secondary italic">
+        Activity spikes early and stabilizes with consistent automated attacks.
+      </p>
+    </div>
+
 
 </div>
 
