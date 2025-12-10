@@ -1,35 +1,23 @@
 <!DOCTYPE html>
-<html lang=en data-theme=dark>
+<html lang=en data-theme=dark class=dark>
 <head>
 <meta charset=UTF-8 />
 <meta name=viewport content="width=device-width, initial-scale=1.0" />
 <title>Cyclistic Rider Behavior Analysis | Christian Aguirre</title>
 <script src=https://cdn.tailwindcss.com></script>
-<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;--functional-action:#61afef;--functional-success:#98c379;--accent-primary:var(--accent-structural);--accent-red:#e06c75;--container-bg:#171717;background-color:var(--bg-default);color:var(--text-base)}.light{--bg-default:#fff;--bg-secondary:#f3f4f6;--text-base:#111827;--text-secondary:#4b5563;--accent-structural:#111827;--functional-action:#2563eb;--functional-success:#16a34a;--accent-primary:var(--accent-structural);--accent-red:#dc2626;--container-bg:#fff;background-color:var(--bg-default);color:var(--text-base)}body{font-family:"Inter",sans-serif;transition:background-color .5s,color .5s;background-color:var(--bg-default)}.hero-grid-bg{background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center}.section-title-wrapper{display:inline-flex;align-items:center;margin-bottom:1.5rem;font-family:"Inconsolata",monospace;width:100%}.section-title-wrapper h2{font-size:1.25rem;font-weight:700;color:var(--accent-structural);flex-shrink:0}.section-title-wrapper span{content:'';display:block;height:2px;background-color:var(--text-secondary);margin-left:.75rem;flex-grow:1;opacity:.5;min-width:150px}.pill{border-radius:999px;padding:.18rem .6rem;border:1px solid rgba(148,163,184,0.4);font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;white-space:nowrap;background-color:rgba(0,0,0,0.35)}.pill-muted{color:var(--text-secondary)}.pill-accent{color:var(--accent-structural);border-color:rgba(217,217,217,0.85)}.card-section{border-radius:.9rem;border-width:1px;border-color:rgba(31,41,55,0.9);background-color:var(--bg-secondary);padding:1.75rem;box-shadow:0 16px 28px rgba(0,0,0,0.45)}pre code{font-family:"Inconsolata",monospace;font-size:.8rem}figcaption{font-size:.7rem}.stat-card{position:relative;overflow:hidden;border-radius:.95rem;background-color:var(--bg-secondary);border:1px solid #374151}.stat-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent,rgba(97,175,239,0.10),transparent);animation:shimmer 3s infinite linear}@keyframes shimmer{0%{transform:translateX(-100%) translateY(-100%) rotate(45deg)}100%{transform:translateX(100%) translateY(100%) rotate(45deg)}}.stat-card-inner{position:relative;z-index:1}.stat-number{font-size:2.4rem;font-weight:800;font-family:"Inconsolata",monospace}.image-zoom{cursor:pointer;transition:all .3s ease}.image-zoom:hover{transform:scale(1.02);box-shadow:0 10px 34px rgba(0,0,0,0.75)}.modal{display:none;position:fixed;z-index:9999;inset:0;background-color:rgba(0,0,0,0.95)}.modal.active{display:flex;align-items:center;justify-content:center}.modal-content{max-width:95%;max-height:95%;border-radius:.5rem}.nav-dots{position:fixed;right:2rem;top:50%;transform:translateY(-50%);z-index:50}.nav-dot{width:10px;height:10px;border-radius:999px;background:var(--text-secondary);margin:.75rem 0;cursor:pointer;transition:all .25s ease}.nav-dot:hover,.nav-dot.active{background:var(--functional-action);transform:scale(1.4)}@media(max-width:768px){.nav-dots{display:none}}</style>
+<script>function switchTab(tabId){document.querySelectorAll('.tab-button').forEach(btn=>{btn.classList.remove('active');});document.querySelectorAll('.tab-content').forEach(content=>{content.classList.remove('active');});const activeButton=[...document.querySelectorAll('.tab-button')].find(btn=>btn.getAttribute('data-tab')===tabId);if(activeButton)activeButton.classList.add('active');const target=document.getElementById(`tab-${tabId}`);if(target)target.classList.add('active');}</script>
+<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;--functional-action:#61afef;--functional-success:#98c379;--accent-primary:var(--accent-structural);--accent-red:#e06c75;--container-bg:#171717;background-color:var(--bg-default);color:var(--text-base)}.light{--bg-default:#fff;--bg-secondary:#f3f4f6;--text-base:#111827;--text-secondary:#4b5563;--accent-structural:#111827;--functional-action:#2563eb;--functional-success:#16a34a;--accent-primary:var(--accent-structural);--accent-red:#dc2626;--container-bg:#fff;background-color:var(--bg-default);color:var(--text-base)}body{font-family:"Inter",sans-serif;transition:background-color .5s,color .5s;background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center;background-attachment:fixed}.hero-grid-bg{background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center}.section-title-wrapper{display:inline-flex;align-items:center;margin-bottom:1.25rem;font-family:"Inconsolata",monospace;width:100%}.section-title-wrapper h2{font-size:1.25rem;font-weight:700;color:var(--accent-structural);flex-shrink:0}.section-title-wrapper span{content:'';display:block;height:2px;background-color:var(--text-secondary);margin-left:.75rem;flex-grow:1;opacity:.5;min-width:150px}.pill{border-radius:999px;padding:.2rem .7rem;border:1px solid rgba(171,178,191,0.6);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;white-space:nowrap;background-color:rgba(23,23,23,0.95)}.pill-muted{color:var(--text-secondary)}.pill-accent{color:var(--accent-structural);border-color:rgba(217,217,217,0.9)}.card-section{border-radius:.9rem;border-width:1px;border-color:rgba(31,41,55,0.9);background-color:var(--bg-secondary);padding:1.75rem;box-shadow:0 16px 28px rgba(0,0,0,0.45)}.stat-card{position:relative;overflow:hidden}.stat-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent,rgba(97,175,239,0.10),transparent);animation:shimmer 3s infinite linear}@keyframes shimmer{0%{transform:translateX(-100%) translateY(-100%) rotate(45deg)}100%{transform:translateX(100%) translateY(100%) rotate(45deg)}}.stat-number{font-size:2.4rem;font-weight:800;font-family:"Inconsolata",monospace}.tab-button{padding:1rem 1.5rem;background:transparent;border:0;color:var(--text-secondary);font-family:"Inconsolata",monospace;cursor:pointer;transition:all .3s ease;border-bottom:3px solid transparent;white-space:nowrap;font-size:.8rem}.tab-button:hover{color:var(--functional-action);background:rgba(97,175,239,0.05)}.tab-button.active{color:var(--functional-action);border-bottom-color:var(--functional-action)}.tab-content{display:none;animation:fadeSlideIn .4s ease-out}.tab-content.active{display:block}@keyframes fadeSlideIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}pre code{font-family:"Inconsolata",monospace;font-size:.8rem}figcaption{font-size:.7rem}</style>
 <script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)",}}}};document.addEventListener("DOMContentLoaded",()=>{const html=document.documentElement;const savedTheme=localStorage.getItem("theme");const systemPrefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;let initialTheme='dark';if(savedTheme){initialTheme=savedTheme;}else if(!systemPrefersDark){initialTheme='light';}
-html.setAttribute("data-theme",initialTheme);html.classList.add(initialTheme);});function scrollToSection(id){const target=document.getElementById(id);if(!target)return;target.scrollIntoView({behavior:'smooth',block:'start'});const dots=document.querySelectorAll('.nav-dot');const sections=['hero','workflow','lab','dashboard','insights'];dots.forEach((dot,idx)=>{dot.classList.toggle('active',sections[idx]===id);});}
-function openModal(src){const modal=document.getElementById('imageModal');const img=document.getElementById('modalImage');if(!modal||!img)return;img.src=src;modal.classList.add('active');}
-function closeModal(){const modal=document.getElementById('imageModal');const img=document.getElementById('modalImage');if(!modal||!img)return;img.src='';modal.classList.remove('active');}</script>
+html.setAttribute("data-theme",initialTheme);html.classList.add(initialTheme);switchTab('environment');});</script>
 </head>
 <body class="bg-primary-bg text-text-base transition-colors duration-500">
 <main class="min-h-screen bg-primary-bg text-text-base">
-<div class=nav-dots>
-<div class="nav-dot active" onclick="scrollToSection('hero')"></div>
-<div class=nav-dot onclick="scrollToSection('workflow')"></div>
-<div class=nav-dot onclick="scrollToSection('lab')"></div>
-<div class=nav-dot onclick="scrollToSection('dashboard')"></div>
-<div class=nav-dot onclick="scrollToSection('insights')"></div>
-</div>
-<div id=imageModal class=modal onclick=closeModal()>
-<span style=position:absolute;top:2rem;right:3rem;color:white;font-size:3rem;cursor:pointer>&times;</span>
-<img id=modalImage class=modal-content alt="Enlarged view" />
-</div>
-<section id=hero class="hero-grid-bg border-b border-gray-800 pt-10 pb-12 md:pb-16">
+<section class="hero-grid-bg border-b border-gray-800 pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 <a href=../index.html#projects class="inline-flex items-center text-accent-cyan text-xs sm:text-sm mb-6 hover:text-accent-red transition">
 ← Back to Portfolio
 </a>
-<div class="flex flex-wrap gap-2 mb-5">
+<div class="flex flex-wrap gap-2 mb-6">
 <span class="pill pill-accent">Cyclistic Rider Behavior Analysis</span>
 <span class="pill pill-muted">R Programming</span>
 <span class="pill pill-muted">Tableau</span>
@@ -41,73 +29,63 @@ Cyclistic Rider Behavior Analysis
 <p class="text-[0.75rem] sm:text-xs uppercase tracking-[0.18em] text-text-secondary mb-3">
 Project 5 · Google Data Analytics Capstone · May 2026
 </p>
-<p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed mb-7">
+<p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed mb-8">
 A year-long analysis of Chicago’s bike-share program comparing casual riders and annual members.
 This capstone project follows the full Google Data Analytics process — Ask, Prepare, Process,
 Analyze, Share, and Act — to inform marketing strategies that convert high-usage casual riders
 into long-term members.
 </p>
 <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-<div class="stat-card p-5 text-center">
-<div class=stat-card-inner>
+<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
 <div class="stat-number text-[#61AFEF] mb-1">12</div>
 <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Months</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Apr 2022 – Mar 2023</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Continuous trip data (Apr 2022–Mar 2023)</div>
 </div>
-</div>
-<div class="stat-card p-5 text-center">
-<div class=stat-card-inner>
+<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
 <div class="stat-number text-[#E5C07B] mb-1">4.2M</div>
 <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Total Rides</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">After cleaning and filtering</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Cleaned records used after preprocessing</div>
 </div>
-</div>
-<div class="stat-card p-5 text-center">
-<div class=stat-card-inner>
+<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
 <div class="stat-number text-[#A3E635] mb-1">2</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Rider Segments</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Casual vs Annual Members</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Rider Types</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Casual vs annual members</div>
 </div>
-</div>
-<div class="stat-card p-5 text-center">
-<div class=stat-card-inner>
-<div class="stat-number text-[#FBBF24] mb-1">26.7</div>
+<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+<div class="stat-number text-[#F97316] mb-1">30</div>
 <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Minutes</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Avg. casual ride duration</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Upper bound used for duration visuals</div>
+</div>
+<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+<div class="stat-number text-[#E06C75] mb-1">5</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Core Views</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">R scripts, charts, and Tableau dashboard</div>
 </div>
 </div>
-<div class="stat-card p-5 text-center">
-<div class=stat-card-inner>
-<div class="stat-number text-[#E06C75] mb-1">12.5</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Minutes</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Avg. member ride duration</div>
-</div>
-</div>
-</div>
-<div class="flex flex-wrap gap-3 mt-1 text-[0.7rem] sm:text-xs text-text-secondary">
+<div class="flex flex-wrap gap-3 text-[0.7rem] sm:text-xs text-text-secondary mb-10">
 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
 <span class="w-1.5 h-1.5 bg-accent-success rounded-full"></span>
-Rider Segmentation &amp; Cohorts
+Rider Segmentation & Behavioral Patterns
 </span>
 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
 <span class="w-1.5 h-1.5 bg-accent-success rounded-full"></span>
-Usage Trends, Seasonality &amp; Duration
+Usage Trends, Seasonality & Membership Strategy
 </span>
 </div>
-<div class="mt-10 grid md:grid-cols-2 gap-6">
+<div class="mt-2 grid md:grid-cols-2 gap-6">
 <article class=card-section>
 <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2">
 Project Narrative
 </p>
 <p class="text-sm sm:text-[0.95rem] leading-relaxed mb-2 text-text-base">
-This project used 12 months of Cyclistic trip data from Chicago to uncover behavioral
+This project used 12 months of Cyclistic (Divvy) trip data from Chicago to uncover behavioral
 differences between casual riders and annual members. Using R (tidyverse, lubridate,
-janitor, ggplot2) for preparation and analysis plus Tableau for visualization, I
-explored ride volume, duration, and timing patterns across seasons and weekdays.
+janitor, ggplot2) for preparation and analysis plus Tableau for visualization, I explored
+ride volume, duration, and timing patterns across seasons and weekdays.
 </p>
 <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base">
-Insights directly support membership growth strategies by identifying how casual riders
-behave compared to members and where targeted promotions or in-app nudges can convert
+Insights directly support membership growth strategies by identifying how casual riders behave
+compared to members and where targeted promotions or in-app nudges can convert
 high-usage casuals into long-term subscribers.
 </p>
 </article>
@@ -126,39 +104,7 @@ What I Built
 </div>
 </div>
 </section>
-<section id=lab class="py-10 md:py-12 border-b border-gray-800 bg-primary-bg">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-<div class="section-title-wrapper mb-2">
-<h2>Technical Specifications</h2>
-<span></span>
-</div>
-<div class="grid md:grid-cols-2 gap-6 text-sm text-text-secondary">
-<div class=card-section>
-<h3 class="text-base font-semibold text-text-base mb-2">Tools &amp; Data</h3>
-<ul class="list-disc pl-5 space-y-1">
-<li><span class="font-semibold text-text-base">Tools:</span> R (RStudio), tidyverse, dplyr, lubridate, janitor, ggplot2, readr, Tableau Public.</li>
-<li><span class="font-semibold text-text-base">Dataset:</span> 12 months of public trip data from Divvy / Motivate International Inc.</li>
-<li><span class="font-semibold text-text-base">Row volume:</span> ~4.2M rides after cleaning.</li>
-</ul>
-</div>
-<div class=card-section>
-<h3 class="text-base font-semibold text-text-base mb-2">Package Installation</h3>
-<p class=mb-3>
-R packages required for the analysis were installed and verified in RStudio using
-<code>install.packages()</code>, ensuring a reproducible environment for anyone
-re-running the case study.
-</p>
-<div class="bg-secondary-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/CY1_RStudio_PackageInstall.png alt="RStudio console showing install.packages for tidyverse, lubridate, janitor, ggplot2, and readr" class="w-full rounded-md mb-3 image-zoom" onclick="openModal('../assets/images/CY1_RStudio_PackageInstall.png')" />
-<p class="text-text-secondary italic text-[0.7rem]">
-Figure 1 – RStudio console showing successful installation of tidyverse, lubridate, janitor, ggplot2, and readr.
-</p>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id=workflow class="py-10 md:py-12 border-b border-gray-800 bg-primary-bg">
+<section class="py-10 md:py-12 border-b border-gray-800 bg-primary-bg">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="section-title-wrapper mb-6">
 <h2>Workflow Overview</h2>
@@ -167,7 +113,7 @@ Figure 1 – RStudio console showing successful installation of tidyverse, lubri
 <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
 <div class="card-section text-xs">
 <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 1</p>
-<p class="text-sm font-semibold mb-1 text-text-base">Import</p>
+<p class="text-sm font-semibold mb-1">Import</p>
 <p class="text-[0.8rem] text-text-secondary">
 12 CSVs downloaded from the Divvy portal and combined with <code>read_csv()</code>,
 <code>map_df()</code>, and <code>clean_names()</code>.
@@ -175,28 +121,28 @@ Figure 1 – RStudio console showing successful installation of tidyverse, lubri
 </div>
 <div class="card-section text-xs">
 <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 2</p>
-<p class="text-sm font-semibold mb-1 text-text-base">Cleaning</p>
+<p class="text-sm font-semibold mb-1">Cleaning</p>
 <p class="text-[0.8rem] text-text-secondary">
 Invalid rides removed, timestamps parsed, missing rider types dropped.
 </p>
 </div>
 <div class="card-section text-xs">
 <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 3</p>
-<p class="text-sm font-semibold mb-1 text-text-base">Feature Engineering</p>
+<p class="text-sm font-semibold mb-1">Feature Engineering</p>
 <p class="text-[0.8rem] text-text-secondary">
 Derived <code>ride_length</code> and <code>day_of_week</code> for behavioral segmentation.
 </p>
 </div>
 <div class="card-section text-xs">
 <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 4</p>
-<p class="text-sm font-semibold mb-1 text-text-base">Analysis</p>
+<p class="text-sm font-semibold mb-1">Analysis</p>
 <p class="text-[0.8rem] text-text-secondary">
 Grouped and summarized metrics by rider type, weekday, and season.
 </p>
 </div>
 <div class="card-section text-xs">
 <p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 5</p>
-<p class="text-sm font-semibold mb-1 text-text-base">Visualization</p>
+<p class="text-sm font-semibold mb-1">Visualization</p>
 <p class="text-[0.8rem] text-text-secondary">
 Built ggplot2 visuals and a Tableau dashboard for stakeholder-ready storytelling.
 </p>
@@ -204,161 +150,62 @@ Built ggplot2 visuals and a Tableau dashboard for stakeholder-ready storytelling
 </div>
 </div>
 </section>
-<section class="py-10 md:py-14 bg-primary-bg">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<section class="py-10 md:py-14 bg-primary-bg border-b border-gray-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="section-title-wrapper mb-6">
 <h2>Lab Breakdown</h2>
 <span></span>
 </div>
-<div class="space-y-8 text-sm sm:text-[0.95rem] leading-relaxed text-text-secondary">
-<section class=card-section>
-<h3 class="text-base font-semibold text-text-base mb-1">
-1. Data Import &amp; Standardization
-</h3>
-<p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-Merge 12 months of trip data using tidyverse
-</p>
-<p class="mb-4 text-text-base">
-The analysis began by downloading and unzipping 12 monthly CSV files. These were imported
-with <code>read_csv()</code> and combined into a single dataframe using
-<code>map_df()</code> and <code>bind_rows()</code>, with <code>clean_names()</code> used
-to standardize column names like <code>ride_id</code>, <code>rideable_type</code>,
-<code>started_at</code>, <code>ended_at</code>, and <code>member_casual</code>.
-</p>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/CY1_DataImport_Merge.png alt="RStudio view showing script, global environment, and files pane after merging 12 monthly Cyclistic trip datasets" class="w-full rounded-md mb-3 image-zoom" onclick="openModal('../assets/images/CY1_DataImport_Merge.png')" />
-<p class="text-text-secondary italic text-[0.7rem]">
-Figure 2 – RStudio view after successfully importing and combining 12 monthly trip datasets into
-a single <code>all_trips</code> dataframe.
-</p>
+<div class="flex flex-wrap gap-0 border-b-2 border-gray-700 mb-10 overflow-x-auto">
+<button class="tab-button active" data-tab=environment onclick="switchTab('environment')">
+01. Environment &amp; Data
+</button>
+<button class=tab-button data-tab=prep onclick="switchTab('prep')">
+02. Import, Cleaning &amp; Features
+</button>
+<button class=tab-button data-tab=analysis onclick="switchTab('analysis')">
+03. Summary Stats &amp; Visuals
+</button>
+<button class=tab-button data-tab=dashboard onclick="switchTab('dashboard')">
+04. Dashboard &amp; Strategy
+</button>
 </div>
-</section>
+<div id=tab-environment class="tab-content active space-y-10 text-sm sm:text-[0.95rem] leading-relaxed text-text-secondary">
 <section class=card-section>
 <h3 class="text-base font-semibold text-text-base mb-1">
-2. Data Cleaning &amp; Feature Engineering
+1. Technical Environment &amp; Dataset
 </h3>
 <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-<code>ride_length</code> &amp; <code>day_of_week</code> engineered with lubridate
+RStudio · tidyverse stack · Public Divvy trip data
 </p>
-<p class="mb-4 text-text-base">
-Cleaning removed rides with negative or zero duration, missing rider types, or incomplete
-timestamps. Using <code>lubridate</code>, timestamps were parsed and two key features were
-created: numeric ride length in minutes and labeled day of week for behavior comparison.
-</p>
-<ul class="list-disc list-outside pl-5 space-y-1 mb-4 text-text-base">
-<li>Converted <code>started_at</code> and <code>ended_at</code> with <code>ymd_hms()</code>.</li>
-<li>Computed <code>ride_length</code> as the difference in minutes between timestamps.</li>
-<li>Derived <code>day_of_week</code> labels for weekday vs weekend analysis.</li>
-<li>Filtered out rides with <code>ride_length &lt;= 1</code> or missing <code>member_casual</code>.</li>
+<div class="grid md:grid-cols-2 gap-6">
+<div>
+<h4 class="text-sm font-semibold text-text-base mb-2">Tools &amp; Data</h4>
+<ul class="list-disc pl-5 space-y-1">
+<li><span class="font-semibold text-text-base">Tools:</span> R (RStudio), tidyverse, dplyr, lubridate, janitor, ggplot2, readr, Tableau Public.</li>
+<li><span class="font-semibold text-text-base">Dataset:</span> 12 months of public trip data from Divvy / Motivate International Inc.</li>
+<li><span class="font-semibold text-text-base">Row volume:</span> ~4.2M rides after cleaning.</li>
 </ul>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/CY1_DataCleaning_Transformation.png alt="RStudio console showing mutate and filter steps for ride_length and day_of_week feature engineering" class="w-full rounded-md mb-3 image-zoom" onclick="openModal('../assets/images/CY1_DataCleaning_Transformation.png')" />
-<p class="text-text-secondary italic text-[0.7rem]">
-Figure 3 – Cleaning and transformation in RStudio:
-<code>mutate()</code> adds <code>ride_length</code> and <code>day_of_week</code>,
-followed by filters that drop invalid rides.
-</p>
-</div>
-</section>
-<section class=card-section>
-<h3 class="text-base font-semibold text-text-base mb-1">
-3. Summary Statistics &amp; Trend Analysis
-</h3>
-<p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-Behavioral differences between casual &amp; member riders
-</p>
-<p class="mb-4 text-text-base">
-Using <code>dplyr</code>, the cleaned data was grouped by rider type to calculate summary
-metrics. This highlighted that casual riders take longer trips on average, while members
-take shorter but more frequent rides.
-</p>
-<ul class="list-disc list-outside pl-5 space-y-2 mb-4 text-text-base">
-<li>Computed mean, median, min, and max ride length per rider type.</li>
-<li>Counted total rides for casual vs member segments.</li>
-<li>Created weekday and seasonal summaries to capture when each group rides most.</li>
-</ul>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/CY1_Summary_Statistics.png alt="RStudio console showing dplyr summary statistics table by member_casual" class="w-full rounded-md mb-3 image-zoom" onclick="openModal('../assets/images/CY1_Summary_Statistics.png')" />
-<p class="text-text-secondary italic text-[0.7rem]">
-Figure 4 – Summary statistics in R showing that casual riders have longer average
-ride durations than members, even though members complete more total rides.
-</p>
-</div>
-</section>
-<section class=card-section>
-<h3 class="text-base font-semibold text-text-base mb-1">
-4. Visualization &amp; Communication
-</h3>
-<p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-ggplot2 charts &amp; Tableau dashboard
-</p>
-<p class="mb-4 text-text-base">
-Visual analysis combined ggplot2 for R-based exploration and Tableau for interactive,
-stakeholder-friendly dashboards. Charts focused on ride volume, duration, and weekday
-patterns by rider type.
-</p>
-<div class=mb-6>
-<h4 class="text-sm font-semibold text-text-base mb-2">
-Chart A – Number of Rides by Day of Week
-</h4>
-<p class="mb-3 text-text-base">
-This bar chart shows ride volume by weekday for casual and member riders. Casual
-usage spikes on Saturdays and Sundays, while member rides peak Monday–Friday,
-reflecting commuting patterns.
-</p>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/CY1_Rides_By_DayOfWeek.png alt="Bar chart showing number of rides by day of week split by casual and member riders" class="w-full rounded-md mb-3 image-zoom" onclick="openModal('../assets/images/CY1_Rides_By_DayOfWeek.png')" />
-<p class="text-text-secondary italic text-[0.7rem]">
-Figure 5 – Casual usage peaks on weekends, while member usage is highest on weekdays.
-</p>
-</div>
-</div>
-<div class=mb-6>
-<h4 class="text-sm font-semibold text-text-base mb-2">
-Chart B – Average Ride Duration by Day of Week
-</h4>
-<p class="mb-3 text-text-base">
-Average ride duration by weekday shows that casual riders stay out longer, especially
-on weekends, while members maintain shorter, consistent trip lengths throughout the week.
-</p>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/CY1_AvgDuration_DayOfWeek.png alt="Bar chart comparing average ride duration by day of week for casual and member riders" class="w-full rounded-md mb-3 image-zoom" onclick="openModal('../assets/images/CY1_AvgDuration_DayOfWeek.png')" />
-<p class="text-text-secondary italic text-[0.7rem]">
-Figure 6 – Casuals ride longer on weekends; members keep steady, shorter trip times across weekdays.
-</p>
-</div>
 </div>
 <div>
-<h4 class="text-sm font-semibold text-text-base mb-2">
-Chart C – Average Ride Duration by Rider Type
-</h4>
-<p class="mb-3 text-text-base">
-Aggregated across the full year, casual riders average roughly 23–24 minutes per ride,
-while members average about 12–13 minutes. This gap reinforces that members typically use
-the service for short, utility-focused trips such as commuting.
+<h4 class="text-sm font-semibold text-text-base mb-2">Package Installation</h4>
+<p class=mb-3>
+R packages required for the analysis were installed and verified in RStudio using
+<code>install.packages()</code>, ensuring a reproducible environment for anyone
+re-running the case study.
 </p>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/CY1_AvgDuration_RiderType.png alt="Bar chart showing average ride duration for casual versus member rider types" class="w-full rounded-md mb-3 image-zoom" onclick="openModal('../assets/images/CY1_AvgDuration_RiderType.png')" />
-<p class="text-text-secondary italic text-[0.7rem]">
-Figure 7 – Average ride duration by rider type, highlighting that casual riders
-stay on bikes nearly twice as long as members.
-</p>
+<figure class="bg-secondary-bg rounded-lg border border-gray-700 p-4">
+<img src=../assets/images/CY1_RStudio_PackageInstall.png alt="RStudio console showing install.packages for tidyverse, lubridate, janitor, ggplot2, and readr" class="w-full rounded-md mb-3" />
+<figcaption class="text-text-secondary italic">
+Figure 1 – RStudio console showing successful installation of tidyverse, lubridate, janitor, ggplot2, and readr.
+</figcaption>
+</figure>
 </div>
 </div>
 </section>
-</div>
-</div>
-</section>
-<section class="py-10 md:py-12 border-t border-gray-800 bg-primary-bg">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="section-title-wrapper mb-6">
-<h2>Key R Scripts</h2>
-<span></span>
-</div>
-<div class=space-y-6>
-<div class=card-section>
+<section class=card-section>
 <h3 class="text-sm font-semibold mb-2 text-text-base">
-Package Setup
+Package Setup (Reproducible Environment)
 </h3>
 <pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto">
 <code>install.packages(c(
@@ -369,10 +216,65 @@ Package Setup
   "readr"
 ))</code>
                     </pre>
+<p class="mt-3 text-xs text-text-secondary">
+Installing all dependencies up front ensures anyone can clone the project, install packages once,
+and re-run the full workflow without library errors.
+</p>
+</section>
 </div>
-<div class=card-section>
+<div id=tab-prep class="tab-content space-y-10 text-sm sm:text-[0.95rem] leading-relaxed text-text-secondary">
+<section class=card-section>
+<h3 class="text-base font-semibold text-text-base mb-1">
+2. Data Import &amp; Standardization
+</h3>
+<p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+Merge 12 months of trip data using tidyverse
+</p>
+<p class=mb-4>
+The analysis began by downloading and unzipping 12 monthly CSV files. These were imported
+with <code>read_csv()</code> and combined into a single dataframe using
+<code>map_df()</code> and <code>bind_rows()</code>, with <code>clean_names()</code> used
+to standardize column names like <code>ride_id</code>, <code>rideable_type</code>,
+<code>started_at</code>, <code>ended_at</code>, and <code>member_casual</code>.
+</p>
+<figure class="bg-secondary-bg rounded-lg border border-gray-700 p-4">
+<img src=../assets/images/CY1_DataImport_Merge.png alt="RStudio view showing script, global environment, and files pane after merging 12 monthly Cyclistic trip datasets" class="w-full rounded-md mb-3" />
+<figcaption class="text-text-secondary italic">
+Figure 2 – RStudio view after successfully importing and combining 12 monthly trip datasets into
+a single <code>all_trips</code> dataframe.
+</figcaption>
+</figure>
+</section>
+<section class=card-section>
+<h3 class="text-base font-semibold text-text-base mb-1">
+3. Data Cleaning &amp; Feature Engineering
+</h3>
+<p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+<code>ride_length</code> &amp; <code>day_of_week</code> engineered with lubridate
+</p>
+<p class=mb-4>
+Cleaning removed rides with negative or zero duration, missing rider types, or incomplete
+timestamps. Using <code>lubridate</code>, timestamps were parsed and two key features were
+created: numeric ride length in minutes and labeled day of week for behavior comparison.
+</p>
+<ul class="list-disc list-outside pl-5 space-y-1 mb-4">
+<li>Converted <code>started_at</code> and <code>ended_at</code> with <code>ymd_hms()</code>.</li>
+<li>Computed <code>ride_length</code> as the difference in minutes between timestamps.</li>
+<li>Derived <code>day_of_week</code> labels for weekday vs weekend analysis.</li>
+<li>Filtered out rides with <code>ride_length &lt;= 1</code> or missing <code>member_casual</code>.</li>
+</ul>
+<figure class="bg-secondary-bg rounded-lg border border-gray-700 p-4 mb-6">
+<img src=../assets/images/CY1_DataCleaning_Transformation.png alt="RStudio console showing mutate and filter steps for ride_length and day_of_week feature engineering" class="w-full rounded-md mb-3" />
+<figcaption class="text-text-secondary italic">
+Figure 3 – Cleaning and transformation in RStudio:
+<code>mutate()</code> adds <code>ride_length</code> and <code>day_of_week</code>,
+followed by filters that drop invalid rides.
+</figcaption>
+</figure>
+</section>
+<section class=card-section>
 <h3 class="text-sm font-semibold mb-2 text-text-base">
-Data Import, Cleaning, and Feature Engineering
+Data Import, Cleaning, and Feature Engineering – R Script
 </h3>
 <pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto">
 <code>library(tidyverse)
@@ -397,10 +299,37 @@ all_trips &lt;- all_trips %&gt;%
   filter(ride_length &gt; 1, !is.na(member_casual)) %&gt;%
   drop_na()</code>
                     </pre>
+</section>
 </div>
-<div class=card-section>
+<div id=tab-analysis class="tab-content space-y-10 text-sm sm:text-[0.95rem] leading-relaxed text-text-secondary">
+<section class=card-section>
+<h3 class="text-base font-semibold text-text-base mb-1">
+4. Summary Statistics &amp; Trend Analysis
+</h3>
+<p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+Behavioral differences between casual &amp; member riders
+</p>
+<p class=mb-4>
+Using <code>dplyr</code>, the cleaned data was grouped by rider type to calculate summary
+metrics. This highlighted that casual riders take longer trips on average, while members
+take shorter but more frequent rides.
+</p>
+<ul class="list-disc list-outside pl-5 space-y-2 mb-4">
+<li>Computed mean, median, min, and max ride length per rider type.</li>
+<li>Counted total rides for casual vs member segments.</li>
+<li>Created weekday and seasonal summaries to capture when each group rides most.</li>
+</ul>
+<figure class="bg-secondary-bg rounded-lg border border-gray-700 p-4">
+<img src=../assets/images/CY1_Summary_Statistics.png alt="RStudio console showing dplyr summary statistics table by member_casual" class="w-full rounded-md mb-3" />
+<figcaption class="text-text-secondary italic">
+Figure 4 – Summary statistics in R showing that casual riders have longer average
+ride durations than members, even though members complete more total rides.
+</figcaption>
+</figure>
+</section>
+<section class=card-section>
 <h3 class="text-sm font-semibold mb-2 text-text-base">
-Summary Statistics by Rider Type
+Summary Statistics by Rider Type – R Script
 </h3>
 <pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto">
 <code>summary_stats &lt;- all_trips %&gt;%
@@ -415,11 +344,76 @@ Summary Statistics by Rider Type
 
 print(summary_stats)</code>
                     </pre>
-</div>
-<div class=card-section>
-<h3 class="text-sm font-semibold mb-2 text-text-base">
-ggplot – Rides by Day of Week
+</section>
+<section class=card-section>
+<h3 class="text-base font-semibold text-text-base mb-1">
+5. Visualizing Rider Behavior
 </h3>
+<p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
+ggplot2 charts for weekday patterns &amp; duration gaps
+</p>
+<p class=mb-4>
+Visual analysis combined ggplot2 for R-based exploration and Tableau for interactive,
+stakeholder-friendly dashboards. Charts focused on ride volume, duration, and weekday
+patterns by rider type.
+</p>
+<div class=mb-8>
+<h4 class="text-sm font-semibold text-text-base mb-2">
+Chart A – Number of Rides by Day of Week
+</h4>
+<p class=mb-3>
+This bar chart shows ride volume by weekday for casual and member riders. Casual
+usage spikes on Saturdays and Sundays, while member rides peak Monday–Friday,
+reflecting commuting patterns.
+</p>
+<figure class="bg-secondary-bg rounded-lg border border-gray-700 p-4">
+<img src=../assets/images/CY1_Rides_By_DayOfWeek.png alt="Bar chart showing number of rides by day of week split by casual and member riders" class="w-full rounded-md mb-3" />
+<figcaption class="text-text-secondary italic">
+Figure 5 – Casual usage peaks on weekends, while member usage is highest on weekdays.
+</figcaption>
+</figure>
+</div>
+<div class=mb-8>
+<h4 class="text-sm font-semibold text-text-base mb-2">
+Chart B – Average Ride Duration by Day of Week
+</h4>
+<p class=mb-3>
+Average ride duration by weekday shows that casual riders stay out longer, especially
+on weekends, while members maintain shorter, consistent trip lengths throughout the week.
+</p>
+<figure class="bg-secondary-bg rounded-lg border border-gray-700 p-4">
+<img src=../assets/images/CY1_AvgDuration_DayOfWeek.png alt="Bar chart comparing average ride duration by day of week for casual and member riders" class="w-full rounded-md mb-3" />
+<figcaption class="text-text-secondary italic">
+Figure 6 – Casuals ride longer on weekends; members keep steady, shorter trip times across weekdays.
+</figcaption>
+</figure>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-text-base mb-2">
+Chart C – Average Ride Duration by Rider Type
+</h4>
+<p class=mb-3>
+Aggregated across the full year, casual riders average roughly 23–24 minutes per ride,
+while members average about 12–13 minutes. This gap reinforces that members typically use
+the service for short, utility-focused trips such as commuting.
+</p>
+<figure class="bg-secondary-bg rounded-lg border border-gray-700 p-4">
+<img src=../assets/images/CY1_AvgDuration_RiderType.png alt="Bar chart showing average ride duration for casual versus member rider types" class="w-full rounded-md mb-3" />
+<figcaption class="text-text-secondary italic">
+Figure 7 – Average ride duration by rider type, highlighting that casual riders
+stay on bikes nearly twice as long as members.
+</figcaption>
+</figure>
+</div>
+</section>
+<section class="card-section space-y-6">
+<h3 class="text-sm font-semibold mb-1 text-text-base">
+Key ggplot Scripts
+</h3>
+<div>
+<p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-2">
+ggplot – Rides by Day of Week
+</p>
 <pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto">
 <code>library(scales)
 
@@ -447,12 +441,12 @@ ggplot(weekday_summary,
     panel.grid.minor.y = element_blank(),
     panel.grid.major.x = element_blank()
   )</code>
-                    </pre>
+                        </pre>
 </div>
-<div class=card-section>
-<h3 class="text-sm font-semibold mb-2 text-text-base">
+<div>
+<p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-2">
 ggplot – Average Ride Duration by Weekday
-</h3>
+</p>
 <pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto">
 <code>ggplot(weekday_summary,
        aes(x = day_of_week, y = average_duration, fill = member_casual)) +
@@ -477,12 +471,12 @@ ggplot – Average Ride Duration by Weekday
     panel.grid.minor.y = element_blank(),
     panel.grid.major.x = element_blank()
   )</code>
-                    </pre>
+                        </pre>
 </div>
-<div class=card-section>
-<h3 class="text-sm font-semibold mb-2 text-text-base">
+<div>
+<p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-2">
 ggplot – Average Ride Duration by Rider Type
-</h3>
+</p>
 <pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto">
 <code># Average ride duration by rider type
 summary_stats &lt;- all_trips %&gt;%
@@ -522,18 +516,12 @@ ggplot(summary_stats,
     panel.grid.minor   = element_blank()
   ) +
   ylim(0, 30)</code>
-                    </pre>
-</div>
-</div>
+                        </pre>
 </div>
 </section>
-<section id=dashboard class="py-10 md:py-12 bg-primary-bg">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-<div class="section-title-wrapper mb-4">
-<h2>Architecture &amp; Dashboard</h2>
-<span></span>
 </div>
-<div class="card-section grid md:grid-cols-2 gap-8 text-sm text-text-secondary">
+<div id=tab-dashboard class="tab-content space-y-10 text-sm sm:text-[0.95rem] leading-relaxed text-text-secondary">
+<section class="card-section grid md:grid-cols-2 gap-8">
 <div>
 <h3 class="text-base font-semibold text-text-base mb-2">Dataset + Processing Pipeline</h3>
 <ul class="list-disc pl-5 space-y-1">
@@ -554,8 +542,8 @@ ggplot(summary_stats,
 <li>Dashboards → insights for membership growth strategy.</li>
 </ul>
 </div>
-</div>
-<div class=card-section>
+</section>
+<section class=card-section>
 <h3 class="text-base font-semibold text-text-base mb-3">
 Cyclistic Rider Behavior Dashboard (Tableau)
 </h3>
@@ -564,13 +552,13 @@ The Tableau dashboard summarizes 12 months of rider behavior, comparing casual a
 with filters for day of week, hour of day, and rider type. It is designed for non-technical
 marketing stakeholders to explore patterns and test “what-if” scenarios.
 </p>
-<div class="bg-secondary-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/CY1_Tableau_Dashboard.png alt="Tableau dashboard summarizing Cyclistic rider behavior over 12 months" class="w-full rounded-md mb-3 image-zoom" onclick="openModal('../assets/images/CY1_Tableau_Dashboard.png')" />
-<p class="text-text-secondary italic text-[0.7rem]">
+<figure class="bg-secondary-bg rounded-lg border border-gray-700 p-4">
+<img src=../assets/images/CY1_Tableau_Dashboard.png alt="Tableau dashboard summarizing Cyclistic rider behavior over 12 months" class="w-full rounded-md mb-3" />
+<figcaption class="text-text-secondary italic">
 Figure 8 – Tableau dashboard combining ride volume, duration, and seasonal trends to support
 membership growth decisions.
-</p>
-</div>
+</figcaption>
+</figure>
 <div class="mt-4 text-sm text-text-secondary">
 <p class="font-semibold text-text-base mb-1">Dashboard Overview</p>
 <ul class="list-disc pl-5 space-y-1 mb-3">
@@ -605,10 +593,11 @@ Google Data Analytics Professional Certificate. All data is publicly available a
 provided by Motivate International Inc. under open license terms.
 </p>
 </div>
+</section>
 </div>
 </div>
 </section>
-<section id=insights class="py-10 md:py-12 bg-primary-bg">
+<section class="py-10 md:py-12 bg-primary-bg">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
 <div>
 <div class="section-title-wrapper mb-6">
