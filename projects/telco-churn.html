@@ -43,52 +43,51 @@ Used a public telecom dataset to model which subscribers are likely to cancel se
 then explained the drivers behind that risk so a retention team can step in before customers leave.
 </p>
 
-    <!-- ============================
-     METRIC SUMMARY BOXES
-     ============================ -->
-<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mt-4 mb-10">
+<!-- Telco Metric Summary Boxes (Styled Identical to Nessus Lab) -->
+<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
 
-    <div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
-        <p class="text-3xl font-bold text-[#61AFEF] mb-1">79.8%</p>
-        <p class="text-xs tracking-widest text-white uppercase">Accuracy</p>
-        <p class="text-[0.68rem] text-text-secondary mt-2">
+    <div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+        <div class="stat-number text-[#61AFEF] mb-1">79.8%</div>
+        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Accuracy</div>
+        <div class="text-[0.65rem] text-text-secondary mt-1">
             Share of correct predictions in the test set
-        </p>
+        </div>
     </div>
 
-    <div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
-        <p class="text-3xl font-bold text-[#A3E635] mb-1">91%</p>
-        <p class="text-xs tracking-widest text-white uppercase">Recall (Stay)</p>
-        <p class="text-[0.68rem] text-text-secondary mt-2">
+    <div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+        <div class="stat-number text-[#A3E635] mb-1">91%</div>
+        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Recall (Stay)</div>
+        <div class="text-[0.65rem] text-text-secondary mt-1">
             Portion of non-churn customers identified correctly
-        </p>
+        </div>
     </div>
 
-    <div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
-        <p class="text-3xl font-bold text-[#F97316] mb-1">49%</p>
-        <p class="text-xs tracking-widest text-white uppercase">Recall (Churn)</p>
-        <p class="text-[0.68rem] text-text-secondary mt-2">
+    <div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+        <div class="stat-number text-[#F97316] mb-1">49%</div>
+        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Recall (Churn)</div>
+        <div class="text-[0.65rem] text-text-secondary mt-1">
             Portion of churners caught by the model
-        </p>
+        </div>
     </div>
 
-    <div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
-        <p class="text-3xl font-bold text-[#FBBF24] mb-1">66%</p>
-        <p class="text-xs tracking-widest text-white uppercase">Precision (Churn)</p>
-        <p class="text-[0.68rem] text-text-secondary mt-2">
+    <div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+        <div class="stat-number text-[#FBBF24] mb-1">66%</div>
+        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Precision (Churn)</div>
+        <div class="text-[0.65rem] text-text-secondary mt-1">
             When the model predicts churn, it is correct most of the time
-        </p>
+        </div>
     </div>
 
-    <div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
-        <p class="text-3xl font-bold text-[#E5C07B] mb-1">26.5%</p>
-        <p class="text-xs tracking-widest text-white uppercase">Churn Rate</p>
-        <p class="text-[0.68rem] text-text-secondary mt-2">
+    <div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+        <div class="stat-number text-[#E5C07B] mb-1">26.5%</div>
+        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Churn Rate</div>
+        <div class="text-[0.65rem] text-text-secondary mt-1">
             Observed churn share in the test population
-        </p>
+        </div>
     </div>
 
 </div>
+
     
 
 <div class="flex flex-wrap gap-3 text-[0.7rem] sm:text-xs text-text-secondary mb-10">
