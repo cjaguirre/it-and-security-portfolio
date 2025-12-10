@@ -7,7 +7,184 @@
 <script>function switchTab(tabId){document.querySelectorAll('.tab-button').forEach(btn=>{btn.classList.remove('active');});document.querySelectorAll('.tab-content').forEach(content=>{content.classList.remove('active');});const activeButton=[...document.querySelectorAll('.tab-button')].find(btn=>btn.getAttribute('onclick')&&btn.getAttribute('onclick').includes(tabId));if(activeButton)activeButton.classList.add('active');const target=document.getElementById(`tab-${tabId}`);if(target)target.classList.add('active');}</script>
 <script src=https://cdn.tailwindcss.com></script>
 <script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)"}}}};</script>
-<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;--functional-action:#61afef;--functional-success:#98c379;--accent-red:#e06c75;--container-bg:#171717;background-color:var(--bg-default);color:var(--text-base)}body{font-family:"Inter",sans-serif;background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center;background-attachment:fixed;min-height:100vh}.pill{border-radius:999px;padding:.2rem .7rem;border:1px solid rgba(171,178,191,0.6);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;white-space:nowrap}.pill-muted{color:var(--text-secondary);background-color:rgba(23,23,23,0.95)}.pill-accent{color:var(--accent-structural);background-color:rgba(23,23,23,0.95);border-color:rgba(217,217,217,0.9)}.tab-button{padding:1rem 1.5rem;background:transparent;border:0;color:var(--text-secondary);font-family:"Inconsolata",monospace;cursor:pointer;transition:all .3s ease;border-bottom:3px solid transparent;white-space:nowrap}.tab-button:hover{color:var(--functional-action);background:rgba(97,175,239,0.05)}.tab-button.active{color:var(--functional-action);border-bottom-color:var(--functional-action)}.tab-content{display:none;animation:fadeSlideIn .4s ease-out}.tab-content.active{display:block}@keyframes fadeSlideIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}.image-zoom{cursor:pointer;transition:all .3s ease}.image-zoom:hover{transform:scale(1.02);box-shadow:0 10px 40px rgba(97,175,239,0.3)}.modal{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.95)}.modal.active{display:flex;align-items:center;justify-content:center}.modal-content{max-width:95%;max-height:95%;border-radius:8px}.nav-dots{position:fixed;right:2rem;top:50%;transform:translateY(-50%);z-index:100}.nav-dot{width:10px;height:10px;border-radius:50%;background:var(--text-secondary);margin:.75rem 0;cursor:pointer;transition:all .3s ease}.nav-dot:hover,.nav-dot.active{background:var(--functional-action);transform:scale(1.4)}@media(max-width:768px){.nav-dots{display:none}}</style>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
+
+.dark {
+    --bg-default:#1e1e1e;
+    --bg-secondary:#30333a;
+    --text-base:#fff;
+    --text-secondary:#abb2bf;
+    --accent-structural:#d9d9d9;
+    --functional-action:#61afef;
+    --functional-success:#98c379;
+    --accent-red:#e06c75;
+    --container-bg:#171717;
+    background-color:var(--bg-default);
+    color:var(--text-base)
+}
+
+body {
+    font-family:"Inter",sans-serif;
+    background-color:var(--bg-default);
+    background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);
+    background-size:20px 20px;
+    background-position:center;
+    background-attachment:fixed;
+    min-height:100vh
+}
+
+.pill {
+    border-radius:999px;
+    padding:.2rem .7rem;
+    border:1px solid rgba(171,178,191,0.6);
+    font-size:.7rem;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    white-space:nowrap
+}
+
+.pill-muted {
+    color:var(--text-secondary);
+    background-color:rgba(23,23,23,0.95)
+}
+
+.pill-accent {
+    color:var(--accent-structural);
+    background-color:rgba(23,23,23,0.95);
+    border-color:rgba(217,217,217,0.9)
+}
+
+.tab-button {
+    padding:1rem 1.5rem;
+    background:transparent;
+    border:0;
+    color:var(--text-secondary);
+    font-family:"Inconsolata",monospace;
+    cursor:pointer;
+    transition:all .3s ease;
+    border-bottom:3px solid transparent;
+    white-space:nowrap
+}
+
+.tab-button:hover {
+    color:var(--functional-action);
+    background:rgba(97,175,239,0.05)
+}
+
+.tab-button.active {
+    color:var(--functional-action);
+    border-bottom-color:var(--functional-action)
+}
+
+.tab-content {
+    display:none;
+    animation:fadeSlideIn .4s ease-out
+}
+
+.tab-content.active {
+    display:block
+}
+
+@keyframes fadeSlideIn {
+    from {opacity:0;transform:translateY(15px)}
+    to {opacity:1;transform:translateY(0)}
+}
+
+.image-zoom {
+    cursor:pointer;
+    transition:all .3s ease
+}
+.image-zoom:hover {
+    transform:scale(1.02);
+    box-shadow:0 10px 40px rgba(97,175,239,0.3)
+}
+
+.modal {
+    display:none;
+    position:fixed;
+    z-index:9999;
+    left:0;top:0;
+    width:100%;height:100%;
+    background-color:rgba(0,0,0,0.95)
+}
+
+.modal.active {
+    display:flex;
+    align-items:center;
+    justify-content:center
+}
+
+.modal-content {
+    max-width:95%;
+    max-height:95%;
+    border-radius:8px
+}
+
+.nav-dots {
+    position:fixed;
+    right:2rem;
+    top:50%;
+    transform:translateY(-50%);
+    z-index:100
+}
+
+.nav-dot {
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:var(--text-secondary);
+    margin:.75rem 0;
+    cursor:pointer;
+    transition:all .3s ease
+}
+
+.nav-dot:hover,.nav-dot.active {
+    background:var(--functional-action);
+    transform:scale(1.4)
+}
+
+@media(max-width:768px){
+    .nav-dots{display:none}
+}
+
+/* ----------------------------- */
+/* ⭐ STAT CARD ANIMATION + STYLE */
+/* ----------------------------- */
+
+.stat-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+      45deg,
+      transparent,
+      rgba(97, 175, 239, 0.10),
+      transparent
+  );
+  animation: shimmer 3s infinite linear;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+.stat-number {
+  font-size: 2.4rem;
+  font-weight: 800;
+  font-family: "Inconsolata", monospace;
+}
+</style>
+
 <script>document.addEventListener("DOMContentLoaded",()=>{const html=document.documentElement;const savedTheme=localStorage.getItem("theme")||"dark";html.setAttribute("data-theme",savedTheme);html.classList.add(savedTheme);});</script>
 </head>
 <body class=text-text-base>
@@ -49,45 +226,34 @@ then explained the drivers behind that risk so a retention team can step in befo
     <div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
         <div class="stat-number text-[#61AFEF] mb-1">79.8%</div>
         <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Accuracy</div>
-        <div class="text-[0.65rem] text-text-secondary mt-1">
-            Share of correct predictions in the test set
-        </div>
+        <div class="text-[0.65rem] text-text-secondary mt-1">Correct predictions</div>
     </div>
 
     <div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
         <div class="stat-number text-[#A3E635] mb-1">91%</div>
         <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Recall (Stay)</div>
-        <div class="text-[0.65rem] text-text-secondary mt-1">
-            Non churn customers identified correctly
-        </div>
+        <div class="text-[0.65rem] text-text-secondary mt-1">Non-churners correctly identified</div>
     </div>
 
     <div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
         <div class="stat-number text-[#F97316] mb-1">49%</div>
         <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Recall (Churn)</div>
-        <div class="text-[0.65rem] text-text-secondary mt-1">
-            Portion of churners caught by the model
-        </div>
+        <div class="text-[0.65rem] text-text-secondary mt-1">Churners detected</div>
     </div>
 
     <div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
         <div class="stat-number text-[#FBBF24] mb-1">66%</div>
         <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Precision (Churn)</div>
-        <div class="text-[0.65rem] text-text-secondary mt-1">
-            Accuracy of churn predictions
-        </div>
+        <div class="text-[0.65rem] text-text-secondary mt-1">Accuracy of churn predictions</div>
     </div>
 
     <div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
         <div class="stat-number text-[#E5C07B] mb-1">26.5%</div>
         <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Churn Rate</div>
-        <div class="text-[0.65rem] text-text-secondary mt-1">
-            Test set proportion of churners
-        </div>
+        <div class="text-[0.65rem] text-text-secondary mt-1">Portion of churners</div>
     </div>
 
 </div>
-
 
     
 
