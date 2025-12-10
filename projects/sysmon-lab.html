@@ -1,529 +1,885 @@
 <!DOCTYPE html>
-<html lang=en data-theme=dark>
+<html lang=en data-theme=dark class=dark>
 <head>
 <meta charset=UTF-8 />
 <meta name=viewport content="width=device-width, initial-scale=1.0" />
 <title>Windows Sysmon Threat Detection Lab | Christian Aguirre</title>
+<script>function switchTab(tabId){document.querySelectorAll('.tab-button').forEach(btn=>{btn.classList.remove('active');});document.querySelectorAll('.tab-content').forEach(content=>{content.classList.remove('active');});const activeButton=[...document.querySelectorAll('.tab-button')].find(btn=>btn.getAttribute('onclick')&&btn.getAttribute('onclick').includes(tabId));if(activeButton)activeButton.classList.add('active');const target=document.getElementById(`tab-${tabId}`);if(target)target.classList.add('active');}</script>
 <script src=https://cdn.tailwindcss.com></script>
-<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;--functional-action:#61afef;--functional-success:#98c379;--accent-red:#e06c75;--container-bg:#171717;--accent-primary:var(--accent-structural);background-color:var(--bg-default);color:var(--text-base)}.light{--bg-default:#fff;--bg-secondary:#f3f4f6;--text-base:#111827;--text-secondary:#4b5563;--accent-primary:#0891b2;--accent-red:#dc2626;--container-bg:#fff;background-color:var(--bg-default);color:var(--text-base)}body{font-family:"Inter",sans-serif;transition:background-color .5s,color .5s}.section-title-wrapper{display:inline-flex;align-items:center;font-family:"Inconsolata",monospace;margin-bottom:2rem;width:100%}.section-title-wrapper h2{font-size:1.5rem;font-weight:700;color:var(--accent-structural);flex-shrink:0}.section-title-wrapper span{display:block;height:2px;background-color:var(--text-secondary);margin-left:.75rem;opacity:.5;flex-grow:1;min-width:150px}.hero-grid-bg{background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px}.pill{border-radius:999px;padding:.2rem .7rem;border:1px solid rgba(171,178,191,0.6);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;white-space:nowrap}.pill-muted{color:var(--text-secondary);background-color:rgba(23,23,23,0.95)}.pill-accent{color:var(--accent-structural);background-color:rgba(23,23,23,0.95);border-color:rgba(217,217,217,0.9)}</style>
-<script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)"}}}};document.addEventListener("DOMContentLoaded",()=>{const html=document.documentElement;const savedTheme=localStorage.getItem("theme")||"dark";html.setAttribute("data-theme",savedTheme);html.classList.add(savedTheme);});</script>
+<script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)",}}}};</script>
+<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;--functional-action:#61afef;--functional-success:#98c379;--accent-red:#e06c75;--container-bg:#171717;background-color:var(--bg-default);color:var(--text-base)}body{font-family:"Inter",sans-serif;background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center;background-attachment:fixed;min-height:100vh}.pill{border-radius:999px;padding:.2rem .7rem;border:1px solid rgba(171,178,191,0.6);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em}.pill-muted{color:var(--text-secondary);background-color:rgba(23,23,23,0.95)}.pill-accent{color:var(--accent-structural);background-color:rgba(23,23,23,0.95);border-color:rgba(217,217,217,0.9)}.tab-button{padding:1rem 1.5rem;background:transparent;border:0;color:var(--text-secondary);font-family:"Inconsolata",monospace;cursor:pointer;transition:all .3s ease;border-bottom:3px solid transparent;white-space:nowrap}.tab-button:hover{color:var(--functional-action);background:rgba(97,175,239,0.05)}.tab-button.active{color:var(--functional-action);border-bottom-color:var(--functional-action)}.tab-content{display:none;animation:fadeSlideIn .4s ease-out}.tab-content.active{display:block}@keyframes fadeSlideIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}.stat-card{position:relative;overflow:hidden}.stat-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent,rgba(97,175,239,0.1),transparent);animation:shimmer 3s infinite}@keyframes shimmer{0%{transform:translateX(-100%) translateY(-100%) rotate(45deg)}100%{transform:translateX(100%) translateY(100%) rotate(45deg)}}.stat-number{font-size:2.5rem;font-weight:800;font-family:"Inconsolata",monospace}.image-zoom{cursor:pointer;transition:all .3s ease}.image-zoom:hover{transform:scale(1.02);box-shadow:0 10px 40px rgba(97,175,239,0.3)}.modal{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.95)}.modal.active{display:flex;align-items:center;justify-content:center}.modal-content{max-width:95%;max-height:95%;border-radius:8px}.severity-critical,.severity-high,.severity-medium,.severity-low,.severity-info{padding:.25rem .75rem;border-radius:999px;font-size:.7rem;text-transform:uppercase}.severity-critical{background:rgba(185,28,28,0.15);border:1px solid #b91c1c;color:#b91c1c}.severity-high{background:rgba(194,65,12,0.15);border:1px solid #c2410c;color:#c2410c}.severity-medium{background:rgba(249,115,22,0.15);border:1px solid #f97316;color:#f97316}.severity-low{background:rgba(234,179,8,0.15);border:1px solid #eab308;color:#eab308}.severity-info{background:rgba(59,130,246,0.15);border:1px solid #3b82f6;color:#3b82f6}.collapsible-content{max-height:0;overflow:hidden;transition:max-height .4s ease-out}.collapsible-content.open{max-height:10000px}.nav-dots{position:fixed;right:2rem;top:50%;transform:translateY(-50%);z-index:100}.nav-dot{width:10px;height:10px;border-radius:50%;background:var(--text-secondary);margin:.75rem 0;cursor:pointer;transition:all .3s ease}.nav-dot:hover,.nav-dot.active{background:var(--functional-action);transform:scale(1.4)}@media(max-width:768px){.nav-dots{display:none}}</style>
 </head>
-<body class="transition-colors duration-500 bg-primary-bg text-text-base">
-<main class="min-h-screen bg-primary-bg">
-<section class="hero-grid-bg pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16 border-b border-gray-800">
+<body class=text-text-base>
+<div class=nav-dots>
+<div class="nav-dot active" onclick="scrollToSection('hero')"></div>
+<div class=nav-dot onclick="scrollToSection('workflow')"></div>
+<div class=nav-dot onclick="scrollToSection('lab')"></div>
+<div class=nav-dot onclick="scrollToSection('vuln-overview')"></div>
+</div>
+<div class=modal id=imageModal onclick=closeModal()>
+<span style=position:absolute;top:2rem;right:3rem;color:white;font-size:3rem;cursor:pointer>&times;</span>
+<img class=modal-content id=modalImage alt="Enlarged view">
+</div>
+<main>
+<section id=hero class="pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16 border-b border-gray-800">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 <a href=../index.html#projects class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition mb-6">
 ← Back to Portfolio
 </a>
 <div class="flex flex-wrap gap-2 mb-6">
-<span class="pill pill-accent">Threat Detection</span>
+<span class="pill pill-accent">Endpoint Detection Lab</span>
 <span class="pill pill-muted">Windows Sysmon</span>
 <span class="pill pill-muted">Event Viewer</span>
 <span class="pill pill-muted">PowerShell</span>
 <span class="pill pill-muted">MITRE ATT&amp;CK</span>
-<span class="pill pill-muted">SOC Reporting</span>
 </div>
-<h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-text-base">
+<h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
 Windows Sysmon Threat Detection Lab
 </h1>
-<p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed">
-Built and tuned a single host Windows monitoring lab around Sysmon to practice endpoint telemetry, threat hunting,
-and SOC style reporting. Configured a realistic workstation, deployed Sysmon with a community configuration,
-focused on high value event IDs, simulated attacker behavior, and documented investigations with MITRE ATT&amp;CK mapping.
+<p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed mb-8">
+Built and tuned a single host Windows monitoring lab around Sysmon to practice endpoint telemetry,
+threat hunting, and SOC style reporting. Configured a realistic workstation, deployed Sysmon with a
+community configuration, focused on high value event IDs, simulated attacker behavior, and documented
+investigations with MITRE ATT&amp;CK mapping.
 </p>
-<div class="flex flex-wrap gap-3 mt-6 text-[0.7rem] sm:text-xs text-text-secondary">
+<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+<div class="stat-number text-[#E06C75] mb-1">1</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Windows Host</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Dedicated monitoring workstation</div>
+</div>
+<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+<div class="stat-number text-[#E5A36F] mb-1">6</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Core Event IDs</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Process, file, registry, DNS, network, script</div>
+</div>
+<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+<div class="stat-number text-[#E5C07B] mb-1">4</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Simulated Cases</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Baseline, downloads, persistence, C2</div>
+</div>
+<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+<div class="stat-number text-[#E5D487] mb-1">20+</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Key Artifacts</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Screenshots and representative events</div>
+</div>
+<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+<div class="stat-number text-[#61AFEF] mb-1">4</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">MITRE Techniques</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">PowerShell, Run keys, C2, discovery</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-3 text-[0.7rem] sm:text-xs text-text-secondary mb-10">
 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
-<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>
-Endpoint telemetry · Windows logging
+<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Single host detection lab
 </span>
 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
-<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>
-Tools: Sysmon, Event Viewer, PowerShell, MITRE ATT&amp;CK
+<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Sysmon plus native Windows logging
 </span>
 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
-<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>
-Use case: Single host detection lab
+<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>SOC friendly reports and mapping
 </span>
 </div>
-<div class="mt-10 grid md:grid-cols-2 gap-6">
+<div class="grid md:grid-cols-2 gap-6">
 <article class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-<p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2 font-mono">
-Project Narrative
+<p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">
+Project overview
 </p>
-<p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
-I approached this lab as if I were a junior SOC analyst given one Windows endpoint to monitor. The goal was
-to treat Sysmon telemetry as a story: prepare a clean baseline, add tuned logging, then follow how the host
-changes as simulated attacker behavior is introduced.
+<p class="text-sm leading-relaxed text-text-base mb-3">
+I approached this lab as if I were a junior SOC analyst given one Windows endpoint to monitor.
+The objective was to prepare a clean baseline, add tuned logging with Sysmon, then follow how
+the host changes as simulated attacker behavior is introduced.
 </p>
-<p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
-Starting from a fresh Windows 10 VM, I locked down privacy, tuned the hardware profile, and built a
-comfortable analysis workspace with PowerShell and Event Viewer. I then deployed Sysmon using a community
-configuration similar to what blue teams use in production, verified that events were flowing, and narrowed
-in on high signal event IDs for process, file, registry, DNS, and network activity.
-</p>
-<p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base">
-From there I walked through investigations that mirror real cases: LOLBin downloads, Run key persistence,
-encoded PowerShell commands, and command and control style traffic. Each scenario ends in a SOC ready
-write up that explains what happened, how it was detected, and which MITRE ATT&amp;CK techniques apply.
+<p class="text-sm leading-relaxed text-text-base">
+Starting from a fresh Windows 10 VM, I locked down privacy, tuned the hardware profile,
+configured an analysis desktop, then deployed Sysmon with a community configuration similar to
+what blue teams use in production. From there I focused on high value event IDs and walked
+through investigations that mirror real cases such as LOLBin downloads, Run key persistence,
+encoded PowerShell commands, and command and control style traffic.
 </p>
 </article>
 <article class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-<p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2 font-mono">
-What I Built
+<p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">
+What I built
 </p>
-<ul class="list-disc list-outside pl-5 space-y-1.5 text-sm sm:text-[0.95rem] text-text-base">
-<li>A Windows 10 monitoring VM tuned for log analysis and low background noise.</li>
+<ul class="list-disc list-outside pl-5 space-y-1.5 text-sm text-text-base">
+<li>Windows 10 monitoring VM tuned for log analysis and low background noise.</li>
 <li>Sysmon deployment using an enterprise style community configuration with validated telemetry.</li>
-<li>Custom Event Viewer filters and views focused on high value Sysmon event IDs.</li>
-<li>A practical breakdown of key Sysmon events for process, network, file, registry, and DNS activity.</li>
-<li>Simulated attacker activity and investigations based entirely on Sysmon and Windows logs.</li>
-<li>SOC style case structure with timelines, event references, and narrative findings.</li>
-<li>A MITRE ATT&amp;CK mapping table linking lab activity to techniques and specific event IDs.</li>
+<li>Custom Event Viewer filters and views around high value Sysmon event IDs.</li>
+<li>Practical breakdown of process, network, file, registry, and DNS events.</li>
+<li>Simulated attacker activity and investigations based entirely on host logs.</li>
+<li>SOC style case structure with timelines, event references, and findings.</li>
+<li>MITRE ATT&amp;CK mapping table linking activity to techniques and event IDs.</li>
 </ul>
 </article>
 </div>
-<div class="mt-8 grid sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs sm:text-[0.8rem]">
-<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700">
-<p class="font-mono uppercase tracking-[0.18em] text-text-secondary mb-1">Host</p>
-<p class="text-text-base font-semibold">Windows 10 VM</p>
-<p class="text-text-secondary mt-1">Single endpoint monitored like a corporate workstation.</p>
-</div>
-<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700">
-<p class="font-mono uppercase tracking-[0.18em] text-text-secondary mb-1">Telemetry</p>
-<p class="text-text-base font-semibold">Sysmon + Event Viewer</p>
-<p class="text-text-secondary mt-1">Process, file, registry, DNS, and network coverage.</p>
-</div>
-<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700">
-<p class="font-mono uppercase tracking-[0.18em] text-text-secondary mb-1">Investigations</p>
-<p class="text-text-base font-semibold">4+ SOC style cases</p>
-<p class="text-text-secondary mt-1">Persistence, C2, discovery, and downloads.</p>
-</div>
-<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700">
-<p class="font-mono uppercase tracking-[0.18em] text-text-secondary mb-1">Framework</p>
-<p class="text-text-base font-semibold">MITRE ATT&amp;CK</p>
-<p class="text-text-secondary mt-1">Mapped to core techniques like T1059.001, T1547.001, T1071, T1082.</p>
-</div>
-</div>
 </div>
 </section>
-<section class="py-12 md:py-14 border-b border-gray-800 bg-primary-bg">
+<section id=workflow class="py-12 md:py-14 border-b border-gray-800">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="section-title-wrapper mb-8">
-<h2 class=font-mono>Workflow Overview</h2>
-<span></span>
-</div>
+<h2 class="text-2xl font-bold font-mono text-accent-cyan mb-8">
+Workflow Overview
+</h2>
 <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
-<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-<p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 1</p>
-<p class="text-sm font-semibold text-text-base mb-1">Prepare Host</p>
-<p class="text-[0.8rem] text-text-secondary">
-Built a dedicated Windows 10 VM, hardened privacy, tuned hardware, and established a clean baseline.
+<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 1</p>
+<p class="text-sm font-semibold mb-1">Prepare host</p>
+<p class="text-xs text-text-secondary leading-relaxed">
+Built a dedicated Windows 10 VM, hardened privacy settings, tuned hardware, and captured a quiet baseline.
 </p>
 </div>
-<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-<p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 2</p>
-<p class="text-sm font-semibold text-text-base mb-1">Install Sysmon</p>
-<p class="text-[0.8rem] text-text-secondary">
-Reviewed a community config, installed Sysmon, and confirmed the Operational log was recording events.
+<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 2</p>
+<p class="text-sm font-semibold mb-1">Install Sysmon</p>
+<p class="text-xs text-text-secondary leading-relaxed">
+Reviewed a community configuration, installed Sysmon, and validated that the Operational log recorded events.
 </p>
 </div>
-<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-<p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 3</p>
-<p class="text-sm font-semibold text-text-base mb-1">Tune Events</p>
-<p class="text-[0.8rem] text-text-secondary">
-Built custom Event Viewer filters around high value event IDs for targeted investigations.
+<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 3</p>
+<p class="text-sm font-semibold mb-1">Tune events</p>
+<p class="text-xs text-text-secondary leading-relaxed">
+Built custom Event Viewer filters and views focused on high value Sysmon event IDs.
 </p>
 </div>
-<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-<p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 4</p>
-<p class="text-sm font-semibold text-text-base mb-1">Hunt and Investigate</p>
-<p class="text-[0.8rem] text-text-secondary">
-Simulated attacker behavior and used Sysmon logs alone to reconstruct activity chains.
+<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 4</p>
+<p class="text-sm font-semibold mb-1">Hunt and simulate</p>
+<p class="text-xs text-text-secondary leading-relaxed">
+Introduced attacker style behavior and used Sysmon logs to reconstruct activity chains.
 </p>
 </div>
-<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-<p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 5</p>
-<p class="text-sm font-semibold text-text-base mb-1">Report and Map</p>
-<p class="text-[0.8rem] text-text-secondary">
-Documented findings in SOC style cases and mapped them to MITRE ATT&amp;CK techniques.
+<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 5</p>
+<p class="text-sm font-semibold mb-1">Report and map</p>
+<p class="text-xs text-text-secondary leading-relaxed">
+Documented cases in SOC templates and mapped them to MITRE ATT&amp;CK techniques.
 </p>
 </div>
 </div>
 </div>
 </section>
-<section class="py-12 md:py-16 bg-primary-bg">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-<section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-<h3 class="text-base font-semibold text-white mb-1">1. Windows VM and Lab Environment</h3>
-<p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-Preparing a realistic but controlled workstation for Sysmon telemetry
+<section id=lab class="py-14 border-b border-gray-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-2xl font-bold font-mono text-accent-cyan mb-10">
+Lab Breakdown
+</h2>
+<div class="flex flex-wrap gap-0 border-b-2 border-gray-700 mb-10 overflow-x-auto">
+<button class="tab-button active" onclick="switchTab('setup')">01. Host Setup & Baseline</button>
+<button class=tab-button onclick="switchTab('sysmon')">02. Sysmon Install & Config</button>
+<button class=tab-button onclick="switchTab('tuning')">03. Event IDs & Views</button>
+<button class=tab-button onclick="switchTab('hunting')">04. Threat Simulation & Hunting</button>
+<button class=tab-button onclick="switchTab('reporting')">05. SOC Reporting & MITRE</button>
+</div>
+<div id=tab-setup class="tab-content active space-y-16">
+<h3 class="text-xl font-semibold text-white">
+Phase 1 — Windows VM preparation and lab baseline
+</h3>
+<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+The lab begins with a fresh Windows 10 virtual machine configured to behave like a simple
+corporate workstation while staying quiet enough that security artifacts stand out. I adjusted
+privacy settings, tuned the hardware profile, and prepared an analysis desktop with PowerShell
+and Event Viewer ready for log review.
 </p>
-<p class="mb-3 text-white">
-The lab starts with a fresh Windows 10 virtual machine configured to behave like a corporate workstation,
-but simplified so security artifacts stand out. I hardened privacy settings, tuned the hardware profile,
-and set up a dedicated analysis workspace using PowerShell and Event Viewer.
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+1.1 — Preparing the monitoring workstation
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+First I created a dedicated Windows 10 VM that serves as the monitored endpoint. Privacy
+settings were tightened and display options adjusted so that log viewers and consoles are
+readable side by side.
 </p>
-<div class="grid md:grid-cols-2 gap-4 mb-4">
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_Win10_Setup_PrivacySettings.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
-Windows 10 privacy settings minimized to reduce background noise before security tools are added.
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Tuned privacy options to reduce background noise.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Adjusted hardware and display so analysis tools
+remain usable during long sessions.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Designated this VM as a single monitored host for
+all Sysmon experiments.
+</li>
+</ul>
+</div>
+<div class=space-y-6>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_Win10_Setup_PrivacySettings.png')">
+<img src=../assets/images/WS1_Win10_Setup_PrivacySettings.png class="rounded-md w-full" alt="Windows 10 privacy settings" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Windows 10 privacy settings minimized so normal background activity does not overwhelm Sysmon logs.
 </p>
 </div>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_VM_Hardware_Display.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_VM_Hardware_Display.png')">
+<img src=../assets/images/WS1_VM_Hardware_Display.png class="rounded-md w-full" alt="VM hardware and display" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 VM hardware and display tuned so PowerShell and Event Viewer are readable side by side.
 </p>
 </div>
 </div>
-<p class="mb-3 text-white">
-Once the VM was tuned, I logged in and set up the desktop as my primary analysis view. A PowerShell console
-is pinned and ready, and this “quiet” baseline becomes the reference point for everything that happens later.
+</section>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+1.2 — Establishing the lab desktop and first baseline
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+After the VM was tuned I arranged the desktop the way an analyst might use it on a real case.
+PowerShell is pinned and ready, and this quiet baseline becomes the reference point for all
+later simulations.
 </p>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-<img src=../assets/images/WS1_WindowsHost_LabEnvironment.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
-Final Windows host layout used throughout the lab with PowerShell and core tools ready for log analysis.
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Created a stable desktop layout with consoles and tools in view.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Took an early snapshot of the system so changes stay easy to see.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Confirmed simple commands and shells work as expected.
+</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_WindowsHost_LabEnvironment.png')">
+<img src=../assets/images/WS1_WindowsHost_LabEnvironment.png class="rounded-md w-full" alt="Windows host lab environment" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Final Windows host layout used throughout the lab with PowerShell and core tools ready for analysis.
 </p>
 </div>
-<p class="mb-3 text-white">
-I then collected a baseline of running processes and simple discovery commands. Capturing this “boring”
-state is intentional: later, when encoded commands and additional shells show up, I can compare directly
-against what is normal for the host.
+</section>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+1.3 — Baseline process list and discovery commands
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+Before any simulated attacker behavior, I captured a baseline of running processes and simple
+discovery commands. Later investigations compare against this state to highlight unusual shells
+and additional tools.
 </p>
-<div class="grid md:grid-cols-2 gap-4 mb-4">
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_Final_PowerShell_ProcessList.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
-Baseline PowerShell process list used later to spot unusual shells during simulated attacks.
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Recorded a PowerShell process list for the clean system.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Used commands such as <code>whoami</code> to create
+known good references.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Verified that these actions appear as expected in later logs.
+</li>
+</ul>
+</div>
+<div class=space-y-6>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_Final_PowerShell_ProcessList.png')">
+<img src=../assets/images/WS1_Final_PowerShell_ProcessList.png class="rounded-md w-full" alt="Baseline PowerShell process list" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Baseline PowerShell process list used later to spot additional shells during simulated attacks.
 </p>
 </div>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_Hunting_ProcessSearch_Whoami.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
-Running whoami as a simple discovery command that becomes a reference in later investigations.
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_Hunting_ProcessSearch_Whoami.png')">
+<img src=../assets/images/WS1_Hunting_ProcessSearch_Whoami.png class="rounded-md w-full" alt="Whoami discovery command" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Simple discovery command whoami captured for later comparison during post exploitation stages.
+</p>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_Hunting_ProcessSearch_PowerShell.png')">
+<img src=../assets/images/WS1_Hunting_ProcessSearch_PowerShell.png class="rounded-md w-full" alt="PowerShell process search" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+PowerShell based process search confirming which shells are active before attacker activity.
 </p>
 </div>
 </div>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_Hunting_ProcessSearch_PowerShell.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
-PowerShell based process search confirming which shells are active before any attacker style activity is introduced.
-</p>
-</div>
+</section>
 <p class="mt-4 text-sm text-white font-semibold">
-Key actions in this step
+Key actions in this phase
 </p>
 <ul class="list-disc list-outside pl-5 text-sm text-white space-y-1">
 <li>Prepared a dedicated Windows 10 monitoring VM with tuned privacy and hardware settings.</li>
 <li>Established a stable desktop and PowerShell workflow as the analysis surface.</li>
-<li>Captured baseline discovery commands and process lists to anchor future threat hunting.</li>
+<li>Captured baseline discovery commands and process lists for future hunting work.</li>
 </ul>
-</section>
-<section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-<h3 class="text-base font-semibold text-white mb-1">2. Sysmon Installation and Configuration</h3>
-<p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-Deploying Sysmon with a community configuration and validating the Operational log
+</div>
+<div id=tab-sysmon class="tab-content space-y-16">
+<h3 class="text-xl font-semibold text-white">
+Phase 2 — Sysmon installation and configuration
+</h3>
+<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+With the host ready, I focused on deploying Sysmon and understanding the configuration that decides
+what gets recorded. The goal was not only to enable logging but to explain which behaviors generate
+telemetry and why.
 </p>
-<p class="mb-3 text-white">
-With the host ready, I focused on deploying Sysmon and understanding the configuration that drives which
-events are recorded. The objective was not only to “turn on logs” but to be able to explain why a specific
-behavior does or does not generate telemetry.
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+2.1 — Reviewing a community Sysmon configuration
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+I began by reviewing a popular community Sysmon configuration from GitHub. This shows which event
+IDs are enabled and how noise is filtered, which is critical before relying on the log stream for detection.
 </p>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-<img src=../assets/images/WS1_Sysmon_Config_GitHub_Context.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
-Reviewing a popular community Sysmon configuration from GitHub to see enabled event IDs and noise filtering.
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Examined enabled event IDs and filtering logic.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Confirmed coverage for process, file, registry, DNS,
+and network events.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Used the configuration as the baseline for all lab tests.
+</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_Sysmon_Config_GitHub_Context.png')">
+<img src=../assets/images/WS1_Sysmon_Config_GitHub_Context.png class="rounded-md w-full" alt="Sysmon configuration on GitHub" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Reviewing a community Sysmon configuration to see enabled event IDs and initial noise filtering rules.
 </p>
 </div>
-<p class="mb-3 text-white">
-After confirming which event IDs the configuration covered, I installed Sysmon from an elevated command
-prompt. Showing the successful install confirms that the driver and service registered correctly, which is
-critical before relying on the logs for detection work.
+</section>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+2.2 — Installing Sysmon and validating the service
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+Sysmon was installed from an elevated console using the reviewed configuration. The successful
+install confirms driver and service registration, which is important before trusting any new events.
 </p>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-<img src=../assets/images/WS1_Sysmon_Install_Success_Admin.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Ran Sysmon install with configuration from an admin console.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Validated that the service and driver registered correctly.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Confirmed that the Sysmon Operational channel appeared in Event Viewer.
+</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_Sysmon_Install_Success_Admin.png')">
+<img src=../assets/images/WS1_Sysmon_Install_Success_Admin.png class="rounded-md w-full" alt="Sysmon install success" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 Sysmon installation from an elevated console confirming driver and service registration on the host.
 </p>
 </div>
-<p class="mb-3 text-white">
-I then opened Event Viewer to compare the default Windows logs to the new Sysmon Operational channel. This
-contrast highlights how much extra fidelity Sysmon provides for security investigations.
+</section>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+2.3 — Comparing default Windows logs to Sysmon telemetry
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+After installation I opened Event Viewer and compared the default Windows logs to the new
+Sysmon Operational channel. This contrast highlights how much additional detail Sysmon provides.
 </p>
-<div class="grid md:grid-cols-2 gap-4 mb-4">
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_EventViewer_Initial_View.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Viewed standard Windows logs before any tuning.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Switched to the Sysmon Operational channel to watch
+events in real time.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Confirmed that Sysmon events flowed as soon as the host was active.
+</li>
+</ul>
+</div>
+<div class=space-y-6>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_EventViewer_Initial_View.png')">
+<img src=../assets/images/WS1_EventViewer_Initial_View.png class="rounded-md w-full" alt="Initial Event Viewer view" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 Initial Event Viewer view before any tuning, showing standard Windows logs.
 </p>
 </div>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_EventViewer_Operational_Log.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_EventViewer_Operational_Log.png')">
+<img src=../assets/images/WS1_EventViewer_Operational_Log.png class="rounded-md w-full" alt="Sysmon Operational log" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 Sysmon Operational channel selected and streaming events in real time after installation.
 </p>
 </div>
 </div>
-<p class="mb-3 text-white">
-Finally, I filtered the view to focus specifically on Sysmon as the event source. This small step prevents
-mixing providers and keeps investigations anchored on the telemetry I control.
+</section>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+2.4 — Focusing Event Viewer on Sysmon as a source
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+To keep investigations focused I filtered Event Viewer to show only Sysmon as the event source.
+This prevents mixing providers and keeps the console anchored on high fidelity telemetry.
 </p>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_EventViewer_Filter_EventSources.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Filtered events by the Sysmon provider.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Verified that new process and network activity appeared in this view.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Used this focused channel as the base for all later filters and views.
+</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_EventViewer_Filter_EventSources.png')">
+<img src=../assets/images/WS1_EventViewer_Filter_EventSources.png class="rounded-md w-full" alt="Event Viewer filter by source" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 Event Viewer filtered by Sysmon event source so the console remains focused on high fidelity telemetry.
 </p>
 </div>
+</section>
 <p class="mt-4 text-sm text-white font-semibold">
-Key actions in this step
+Key actions in this phase
 </p>
 <ul class="list-disc list-outside pl-5 text-sm text-white space-y-1">
 <li>Selected and reviewed a community Sysmon configuration prior to deployment.</li>
 <li>Installed Sysmon as a persistent service and confirmed successful registration.</li>
 <li>Validated that the Sysmon Operational channel was present, active, and filtered correctly.</li>
 </ul>
-</section>
-<section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-<h3 class="text-base font-semibold text-white mb-1">3. High Value Event IDs and Log Filtering</h3>
-<p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-Focusing on the Sysmon events that matter most for threat detection
+</div>
+<div id=tab-tuning class="tab-content space-y-16">
+<h3 class="text-xl font-semibold text-white">
+Phase 3 — High value event IDs and log filtering
+</h3>
+<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+Once events were flowing I tuned the view to keep threat hunting focused on telemetry that matters.
+Instead of scrolling through every entry, I built custom Event Viewer views around specific Sysmon
+event IDs that map directly to attacker behavior.
 </p>
-<p class="mb-3 text-white">
-Once events were flowing, I tuned the views to keep threat hunting focused on high value telemetry. Rather
-than scrolling across every event, I built custom views around specific Sysmon event IDs that map cleanly to
-attacker behavior.
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+3.1 — Building a custom Sysmon centered view
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+Custom views keep investigations fast and repeatable. I selected a small set of high value event
+IDs for process creation, file writes, registry changes, DNS queries, and network connections.
 </p>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-<img src=../assets/images/WS1_Filtering_CustomView_SelectingKeywords.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Created a custom view for core Sysmon event IDs.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Anchored later cases to the same filtered view for consistency.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Documented which IDs are most useful for detection work.
+</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_Filtering_CustomView_SelectingKeywords.png')">
+<img src=../assets/images/WS1_Filtering_CustomView_SelectingKeywords.png class="rounded-md w-full" alt="Custom view for Sysmon event IDs" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 Custom Event Viewer view built around a small set of high value Sysmon event IDs used throughout the lab.
 </p>
 </div>
-<p class="mb-3 text-white">
-I created filters for specific event types, including network connections (Event ID 3). This enables quick
-spotting of unusual ports, external IPs, or beacon patterns without drowning in unrelated events.
+</section>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+3.2 — Isolating network and registry activity
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+Network (Event ID 3) and registry value set (Event ID 13) events are powerful but noisy.
+Targeted filters allow quick spotting of suspicious connections and persistence without drowning in volume.
 </p>
-<div class="grid md:grid-cols-2 gap-4 mb-4">
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_EventViewer_EID3_Network_Filter.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Created a dedicated filter for Event ID 3 to hunt for C2 traffic.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Reviewed Event ID 13 volume to understand baseline registry activity.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Used these filters later to catch Run key persistence and beacon behavior.
+</li>
+</ul>
+</div>
+<div class=space-y-6>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_EventViewer_EID3_Network_Filter.png')">
+<img src=../assets/images/WS1_EventViewer_EID3_Network_Filter.png class="rounded-md w-full" alt="Network filter for Event ID 3" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 Filter isolating Event ID 3 network connection events for targeted C2 and beacon hunting.
 </p>
 </div>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_EventViewer_HighVolume_EID13.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_EventViewer_HighVolume_EID13.png')">
+<img src=../assets/images/WS1_EventViewer_HighVolume_EID13.png class="rounded-md w-full" alt="High volume registry events" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 High volume of Event ID 13 registry value set events showing why tuning and context are required.
 </p>
 </div>
 </div>
-<p class="mb-3 text-white">
-I then captured representative examples of each major event type I rely on: process creation, file updates,
-registry change, and DNS queries. These become anchors for the cases built later.
+</section>
+<section class=space-y-10>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+3.3 — Representative events for core behaviors
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+I captured representative examples for each major event type that appears in later investigations.
+These anchor cases and make it easier to explain findings to other analysts.
 </p>
-<div class="grid md:grid-cols-2 gap-4 mb-4">
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_EID1_ProcessCreate_Details.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Process creation events (Event ID 1) showing parents and full command lines.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>File create events (Event ID 11) used in payload and DLL drop tests.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Registry value set events (Event ID 13) that become the core signal for Run key persistence.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>DNS query events (Event ID 22) that tie network behavior to remote domains.
+</li>
+</ul>
+</div>
+<div class=space-y-6>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_EID1_ProcessCreate_Details.png')">
+<img src=../assets/images/WS1_EID1_ProcessCreate_Details.png class="rounded-md w-full" alt="Sysmon Event ID 1 process create" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 Sysmon Event ID 1 process creation event showing parent, image path, and full command line.
 </p>
 </div>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_EID11_FileCreate_DLL_Download.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
-Sysmon Event ID 11 file create event capturing a DLL written to disk as part of a test sequence.
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_EID11_FileCreate_DLL_Download.png')">
+<img src=../assets/images/WS1_EID11_FileCreate_DLL_Download.png class="rounded-md w-full" alt="Sysmon Event ID 11 file create" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Sysmon Event ID 11 file create event capturing a DLL written to disk during a test sequence.
 </p>
 </div>
 </div>
-<div class="grid md:grid-cols-2 gap-4 mb-4">
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_EID13_RegistryValue_Set.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
-Sysmon Event ID 13 registry value set, later used as the core indicator of Run key persistence.
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_EID13_RegistryValue_Set.png')">
+<img src=../assets/images/WS1_EID13_RegistryValue_Set.png class="rounded-md w-full" alt="Sysmon Event ID 13 registry value set" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Sysmon Event ID 13 registry value set event later used as the primary indicator for Run key persistence.
 </p>
 </div>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_EID22_DNSQuery_Properties.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
-Sysmon Event ID 22 DNS query properties showing the domains contacted by processes under test.
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_EID22_DNSQuery_Properties.png')">
+<img src=../assets/images/WS1_EID22_DNSQuery_Properties.png class="rounded-md w-full" alt="Sysmon Event ID 22 DNS query" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Sysmon Event ID 22 DNS query event showing the domains contacted by processes under test.
 </p>
 </div>
 </div>
+</section>
 <p class="mt-4 text-sm text-white font-semibold">
-Key actions in this step
+Key actions in this phase
 </p>
 <ul class="list-disc list-outside pl-5 text-sm text-white space-y-1">
 <li>Built a custom Event Viewer view centered on high value Sysmon event IDs.</li>
-<li>Demonstrated why noisy registry and network logs require filtering before analysis.</li>
-<li>Collected detailed examples of process, file, registry, and DNS events for case building.</li>
+<li>Demonstrated why noisy registry and network logs need focused filters before analysis.</li>
+<li>Captured detailed examples of process, file, registry, and DNS events for case building.</li>
 </ul>
-</section>
-<section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-<h3 class="text-base font-semibold text-white mb-1">4. Threat Hunting and Attack Simulation</h3>
-<p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-Moving from normal behavior to persistence and command and control using only host telemetry
+</div>
+<div id=tab-hunting class="tab-content space-y-16">
+<h3 class="text-xl font-semibold text-white">
+Phase 4 — Threat hunting and attack simulation
+</h3>
+<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+With telemetry tuned I introduced realistic behavior in stages: normal browsing, file creation,
+LOLBin downloads, registry based persistence, and command and control style traffic. Every step
+is visible in Sysmon and becomes part of a reconstructed story.
 </p>
-<p class="mb-3 text-white">
-With telemetry tuned, I introduced realistic behavior in stages: normal browsing, file creation, LOLBin
-downloads, registry persistence, and command and control style traffic. Each screenshot represents a step in
-a story that can be retold using Sysmon logs alone.
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+4.1 — Normal browsing and file activity
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+I began with harmless activity such as browser launches and simple file creation. This
+establishes what normal user actions look like in Sysmon before more suspicious behavior appears.
 </p>
-<div class="grid md:grid-cols-2 gap-4 mb-4">
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_Investigation_BrowserLaunch_Baseline.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
-Baseline browser launch showing how normal web usage appears in Sysmon before any simulated attacks.
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Launched a browser and observed generated process and network events.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Created test files to compare against later payload drops.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Confirmed these benign actions appear in the tuned views as expected.
+</li>
+</ul>
+</div>
+<div class=space-y-6>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_Investigation_BrowserLaunch_Baseline.png')">
+<img src=../assets/images/WS1_Investigation_BrowserLaunch_Baseline.png class="rounded-md w-full" alt="Baseline browser launch" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Baseline browser launch showing how normal web usage appears in Sysmon before simulated attacks.
 </p>
 </div>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_Investigation_FileCreate_TestFile.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_Investigation_FileCreate_TestFile.png')">
+<img src=../assets/images/WS1_Investigation_FileCreate_TestFile.png class="rounded-md w-full" alt="Test file creation" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 Harmless test file creation used to compare against later payload and DLL drop activity.
 </p>
 </div>
 </div>
-<p class="mb-3 text-white">
-I then moved into LOLBin based downloads, using built in tooling to pull files from remote servers. This
-demonstrates how attackers blend into admin behavior and why defenders must look at behavior, not just tools.
+</section>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+4.2 — LOLBin style downloads using built in tools
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+Next I used built in tooling to download content from remote servers. This demonstrates how attackers
+blend with administrator style actions and why defenders must focus on behavior rather than tool names.
 </p>
-<div class="grid md:grid-cols-2 gap-4 mb-4">
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_Investigation_LOLBinDownload_CurlCmd.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
-Curl style PowerShell download used to test whether Sysmon captures both process and network details.
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Used curl like syntax in PowerShell to pull a remote file.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Repeated the test with Invoke WebRequest to compare the resulting logs.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Validated that Sysmon captured both process and network details.
+</li>
+</ul>
+</div>
+<div class=space-y-6>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_Investigation_LOLBinDownload_CurlCmd.png')">
+<img src=../assets/images/WS1_Investigation_LOLBinDownload_CurlCmd.png class="rounded-md w-full" alt="Curl style PowerShell download" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Curl style PowerShell download used to test whether Sysmon captures process and network details.
 </p>
 </div>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_Investigation_LOLBinDownload_IWRCmd.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
-Alternate download using Invoke WebRequest, showing how similar behavior appears with different commands.
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_Investigation_LOLBinDownload_IWRCmd.png')">
+<img src=../assets/images/WS1_Investigation_LOLBinDownload_IWRCmd.png class="rounded-md w-full" alt="Invoke WebRequest download" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Alternate download using Invoke WebRequest, showing how similar behavior appears with a different command.
 </p>
 </div>
 </div>
-<p class="mb-3 text-white">
-Next, I simulated persistence through the registry. Using PowerShell, I set a Run key value that points to a
-payload, then viewed how that change appears from both the attacker and defender perspectives.
+</section>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+4.3 — Registry based persistence through Run keys
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+I then simulated persistence by setting a Run key value that points to a payload. Viewing the
+change from both attacker and defender perspectives shows how a single action surfaces as
+PowerShell, registry, and process events.
 </p>
-<div class="grid md:grid-cols-2 gap-4 mb-4">
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_Persistence_RunKey_SetItemProperty.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Used PowerShell to configure a Run key entry for persistence.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Verified that the change appeared as Event ID 13 in Sysmon.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Attempted to remove the key to show that cleanup is also visible.
+</li>
+</ul>
+</div>
+<div class=space-y-6>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_Persistence_RunKey_SetItemProperty.png')">
+<img src=../assets/images/WS1_Persistence_RunKey_SetItemProperty.png class="rounded-md w-full" alt="Run key set via PowerShell" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 PowerShell Set ItemProperty command used to configure a Run key based persistence mechanism.
 </p>
 </div>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_Investigation_Persistence_RunKeySetup.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_Investigation_Persistence_RunKeySetup.png')">
+<img src=../assets/images/WS1_Investigation_Persistence_RunKeySetup.png class="rounded-md w-full" alt="Run key configuration view" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 Defender view of the resulting Run key entry used to launch the payload at logon.
 </p>
 </div>
-</div>
-<div class="grid md:grid-cols-2 gap-4 mb-4">
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_Investigation_Persistence_RunKeyRemovalFailure.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_Investigation_Persistence_RunKeyRemovalFailure.png')">
+<img src=../assets/images/WS1_Investigation_Persistence_RunKeyRemovalFailure.png class="rounded-md w-full" alt="Run key removal attempt" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 Attempt to remove the persistence key, showing how cleanup attempts are also visible in registry events.
 </p>
 </div>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_Investigation3_Persistence_RegistryValueSet.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_Investigation3_Persistence_RegistryValueSet.png')">
+<img src=../assets/images/WS1_Investigation3_Persistence_RegistryValueSet.png class="rounded-md w-full" alt="Registry value set event for persistence" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 Sysmon Event ID 13 entry representing the Run key value set that underpins the persistence case.
 </p>
 </div>
 </div>
-<p class="mb-3 text-white">
-I then shifted to simulated command and control behavior. Sysmon's network and DNS events become the pivot
-points that connect PowerShell activity and registry changes to remote infrastructure.
+</section>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+4.4 — Command and control style network behavior
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+To simulate command and control I generated outbound connections from PowerShell to a remote
+host and watched the resulting Event ID 3 and related entries. Repeated connections mimic
+beacon behavior that a SOC would flag for investigation.
 </p>
-<div class="grid md:grid-cols-2 gap-4 mb-4">
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_CommandAndControl_NetworkEventID3.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Generated outbound connections that resemble beacon traffic.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Used Event ID 3 to tie PowerShell activity to a specific host and port.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Prepared data that feeds directly into MITRE mapping for C2 techniques.
+</li>
+</ul>
+</div>
+<div class=space-y-6>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_CommandAndControl_NetworkEventID3.png')">
+<img src=../assets/images/WS1_CommandAndControl_NetworkEventID3.png class="rounded-md w-full" alt="Sysmon Event ID 3 network connection" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 Sysmon Event ID 3 network connection linking PowerShell to an external command and control host.
 </p>
 </div>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_Investigation2_C2_NetworkEvent3.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_Investigation2_C2_NetworkEvent3.png')">
+<img src=../assets/images/WS1_Investigation2_C2_NetworkEvent3.png class="rounded-md w-full" alt="Beacon style Event ID 3 activity" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 Beacon style Event ID 3 network activity showing repeated connections to the same host and port.
 </p>
 </div>
 </div>
-<p class="mb-3 text-white">
-To tie everything together, I executed an encoded PowerShell command. The script block and execution events
-reveal how attackers can hide intent while still leaving a trail of telemetry that defenders can reconstruct.
+</section>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+4.5 — Encoded PowerShell commands and script blocks
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+To tie everything together I executed an encoded PowerShell command. Script block and execution
+events reveal how attackers hide intent while still leaving a clear trail in telemetry once decoded.
 </p>
-<div class="grid md:grid-cols-2 gap-4 mb-4">
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_Case_EncodedCommand_ScriptBlock.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Executed an encoded command to simulate obfuscated payload delivery.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Captured script block logging and related process events.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Used these events as the core of the encoded command case in reporting.
+</li>
+</ul>
+</div>
+<div class=space-y-6>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_Case_EncodedCommand_ScriptBlock.png')">
+<img src=../assets/images/WS1_Case_EncodedCommand_ScriptBlock.png class="rounded-md w-full" alt="Encoded PowerShell script block" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 Script block view of an encoded PowerShell command later decoded and mapped to registry and network events.
 </p>
 </div>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_Case_EncodedCommand_ExecutionAttempt.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
-Execution attempt for the encoded command, providing timing and process details for case reconstruction.
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_Case_EncodedCommand_ExecutionAttempt.png')">
+<img src=../assets/images/WS1_Case_EncodedCommand_ExecutionAttempt.png class="rounded-md w-full" alt="Encoded PowerShell execution attempt" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Execution attempt for the encoded command, providing timing and process details for reconstruction.
 </p>
 </div>
 </div>
+</section>
 <p class="mt-4 text-sm text-white font-semibold">
-Key actions in this step
+Key actions in this phase
 </p>
 <ul class="list-disc list-outside pl-5 text-sm text-white space-y-1">
 <li>Established normal browsing and file activity as a baseline for comparison.</li>
 <li>Simulated attacker behavior using LOLBins, registry persistence, and beacon style network traffic.</li>
 <li>Captured encoded PowerShell usage that ties process, registry, and network events into a single narrative.</li>
 </ul>
-</section>
-<section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-<h3 class="text-base font-semibold text-white mb-1">5. SOC Reporting and MITRE ATT&amp;CK Mapping</h3>
-<p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-Turning Sysmon telemetry into structured incidents and technique coverage
+</div>
+<div id=tab-reporting class="tab-content space-y-16">
+<h3 class="text-xl font-semibold text-white">
+Phase 5 — SOC reporting and MITRE ATT&amp;CK mapping
+</h3>
+<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+The final phase focuses on reporting. Each simulation is treated like a ticket: summarize what
+happened, list key commands and events, explain why it is suspicious, and tie it to MITRE ATT&amp;CK.
+The goal is for someone who did not run the lab to understand the full incident story.
 </p>
-<p class="mb-3 text-white">
-The final phase focuses on reporting. I treated each simulation as a ticket: summarize what happened, list the
-key commands and events, explain why it is suspicious, and tie it to MITRE ATT&amp;CK. The goal is for someone
-who did not run the lab to still understand the full incident story.
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+5.1 — Post exploitation discovery commands
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+I revisited basic commands such as whoami and systeminfo in a post exploitation context. When
+viewed through Sysmon, these become part of a clear discovery phase in the overall case timeline.
 </p>
-<div class="grid md:grid-cols-2 gap-4 mb-4">
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_PostExploitation_WhoamiCmdOverview.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Executed whoami and systeminfo from the attacker perspective.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Mapped resulting process events to discovery techniques in MITRE.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Used timing and parent child relationships to show context clearly.
+</li>
+</ul>
+</div>
+<div class=space-y-6>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_PostExploitation_WhoamiCmdOverview.png')">
+<img src=../assets/images/WS1_PostExploitation_WhoamiCmdOverview.png class="rounded-md w-full" alt="Post exploitation whoami" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 Post exploitation whoami usage, revisited as part of a broader discovery and persistence sequence.
 </p>
 </div>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4">
-<img src=../assets/images/WS1_PostExploitation_SystemInfo.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_PostExploitation_SystemInfo.png')">
+<img src=../assets/images/WS1_PostExploitation_SystemInfo.png class="rounded-md w-full" alt="System information discovery" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 systeminfo execution recorded as another process creation event, filling out the discovery phase.
 </p>
 </div>
 </div>
-<p class="mb-3 text-white">
-I then wrapped the persistence scenario into a SOC style template with fields for indicators, event IDs,
-registry paths, payload details, and mapped techniques. This is the type of artifact that can be linked
-directly into a ticketing system or used for onboarding new analysts.
+</section>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+5.2 — SOC style persistence case template
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+I wrapped the persistence scenario into a SOC style template with sections for indicators,
+event IDs, registry paths, payload details, and mapped techniques. This format can plug directly
+into a ticketing system or training material for new analysts.
 </p>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4">
-<img src=../assets/images/WS1_Reporting_SOCTemplate_PersistencePayload.png class="rounded-lg mx-auto mb-2" />
-<p class="text-xs text-text-secondary italic text-center">
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Documented the Run key case with clear fields and notes.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Listed the exact Sysmon event IDs that support the finding.
+</li>
+<li class="flex gap-2">
+<span class=text-accent-success>●</span>Linked the activity to persistence and execution techniques in MITRE.
+</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('../assets/images/WS1_Reporting_SOCTemplate_PersistencePayload.png')">
+<img src=../assets/images/WS1_Reporting_SOCTemplate_PersistencePayload.png class="rounded-md w-full" alt="SOC style persistence report" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
 SOC style report template capturing the persistence payload, key Sysmon events, indicators, and MITRE mapping.
 </p>
 </div>
-<p class="mt-4 text-sm text-white font-semibold mb-2">
+</section>
+<section class="bg-secondary-bg border border-gray-700 rounded-xl p-6 md:p-7">
+<h4 class="text-sm font-bold text-accent-cyan uppercase tracking-wider mb-4">
 Example MITRE ATT&amp;CK mapping from this lab
+</h4>
+<p class="text-sm text-text-secondary max-w-3xl leading-relaxed mb-4">
+The table below summarizes how major cases in the lab map to MITRE techniques and which Sysmon
+events support them. This provides a bridge between low level telemetry and higher level detection strategy.
 </p>
-<div class="overflow-x-auto mb-4">
+<div class=overflow-x-auto>
 <table class="min-w-full text-left text-xs text-text-secondary border border-gray-700 rounded-lg overflow-hidden">
 <thead class="bg-container-bg text-[0.7rem] uppercase tracking-[0.16em]">
 <tr>
 <th class="px-3 py-2 border-b border-gray-700">Case</th>
 <th class="px-3 py-2 border-b border-gray-700">Technique</th>
-<th class="px-3 py-2 border-b border-gray-700">Sysmon / Log Source</th>
+<th class="px-3 py-2 border-b border-gray-700">Sysmon / Log source</th>
 <th class="px-3 py-2 border-b border-gray-700">Detection notes</th>
 </tr>
 </thead>
@@ -531,69 +887,377 @@ Example MITRE ATT&amp;CK mapping from this lab
 <tr>
 <td class="px-3 py-2 border-b border-gray-700 text-white">Encoded PowerShell persistence</td>
 <td class="px-3 py-2 border-b border-gray-700">T1059.001 · PowerShell</td>
-<td class="px-3 py-2 border-b border-gray-700">Sysmon Event ID 1 + PowerShell script block (4104)</td>
+<td class="px-3 py-2 border-b border-gray-700">Sysmon Event ID 1 plus PowerShell script block logging</td>
 <td class="px-3 py-2 border-b border-gray-700">
 Full command line and decoded script reveal suspicious encoded payload execution.
 </td>
 </tr>
 <tr>
 <td class="px-3 py-2 border-b border-gray-700 text-white">Run key persistence payload</td>
-<td class="px-3 py-2 border-b border-gray-700">T1547.001 · Run Keys</td>
+<td class="px-3 py-2 border-b border-gray-700">T1547.001 · Run keys</td>
 <td class="px-3 py-2 border-b border-gray-700">Sysmon Event ID 13</td>
 <td class="px-3 py-2 border-b border-gray-700">
 Registry value set events show the Run key path and the payload configured to launch at logon.
 </td>
 </tr>
 <tr>
-<td class="px-3 py-2 border-b border-gray-700 text-white">Command and control beaconing</td>
-<td class="px-3 py-2 border-b border-gray-700">T1071 · Application Layer Protocol</td>
-<td class="px-3 py-2 border-b border-gray-700">Sysmon Event ID 3 + 22</td>
+<td class="px-3 py-2 border-b border-gray-700 text-white">Command and control beacon traffic</td>
+<td class="px-3 py-2 border-b border-gray-700">T1071 · Application layer protocol</td>
+<td class="px-3 py-2 border-b border-gray-700">Sysmon Event ID 3 plus 22</td>
 <td class="px-3 py-2 border-b border-gray-700">
-Repeated outbound connections and matching DNS queries tie the host to external C2 infrastructure.
+Repeated outbound connections and matching DNS queries tie the host to external control infrastructure.
 </td>
 </tr>
 <tr>
 <td class="px-3 py-2 border-b border-gray-700 text-white">Post exploitation host discovery</td>
-<td class="px-3 py-2 border-b border-gray-700">T1082 · System Information Discovery</td>
+<td class="px-3 py-2 border-b border-gray-700">T1082 · System information discovery</td>
 <td class="px-3 py-2 border-b border-gray-700">Sysmon Event ID 1</td>
 <td class="px-3 py-2 border-b border-gray-700">
-Commands like systeminfo and whoami generate process events that outline the discovery phase.
+Commands such as systeminfo and whoami generate process events that outline the discovery phase.
 </td>
 </tr>
 </tbody>
 </table>
 </div>
-<p class="text-sm text-white">
-This framework can be extended as more simulations are added, while staying grounded in the same Sysmon and
-Windows telemetry used throughout the lab.
-</p>
 </section>
-<section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+<p class="text-sm text-white">
+This framework can expand as more simulations are added while staying grounded in the same Sysmon
+and Windows telemetry used throughout the lab.
+</p>
+</div>
+</div>
+</section>
+<section id=vuln-overview class="pt-12 pb-6">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-2xl font-bold font-mono text-white mb-6">
+Endpoint Telemetry Overview
+</h2>
+<p class="text-white text-sm max-w-3xl mb-8">
+The Sysmon lab produced a rich stream of host level telemetry. By focusing on a small set of high
+value event IDs I could turn raw events into clear narratives about downloads, persistence, and
+command and control. The overview below summarizes the monitoring footprint and how it supports
+investigations.
+</p>
+<div class="bg-secondary-bg border border-gray-700 rounded-xl p-5 shadow-lg flex flex-col justify-center mb-10">
+<div class=image-zoom onclick="openModal('../assets/images/WS1_EventViewer_Operational_Log.png')">
+<img src=../assets/images/WS1_EventViewer_Operational_Log.png class="rounded-lg w-full object-contain max-h-[350px]" alt="Sysmon operational log overview" />
+</div>
+<p class="mt-4 text-xs italic text-white text-center">
+Sysmon Operational log view used as the primary window into process, file, registry, and network activity.
+</p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+<div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
+<p class="text-3xl font-bold text-red-400 mb-1">6</p>
+<p class="text-xs tracking-widest text-white uppercase">Core Event IDs</p>
+<p class="text-[0.68rem] text-text-secondary mt-2">
+Process, file, registry, DNS, network, and script activity.
+</p>
+</div>
+<div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
+<p class="text-3xl font-bold text-orange-300 mb-1">4</p>
+<p class="text-xs tracking-widest text-white uppercase">Simulated Cases</p>
+<p class="text-[0.68rem] text-text-secondary mt-2">
+Downloads, persistence, command and control, and discovery.
+</p>
+</div>
+<div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
+<p class="text-3xl font-bold text-yellow-300 mb-1">20+</p>
+<p class="text-xs tracking-widest text-white uppercase">Representative Events</p>
+<p class="text-[0.68rem] text-text-secondary mt-2">
+Screenshots of key examples for each event type.
+</p>
+</div>
+<div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
+<p class="text-3xl font-bold text-green-300 mb-1">1</p>
+<p class="text-xs tracking-widest text-white uppercase">Monitored Host</p>
+<p class="text-[0.68rem] text-text-secondary mt-2">
+Single workstation treated like a production endpoint.
+</p>
+</div>
+<div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
+<p class="text-3xl font-bold text-blue-400 mb-1">4</p>
+<p class="text-xs tracking-widest text-white uppercase">Mapped Techniques</p>
+<p class="text-[0.68rem] text-text-secondary mt-2">
+ATT&amp;CK coverage for persistence, execution, C2, and discovery.
+</p>
+</div>
+</div>
+<div class="grid md:grid-cols-2 gap-6 mb-12">
+<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6 shadow">
+<h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">
+Events by category
+</h3>
+<p class="text-xs text-text-secondary leading-relaxed mb-3">
+Approximate distribution of Sysmon events used most often during investigations.
+</p>
+<div class=chart-container>
+<canvas id=attackOriginChart></canvas>
+</div>
+<p class="mt-3 text-[0.7rem] text-text-secondary italic">
+Process creation and registry value set events provided the strongest detection signal in this lab.
+</p>
+</div>
+<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6 shadow">
+<h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">
+Investigation timeline
+</h3>
+<p class="text-xs text-text-secondary leading-relaxed mb-3">
+Relative emphasis across the five phases of the lab, from host preparation through reporting.
+</p>
+<div class=chart-container>
+<canvas id=dailyAttemptsChart></canvas>
+</div>
+<p class="mt-3 text-[0.7rem] text-text-secondary italic">
+Most time was spent tuning telemetry and walking through simulated attack paths in a repeatable way.
+</p>
+</div>
+</div>
+<div class="bg-secondary-bg border border-gray-700 rounded-xl p-8 mb-10">
+<div class="flex items-center justify-between mb-8 border-b border-gray-800 pb-4">
+<h3 class="text-sm font-bold text-white uppercase tracking-widest">
+Detection Highlights
+</h3>
+<span class="text-xs text-white font-mono">6 KEY FINDINGS</span>
+</div>
+<div class="grid md:grid-cols-2 gap-x-12 gap-y-8">
+<div class=space-y-6>
+<div>
+<span class="text-white font-mono text-xs mb-1 block tracking-wider">BASELINE VALUE</span>
+<p class="text-white leading-relaxed text-sm">
+A quiet, well understood baseline made it easy to see when new shells, tools, or network
+connections appeared on the host.
+</p>
+</div>
+<div>
+<span class="text-white font-mono text-xs mb-1 block tracking-wider">EVENT ID PRIORITIES</span>
+<p class="text-white leading-relaxed text-sm">
+A small set of Sysmon event IDs covered most interesting behavior, which keeps detection rules
+and views simple.
+</p>
+</div>
+<div>
+<span class="text-white font-mono text-xs mb-1 block tracking-wider">PERSISTENCE SIGNAL</span>
+<p class="text-white leading-relaxed text-sm">
+Registry value set events around Run keys were reliable indicators of persistence configuration
+and cleanup attempts.
+</p>
+</div>
+</div>
+<div class=space-y-6>
+<div>
+<span class="text-white font-mono text-xs mb-1 block tracking-wider">NETWORK CONTEXT</span>
+<p class="text-white leading-relaxed text-sm">
+Event ID 3 network connections combined with DNS queries made it easy to connect processes to
+remote hosts.
+</p>
+</div>
+<div>
+<span class="text-white font-mono text-xs mb-1 block tracking-wider">SCRIPT BLOCK LOGGING</span>
+<p class="text-white leading-relaxed text-sm">
+Encoded PowerShell commands still left usable script block entries once decoded, creating a
+strong signal for suspicious automation.
+</p>
+</div>
+<div>
+<span class="text-white font-mono text-xs mb-1 block tracking-wider">REPORTING REUSE</span>
+<p class="text-white leading-relaxed text-sm">
+SOC templates built for this lab can be reused across new cases, improving onboarding and
+documentation quality.
+</p>
+</div>
+</div>
+</div>
+</div>
+<h2 class="text-2xl font-bold font-mono text-white mb-6">
+Detection and Response Strategy
+</h2>
+<div class="grid md:grid-cols-3 gap-6">
+<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
+<h4 class="text-sm font-bold text-accent-red uppercase tracking-wider mb-2">
+Tier 1: Endpoint foundation
+</h4>
+<p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
+Objective: Keep the monitored host predictable so new activity stands out.
+</p>
+<ul class="space-y-4 text-sm text-text-secondary">
+<li class="flex gap-3">
+<span class="text-accent-red font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Tighten baseline</strong>
+Reduce background noise with tuned privacy, limited software, and consistent user habits.
+</span>
+</li>
+<li class="flex gap-3">
+<span class="text-accent-red font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Standardize tooling</strong>
+Use a known set of consoles and scripts so unexpected tools are easier to spot.
+</span>
+</li>
+<li class="flex gap-3">
+<span class="text-accent-red font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Document normal behavior</strong>
+Capture reference screenshots and logs that future investigations can compare against.
+</span>
+</li>
+</ul>
+</div>
+<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
+<h4 class="text-sm font-bold text-accent-action uppercase tracking-wider mb-2">
+Tier 2: Telemetry and analytics
+</h4>
+<p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
+Objective: Turn raw Sysmon events into reliable detection logic.
+</p>
+<ul class="space-y-4 text-sm text-text-secondary">
+<li class="flex gap-3">
+<span class="text-accent-action font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Focus on key IDs</strong>
+Prioritize process, registry, network, DNS, and script related events for rules and hunts.
+</span>
+</li>
+<li class="flex gap-3">
+<span class="text-accent-action font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Build reusable views</strong>
+Share tuned Event Viewer filters and queries so other analysts can trace the same paths.
+</span>
+</li>
+<li class="flex gap-3">
+<span class="text-accent-action font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Correlate signals</strong>
+Link process, registry, and network events into simple chains that explain each scenario.
+</span>
+</li>
+</ul>
+</div>
+<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
+<h4 class="text-sm font-bold text-accent-success uppercase tracking-wider mb-2">
+Tier 3: SOC workflow
+</h4>
+<p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
+Objective: Package findings in a way that fits day to day security operations.
+</p>
+<ul class="space-y-4 text-sm text-text-secondary">
+<li class="flex gap-3">
+<span class="text-accent-success font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Use case templates</strong>
+Keep persistence and C2 cases in a consistent SOC report format with indicators and notes.
+</span>
+</li>
+<li class="flex gap-3">
+<span class="text-accent-success font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Map to MITRE</strong>
+Link each scenario to techniques so playbooks and training can reference the same language.
+</span>
+</li>
+<li class="flex gap-3">
+<span class="text-accent-success font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Extend to SIEM</strong>
+The same patterns can later feed SIEM rules once logs are forwarded beyond the host.
+</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class="pt-12 md:pt-16 pb-12">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+<div>
+<div class="flex items-center gap-4 mb-8">
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap">Key insights</h2>
+<div class="h-px bg-gray-700 w-full"></div>
+</div>
+<div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+<ul class="list-disc list-outside pl-5 space-y-2 text-white text-sm sm:text-[0.95rem] leading-relaxed">
+<li>A single well instrumented endpoint can provide enough signal to reconstruct full attack stories.</li>
+<li>Most of the value comes from a small group of Sysmon event IDs when they are filtered and interpreted correctly.</li>
+<li>Registry and network telemetry are powerful for persistence and command and control detection when paired with process context.</li>
+<li>Structured reporting and MITRE mapping are just as important as the underlying logs for SOC readiness.</li>
+</ul>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-4 mb-8">
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap">Skills demonstrated</h2>
+<div class="h-px bg-gray-700 w-full"></div>
+</div>
+<div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+<div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Windows Endpoint Hardening
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Sysmon Deployment and Tuning
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Event Viewer Custom Views
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Threat Hunting with Host Logs
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+PowerShell Investigation
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Registry and Run Key Analysis
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Network and DNS Telemetry
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+MITRE ATT&amp;CK Mapping
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+SOC Style Reporting
+</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="pb-12 md:pb-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="bg-secondary-bg border border-white/30 rounded-2xl p-6 shadow-lg">
 <h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-white">
 Summary
 </h3>
 <p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
-This Windows Sysmon lab shows how I move from a clean endpoint to a complete threat detection story. I built
-a realistic Windows 10 monitoring VM, deployed and validated Sysmon, and tuned the views around high value
-event IDs. From there I simulated behavior ranging from normal activity to registry persistence and command
-and control connections, then rebuilt each scenario using host telemetry alone.
+This Windows Sysmon lab shows how I move from a clean endpoint to a complete threat detection story.
+I built a realistic Windows 10 monitoring VM, deployed and validated Sysmon, and tuned views around
+high value event IDs. From there I simulated behavior ranging from normal browsing and file activity
+to registry persistence and command and control connections, then rebuilt each scenario using host
+telemetry alone.
 </p>
 <p class="text-sm sm:text-[0.95rem] text-white leading-relaxed mt-3">
-The final deliverable is more than just screenshots it is a set of SOC ready investigations tied to specific
-Sysmon events and mapped to MITRE ATT&amp;CK. This project demonstrates practical experience with Windows
-telemetry, threat hunting, and written communication of findings, all of which are core skills for an entry
-level security analyst.
+The final deliverable is more than a set of screenshots. It is a series of SOC ready investigations
+tied to specific Sysmon events and mapped to MITRE ATT&amp;CK. This project demonstrates practical
+experience with Windows telemetry, threat hunting, and clear written communication of findings, all of
+which are core skills for an entry level security analyst.
 </p>
-</section>
 </div>
-</section>
-<section class="py-12 bg-primary-bg">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<a href=../index.html#projects class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition">
+<div class=mt-10>
+<a href=../index.html#projects class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition font-mono">
 ← Back to Portfolio
 </a>
 </div>
+</div>
 </section>
+<script src=https://cdn.jsdelivr.net/npm/chart.js></script>
+<script>function scrollToSection(id){const target=document.getElementById(id);if(!target)return;target.scrollIntoView({behavior:'smooth',block:'start'});const dots=document.querySelectorAll('.nav-dot');const sections=['hero','workflow','lab','vuln-overview'];dots.forEach((dot,idx)=>{dot.classList.toggle('active',sections[idx]===id);});}
+function openModal(src){const modal=document.getElementById('imageModal');const img=document.getElementById('modalImage');img.src=src;modal.classList.add('active');}
+function closeModal(){const modal=document.getElementById('imageModal');modal.classList.remove('active');const img=document.getElementById('modalImage');img.src='';}
+function toggleSeverity(level){const panel=document.getElementById(`panel-${level}`);if(!panel)return;panel.classList.toggle('open');}
+document.addEventListener('DOMContentLoaded',()=>{if(window.Chart){const originCtx=document.getElementById('attackOriginChart');if(originCtx){new Chart(originCtx,{type:'bar',data:{labels:['Process (EID 1)','Registry (EID 13)','Network (EID 3)','DNS (EID 22)'],datasets:[{data:[40,30,15,10],backgroundColor:['#ef4444','#fb923c','#3b82f6','#22c55e'],borderRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#e5e7eb',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#9ca3af',font:{size:10}},grid:{color:'rgba(75,85,99,0.4)'}}}}});}
+const dailyCtx=document.getElementById('dailyAttemptsChart');if(dailyCtx){new Chart(dailyCtx,{type:'line',data:{labels:['Host prep','Sysmon install','Event tuning','Simulated attacks','Reporting'],datasets:[{label:'Relative effort',data:[15,20,25,25,15],borderColor:'#60a5fa',backgroundColor:'rgba(96,165,250,0.15)',tension:0.35,fill:true,pointRadius:3,pointBackgroundColor:'#93c5fd'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#e5e7eb',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#9ca3af',font:{size:10}},grid:{color:'rgba(75,85,99,0.4)'}}}}});}}});</script>
 </main>
 </body>
 </html>
