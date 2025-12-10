@@ -1,737 +1,1065 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang=en data-theme=dark class=dark>
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Azure Sentinel Threat Analysis | Christian Aguirre</title>
-
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <style>
-        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
-
-        /* --- THEME VARIABLES: MONOCHROME BASE + FUNCTIONAL POPS --- */
-        .dark {
-            --bg-default: #1e1e1e; /* Darker Charcoal */
-            --bg-secondary: #30333a; /* Lighter Gray for Cards */
-            --text-base: #ffffff; /* Pure White */
-            --text-secondary: #abb2bf; /* Light Gray */
-
-            /* Structural Accent (Used for headers, nav text, primary links.) */
-            --accent-structural: #d9d9d9;
-
-            /* Functional Colors (Only used where color is meaningful.) */
-            --functional-action: #61afef; /* Blue for primary CTA/Link hover */
-            --functional-success: #98c379; /* Green for progress/success status */
-
-            /* Mapping to old variable names for Tailwind compatibility */
-            --accent-primary: var(--accent-structural);
-            --accent-red: #e06c75; /* Soft Red for filters/risks */
-            --container-bg: #171717; /* Slight offset for background differentiation */
-
-            background-color: var(--bg-default);
-            color: var(--text-base);
-        }
-
-        .light {
-            --bg-default: #ffffff;
-            --bg-secondary: #f3f4f6;
-            --text-base: #111827;
-            --text-secondary: #4b5563;
-            --accent-primary: #0891b2;
-            --accent-red: #dc2626;
-            --container-bg: #ffffff;
-            background-color: var(--bg-default);
-            color: var(--text-base);
-        }
-
-        /* --- GLOBAL & TYPOGRAPHY --- */
-        body {
-            font-family: "Inter", sans-serif;
-            transition: background-color 0.5s, color 0.5s;
-        }
-
-        /* --- SECTION HEADINGS (same as index) --- */
-        .section-title-wrapper {
-            display: inline-flex;
-            align-items: center;
-            margin-bottom: 2rem;
-            font-family: "Inconsolata", monospace;
-            width: 100%;
-        }
-
-        .section-title-wrapper h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-structural); /* Structural gray */
-            flex-shrink: 0;
-        }
-
-        .section-title-wrapper span {
-            content: '';
-            display: block;
-            height: 2px;
-            background-color: var(--text-secondary);
-            margin-left: 0.75rem;
-            flex-grow: 1;
-            opacity: 0.5;
-            min-width: 150px;
-        }
-
-        /* --- HERO BACKGROUND (same as index) --- */
-        .hero-grid-bg {
-            background-color: var(--bg-default);
-            background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, rgba(0,0,0,0) 1px);
-            background-size: 20px 20px;
-            background-position: center;
-        }
-
-        /* --- PILLS --- */
-        .pill {
-            border-radius: 999px;
-            padding: 0.2rem 0.7rem;
-            border: 1px solid rgba(171, 178, 191, 0.6);
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            white-space: nowrap;
-        }
-
-        .pill-muted {
-            color: var(--text-secondary);
-            background-color: rgba(23, 23, 23, 0.95);
-        }
-
-        .pill-accent {
-            color: var(--accent-structural);
-            background-color: rgba(23, 23, 23, 0.95);
-            border-color: rgba(217, 217, 217, 0.9);
-        }
-
-        pre code {
-            font-family: "Inconsolata", monospace;
-            font-size: 0.8rem;
-        }
-    </style>
-
-    <script>
-        // Tailwind config aligned with index.html
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary-bg": "var(--bg-default)",
-                        "secondary-bg": "var(--bg-secondary)",
-                        "container-bg": "var(--container-bg)",
-                        "text-base": "var(--text-base)",
-                        "text-secondary": "var(--text-secondary)",
-
-                        // Structural Accent
-                        "accent-cyan": "var(--accent-structural)",
-
-                        // Functional Colors
-                        "accent-red": "var(--accent-red)",
-                        "accent-action": "var(--functional-action)",
-                        "accent-success": "var(--functional-success)",
-                    }
-                }
-            }
-        };
-
-        document.addEventListener("DOMContentLoaded", () => {
-            setInitialTheme();
-        });
-
-        function setInitialTheme() {
-            const html = document.documentElement;
-            const savedTheme = localStorage.getItem("theme");
-            const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-            let initialTheme = 'dark';
-            if (savedTheme) {
-                initialTheme = savedTheme;
-            } else if (!systemPrefersDark) {
-                initialTheme = 'light';
-            }
-
-            html.setAttribute("data-theme", initialTheme);
-            html.classList.add(initialTheme);
-        }
-    </script>
+<meta charset=UTF-8 />
+<meta name=viewport content="width=device-width, initial-scale=1.0" />
+<title>Azure Sentinel Threat Analysis Lab | Christian Aguirre</title>
+<script>function switchTab(tabId){document.querySelectorAll('.tab-button').forEach(btn=>{btn.classList.remove('active');});document.querySelectorAll('.tab-content').forEach(content=>{content.classList.remove('active');});const activeButton=[...document.querySelectorAll('.tab-button')].find(btn=>btn.getAttribute('onclick')&&btn.getAttribute('onclick').includes(tabId));if(activeButton)activeButton.classList.add('active');const target=document.getElementById(`tab-${tabId}`);if(target)target.classList.add('active');}</script>
+<script src=https://cdn.tailwindcss.com></script>
+<script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)",}}}};</script>
+<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;--functional-action:#61afef;--functional-success:#98c379;--accent-red:#e06c75;--container-bg:#171717;background-color:var(--bg-default);color:var(--text-base)}body{font-family:"Inter",sans-serif;background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center;background-attachment:fixed;min-height:100vh}.pill{border-radius:999px;padding:.2rem .7rem;border:1px solid rgba(171,178,191,0.6);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em}.pill-muted{color:var(--text-secondary);background-color:rgba(23,23,23,0.95)}.pill-accent{color:var(--accent-structural);background-color:rgba(23,23,23,0.95);border-color:rgba(217,217,217,0.9)}.tab-button{padding:1rem 1.5rem;background:transparent;border:0;color:var(--text-secondary);font-family:"Inconsolata",monospace;cursor:pointer;transition:all .3s ease;border-bottom:3px solid transparent;white-space:nowrap}.tab-button:hover{color:var(--functional-action);background:rgba(97,175,239,0.05)}.tab-button.active{color:var(--functional-action);border-bottom-color:var(--functional-action)}.tab-content{display:none;animation:fadeSlideIn .4s ease-out}.tab-content.active{display:block}@keyframes fadeSlideIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}.stat-card{position:relative;overflow:hidden}.stat-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent,rgba(97,175,239,0.1),transparent);animation:shimmer 3s infinite}@keyframes shimmer{0%{transform:translateX(-100%) translateY(-100%) rotate(45deg)}100%{transform:translateX(100%) translateY(100%) rotate(45deg)}}.stat-number{font-size:2.5rem;font-weight:800;font-family:"Inconsolata",monospace}.image-zoom{cursor:pointer;transition:all .3s ease}.image-zoom:hover{transform:scale(1.02);box-shadow:0 10px 40px rgba(97,175,239,0.3)}.modal{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.95)}.modal.active{display:flex;align-items:center;justify-content:center}.modal-content{max-width:95%;max-height:95%;border-radius:8px}.severity-critical,.severity-high,.severity-medium,.severity-low,.severity-info{padding:.25rem .75rem;border-radius:999px;font-size:.7rem;text-transform:uppercase}.severity-critical{background:rgba(185,28,28,0.15);border:1px solid #b91c1c;color:#b91c1c}.severity-high{background:rgba(194,65,12,0.15);border:1px solid #c2410c;color:#c2410c}.severity-medium{background:rgba(249,115,22,0.15);border:1px solid #f97316;color:#f97316}.severity-low{background:rgba(234,179,8,0.15);border:1px solid #eab308;color:#eab308}.severity-info{background:rgba(59,130,246,0.15);border:1px solid #3b82f6;color:#3b82f6}.collapsible-content{max-height:0;overflow:hidden;transition:max-height .4s ease-out}.collapsible-content.open{max-height:10000px}.nav-dots{position:fixed;right:2rem;top:50%;transform:translateY(-50%);z-index:100}.nav-dot{width:10px;height:10px;border-radius:50%;background:var(--text-secondary);margin:.75rem 0;cursor:pointer;transition:all .3s ease}.nav-dot:hover,.nav-dot.active{background:var(--functional-action);transform:scale(1.4)}@media(max-width:768px){.nav-dots{display:none}}</style>
 </head>
-
-<body class="transition-colors duration-500 bg-primary-bg text-text-base">
-<main class="bg-primary-bg text-text-base min-h-screen">
-
-    <!-- HERO -->
-    <section id="hero"
-             class="hero-grid-bg pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16 border-b border-gray-800">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
-            <!-- Back link (matches summary project style) -->
-            <a href="../index.html#projects"
-               class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition mb-6">
-                ← Back to Portfolio
-            </a>
-
-            <!-- Pills -->
-            <div class="flex flex-wrap gap-2 mb-6">
-                <span class="pill pill-accent">Azure SOC Lab</span>
-                <span class="pill pill-muted">Azure VM</span>
-                <span class="pill pill-muted">Microsoft Sentinel</span>
-                <span class="pill pill-muted">KQL</span>
-                <span class="pill pill-muted">Threat Detection</span>
-            </div>
-
-            <!-- Title + subtitle -->
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-text-base">
-                Azure Sentinel Threat Analysis
-            </h1>
-            <p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed">
-                Designed and deployed a Windows honeypot in Azure to capture global attack traffic.
-                Forwarded logs into Microsoft Sentinel, enriched attacker IPs with threat intel, and
-                built an interactive world map to visualize real time security events.
-            </p>
-
-            <!-- Meta badges -->
-            <div class="flex flex-wrap gap-3 mt-6 text-[0.7rem] sm:text-xs text-text-secondary">
-                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
-                    <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>
-                    SOC Investigation Workflow
-                </span>
-                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
-                    <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>
-                    Tools Used: Azure VM, Sentinel, Log Analytics, KQL, Watchlists
-                </span>
-            </div>
-
-            <!-- Top split: Narrative + What I Built -->
-            <div class="mt-10 grid md:grid-cols-2 gap-6">
-                <!-- Project Narrative -->
-                <article class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                    <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2 font-mono">
-                        Project Narrative
-                    </p>
-                    <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
-                        I deployed a Windows VM in Azure, opened it fully to the internet, and turned off protections so it would attract automated attackers.
-                        As attacks hit the system, each failed login attempt and source IP was logged into Microsoft Sentinel.
-                    </p>
-                    <p class="text-sm sm:text-[0.95rem] leading-relaxed text-text-base mb-3">
-                       I then enriched attacker IPs with geolocation data and visualized everything in charts and a global threat map.
-                        This project shows how quickly an exposed machine is found and exploited online, and how SOC analysts investigate and interpret that data.
-                    </p>
-                </article>
-
-                <!-- What I Built -->
-                <article class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                    <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-2 font-mono">
-                        What I Built
-                    </p>
-                    <ul class="list-disc list-outside pl-5 space-y-1.5 text-sm sm:text-[0.95rem] text-text-base">
-                        <li>Deployed an Azure Windows honeypot fully exposed to the internet</li>
-                        <li>Configured networking + disabled protections to capture real attack traffic</li>
-                        <li>Connected the VM to Log Analytics and Microsoft Sentinel</li>
-                        <li>Enriched attacker IPs with GeoIP data using a custom KQL function</li>
-                        <li>Built an interactive global map visualizing 4,600+ security events</li>
-                    </ul>
-                </article>
-            </div>
-        </div>
-    </section>
-
-    <!-- Architecture OVERVIEW -->
-        <section class="py-12 md:py-14 bg-primary-bg">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-                <!-- Title OUTSIDE the box -->
-                <div class="section-title-wrapper mb-10 md:mb-12">
-                    <h2 class="font-mono text-white">Architecture Overview</h2>
-                    <span></span>
-                </div>
-        
-                <!-- MAIN BOX -->
-                <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-        
-                    <!-- Subtitle -->
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-6">
-                        FULL PIPELINE VIEW OF THE AZURE HONEYPOT SECURITY LAB
-                    </p>
-        
-                    <!-- Intro paragraph -->
-                    <p class="text-white text-sm sm:text-[0.95rem] leading-relaxed mb-8">
-                        This diagram shows how the exposed Windows VM receives attacker traffic, how its security logs flow
-                        into Log Analytics, and how Microsoft Sentinel enriches and visualizes that data. It highlights the
-                        full path from raw brute-force attempts to a mapped, analyst-ready threat view.
-                    </p>
-        
-                    <!-- IMAGE 1: SOC Architecture -->
-                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4 md:mb-6 text-center">
-                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_SOCArc_Diagram.png"
-                             alt="Azure SOC Architecture Diagram"
-                             class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[850px] w-full object-contain" />
-                        <p class="mt-2 text-xs italic text-text-secondary">
-                            Architecture map showing attacker traffic hitting the VM, logs moving through Azure, and Sentinel 
-                            generating the final attack map.
-                        </p>
-                    </div>
-        
-                </div>
-            </div>
-        </section>
-        
-        
-        <!-- WORKFLOW OVERVIEW -->
-        <section class="py-12 md:py-14 bg-primary-bg">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-                <!-- Title OUTSIDE the box -->
-                <div class="section-title-wrapper mb-10 md:mb-12">
-                    <h2 class="font-mono text-white">Workflow Overview</h2>
-                    <span></span>
-                </div>
-        
-                <!-- MAIN BOX -->
-                <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-        
-                    <!-- Subtitle -->
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-6">
-                        END-TO-END FLOW OF THE HONEYPOT ATTACK PIPELINE
-                    </p>
-        
-                    <!-- Intro paragraph -->
-                    <p class="text-white text-sm sm:text-[0.95rem] leading-relaxed mb-8">
-                       This section summarizes how attacker traffic moves through the honeypot setup — from exposing the VM,
-                        to collecting and enriching logs, to visualizing the final attack map in Microsoft Sentinel. The diagram
-                        shows each stage of the pipeline and how raw brute-force attempts are transformed into usable security insights.
-                    </p>
-        
-                    <!-- IMAGE: Honeypot Workflow Map -->
-                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 mb-4 md:mb-6 text-center">
-                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Honeypot_Diagram.png"
-                             alt="Honeypot Workflow Diagram"
-                             class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[850px] w-full object-contain" />
-                        <p class="mt-2 text-xs italic text-text-secondary">
-                            Workflow map showing VM exposure, log ingestion, GeoIP enrichment, KQL processing, and the final attack-map
-                            output.
-                        </p>
-                    </div>
-        
-                </div>
-            </div>
-        </section>
-
-
-<!-- LAB BREAKDOWN -->
-<section class="py-14 md:py-16 bg-primary-bg">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        <div class="section-title-wrapper mb-10 md:mb-12">
-            <h2 class="font-mono">Lab breakdown</h2>
-            <span></span>
-        </div>
-
-        <div class="space-y-8 text-sm sm:text-[0.95rem] leading-relaxed text-text-secondary">
-
-
-                <!-- 1. Subscription -->
-                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                    <h3 class="text-base font-semibold text-white mb-1">
-                        1. Azure Environment Preparation
-                    </h3>
-
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Confirmed access to core Azure services needed for the lab.
-                    </p>
-
-                    <p class="text-white mb-4">
-                        Before building the honeypot, I verified that my Azure subscription allowed me to deploy VMs, configure NSGs,
-                        use Log Analytics, and enable Microsoft Sentinel. This quick check ensured the environment was ready for the
-                        rest of the setup. 
-                    </p>
-
-                    <p class="text-white mb-6">
-                        The screenshots show the Azure portal and subscription overview I reviewed to confirm service availability,
-                        quotas, and overall readiness.
-                    </p>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-                        <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Azure-Home-Overview.png"
-                                 alt="Azure Home Overview"
-                                 class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[650px] w-full object-contain" />
-                            <p class="mt-2 text-xs italic text-text-secondary">
-                                Azure portal home view showing available core services.
-                            </p>
-                        </div>
-
-                        <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Azure-Subscription-Overview.png"
-                                 alt="Azure Subscription Overview"
-                                 class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[650px] w-full object-contain" />
-                            <p class="mt-2 text-xs italic text-text-secondary">
-                                Subscription overview confirming quotas and resource eligibility.
-                            </p>
-                        </div>
-
-                    </div>
-                </section>
-
-                <!-- 2. Honeypot -->
-                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-
-                    <h3 class="text-base font-semibold text-white mb-1">
-                        2. Honeypot VM and Intentional Exposure
-                    </h3>
-
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                       Deployed a Windows 10 VM, opened RDP, and removed default protections
-                    </p>
-
-                    <p class="text-white mb-4">
-                        To capture real attacker activity, I deployed a Windows 10 VM with a public IP and intentionally
-                        relaxed its security. Opening RDP, loosening the NSG rules, and disabling the Windows firewall made
-                        the VM easy to find and target—creating a steady stream of authentic brute-force attempts for analysis
-                        in Sentinel.
-                    </p>
-
-                    <p class="text-white mb-4">
-                        Key Steps:
-                    </p>
-
-                    <ul class="list-disc list-outside pl-5 space-y-1 mb-6 text-white">
-                        <li>Deployed a Windows 10 VM with RDP enabled.</li>
-                        <li>Allowed inbound traffic from any source through the NSG</li>
-                        <li>Disabled all Windows firewall profiles</li>
-                        <li>Generated initial failed logons using a decoy account.</li>
-                    </ul>
-
-                    <p class="text-white mb-6">
-                        These changes ensured the VM was highly visible to internet scanners and automated attack traffic.
-                    </p>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-                        <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_NSG-Rule-Allow-All-Inbound.png"
-                                 alt="NSG Rule Allow All Inbound"
-                                 class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
-                            <p class="mt-2 text-xs italic text-text-secondary">
-                                NSG rule configured to allow all inbound traffic to the honeypot.
-                            </p>
-                        </div>
-
-                        <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Turned-Off-Windows-VM-Firewall.png"
-                                 alt="Turned Off Windows VM Firewall"
-                                 class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
-                            <p class="mt-2 text-xs italic text-text-secondary">
-                                Windows firewall disabled to increase host exposure.
-                            </p>
-                        </div>
-
-                    </div>
-                </section>
-
-                <!-- 3. Log + Sentinel -->
-                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-
-                    <h3 class="text-base font-semibold text-white mb-1">
-                        3. Log Forwarding and Microsoft Sentinel Integration
-                    </h3>
-
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                       Forwarded Windows security logs to Log Analytics and connected them to Sentinel
-                    </p>
-
-                    <p class="text-white mb-4">
-                        Once the honeypot began generating failed logons, I connected the VM to Azure’s monitoring pipeline so
-                        all activity could be captured and analyzed in one place. Log Analytics handled the ingestion, and
-                        Microsoft Sentinel provided the analysis and visualization layer.
-                    </p>
-
-                    <p class="text-white mb-4">
-                        Key Steps:
-                    </p>
-
-                    <ul class="list-disc list-outside pl-5 space-y-1 mb-6 text-white">
-                        <li>Set up a Log Analytics Workspace as the central log collector.</li>
-                        <li>Enabled Microsoft Sentinel on that workspace.</li>
-                        <li>Installed the Azure Monitor Agent using the Windows Security Events via AMA connector.</li>
-                        <li>Verified that logs were flowing by querying Event ID 4625 (failed logons).</li>
-                    </ul>
-
-                    <p class="text-white mb-6">
-                        After the AMA pipeline was active, Log Analytics immediately began receiving authentication failures
-                        from the exposed VM, giving Sentinel a real time feed of attacker activity.
-                    </p>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_AMA-as-Connected.png"
-                                 alt="AMA Connector Connected"
-                                 class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
-                            <p class="mt-2 text-xs italic text-text-secondary">
-                                Azure Monitor Agent connector showing a healthy VM connection to Log Analytics.
-                            </p>
-                        </div>
-
-                        <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Raw-Attacker-Logs.png"
-                                 alt="Raw Attacker Logs"
-                                 class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
-                            <p class="mt-2 text-xs italic text-text-secondary">
-                                Raw SecurityEvent logs in Log Analytics, capturing repeated failed RDP attempts
-                            </p>
-                        </div>
-                    </div>
-
-                </section>
-
-                <!-- 4. GeoIP -->
-                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                    <h3 class="text-base font-semibold text-white mb-1">
-                        4. GeoIP Watchlist and KQL Enrichment
-                    </h3>
-                
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Added location data to failed-logon events using a GeoIP watchlist
-                    </p>
-                
-                    <p class="text-white mb-4">
-                        Once logs were flowing into Sentinel, I enriched the attacker IPs with geographic data
-                        to make the activity easier to interpret. A GeoIP CSV was imported as a Sentinel watchlist,
-                        and KQL was used to match each failed logon with its country and region.
-                    </p>
-
-                    <p class="text-white mb-4">
-                        Key Steps:
-                    </p>
-                
-                    <ul class="list-disc list-outside pl-5 space-y-1 mb-6 text-white">
-                        <li>Uploaded a CSV containing IPv4 ranges with country and region fields.</li>
-                        <li>Created a Sentinel watchlist named geoip.</li>
-                        <li>Used ipv4_lookup in KQL to join the watchlist with Event ID 4625 logs.</li>
-                    </ul>
-                
-                    <p class="text-white mb-6">
-                       This turned raw IP addresses into clear, location-based insights for the attack map.
-                    </p>
-                
-                    <!-- Watchlist view -->
-                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center mb-10">
-                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Sentinel-Watchlist-GeoIP-Rows.png"
-                             alt="Sentinel Watchlist GeoIP Rows"
-                             class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
-                        <p class="mt-2 text-xs italic text-text-secondary">
-                            GeoIP watchlist loaded into Sentinel with mapped IP ranges.
-                        </p>
-                    </div>
-                
-                    <!-- KQL + enriched output (two-column grid) -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                
-                        <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_KQL-Enrichment-Query-Close-Up.png"
-                                 alt="KQL Enrichment Query Close-Up"
-                                 class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
-                            <p class="mt-2 text-xs italic text-text-secondary">
-                                Close-up of the KQL enrichment query using ipv4_lookup.
-                            </p>
-                        </div>
-                
-                        <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                            <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Fully-Enriched-Attacker-Table.png"
-                                 alt="Fully Enriched Attacker Table"
-                                 class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
-                            <p class="mt-2 text-xs italic text-text-secondary">
-                                Resulting table of enriched attacker events with IP, country, and region.
-                            </p>
-                        </div>
-                
-                    </div>
-                
-                </section>
-
-
-                <!-- 5. Workbook -->
-                <section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-
-                    <h3 class="text-base font-semibold text-white mb-1">
-                        5. Sentinel Workbook Attack Map
-                    </h3>
-
-                    <p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-3">
-                        Visualized attacker locations using GeoIP-enriched logon events
-                    </p>
-
-                    <p class="text-white mb-4">
-                        With the GeoIP enrichment complete, I used a Sentinel workbook to turn the failed-logon data into
-                        a world map of attacker activity. By connecting the workbook to the enriched KQL query, each event 
-                        could be placed on the map using latitude and longitude, making it easy to see where attacks were coming from.
-                    </p>
-
-                    <p class="text-white mb-4">
-                       Key Steps:
-                    </p>
-
-                    <ul class="list-disc list-outside pl-5 space-y-1 mb-6 text-white">
-                        <li>Started a blank Sentinel workbook and added a KQL visual.</li>
-                        <li>Connected it to the GeoIP-enhanced SecurityEvent query.</li>
-                        <li>Mapped latitude and longitude fields to Azure Maps.</li>
-                        <li>Added filters for time ranges and event counts.</li>
-                    </ul>
-
-                    <p class="text-white mb-6">
-                        The final workbook shows real-time attacker distribution, highlighting which regions generated the most
-                        persistent brute-force attempts.
-                    </p>
-
-                    <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-                        <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Clean-Attack-Map-Visualization.png"
-                             alt="Attack Map Visualization"
-                             class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-[780px] w-full object-contain" />
-                        <p class="mt-2 text-xs italic text-text-secondary">
-                            Sentinel workbook map showing global failed-logon activity from enriched SecurityEvent logs.
-                        </p>
-                    </div>
-
-                </section>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- SAMPLE KQL -->
-    <section class="pt-12 md:pt-14 pb-8 bg-primary-bg border-t border-gray-800">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
-            <div class="section-title-wrapper mb-6">
-                <h2 class="font-mono text-white">Sample KQL</h2>
-                <span></span>
-            </div>
-
-            <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 space-y-8">
-
-                <p class="text-white text-sm leading-relaxed max-w-3xl">
-                    These queries were used to analyze failed RDP logons during the lab.
-                    The first retrieves raw failed-logon events, and the second enriches them
-                    with GeoIP data so attacker locations can be mapped and visualized.
-                </p>
-
-                <div class="grid md:grid-cols-2 gap-10 items-start">
-
-                    <!-- Left column -->
-                    <div class="space-y-3 w-full">
-                        <p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em]">
-                            Baseline failed logons
-                        </p>
-
-                        <pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.85rem] whitespace-pre">
+<body class=text-text-base>
+<div class=nav-dots>
+<div class="nav-dot active" onclick="scrollToSection('hero')"></div>
+<div class=nav-dot onclick="scrollToSection('workflow')"></div>
+<div class=nav-dot onclick="scrollToSection('lab')"></div>
+<div class=nav-dot onclick="scrollToSection('vuln-overview')"></div>
+</div>
+<div class=modal id=imageModal onclick=closeModal()>
+<span style=position:absolute;top:2rem;right:3rem;color:white;font-size:3rem;cursor:pointer>&times;</span>
+<img class=modal-content id=modalImage alt="Enlarged view">
+</div>
+<main>
+<section id=hero class="pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16 border-b border-gray-800">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<a href=../index.html#projects class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition mb-6">
+← Back to Portfolio
+</a>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="pill pill-accent">Azure SOC Lab</span>
+<span class="pill pill-muted">Azure VM</span>
+<span class="pill pill-muted">Microsoft Sentinel</span>
+<span class="pill pill-muted">KQL</span>
+<span class="pill pill-muted">GeoIP Enrichment</span>
+</div>
+<h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
+Azure Sentinel Threat Analysis Lab
+</h1>
+<p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed mb-8">
+Deployed an intentionally exposed Windows honeypot in Azure, captured thousands of real-world brute-force
+RDP attempts, enriched attacker IPs with GeoIP data in Microsoft Sentinel, and visualized global activity
+using an interactive workbook map built on KQL analytics.
+</p>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+<div class="stat-number text-[#E06C75] mb-1">4,623</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Failed RDP Logons</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Real attacker attempts on the honeypot</div>
+</div>
+<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+<div class="stat-number text-[#E5A36F] mb-1">126</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Unique IPs</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Distinct external sources observed</div>
+</div>
+<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+<div class="stat-number text-[#E5C07B] mb-1">32</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Countries</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Global spread of attack origins</div>
+</div>
+<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+<div class="stat-number text-[#E5D487] mb-1">7</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Collection Days</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Continuous telemetry window</div>
+</div>
+<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+<div class="stat-number text-[#61AFEF] mb-1">72</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Correlated Incidents</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Grouped campaigns and attack patterns</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-3 text-[0.7rem] sm:text-xs text-text-secondary mb-10">
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Intentionally exposed Windows honeypot
+</span>
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>End to end Azure → Sentinel pipeline
+</span>
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>GeoIP enriched world map workbook
+</span>
+</div>
+<div class="grid md:grid-cols-2 gap-6">
+<article class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+<p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">
+Project overview
+</p>
+<p class="text-sm leading-relaxed text-text-base mb-3">
+I deployed a Windows VM in Azure, assigned it a public IP, and intentionally weakened its security
+posture so that internet scanners and automated bots would discover and attack it. Every failed RDP
+logon and authentication attempt flowed into a Log Analytics workspace and Microsoft Sentinel.
+</p>
+<p class="text-sm leading-relaxed text-text-base">
+Sentinel analytics and KQL were used to transform raw SecurityEvent logs into enriched, map-ready
+telemetry, revealing how quickly exposed services are targeted and how those attacks appear from a
+SOC analyst’s point of view.
+</p>
+</article>
+<article class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+<p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">
+Key deliverables
+</p>
+<ul class="list-disc list-outside pl-5 space-y-1.5 text-sm text-text-base">
+<li>Azure Windows honeypot VM intentionally exposed to the public internet</li>
+<li>NSG and host firewall configuration tuned to attract real brute-force activity</li>
+<li>End to end log pipeline into Azure Monitor, Log Analytics, and Microsoft Sentinel</li>
+<li>GeoIP watchlist and KQL function for attacker IP enrichment</li>
+<li>Sentinel workbook with an interactive world map of failed logons</li>
+</ul>
+</article>
+</div>
+</div>
+</section>
+<section id=workflow class="py-12 md:py-14 border-b border-gray-800">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-2xl font-bold font-mono text-accent-cyan mb-8">
+Workflow Overview
+</h2>
+<div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
+<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 1</p>
+<p class="text-sm font-semibold mb-1">Azure readiness</p>
+<p class="text-xs text-text-secondary leading-relaxed">
+Validate subscription, quotas, resource providers, and region support for VMs, Log Analytics, and
+Microsoft Sentinel before building the honeypot.
+</p>
+</div>
+<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 2</p>
+<p class="text-sm font-semibold mb-1">Honeypot exposure</p>
+<p class="text-xs text-text-secondary leading-relaxed">
+Deploy a Windows VM, open RDP, relax NSG rules, and disable host firewall to intentionally invite
+internet scanning and brute-force activity.
+</p>
+</div>
+<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 3</p>
+<p class="text-sm font-semibold mb-1">Log ingestion</p>
+<p class="text-xs text-text-secondary leading-relaxed">
+Connect the VM to a Log Analytics workspace using AMA and stream SecurityEvent logs into Sentinel.
+</p>
+</div>
+<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 4</p>
+<p class="text-sm font-semibold mb-1">GeoIP enrichment</p>
+<p class="text-xs text-text-secondary leading-relaxed">
+Import a GeoIP watchlist, join attacker IPs with country / region data, and build enriched attack
+tables using KQL.
+</p>
+</div>
+<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 5</p>
+<p class="text-sm font-semibold mb-1">Visualization & SOC</p>
+<p class="text-xs text-text-secondary leading-relaxed">
+Use Sentinel workbooks and maps to visualize global activity, derive insights, and simulate a SOC
+investigation workflow.
+</p>
+</div>
+</div>
+</div>
+</section>
+<section id=lab class="py-14 border-b border-gray-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-2xl font-bold font-mono text-accent-cyan mb-10">
+Lab Breakdown
+</h2>
+<div class="flex flex-wrap gap-0 border-b-2 border-gray-700 mb-10 overflow-x-auto">
+<button class="tab-button active" onclick="switchTab('setup')">01. Lab Setup & Exposure</button>
+<button class=tab-button onclick="switchTab('ingestion')">02. Log Ingestion & Sentinel</button>
+<button class=tab-button onclick="switchTab('enrichment')">03. GeoIP Enrichment (KQL)</button>
+<button class=tab-button onclick="switchTab('visualization')">04. Attack Map Visualization</button>
+<button class=tab-button onclick="switchTab('investigation')">05. SOC Investigation & Insights</button>
+</div>
+<div id=tab-setup class="tab-content active space-y-16">
+<h3 class="text-xl font-semibold text-white">
+Phase 1 — Azure environment preparation and honeypot exposure
+</h3>
+<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+The lab began by confirming that the Azure subscription could support the full SOC pipeline: virtual
+machines, networking, Log Analytics, and Microsoft Sentinel. Once readiness was confirmed, a Windows
+honeypot VM was deployed and intentionally exposed to the internet to invite automated attacks.
+</p>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+1.1 — Verifying subscription and core security services
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+Before deploying any resources, I validated that the subscription had access to the necessary
+services. This ensured the honeypot would be able to send logs to Log Analytics and Sentinel
+without hitting quota or configuration roadblocks mid-lab.
+</p>
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2"><span class=text-accent-success>●</span>Confirmed VM, networking, and
+monitoring resource providers were registered</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Checked subscription quotas for
+cores and public IP addresses</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Verified Microsoft Sentinel and
+Log Analytics availability in the chosen region</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Ensured billing and permissions
+supported a short-term SOC lab</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Azure-Subscription-Overview.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Azure-Subscription-Overview.png class="rounded-md w-full" alt="Azure subscription overview">
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Azure subscription overview confirming quotas and eligibility for the SOC lab resources.
+</p>
+</div>
+</section>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+1.2 — Deploying the Windows honeypot VM
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+With the subscription validated, a Windows 10 VM was deployed as the honeypot. RDP was enabled
+and assigned a public IP so that attackers could discover the host quickly using common
+internet-wide scanning techniques.
+</p>
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2"><span class=text-accent-success>●</span>Provisioned Windows VM in a
+dedicated resource group for the lab</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Assigned a static public IP and
+enabled RDP for remote access</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Documented host details for later
+KQL filtering and workbook visuals</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Azure-Home-Overview.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Azure-Home-Overview.png class="rounded-md w-full" alt="Azure portal home overview">
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Azure portal home view showing core services used to build the honeypot environment.
+</p>
+</div>
+</section>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+1.3 — Intentionally exposing the honeypot to internet scanners
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+To ensure a steady stream of brute-force attempts, the network and host security controls were
+deliberately relaxed. This transformed the VM from a hardened host into a noisy, attractive
+target for automated RDP attacks.
+</p>
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2"><span class=text-accent-success>●</span>Configured NSG rules to allow
+inbound traffic from any source</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Disabled all Windows firewall
+profiles on the honeypot VM</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Created a weak decoy account to
+generate early failed logons</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Monitored for first external
+connection attempts to confirm visibility</li>
+</ul>
+</div>
+<div class=space-y-6>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_NSG-Rule-Allow-All-Inbound.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_NSG-Rule-Allow-All-Inbound.png class="rounded-md w-full" alt="NSG rule allowing all inbound traffic">
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+NSG configuration intentionally allowing all inbound traffic to the RDP honeypot.
+</p>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Turned-Off-Windows-VM-Firewall.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Turned-Off-Windows-VM-Firewall.png class="rounded-md w-full" alt="Windows firewall disabled">
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Windows firewall disabled to maximize host visibility to external scanners.
+</p>
+</div>
+</div>
+</section>
+</div>
+<div id=tab-ingestion class="tab-content space-y-16">
+<h3 class="text-xl font-semibold text-white">
+Phase 2 — Log forwarding and Microsoft Sentinel integration
+</h3>
+<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+Once attackers began probing the honeypot, the next step was to capture its telemetry. A Log Analytics
+workspace and Microsoft Sentinel instance were configured to ingest Windows SecurityEvent logs using the
+Azure Monitor Agent, creating a central SOC view of all failed logons.
+</p>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+2.1 — Building the monitoring foundation: Log Analytics and Sentinel
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+A dedicated Log Analytics workspace served as the central log repository for the honeypot. Microsoft
+Sentinel was then enabled on top of this workspace, providing SIEM capabilities and analytics for
+the incoming SecurityEvent stream.
+</p>
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2"><span class=text-accent-success>●</span>Created a Log Analytics workspace
+specifically for the honeypot lab</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Enabled Microsoft Sentinel on the
+workspace for SOC-style analysis</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Linked the workspace to the
+resource group containing the honeypot VM</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_SOCArc_Diagram.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_SOCArc_Diagram.png class="rounded-md w-full" alt="Azure SOC architecture diagram">
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Architecture diagram showing the full honeypot pipeline from VM to Log Analytics and Sentinel.
+</p>
+</div>
+</section>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+2.2 — Connecting Windows Security logs via Azure Monitor Agent
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+The Azure Monitor Agent (AMA) and the “Windows Security Events via AMA” connector were used to
+securely stream SecurityEvent logs from the honeypot into Log Analytics. This created a continuous
+data feed of failed RDP attempts for Sentinel to analyze.
+</p>
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2"><span class=text-accent-success>●</span>Configured the Windows Security
+Events via AMA data connector in Sentinel</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Installed AMA on the honeypot VM
+using the recommended extension</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Verified that SecurityEvent data
+started populating the workspace</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_AMA-as-Connected.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_AMA-as-Connected.png class="rounded-md w-full" alt="Azure Monitor Agent connector status">
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+AMA connector in Sentinel showing a healthy, connected Windows honeypot source.
+</p>
+</div>
+</section>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+2.3 — Inspecting raw attacker telemetry in Log Analytics
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+With the data pipeline active, Log Analytics was used to inspect raw failed-logon events. Event
+ID 4625 became the primary signal for outbound analysis, representing failed RDP authentication
+attempts against the honeypot.
+</p>
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2"><span class=text-accent-success>●</span>Queried the SecurityEvent table
+for Event ID 4625</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Confirmed a rapid increase in
+failed logons after exposure</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Validated key fields such as
+IpAddress, TargetUserName, and TimeGenerated</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Raw-Attacker-Logs.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Raw-Attacker-Logs.png class="rounded-md w-full" alt="Raw attacker logs in Log Analytics">
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+SecurityEvent logs in Log Analytics showing repeated failed RDP attempts against the honeypot.
+</p>
+</div>
+</section>
+</div>
+<div id=tab-enrichment class="tab-content space-y-16">
+<h3 class="text-xl font-semibold text-white">
+Phase 3 — GeoIP watchlist creation and KQL enrichment
+</h3>
+<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+IP addresses by themselves are difficult to reason about at a glance. To make the attack data more
+meaningful, a GeoIP CSV was imported as a Sentinel watchlist and KQL was used to enrich each failed
+logon with country and region information, preparing the dataset for map-based visualization.
+</p>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+3.1 — Building the GeoIP watchlist
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+A GeoIP CSV containing IPv4 ranges and geolocation attributes was uploaded as a Sentinel
+watchlist. This allowed KQL to rapidly map attacking IPs to their geographic context using a
+single lookup operation.
+</p>
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2"><span class=text-accent-success>●</span>Prepared a CSV of IPv4 ranges
+with country, region, latitude, and longitude</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Imported the CSV into Sentinel
+as a watchlist named <code>geoip</code></li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Verified column mappings for
+IP ranges and location fields</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Sentinel-Watchlist-GeoIP-Rows.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Sentinel-Watchlist-GeoIP-Rows.png class="rounded-md w-full" alt="Sentinel GeoIP watchlist rows">
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+GeoIP watchlist loaded into Sentinel, ready to be joined with attacker IP telemetry.
+</p>
+</div>
+</section>
+<section class=space-y-10>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+3.2 — Enriching failed-logon events with GeoIP data using KQL
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+KQL’s <code>ipv4_lookup</code> function was used to join SecurityEvent rows with the GeoIP
+watchlist. This produced a new table where each Event ID 4625 record was augmented with its
+corresponding country, region, and coordinates.
+</p>
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2"><span class=text-accent-success>●</span>Filtered SecurityEvent to
+only failed logons (<code>EventID == 4625</code>)</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Evaluated
+<code>ipv4_lookup()</code> against the <code>geoip</code> watchlist</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Produced a clean, enriched
+attacker table for workbook visuals</li>
+</ul>
+</div>
+<div class=space-y-6>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_KQL-Enrichment-Query-Close-Up.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_KQL-Enrichment-Query-Close-Up.png class="rounded-md w-full" alt="KQL enrichment query close-up">
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Close-up of the KQL enrichment query that joins SecurityEvent data with the GeoIP watchlist.
+</p>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Fully-Enriched-Attacker-Table.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Fully-Enriched-Attacker-Table.png class="rounded-md w-full" alt="Fully enriched attacker table">
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Final enriched attacker table including source IP, country, region, and coordinates.
+</p>
+</div>
+</div>
+</div>
+<section class="bg-secondary-bg border border-gray-700 rounded-xl p-6 md:p-7">
+<h4 class="text-sm font-bold text-accent-cyan uppercase tracking-wider mb-4">
+Sample KQL — from raw failed logons to GeoIP enrichment
+</h4>
+<p class="text-sm text-text-secondary max-w-3xl leading-relaxed mb-6">
+These KQL snippets show how raw failed-logon events were collected and then enriched with
+GeoIP data. The first query inspects baseline Event ID 4625 telemetry, while the second
+joins that stream with the <code>geoip</code> watchlist for map-ready output.
+</p>
+<div class="grid md:grid-cols-2 gap-10 items-start">
+<div class=space-y-3>
+<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em]">
+Baseline failed logons
+</p>
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.8rem] whitespace-pre">
 <code>SecurityEvent
 | where EventID == 4625
 | sort by TimeGenerated desc</code></pre>
-                    </div>
-
-                    <!-- Right column -->
-                    <div class="space-y-3 w-full">
-                        <p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em]">
-                            GeoIP enriched 4625 events
-                        </p>
-
-                        <pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.85rem] whitespace-pre">
+</div>
+<div class=space-y-3>
+<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em]">
+GeoIP enriched events
+</p>
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.8rem] whitespace-pre">
 <code>let GeoIPDB_FULL = _GetWatchlist("geoip");
-let WindowsEvents =
-    SecurityEvent
-    | where EventID == 4625
-    | sort by TimeGenerated desc
-    | evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
-WindowsEvents</code></pre>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION OVERVIEW -->
-                <section class="pt-8 md:pt-10 pb-12 md:pb-16 bg-primary-bg">
-                    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-                
-                        <!-- Key Insights -->
-                        <div>
-                            <div class="section-title-wrapper mb-8">
-                                <h2 class="font-mono text-white">Key insights</h2>
-                                <span></span>
-                            </div>
-                
-                            <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-white text-sm sm:text-[0.95rem]">
-                                    <li>Exposed RDP services attract scanning and brute-force activity within minutes of going online.</li>
-                                    <li>Most attempts originate from automated infrastructure rather than human attackers.</li>
-                                    <li>GeoIP enrichment immediately reveals geographic patterns and regional concentrations of activity.</li>
-                                    <li>Mapping enriched events provides faster insight than reviewing raw logs, highlighting trends at a glance.</li>
-                                </ul>
-                            </div>
-                        </div>
-                
-                        <!-- Skills Demonstrated -->
-                        <div>
-                            <div class="section-title-wrapper mb-8">
-                                <h2 class="font-mono text-white">Skills demonstrated</h2>
-                                <span></span>
-                            </div>
-                
-                            <div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-                                <div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
-                                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Azure Resource Setup</span>
-                                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Network Security Group Configuration</span>
-                                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Windows SecurityEvent Logging</span>
-                                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Log Analytics Workspace Usage</span>
-                                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Microsoft Sentinel Operations</span>
-                                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Kusto Query Language KQL</span>
-                                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Watchlist and Data Enrichment</span>
-                                    <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Incident-style Investigation Practices</span>
-                                </div>
-                            </div>
-                        </div>
-                
-                    </div>
-                </section>
-
-
-    <!-- SUMMARY -->
-    <section class="pb-12 md:pb-16 bg-primary-bg">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
-            <!-- Dark card with thin white border -->
-            <div class="bg-secondary-bg border border-white/30 rounded-2xl p-6 shadow-lg">
-                <h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-white">
-                    Summary
-                </h3>
-
-                <p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
-                    This project demonstrates how real attack telemetry can be captured, enriched, and visualized using 
-                    Azure’s security stack. By deploying an intentionally exposed Windows host, collecting its logs, 
-                    and combining them with GeoIP enrichment in Sentinel, I created a streamlined investigation workflow 
-                    that surfaces global brute-force activity in a clear and accessible format. The final workbook makes it 
-                    easy for both technical and non-technical audiences to understand where attacks originate and how they 
-                    unfold in a cloud environment.
-                </p>
-            </div>
-
-            <!-- Back link -->
-            <div class="mt-10">
-                <a href="../index.html#projects"
-                   class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition">
-                    ← Back to Portfolio
-                </a>
-            </div>
-        </div>
-    </section>
-
+SecurityEvent
+| where EventID == 4625
+| evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network)
+| sort by TimeGenerated desc</code></pre>
+</div>
+</div>
+</section>
+</section>
+</div>
+<div id=tab-visualization class="tab-content space-y-16">
+<h3 class="text-xl font-semibold text-white">
+Phase 4 — Building the world map workbook in Microsoft Sentinel
+</h3>
+<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+With enriched attacker telemetry available, the next step was to design a Sentinel workbook that could
+surface patterns visually. Azure Maps-based visuals were configured to plot failed-logon events on a
+global map, allowing quick identification of hotspots and campaign origins.
+</p>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+4.1 — Creating a Sentinel workbook for attack visualization
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+A new Sentinel workbook was created and bound to the enriched KQL query. Map visuals were added
+to display attacker locations, while additional charts summarized event volumes and trends over
+time for SOC-style triage.
+</p>
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2"><span class=text-accent-success>●</span>Started from a blank Sentinel
+workbook and added a KQL data source</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Mapped latitude and longitude
+fields from the enrichment output</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Added filters for timeframe,
+username, and attack country</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Honeypot_Diagram.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Honeypot_Diagram.png class="rounded-md w-full" alt="Honeypot workflow diagram">
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Workflow diagram summarizing exposure, log ingestion, enrichment, and visualization stages.
+</p>
+</div>
+</section>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+4.2 — Interpreting the interactive attack map
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+The final workbook visualized enriched 4625 events on an Azure Maps canvas. Each point represented
+at least one failed RDP logon from a specific geographic region, with color and size reflecting
+event volume. Analysts could pivot by time range, username, or source country.
+</p>
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2"><span class=text-accent-success>●</span>Mapped thousands of events into a
+single, intuitive global view</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Highlighted regions generating
+the most persistent brute-force traffic</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Provided non-technical viewers
+with a clear story of “who is attacking from where”</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Clean-Attack-Map-Visualization.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Clean-Attack-Map-Visualization.png class="rounded-md w-full" alt="Clean attack map visualization">
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Sentinel workbook map showing global failed-logon activity from the enriched honeypot telemetry.
+</p>
+</div>
+</section>
+</div>
+<div id=tab-investigation class="tab-content space-y-16">
+<h3 class="text-xl font-semibold text-white">
+Phase 5 — SOC-style investigation and insights
+</h3>
+<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+With the map and enriched logs in place, the final phase focused on using Sentinel like a SOC analyst:
+pivoting through events, correlating activity into incidents, and extracting lessons about exposure,
+attacker behavior, and effective detection strategies.
+</p>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+5.1 — Identifying brute-force campaigns and attacker clusters
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+By grouping failed-logon events by IP, country, and time window, it became clear that many of
+the attempts originated from a relatively small set of automated infrastructure. These clusters
+behaved as long-running brute-force campaigns rather than one-off human attackers.
+</p>
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2"><span class=text-accent-success>●</span>Aggregated thousands of events
+into a smaller set of campaigns and IP clusters</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Observed persistent attackers
+reattempting access over several days</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Linked behaviors back to common
+automated scanning infrastructure</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Fully-Enriched-Attacker-Table.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Fully-Enriched-Attacker-Table.png class="rounded-md w-full" alt="Enriched attacker table for investigation">
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Enriched attacker table used to pivot between IP clusters, usernames, and GeoIP attributes.
+</p>
+</div>
+</section>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+5.2 — Lessons learned for hardening and monitoring
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+The lab underscored how quickly an exposed RDP service can attract attention and how critical it
+is to layer both prevention and detection. Even in a controlled environment, attacks began within
+minutes of exposure, and continued at a steady rate for days.
+</p>
+<ul class="space-y-2 text-sm text-text-secondary">
+<li class="flex gap-2"><span class=text-accent-success>●</span>Exposed RDP should be treated as
+a high-risk configuration by default</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>GeoIP enrichment dramatically
+improves triage speed and reporting quality</li>
+<li class="flex gap-2"><span class=text-accent-success>●</span>Sentinel workbooks provide a
+powerful way to tell the story of inbound threat activity</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Clean-Attack-Map-Visualization.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Clean-Attack-Map-Visualization.png class="rounded-md w-full" alt="Attack map used in SOC-style investigation">
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+The completed workbook used for SOC-style investigation and executive-ready visual summaries.
+</p>
+</div>
+</section>
+</div>
+</div>
+</section>
+<section id=vuln-overview class="pt-12 pb-6">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-2xl font-bold font-mono text-white mb-6">
+Attack Telemetry Overview
+</h2>
+<p class="text-text-secondary text-sm max-w-3xl mb-8">
+The exposed honeypot generated over four thousand failed RDP attempts which were grouped into
+<strong>72 correlated incidents</strong> using Sentinel analytics. These incidents were tagged with
+severity based on volume, persistence, and attack characteristics, giving a SOC-style view of which
+activity deserved attention first.
+</p>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
+<div onclick="toggleSeverity('critical')" class="severity-box bg-secondary-bg rounded-xl border border-gray-700 p-6 text-center cursor-pointer hover:border-red-400 transition">
+<p class="text-red-400 text-3xl font-bold mb-1">7</p>
+<p class="text-xs tracking-wide text-text-secondary">CRITICAL</p>
+</div>
+<div onclick="toggleSeverity('high')" class="severity-box bg-secondary-bg rounded-xl border border-gray-700 p-6 text-center cursor-pointer hover:border-orange-400 transition">
+<p class="text-orange-400 text-3xl font-bold mb-1">6</p>
+<p class="text-xs tracking-wide text-text-secondary">HIGH</p>
+</div>
+<div onclick="toggleSeverity('medium')" class="severity-box bg-secondary-bg rounded-xl border border-gray-700 p-6 text-center cursor-pointer hover:border-orange-500 transition">
+<p class="text-orange-500 text-3xl font-bold mb-1">12</p>
+<p class="text-xs tracking-wide text-text-secondary">MEDIUM</p>
+</div>
+<div onclick="toggleSeverity('low')" class="severity-box bg-secondary-bg rounded-xl border border-gray-700 p-6 text-center cursor-pointer hover:border-yellow-500 transition">
+<p class="text-yellow-500 text-3xl font-bold mb-1">6</p>
+<p class="text-xs tracking-wide text-text-secondary">LOW</p>
+</div>
+<div onclick="toggleSeverity('info')" class="severity-box bg-secondary-bg rounded-xl border border-gray-700 p-6 text-center cursor-pointer hover:border-blue-400 transition">
+<p class="text-blue-400 text-3xl font-bold mb-1">41</p>
+<p class="text-xs tracking-wide text-text-secondary">INFORMATIONAL</p>
+</div>
+</div>
+<div id=panel-critical class="collapsible-content mt-2 mb-6">
+<div class="bg-secondary-bg border border-red-900/40 rounded-xl p-5">
+<h3 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+<span class=severity-critical>Critical</span>
+High-volume campaigns and aggressive brute-force activity
+</h3>
+<p class="text-xs text-text-secondary mb-4">
+Critical incidents represent sustained, automated campaigns generating large volumes of failed
+logons over short time windows. These patterns most closely resemble real-world attack operations
+that would warrant immediate SOC attention in a production environment.
+</p>
+<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-lg p-3" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Raw-Attacker-Logs.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Raw-Attacker-Logs.png class="rounded-md w-full object-contain" alt="High-volume failed logon stream">
+<p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">
+High-rate stream of Event ID 4625 entries indicating automated brute-force campaigns.
+</p>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-lg p-3" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Fully-Enriched-Attacker-Table.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Fully-Enriched-Attacker-Table.png class="rounded-md w-full object-contain" alt="Clustered enriched attacker table">
+<p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">
+Enriched view showing clustered high-volume attacker IPs and their geographic footprint.
+</p>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-lg p-3" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Clean-Attack-Map-Visualization.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Clean-Attack-Map-Visualization.png class="rounded-md w-full object-contain" alt="Map hotspots for critical incidents">
+<p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">
+Map hotspots where critical brute-force campaigns concentrated around the honeypot.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id=panel-high class="collapsible-content mt-2 mb-6">
+<div class="bg-secondary-bg border border-orange-900/40 rounded-xl p-5">
+<h3 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+<span class=severity-high>High</span>
+Persistent scanning and focused attack sources
+</h3>
+<p class="text-xs text-text-secondary mb-4">
+High severity incidents capture IPs and regions that attempted repeated logons over longer time
+periods but at lower volume than the critical campaigns. These are still meaningful for detection
+tuning, IP blocking, and threat hunting.
+</p>
+<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-lg p-3" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_KQL-Enrichment-Query-Close-Up.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_KQL-Enrichment-Query-Close-Up.png class="rounded-md w-full object-contain" alt="KQL used to analyze persistent sources">
+<p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">
+KQL query inspecting repeated failed logons grouped by attacking IP and region.
+</p>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-lg p-3" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Sentinel-Watchlist-GeoIP-Rows.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Sentinel-Watchlist-GeoIP-Rows.png class="rounded-md w-full object-contain" alt="GeoIP data shaping high severity incidents">
+<p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">
+GeoIP data that underpins the severity decisioning for repeated attacker locations.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id=panel-medium class="collapsible-content mt-2 mb-6">
+<div class="bg-secondary-bg border border-orange-500/40 rounded-xl p-5">
+<h3 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+<span class=severity-medium>Medium</span>
+Opportunistic scanners and background noise
+</h3>
+<p class="text-xs text-text-secondary mb-4">
+Medium incidents represent opportunistic activity — scanners and bots that hit the honeypot a few
+times and then moved on. While individually low-risk, they provide valuable signal about the
+baseline noise level on the public internet.
+</p>
+<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-lg p-3" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Raw-Attacker-Logs.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Raw-Attacker-Logs.png class="rounded-md w-full object-contain" alt="Opportunistic failed logons">
+<p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">
+Short-lived, low-volume failed logons typical of opportunistic scanning activity.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id=panel-low class="collapsible-content mt-2 mb-6">
+<div class="bg-secondary-bg border border-yellow-900/40 rounded-xl p-5">
+<h3 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+<span class=severity-low>Low</span>
+Hygiene, mis-typed creds, and benign noise
+</h3>
+<p class="text-xs text-text-secondary mb-4">
+Low-level incidents include benign or expected noise — mis-typed credentials during testing, local
+administrative activity, or isolated failed logons that do not fit a larger attack pattern.
+</p>
+<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-lg p-3" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Azure-Home-Overview.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Azure-Home-Overview.png class="rounded-md w-full object-contain" alt="Portal context around low-level events">
+<p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">
+Portal view used to cross-check benign administrative actions against low severity events.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id=panel-info class="collapsible-content mt-2 mb-8">
+<div class="bg-secondary-bg border border-blue-900/40 rounded-xl p-5">
+<h3 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+<span class=severity-info>Informational</span>
+Background telemetry and reconnaissance context
+</h3>
+<p class="text-xs text-text-secondary mb-4">
+Informational records capture the supporting telemetry around the honeypot — metadata, system
+context, and non-malicious events that still help analysts understand what “normal” looks like in
+this lab environment.
+</p>
+<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-lg p-3" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_SOCArc_Diagram.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_SOCArc_Diagram.png class="rounded-md w-full object-contain" alt="Architecture context for informational events">
+<p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">
+Architecture view providing context for informational and supporting telemetry.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="grid md:grid-cols-2 gap-8 mb-10">
+<div id=severity-donut class="bg-secondary-bg border border-gray-700 rounded-xl p-8 opacity-0 transition-opacity duration-700">
+<div class="flex flex-col md:flex-row items-center justify-center gap-10">
+<div class="relative w-48 h-48 flex-shrink-0">
+<div class="absolute inset-0 flex flex-col items-center justify-center z-10">
+<span class="text-4xl font-bold text-white font-mono">72</span>
+<span class="text-[0.65rem] text-text-secondary uppercase tracking-widest mt-1">Total Incidents</span>
+</div>
+<svg width=100% height=100% viewBox="0 0 42 42" class="transform -rotate-90">
+<circle cx=21 cy=21 r=15.915 fill=transparent stroke=rgba(255,255,255,0.05) stroke-width=4></circle>
+<circle class=ring-anim cx=21 cy=21 r=15.915 fill=transparent stroke=#3b82f6 stroke-width=4 stroke-dasharray="57 43" stroke-dashoffset=0></circle>
+<circle class=ring-anim cx=21 cy=21 r=15.915 fill=transparent stroke=#f97316 stroke-width=4 stroke-dasharray="17 83" stroke-dashoffset=-57></circle>
+<circle class=ring-anim cx=21 cy=21 r=15.915 fill=transparent stroke=#ef4444 stroke-width=4 stroke-dasharray="10 90" stroke-dashoffset=-74></circle>
+<circle class=ring-anim cx=21 cy=21 r=15.915 fill=transparent stroke=#ea580c stroke-width=4 stroke-dasharray="8 92" stroke-dashoffset=-84></circle>
+<circle class=ring-anim cx=21 cy=21 r=15.915 fill=transparent stroke=#eab308 stroke-width=4 stroke-dasharray="8 92" stroke-dashoffset=-92></circle>
+</svg>
+</div>
+<div class="w-full max-w-xs space-y-3">
+<h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 border-b border-gray-800 pb-2">
+Distribution Breakdown
+</h3>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]"></span>
+<span class=text-text-secondary>Critical</span>
+</div>
+<div class="flex items-center gap-4 font-mono">
+<span class="text-white font-bold">7</span>
+<span class="text-xs text-text-secondary w-8 text-right">10%</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-orange-600"></span>
+<span class=text-text-secondary>High</span>
+</div>
+<div class="flex items-center gap-4 font-mono">
+<span class="text-white font-bold">6</span>
+<span class="text-xs text-text-secondary w-8 text-right">8%</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-orange-500"></span>
+<span class=text-text-secondary>Medium</span>
+</div>
+<div class="flex items-center gap-4 font-mono">
+<span class="text-white font-bold">12</span>
+<span class="text-xs text-text-secondary w-8 text-right">17%</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+<span class=text-text-secondary>Low</span>
+</div>
+<div class="flex items-center gap-4 font-mono">
+<span class="text-white font-bold">6</span>
+<span class="text-xs text-text-secondary w-8 text-right">8%</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-blue-500"></span>
+<span class=text-text-secondary>Info</span>
+</div>
+<div class="flex items-center gap-4 font-mono">
+<span class="text-white font-bold">41</span>
+<span class="text-xs text-text-secondary w-8 text-right">57%</span>
+</div>
+</div>
+</div>
+</div>
+<style>.ring-anim{stroke-dasharray:0 100;animation:fillChart 1.5s ease-out forwards}.ring-anim:nth-child(2){animation-delay:.1s;stroke-dasharray:57 43}.ring-anim:nth-child(3){animation-delay:.3s;stroke-dasharray:17 83}.ring-anim:nth-child(4){animation-delay:.5s;stroke-dasharray:10 90}.ring-anim:nth-child(5){animation-delay:.7s;stroke-dasharray:8 92}.ring-anim:nth-child(6){animation-delay:.9s;stroke-dasharray:8 92}@keyframes fillChart{from{stroke-dasharray:0 100}}</style>
+</div>
+<div class="bg-secondary-bg border border-gray-700 rounded-xl p-5 shadow-lg flex flex-col justify-center">
+<div class=image-zoom onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Clean-Attack-Map-Visualization.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SOC1_Clean-Attack-Map-Visualization.png class="rounded-lg w-full object-contain max-h-[350px]" alt="Attack map overview">
+</div>
+<p class="mt-4 text-xs italic text-text-secondary text-center">
+Visual summary of all enriched 4625 events plotted on a world map, grouped by incident severity.
+</p>
+</div>
+</div>
+<div class="bg-secondary-bg border border-gray-700 rounded-xl p-8 mb-10">
+<div class="flex items-center justify-between mb-8 border-b border-gray-800 pb-4">
+<h3 class="text-sm font-bold text-white uppercase tracking-widest">
+Risk Intelligence Highlights
+</h3>
+<span class="text-xs text-text-secondary font-mono">6 KEY FINDINGS</span>
+</div>
+<div class="grid md:grid-cols-2 gap-x-12 gap-y-8">
+<div class=space-y-6>
+<div>
+<span class="text-red-400 font-mono text-xs mb-1 block tracking-wider">RAPID DISCOVERY</span>
+<p class="text-white leading-relaxed text-sm">
+Exposed RDP services were discovered and attacked within minutes of the honeypot going live.
+</p>
+</div>
+<div>
+<span class="text-red-400 font-mono text-xs mb-1 block tracking-wider">AUTOMATED CAMPAIGNS</span>
+<p class="text-white leading-relaxed text-sm">
+Most activity came from automated infrastructure, not individual human attackers.
+</p>
+</div>
+<div>
+<span class="text-orange-400 font-mono text-xs mb-1 block tracking-wider">GLOBAL DISTRIBUTION</span>
+<p class="text-white leading-relaxed text-sm">
+Brute-force attempts originated from dozens of countries, with clear regional hot zones.
+</p>
+</div>
+</div>
+<div class=space-y-6>
+<div>
+<span class="text-orange-500 font-mono text-xs mb-1 block tracking-wider">GEOIP VALUE</span>
+<p class="text-white leading-relaxed text-sm">
+GeoIP enrichment made it far easier to explain and prioritize threats for non-technical stakeholders.
+</p>
+</div>
+<div>
+<span class="text-yellow-500 font-mono text-xs mb-1 block tracking-wider">DETECTION TUNING</span>
+<p class="text-white leading-relaxed text-sm">
+Aggregated incidents revealed thresholds and behaviors suitable for future alerting rules.
+</p>
+</div>
+<div>
+<span class="text-green-400 font-mono text-xs mb-1 block tracking-wider">PLAYBOOK POTENTIAL</span>
+<p class="text-white leading-relaxed text-sm">
+The workbook and queries provide a foundation for automated investigation and response playbooks.
+</p>
+</div>
+</div>
+</div>
+</div>
+<h2 class="text-2xl font-bold font-mono text-white mb-6">
+Hardening and Monitoring Strategy
+</h2>
+<div class="grid md:grid-cols-3 gap-6">
+<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
+<h4 class="text-sm font-bold text-accent-red uppercase tracking-wider mb-2">
+Tier 1: Exposure Reduction
+</h4>
+<p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
+Objective: Eliminate risky configurations that allow unauthenticated remote access and continuous
+brute-force activity.
+</p>
+<ul class="space-y-4 text-sm text-text-secondary">
+<li class="flex gap-3">
+<span class="text-accent-red font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Retire Public RDP</strong>
+Replace direct RDP exposure with Just-in-Time access, VPNs, or bastion hosts.
+</span>
+</li>
+<li class="flex gap-3">
+<span class="text-accent-red font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Enforce Network Controls</strong>
+Use NSGs and firewalls to restrict access to trusted IP ranges only.
+</span>
+</li>
+<li class="flex gap-3">
+<span class="text-accent-red font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Enable MFA Everywhere</strong>
+Require multifactor authentication for all administrative access paths.
+</span>
+</li>
+</ul>
+</div>
+<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
+<h4 class="text-sm font-bold text-accent-action uppercase tracking-wider mb-2">
+Tier 2: Detection & Analytics
+</h4>
+<p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
+Objective: Turn noisy telemetry into clear, actionable detection logic that scales.
+</p>
+<ul class="space-y-4 text-sm text-text-secondary">
+<li class="flex gap-3">
+<span class="text-accent-action font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Tune Sentinel Rules</strong>
+Create analytics rules that trigger on suspicious failed-logon patterns and GeoIP anomalies.
+</span>
+</li>
+<li class="flex gap-3">
+<span class="text-accent-action font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Standardize KQL Queries</strong>
+Promote proven KQL queries into reusable hunting and investigation queries.
+</span>
+</li>
+<li class="flex gap-3">
+<span class="text-accent-action font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Integrate Threat Intel</strong>
+Combine GeoIP with threat intel feeds to highlight known bad infrastructure.
+</span>
+</li>
+</ul>
+</div>
+<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
+<h4 class="text-sm font-bold text-accent-success uppercase tracking-wider mb-2">
+Tier 3: Strategic Resilience
+</h4>
+<p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
+Objective: Establish continuous, repeatable practices for monitoring and response.
+</p>
+<ul class="space-y-4 text-sm text-text-secondary">
+<li class="flex gap-3">
+<span class="text-accent-success font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Continuous Scanning</strong>
+Use scheduled scans and analytics to detect re-exposed RDP or misconfigurations.
+</span>
+</li>
+<li class="flex gap-3">
+<span class="text-accent-success font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Automated Playbooks</strong>
+Build Sentinel playbooks that auto-block abusive IPs or notify the SOC on critical campaigns.
+</span>
+</li>
+<li class="flex gap-3">
+<span class="text-accent-success font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Lifecycle Management</strong>
+Maintain a roadmap to phase out legacy access patterns and reduce attack surface over time.
+</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class="pt-12 md:pt-16 pb-12">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+<div>
+<div class="flex items-center gap-4 mb-8">
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap">Key insights</h2>
+<div class="h-px bg-gray-700 w-full"></div>
+</div>
+<div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+<ul class="list-disc list-outside pl-5 space-y-2 text-white text-sm sm:text-[0.95rem] leading-relaxed">
+<li>Publicly exposed RDP endpoints are discovered and targeted far faster than most admins expect.</li>
+<li>Most brute-force activity is automated and highly repeatable, making it well-suited for analytic rules and playbooks.</li>
+<li>GeoIP enrichment converts raw IP telemetry into a story that executives and non-technical stakeholders can understand.</li>
+<li>Workbooks and KQL queries together form a powerful toolkit for SOC investigations and attack-surface storytelling.</li>
+</ul>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-4 mb-8">
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap">Skills demonstrated</h2>
+<div class="h-px bg-gray-700 w-full"></div>
+</div>
+<div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+<div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Azure Resource Setup
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Network Security Group Configuration
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Windows SecurityEvent Logging
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Log Analytics Workspace Usage
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Microsoft Sentinel Operations
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Kusto Query Language (KQL)
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Watchlists & Data Enrichment
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Workbook & Map Visualization
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Incident-style Investigation Practices
+</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="pb-12 md:pb-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="bg-secondary-bg border border-white/30 rounded-2xl p-6 shadow-lg">
+<h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-white">
+Summary
+</h3>
+<p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
+This lab demonstrates how quickly an exposed Windows host attracts global attention and how Azure’s
+security stack can be used to capture, enrich, and visualize that activity. By deliberately weakening
+the honeypot’s defenses, then channeling its logs into Log Analytics and Microsoft Sentinel, I created
+a realistic SOC scenario built entirely on real-world attacker behavior. GeoIP enrichment and workbook
+visuals turn raw SecurityEvent noise into a clear, global view of where attacks originate and how they
+evolve over time, providing value for both practitioners and decision-makers.
+</p>
+</div>
+<div class=mt-10>
+<a href=../index.html#projects class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition font-mono">
+← Back to Portfolio
+</a>
+</div>
+</div>
+</section>
+<script>function scrollToSection(id){const target=document.getElementById(id);if(!target)return;target.scrollIntoView({behavior:'smooth',block:'start'});const dots=document.querySelectorAll('.nav-dot');const sections=['hero','workflow','lab','vuln-overview'];dots.forEach((dot,idx)=>{dot.classList.toggle('active',sections[idx]===id);});}
+function openModal(src){const modal=document.getElementById('imageModal');const img=document.getElementById('modalImage');img.src=src;modal.classList.add('active');}
+function closeModal(){const modal=document.getElementById('imageModal');modal.classList.remove('active');const img=document.getElementById('modalImage');img.src='';}
+function toggleSeverity(level){const panel=document.getElementById(`panel-${level}`);if(!panel)return;panel.classList.toggle('open');}
+document.addEventListener('DOMContentLoaded',()=>{const chart=document.getElementById('severity-donut');if(chart){const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){chart.classList.remove('opacity-0');obs.disconnect();}});});obs.observe(chart);}});</script>
 </main>
 </body>
 </html>
