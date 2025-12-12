@@ -192,697 +192,506 @@ Lab Breakdown
 <button class=tab-button onclick="switchTab('change')">04. Change</button>
 <button class=tab-button onclick="switchTab('emergency')">05. Emergency</button>
 </div>
-<div id=tab-incident class="tab-content active space-y-16">
-<div class=space-y-3>
-<h3 class="text-xl font-semibold text-white">
-Phase 1 — Incident Management Foundation
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-This phase establishes the service desk experience. The goal was to eliminate noisy default form behavior,
-enforce clean classification, and make the incident lifecycle predictable so reporting and downstream workflows
-remain reliable. The configuration focuses on what agents must capture up front, what becomes required later,
-and how incidents move from New to Resolved to Closed without skipping governance.
-</p>
+  
+<div id="tab-incident" class="tab-content active space-y-20">
+
+  <!-- PHASE HEADER -->
+  <div class="space-y-3">
+    <h3 class="text-xl font-semibold text-white">
+      Phase 1 — Incident Management Foundation
+    </h3>
+    <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+      This phase establishes a predictable, governable incident lifecycle. The focus is on removing noisy
+      defaults, enforcing consistent classification, and ensuring incidents move through defined states
+      without bypassing required documentation or controls.
+    </p>
+  </div>
+
+  <!-- 1.1 -->
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <div class="space-y-4">
+      <h4 class="text-lg font-semibold text-white">
+        1.1 — Incident form layout and field standardization
+      </h4>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        The incident form was redesigned from a Tier 1 analyst perspective to ensure essential triage
+        information is captured immediately. Nonessential fields were removed or deprioritized to
+        prevent clutter and reduce inconsistent data entry.
+      </p>
+      <ul class="space-y-2 text-sm text-text-secondary">
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Promoted core triage fields above the fold</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Removed unused or low value default fields</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Aligned field order to real service desk intake flow</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Preserved native behaviors such as caller lookup</li>
+      </ul>
+    </div>
+
+    <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4"
+         onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Incident_Form_Layout.png')">
+      <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Incident_Form_Layout.png"
+           class="rounded-md w-full"
+           alt="Incident form layout and field standardization">
+      <p class="mt-3 text-xs italic text-text-secondary text-center">
+        Streamlined incident form emphasizing consistent triage and faster intake.
+      </p>
+    </div>
+  </section>
+
+  <!-- 1.2 -->
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <div class="space-y-4">
+      <h4 class="text-lg font-semibold text-white">
+        1.2 — Category and subcategory taxonomy
+      </h4>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        A structured category and subcategory taxonomy was defined to eliminate ambiguous classification
+        and enable reliable reporting, routing, and downstream automation.
+      </p>
+      <ul class="space-y-2 text-sm text-text-secondary">
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Defined categories aligned to common IT support domains</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Mapped subcategories to prevent free text workarounds</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Validated dynamic subcategory filtering and reporting views</li>
+      </ul>
+    </div>
+
+    <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4"
+         onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Category_Subcategory.png')">
+      <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Category_Subcategory.png"
+           class="rounded-md w-full"
+           alt="Category and subcategory configuration">
+      <p class="mt-3 text-xs italic text-text-secondary text-center">
+        Category driven classification enabling consistent reporting and routing.
+      </p>
+    </div>
+  </section>
+
+  <!-- 1.3 -->
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <div class="space-y-4">
+      <h4 class="text-lg font-semibold text-white">
+        1.3 — Mandatory fields and lifecycle enforcement
+      </h4>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        Mandatory field enforcement was applied at appropriate lifecycle stages to prevent premature
+        resolution or closure without required context, while avoiding unnecessary friction at creation.
+      </p>
+      <ul class="space-y-2 text-sm text-text-secondary">
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Applied conditional mandatory logic using UI policies</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Enforced resolution documentation before state changes</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Used dictionary controls for global enforcement where needed</li>
+      </ul>
+    </div>
+
+    <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4"
+         onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_UI_Policy_Mandatory.png')">
+      <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_UI_Policy_Mandatory.png"
+           class="rounded-md w-full"
+           alt="Mandatory field enforcement via UI policies">
+      <p class="mt-3 text-xs italic text-text-secondary text-center">
+        Conditional mandatory enforcement tied to incident lifecycle states.
+      </p>
+    </div>
+  </section>
+
+  <!-- 1.4 -->
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <div class="space-y-4">
+      <h4 class="text-lg font-semibold text-white">
+        1.4 — State model validation and controlled transitions
+      </h4>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        Incident state transitions were validated to ensure tickets follow a controlled path from
+        creation through resolution and closure, preventing metric manipulation or skipped governance.
+      </p>
+      <ul class="space-y-2 text-sm text-text-secondary">
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Validated New → In Progress → Resolved → Closed flow</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Blocked direct closure without resolution data</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Tested reopen paths to preserve audit integrity</li>
+      </ul>
+    </div>
+
+    <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4"
+         onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Incident_State_Transitions.png')">
+      <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Incident_State_Transitions.png"
+           class="rounded-md w-full"
+           alt="Incident state transition validation">
+      <p class="mt-3 text-xs italic text-text-secondary text-center">
+        Controlled incident state transitions enforcing governance and auditability.
+      </p>
+    </div>
+  </section>
+
 </div>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-1.1 — Incident form layout, field visibility, and standardization
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-The incident form was reviewed with a “tier 1 analyst” mindset. Instead of leaving the default layout as is,
-the form was streamlined so the most important triage fields are visible immediately and the least used items
-are removed or moved out of the primary view. This reduces inconsistent entries and prevents agents from
-burying the details that matter for resolution, assignment, and reporting.
-</p>
-<ul class="space-y-2 text-sm text-text-secondary">
-<li class="flex gap-2"><span class=text-accent-success>●</span>Promoted core triage fields above the fold so intake stays consistent</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Removed or de emphasized unused fields that encourage vague tickets</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Aligned field order to how a real service desk asks questions during intake</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Validated that changes did not break default behaviors like caller lookup</li>
-</ul>
-<div class="bg-container-bg border border-gray-800 rounded-xl p-5 mt-5">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-2">
-Validation checks
-</p>
-<ul class="space-y-2 text-xs text-text-secondary leading-relaxed">
-<li class="flex gap-2"><span class=text-accent-success>●</span>Create a new incident and confirm required intake fields are visible immediately</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Confirm removed fields are not referenced by UI policies or assignment rules</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Ensure form remains fast and readable for first contact resolution workflows</li>
-</ul>
+
+
+  
+<div id="tab-automation" class="tab-content space-y-20">
+
+  <!-- PHASE HEADER -->
+  <div class="space-y-3">
+    <h3 class="text-xl font-semibold text-white">
+      Phase 2 — Automation and Assignment Discipline
+    </h3>
+    <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+      This phase focuses on ensuring incidents reach the correct team quickly and predictably.
+      Assignment behavior is driven by structured data rather than manual decisions, making routing
+      auditable, repeatable, and aligned with service ownership.
+    </p>
+  </div>
+
+  <!-- 2.1 -->
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <div class="space-y-4">
+      <h4 class="text-lg font-semibold text-white">
+        2.1 — Assignment group strategy and ownership model
+      </h4>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        Before automation could be applied, assignment groups were reviewed and aligned to clear
+        ownership boundaries. Each group represents a defined support responsibility so routing
+        decisions are meaningful and escalation paths are obvious.
+      </p>
+      <ul class="space-y-2 text-sm text-text-secondary">
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Defined assignment groups aligned to support domains</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Reduced overlapping ownership to prevent reassignment loops</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Identified which fields act as routing inputs for each group</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Ensured routing data is captured during incident intake</li>
+      </ul>
+    </div>
+
+    <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4"
+         onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Assignment_Groups.png')">
+      <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Assignment_Groups.png"
+           class="rounded-md w-full"
+           alt="Assignment group strategy">
+      <p class="mt-3 text-xs italic text-text-secondary text-center">
+        Assignment groups structured around clear ownership and escalation responsibility.
+      </p>
+    </div>
+  </section>
+
+  <!-- 2.2 -->
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <div class="space-y-4">
+      <h4 class="text-lg font-semibold text-white">
+        2.2 — Assignment rules for category and CI driven routing
+      </h4>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        Assignment rules were configured to route incidents automatically based on category,
+        subcategory, configuration item, and priority. This removes manual triage steps and ensures
+        high impact incidents are delivered to the correct team immediately.
+      </p>
+      <ul class="space-y-2 text-sm text-text-secondary">
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Mapped categories and subcategories to support groups</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Applied CI based overrides where ownership is explicit</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Ordered rules to prioritize the most specific matches</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Validated consistent routing across multiple test incidents</li>
+      </ul>
+    </div>
+
+    <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4"
+         onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Assignment_Rules.png')">
+      <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Assignment_Rules.png"
+           class="rounded-md w-full"
+           alt="Assignment rules configuration">
+      <p class="mt-3 text-xs italic text-text-secondary text-center">
+        Deterministic assignment rules routing incidents based on structured inputs.
+      </p>
+    </div>
+  </section>
+
+  <!-- 2.3 -->
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <div class="space-y-4">
+      <h4 class="text-lg font-semibold text-white">
+        2.3 — Notification triggers and delivery control
+      </h4>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        Notification logic was aligned to meaningful lifecycle events so teams are alerted when
+        action is required. Triggers are tied to ownership changes, priority escalation, resolution,
+        and reopen behavior while avoiding unnecessary noise.
+      </p>
+      <ul class="space-y-2 text-sm text-text-secondary">
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Validated notification triggers against real workflow events</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Confirmed recipients align to assignment group ownership</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Removed overlapping or duplicate notification conditions</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Tested delivery behavior in both classic and new UI</li>
+      </ul>
+    </div>
+
+    <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4"
+         onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Notifications.png')">
+      <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Notifications.png"
+           class="rounded-md w-full"
+           alt="Incident notification configuration">
+      <p class="mt-3 text-xs italic text-text-secondary text-center">
+        Notification rules aligned to assignment and lifecycle state changes.
+      </p>
+    </div>
+  </section>
+
+  
 </div>
+<div id="tab-problem" class="tab-content space-y-20">
+
+  <!-- PHASE HEADER -->
+  <div class="space-y-3">
+    <h3 class="text-xl font-semibold text-white">
+      Phase 3 — Problem Management Control and Ownership
+    </h3>
+    <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+      This phase establishes Problem Management as the mechanism for eliminating recurring incidents.
+      The focus is on ownership, investigation discipline, and traceability between incidents, root cause,
+      and permanent corrective actions.
+    </p>
+  </div>
+
+  <!-- 3.1 -->
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <div class="space-y-4">
+      <h4 class="text-lg font-semibold text-white">
+        3.1 — Problem record structure and incident linkage
+      </h4>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        Problem records were reviewed and validated to ensure they support investigation rather than
+        short term resolution. Incidents can be linked to a single problem to expose patterns, centralize
+        ownership, and prevent repeated ticket firefighting.
+      </p>
+      <ul class="space-y-2 text-sm text-text-secondary">
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Validated incident to problem linking and related lists</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Ensured ownership fields support accountability</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Confirmed lifecycle states reflect investigation progress</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Tested that linked incidents retain context and visibility</li>
+      </ul>
+    </div>
+
+    <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4"
+         onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Problem_Record.png')">
+      <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Problem_Record.png"
+           class="rounded-md w-full"
+           alt="Problem record structure and incident linkage">
+      <p class="mt-3 text-xs italic text-text-secondary text-center">
+        Problem record demonstrating structured fields and linked incidents.
+      </p>
+    </div>
+  </section>
+
+  <!-- 3.2 -->
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <div class="space-y-4">
+      <h4 class="text-lg font-semibold text-white">
+        3.2 — Investigation governance and controlled lifecycle progression
+      </h4>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        Governance controls were applied to ensure problems cannot progress without meaningful analysis.
+        Investigation fields become mandatory at key lifecycle stages, preventing premature closure and
+        ensuring root cause information is captured consistently.
+      </p>
+      <ul class="space-y-2 text-sm text-text-secondary">
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Enforced investigation fields before state transitions</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Used UI policies for conditional enforcement without scripting</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Aligned states to realistic RCA workflows</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Required resolution detail before problem closure</li>
+      </ul>
+    </div>
+
+    <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4"
+         onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Problem_UI_Policy.png')">
+      <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Problem_UI_Policy.png"
+           class="rounded-md w-full"
+           alt="Problem investigation UI policy enforcement">
+      <p class="mt-3 text-xs italic text-text-secondary text-center">
+        UI policies enforcing investigation completeness before lifecycle progression.
+      </p>
+    </div>
+  </section>
+
+  
 </div>
-<div class=space-y-6>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Incident_Form_Layout.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Incident_Form_Layout.png class="rounded-md w-full" alt="Incident form layout and field standardization">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Incident form layout tuned for consistent intake and faster triage.
-</p>
+  
+<div id="tab-change" class="tab-content space-y-20">
+
+  <!-- PHASE HEADER -->
+  <div class="space-y-3">
+    <h3 class="text-xl font-semibold text-white">
+      Phase 4 — Change Management Governance, Risk, and Scheduling Control
+    </h3>
+    <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+      This phase establishes disciplined change governance by enforcing planning completeness,
+      risk driven approvals, and controlled scheduling. The objective is to prevent unplanned
+      or unsafe production changes through platform enforced guardrails.
+    </p>
+  </div>
+
+  <!-- 4.1 -->
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <div class="space-y-4">
+      <h4 class="text-lg font-semibold text-white">
+        4.1 — Change form structure and planning enforcement
+      </h4>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        Change forms were redesigned to reflect real governance expectations. Planning fields
+        such as implementation steps, testing evidence, impact assessment, and backout plans
+        are structured so the change record itself documents readiness for execution.
+      </p>
+      <ul class="space-y-2 text-sm text-text-secondary">
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Organized planning fields for efficient CAB style review</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Required backout and test plans before submission</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Aligned form layout with real world change workflows</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Validated form behavior across platform UI states</li>
+      </ul>
+    </div>
+
+    <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4"
+         onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Change_Form.png')">
+      <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Change_Form.png"
+           class="rounded-md w-full"
+           alt="Change form governance and planning fields">
+      <p class="mt-3 text-xs italic text-text-secondary text-center">
+        Change form structured around governance and planning completeness.
+      </p>
+    </div>
+  </section>
+
+  <!-- 4.2 -->
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <div class="space-y-4">
+      <h4 class="text-lg font-semibold text-white">
+        4.2 — Risk calculation and approval driven governance
+      </h4>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        Risk logic was configured to translate change attributes into actionable governance signals.
+        Risk levels update dynamically based on impact, urgency, CI context, and planning quality,
+        guiding approval requirements without manual interpretation.
+      </p>
+      <ul class="space-y-2 text-sm text-text-secondary">
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Mapped change attributes to risk levels</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Validated risk recalculation as planning fields change</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Surfaced high risk changes clearly for reviewer attention</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Tested approval experience against risk outcomes</li>
+      </ul>
+    </div>
+
+    <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4"
+         onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Risk_Conditions.png')">
+      <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Risk_Conditions.png"
+           class="rounded-md w-full"
+           alt="Change risk calculation and conditions">
+      <p class="mt-3 text-xs italic text-text-secondary text-center">
+        Risk conditions translating change attributes into governance signals.
+      </p>
+    </div>
+  </section>
+
+  <!-- 4.3 -->
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <div class="space-y-4">
+      <h4 class="text-lg font-semibold text-white">
+        4.3 — Maintenance windows and blackout scheduling controls
+      </h4>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        Scheduling controls were implemented to enforce when changes may safely occur.
+        Maintenance windows define approved execution periods, while blackout schedules
+        prevent changes during high risk or business critical timeframes.
+      </p>
+      <ul class="space-y-2 text-sm text-text-secondary">
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Defined maintenance windows for approved change execution</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Configured blackout periods for sensitive operational times</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Validated enforcement during change planning and submission</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Confirmed governance impact on scheduling behavior</li>
+      </ul>
+    </div>
+
+    <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4"
+         onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Maintenance_Blackout.png')">
+      <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Maintenance_Blackout.png"
+           class="rounded-md w-full"
+           alt="Maintenance windows and blackout periods">
+      <p class="mt-3 text-xs italic text-text-secondary text-center">
+        Maintenance windows and blackout periods enforcing safe change timing.
+      </p>
+    </div>
+  </section>
+  
 </div>
-<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-3">
-Screenshot notes
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Replace the image path with your actual screenshot. A good capture here is the incident form
-with the primary triage fields visible, showing the standard order and any removed noise fields.
-</p>
-</div>
-</div>
-</section>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-1.2 — Category and subcategory taxonomy for accurate classification
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-Category design is where reporting and automation either becomes strong or meaningless. This step defines
-a clear taxonomy so incidents can be consistently classified. Subcategories are mapped logically so that agents
-do not invent descriptions to compensate for messy classification. This also unlocks cleaner routing later because
-assignment rules can rely on structured values instead of free text guesswork.
-</p>
-<ul class="space-y-2 text-sm text-text-secondary">
-<li class="flex gap-2"><span class=text-accent-success>●</span>Defined a consistent category list aligned to typical IT support domains</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Mapped subcategories so each category has predictable options</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Validated that subcategory values change correctly when category changes</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Tested reporting views to confirm categories produce meaningful grouping</li>
-</ul>
-<div class="bg-container-bg border border-gray-800 rounded-xl p-5 mt-5">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-2">
-Why this matters
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Clean categories enable routing, trending, and problem detection. Without them, incident data becomes a wall
-of unstructured text, and any automation built on top becomes unreliable.
-</p>
-</div>
-</div>
-<div class=space-y-6>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Category_Subcategory.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Category_Subcategory.png class="rounded-md w-full" alt="Category and subcategory configuration">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Category and subcategory structure used to standardize classification.
-</p>
-</div>
-<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-3">
-Screenshot notes
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Capture either the choice list configuration or a live incident showing category selection
-and the filtered subcategory list updating dynamically.
-</p>
-</div>
-</div>
-</section>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-1.3 — Mandatory fields and lifecycle enforcement using UI policies and dictionary controls
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-A major enterprise requirement is that the ticket cannot move forward without essential context.
-This step enforces when fields become mandatory and under what conditions. Instead of forcing everything at
-creation time, requirements are applied at the correct lifecycle points, for example requiring resolution
-information when resolving an incident and requiring assignment data before moving into active work states.
-</p>
-<ul class="space-y-2 text-sm text-text-secondary">
-<li class="flex gap-2"><span class=text-accent-success>●</span>Configured conditional mandatory rules to prevent low quality tickets</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Used UI policies for dynamic behavior without scripts</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Applied dictionary controls where global enforcement was needed</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Confirmed behavior across both classic and new UI where applicable</li>
-</ul>
-<div class="bg-container-bg border border-gray-800 rounded-xl p-5 mt-5">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-2">
-Practical outcome
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Agents cannot close or resolve incidents without documenting what happened. That improves auditability,
-reduces reopen rates, and ensures metrics like time to resolve reflect real work rather than premature closure.
-</p>
-</div>
-</div>
-<div class=space-y-6>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_UI_Policy_Mandatory.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_UI_Policy_Mandatory.png class="rounded-md w-full" alt="UI policy and mandatory field enforcement">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-UI policy enforcing conditional mandatory fields during incident lifecycle.
-</p>
-</div>
-<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-3">
-Screenshot notes
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-A strong screenshot here shows the UI policy or a form behavior example where attempting to move state
-triggers mandatory field requirements.
-</p>
-</div>
-</div>
-</section>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-1.4 — State model validation and controlled transitions
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-State behavior was tested to confirm the lifecycle moves the way a real service desk operates.
-The goal is not simply to accept default states, but to ensure transitions are meaningful and
-cannot be abused. For example, a ticket should not jump directly to closed without resolution data,
-and closure should follow resolved to create a stable record of what occurred.
-</p>
-<ul class="space-y-2 text-sm text-text-secondary">
-<li class="flex gap-2"><span class=text-accent-success>●</span>Validated transitions from New to In Progress to Resolved to Closed</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Confirmed required fields are enforced at each gate</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Reviewed closure behavior to prevent bypassing resolution capture</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Tested reopen and update paths to ensure data integrity remains intact</li>
-</ul>
-<div class="bg-container-bg border border-gray-800 rounded-xl p-5 mt-5">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-2">
-What you demonstrate here
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Governance is not just about configuration, it is about proving the lifecycle behaves predictably under
-real usage and prevents “gaming” metrics by closing tickets early.
-</p>
-</div>
-</div>
-<div class=space-y-6>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Incident_State_Transitions.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Incident_State_Transitions.png class="rounded-md w-full" alt="Incident state transitions validation">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Tested state transitions to ensure resolution and closure follow governance rules.
-</p>
-</div>
-<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-3">
-Screenshot notes
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Use a screenshot showing the incident state field and key required fields when moving into Resolved
-or Closed, or show the state model configuration depending on what you captured during the lab.
-</p>
-</div>
-</div>
-</section>
-</div>
-<div id=tab-automation class="tab-content space-y-16">
-<div class=space-y-3>
-<h3 class="text-xl font-semibold text-white">
-Phase 2 — Automation and Assignment Discipline
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-This phase focuses on getting incidents to the right team fast and preventing tickets from stalling in
-unowned queues. The configuration is designed to be predictable and auditable: a clear condition triggers
-a clear routing result, and the incident record shows why it landed where it did.
-</p>
-</div>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-2.1 — Assignment group strategy and routing logic
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-Before writing assignment rules, the assignment group strategy must make sense. This step defines which
-groups exist, what responsibilities they represent, and what data points should drive routing. The goal
-is to avoid random or manual assignment by making group selection a natural result of structured fields
-like category, subcategory, configuration item, and priority.
-</p>
-<ul class="space-y-2 text-sm text-text-secondary">
-<li class="flex gap-2"><span class=text-accent-success>●</span>Defined clear group ownership boundaries to reduce assignment bouncing</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Identified the fields that act as routing keys for each support domain</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Planned fallback routing for ambiguous or incomplete tickets</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Validated that routing keys are captured during intake (Phase 1 alignment)</li>
-</ul>
-<div class="bg-container-bg border border-gray-800 rounded-xl p-5 mt-5">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-2">
-Routing principle
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Assignment rules should be deterministic. If two analysts enter the same category and CI, the ticket
-should land in the same group every time.
-</p>
-</div>
-</div>
-<div class=space-y-6>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Assignment_Groups.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Assignment_Groups.png class="rounded-md w-full" alt="Assignment group strategy">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Support groups defined to enable clean, auditable routing.
-</p>
-</div>
-<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-3">
-Screenshot notes
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Show the assignment groups list or a record demonstrating group ownership. If you have a screenshot
-of the assignment rule form, that works too.
-</p>
-</div>
-</div>
-</section>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-2.2 — Assignment rules for category driven and CI aware routing
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-Assignment rules were configured to automatically populate assignment group and optionally assigned to
-based on structured inputs. Typical patterns include category to group mapping, subcategory refinement,
-and CI based overrides where infrastructure ownership is clear. The emphasis is on reducing manual work,
-cutting triage time, and ensuring high priority incidents land in teams that can respond immediately.
-</p>
-<ul class="space-y-2 text-sm text-text-secondary">
-<li class="flex gap-2"><span class=text-accent-success>●</span>Built rule conditions using category and subcategory combinations</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Added CI driven overrides for assets with known ownership</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Validated rule order so the most specific conditions win correctly</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Tested with multiple incidents to confirm consistent routing outcomes</li>
-</ul>
-<div class="bg-container-bg border border-gray-800 rounded-xl p-5 mt-5">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-2">
-How you show this in screenshots
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Capture the assignment rule definition with its condition and resulting assignment group, plus one
-incident example where the rule fired and populated the group automatically.
-</p>
-</div>
-</div>
-<div class=space-y-6>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Assignment_Rules.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Assignment_Rules.png class="rounded-md w-full" alt="Assignment rules configuration">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Assignment rules routing incidents using category, CI, and priority context.
-</p>
-</div>
-<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-3">
-Screenshot notes
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Replace with your rule screenshot. Best case is one image of the rule form and one image of an incident
-showing auto populated assignment group.
-</p>
-</div>
-</div>
-</section>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-2.3 — Notification reliability and trigger conditions
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-Notifications are only valuable when they are predictable and fired at the right time. This step aligns
-incident notifications to lifecycle triggers and ownership changes. Typical triggers include assignment
-group change, priority escalation, state change into resolved, and reopen behavior. The goal is to prevent
-noise and make sure teams receive the alerts they actually act on.
-</p>
-<ul class="space-y-2 text-sm text-text-secondary">
-<li class="flex gap-2"><span class=text-accent-success>●</span>Validated the “When to send” trigger matches actual workflow events</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Confirmed recipients align to assignment group and watchlist patterns</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Tested in the new UI to ensure event configuration behaves as expected</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Prevented duplicate sends by removing overlapping notification logic</li>
-</ul>
-<div class="bg-container-bg border border-gray-800 rounded-xl p-5 mt-5">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-2">
-Real world result
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Routing puts the incident in the right place, and notifications ensure the right people notice it without
-spamming everyone who should not be involved.
-</p>
-</div>
-</div>
-<div class=space-y-6>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Notifications.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Notifications.png class="rounded-md w-full" alt="Notification configuration for incident events">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Notification configuration tied to lifecycle and assignment changes.
-</p>
-</div>
-<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-3">
-Screenshot notes
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Use a screenshot of the notification record showing the “When to send” condition and recipients.
-If you captured an email preview or notification log, that also works well.
-</p>
-</div>
-</div>
-</section>
-</div>
-<div id=tab-problem class="tab-content space-y-16">
-<div class=space-y-3>
-<h3 class="text-xl font-semibold text-white">
-Phase 3 — Problem Management Control and Ownership
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-This phase builds Problem Management as the bridge between repeated incidents and long term fixes. The goal is
-to show governance through ownership and structure: problems should track investigation, document root cause,
-and connect to changes that implement permanent remediation.
-</p>
-</div>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-3.1 — Problem record structure and linkage strategy
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-Problem records were configured and validated so they can reliably link to incidents. This step emphasizes
-the difference between incident resolution and problem resolution: incidents restore service fast, problems
-eliminate the underlying cause. The configuration supports that separation by ensuring problems have fields
-and states that reflect investigation and known error management.
-</p>
-<ul class="space-y-2 text-sm text-text-secondary">
-<li class="flex gap-2"><span class=text-accent-success>●</span>Validated incident to problem linking workflow and related lists</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Ensured ownership fields support accountability during investigation</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Confirmed lifecycle states reflect investigation progression, not ticket closure</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Tested that linked incidents inherit context for easier triage</li>
-</ul>
-<div class="bg-container-bg border border-gray-800 rounded-xl p-5 mt-5">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-2">
-Interview style talking point
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-This demonstrates you understand ITIL behavior: incidents restore, problems prevent recurrence, and
-clean linkage is what makes trend driven governance possible.
-</p>
-</div>
-</div>
-<div class=space-y-6>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Problem_Record.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Problem_Record.png class="rounded-md w-full" alt="Problem record structure and incident linkage">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Problem record showing structure and incident linkage for governance.
-</p>
-</div>
-<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-3">
-Screenshot notes
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Use a screenshot of a Problem record with the related list of linked Incidents, or the problem form
-showing investigation fields and ownership.
-</p>
-</div>
-</div>
-</section>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-3.2 — Governance through mandatory investigation fields and controlled status changes
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-Problems are only useful if they are documented properly. This step enforces key investigation details and
-prevents the record from being prematurely closed without analysis. Requirements are introduced at the right
-time so teams can open a problem quickly but must complete key fields to progress into known error or closure.
-</p>
-<ul class="space-y-2 text-sm text-text-secondary">
-<li class="flex gap-2"><span class=text-accent-success>●</span>Enforced investigation documentation before key lifecycle transitions</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Used UI policies to drive conditional requirements without scripts</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Aligned problem workflow to realistic RCA and ownership behavior</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Validated that closure requires meaningful resolution statements</li>
-</ul>
-<div class="bg-container-bg border border-gray-800 rounded-xl p-5 mt-5">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-2">
-Practical outcome
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Problem records become a true knowledge asset, not a placeholder. That supports auditability and reduces
-repeat incidents because the investigation is actually captured.
-</p>
-</div>
-</div>
-<div class=space-y-6>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Problem_UI_Policy.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Problem_UI_Policy.png class="rounded-md w-full" alt="Problem UI policies and governance enforcement">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-UI policy enforcing investigation completeness before lifecycle progress.
-</p>
-</div>
-<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-3">
-Screenshot notes
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Show either the UI policy definition or an example where the form blocks progression until investigation
-fields are completed.
-</p>
-</div>
-</div>
-</section>
-</div>
-<div id=tab-change class="tab-content space-y-16">
-<div class=space-y-3>
-<h3 class="text-xl font-semibold text-white">
-Phase 4 — Change Management Governance, Risk, and Scheduling Control
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-This phase builds change governance that prevents “cowboy changes.” The focus is on forcing planning completeness,
-using risk logic to guide approvals, and controlling when work can be scheduled using maintenance windows and
-blackout periods.
-</p>
-</div>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-4.1 — Change form redesign for governance and complete planning
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-Change forms were aligned to what governance teams care about: scope, impact, backout plan, test evidence,
-and implementation timing. Rather than allowing minimal change requests, the form was built so the change
-record itself becomes the plan. Required fields are applied at the right stage so changes can be drafted,
-but cannot be submitted without complete planning.
-</p>
-<ul class="space-y-2 text-sm text-text-secondary">
-<li class="flex gap-2"><span class=text-accent-success>●</span>Organized planning fields so reviewers can quickly verify completeness</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Enforced backout and test plan capture before submission</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Aligned form layout to a real CAB style review workflow</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Validated form behavior in the platform UI to avoid hidden requirements</li>
-</ul>
-<div class="bg-container-bg border border-gray-800 rounded-xl p-5 mt-5">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-2">
-What this demonstrates
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-You understand that Change Management is about standardizing execution, proving readiness, and preventing
-production instability from poorly planned modifications.
-</p>
-</div>
-</div>
-<div class=space-y-6>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Change_Form.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Change_Form.png class="rounded-md w-full" alt="Change form governance and required planning fields">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Change form organized around planning completeness and governance review.
-</p>
-</div>
-<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-3">
-Screenshot notes
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Use a screenshot of the change form with planning sections visible, ideally showing fields like
-implementation plan, test plan, backout plan, and risk related attributes.
-</p>
-</div>
-</div>
-</section>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-4.2 — Risk calculation and conditions for governance driven approvals
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-Risk logic determines how changes are reviewed. This step applies risk conditions so that higher risk changes
-require more scrutiny and better planning. Risk can be derived from impact, urgency, CI class, or the nature of
-the change. The outcome is that the platform guides behavior instead of relying on people to “remember process.”
-</p>
-<ul class="space-y-2 text-sm text-text-secondary">
-<li class="flex gap-2"><span class=text-accent-success>●</span>Defined risk conditions that map change attributes to risk levels</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Validated that risk updates when planning fields change</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Ensured high risk changes are surfaced clearly for governance review</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Tested the approval experience so reviewers can trust the risk signal</li>
-</ul>
-<div class="bg-container-bg border border-gray-800 rounded-xl p-5 mt-5">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-2">
-Real world effect
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Risk becomes a governance lever. It pushes teams to plan better and prevents casual scheduling of changes
-that could realistically cause outages.
-</p>
-</div>
-</div>
-<div class=space-y-6>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Risk_Conditions.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Risk_Conditions.png class="rounded-md w-full" alt="Risk conditions and risk calculation logic">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Risk logic configured to guide approvals and governance scrutiny.
-</p>
-</div>
-<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-3">
-Screenshot notes
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Show the risk conditions definition or a change record where risk level updates based on selected values.
-</p>
+  
+<div id="tab-emergency" class="tab-content space-y-20">
+
+  <!-- PHASE HEADER -->
+  <div class="space-y-3">
+    <h3 class="text-xl font-semibold text-white">
+      Phase 5 — Emergency Change Control and Priority Gating
+    </h3>
+    <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+      This phase enforces strict control over emergency change usage. Emergency workflows are restricted
+      so they are only available when operational impact truly justifies bypassing standard change
+      governance, preventing misuse as a convenience shortcut.
+    </p>
+  </div>
+
+  <!-- 5.1 -->
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <div class="space-y-4">
+      <h4 class="text-lg font-semibold text-white">
+        5.1 — Controlled UI action for emergency change creation
+      </h4>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        Emergency change creation was implemented as a controlled UI action rather than an always
+        available option. The action only appears when record context meets predefined criteria,
+        ensuring emergency changes are created intentionally and remain auditable.
+      </p>
+      <ul class="space-y-2 text-sm text-text-secondary">
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Implemented a guided UI action for emergency change creation</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Restricted visibility to eligible incident and problem contexts</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Ensured emergency changes inherit source record context</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Validated UI behavior across multiple record scenarios</li>
+      </ul>
+    </div>
+
+    <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4"
+         onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_UI_Action_Emergency.png')">
+      <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_UI_Action_Emergency.png"
+           class="rounded-md w-full"
+           alt="Emergency change UI action configuration">
+      <p class="mt-3 text-xs italic text-text-secondary text-center">
+        UI action controlling access to emergency change creation.
+      </p>
+    </div>
+  </section>
+
+  <!-- 5.2 -->
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <div class="space-y-4">
+      <h4 class="text-lg font-semibold text-white">
+        5.2 — Priority and record type gating (P1 / P2 only)
+      </h4>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        Emergency change availability was further restricted by priority and record type. Only
+        high impact incidents are eligible to trigger emergency workflows, ensuring that emergency
+        processes remain reserved for critical service restoration scenarios.
+      </p>
+      <ul class="space-y-2 text-sm text-text-secondary">
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Limited emergency creation to P1 and P2 incidents</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Restricted visibility by record type to prevent misuse</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Validated gating logic in both classic and new UI experiences</li>
+        <li class="flex gap-2"><span class="text-accent-success">●</span>Tested multiple priority scenarios to confirm enforcement</li>
+      </ul>
+    </div>
+
+    <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4"
+         onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Emergency_Gating.png')">
+      <img src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Emergency_Gating.png"
+           class="rounded-md w-full"
+           alt="Emergency change priority gating">
+      <p class="mt-3 text-xs italic text-text-secondary text-center">
+        Emergency change option gated by priority and record context.
+      </p>
+    </div>
+  </section>
+  
 </div>
 </div>
 </section>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-4.3 — Maintenance windows and blackout periods for safe scheduling
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-Scheduling control is where change governance becomes operational. This step defines maintenance windows that
-represent approved timeframes for change work and blackout periods where change is restricted. The objective is
-to prevent risky changes from being scheduled during high impact business hours or during sensitive operational
-periods.
-</p>
-<ul class="space-y-2 text-sm text-text-secondary">
-<li class="flex gap-2"><span class=text-accent-success>●</span>Configured maintenance schedules for approved change execution windows</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Defined blackout schedules to block changes during sensitive periods</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Validated scheduling behavior during change planning and submission</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Confirmed governance impact: teams must plan around the calendar controls</li>
-</ul>
-<div class="bg-container-bg border border-gray-800 rounded-xl p-5 mt-5">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-2">
-Why interviewers like this step
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-It demonstrates operational maturity. Many labs stop at “create a change record,” but real environments
-require safe scheduling constraints so the platform helps protect uptime.
-</p>
-</div>
-</div>
-<div class=space-y-6>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Maintenance_Blackout.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Maintenance_Blackout.png class="rounded-md w-full" alt="Maintenance windows and blackout periods configuration">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Maintenance windows and blackout periods enforcing safe change scheduling.
-</p>
-</div>
-<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-3">
-Screenshot notes
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Use screenshots of the schedule records and ideally a change request showing scheduling within a maintenance
-window or being blocked by blackout constraints.
-</p>
-</div>
-</div>
-</section>
-</div>
-<div id=tab-emergency class="tab-content space-y-16">
-<div class=space-y-3>
-<h3 class="text-xl font-semibold text-white">
-Phase 5 — Emergency Change Control and Priority Gating
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-Emergency workflows are frequently abused in poorly governed environments. This phase demonstrates how to restrict
-emergency change creation so it is only available when the incident or problem context actually justifies it.
-Priority and record type gating keeps emergency tooling from turning into a shortcut around governance.
-</p>
-</div>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-5.1 — Controlled UI action for emergency change creation
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-An emergency change creation action was implemented as a controlled UI entry point rather than a “free for all”
-option. The action is designed to appear only when the record meets the strict criteria that justify emergency
-work. This keeps emergency change creation transparent and prevents casual use when the work should follow the
-standard change process.
-</p>
-<ul class="space-y-2 text-sm text-text-secondary">
-<li class="flex gap-2"><span class=text-accent-success>●</span>Configured an emergency UI action as a guided creation workflow</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Ensured the action is visible only in the correct record context</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Validated the created emergency change inherits key context from the source</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Tested with multiple records to confirm the action does not appear incorrectly</li>
-</ul>
-<div class="bg-container-bg border border-gray-800 rounded-xl p-5 mt-5">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-2">
-Governance benefit
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Emergency change is treated as an exception path with clear guardrails, not a shortcut. That reduces risk and
-increases audit quality.
-</p>
-</div>
-</div>
-<div class=space-y-6>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_UI_Action_Emergency.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_UI_Action_Emergency.png class="rounded-md w-full" alt="Emergency change UI action configuration">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-UI action controlling emergency change creation entry point.
-</p>
-</div>
-<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-3">
-Screenshot notes
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Use a screenshot of the UI action definition and optionally one showing the button visible on an eligible
-incident record.
-</p>
-</div>
-</div>
-</section>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-5.2 — Priority gating and record type restrictions (P1 / P2 only)
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-Emergency change creation was restricted by priority to ensure only major incidents can trigger the emergency
-path. This enforces the discipline that emergencies are for restoring critical service, not for accelerating
-normal work. The conditions also ensure the option is tied to the correct record types, preventing the emergency
-path from appearing in unrelated contexts.
-</p>
-<ul class="space-y-2 text-sm text-text-secondary">
-<li class="flex gap-2"><span class=text-accent-success>●</span>Limited availability to high priority incidents (P1 or P2)</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Restricted usage by record type to keep the UI clean and safe</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Validated the control works in the new UI where conditions can be confusing</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Tested multiple priority scenarios to confirm no accidental exposure</li>
-</ul>
-<div class="bg-container-bg border border-gray-800 rounded-xl p-5 mt-5">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-2">
-Why this is important
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-In enterprise environments, emergency changes are high risk. Gating by priority helps prevent process abuse
-and makes emergency events easier to audit and review after the fact.
-</p>
-</div>
-</div>
-<div class=space-y-6>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Emergency_Gating.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN_Emergency_Gating.png class="rounded-md w-full" alt="Emergency gating based on priority and context">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Emergency gating: only visible for qualifying P1 / P2 scenarios.
-</p>
-</div>
-<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em] mb-3">
-Screenshot notes
-</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Capture the condition logic and a before and after example: a P3 incident where the emergency option is absent
-and a P1 incident where it appears.
-</p>
-</div>
-</div>
-</section>
-</div>
-</div>
-</section>
+  
 <section id=results class="py-16 border-b border-gray-800">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
 <h2 class="text-2xl font-bold font-mono text-accent-cyan">
