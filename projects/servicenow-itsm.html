@@ -724,44 +724,139 @@ Governance Improvements
 </div>
 </div>
 </section>
-<section id=remediation class="py-16 border-b border-gray-800">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-<h2 class="text-2xl font-bold font-mono text-accent-cyan">
-Remediation and Hardening Strategy
-</h2>
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-<div class="bg-container-bg border border-gray-800 rounded-xl p-8">
-<h3 class="text-lg font-semibold text-white mb-3">
-Process Hardening
-</h3>
-<p class="text-sm text-text-secondary leading-relaxed">
-Strengthened ITSM workflows by enforcing mandatory documentation, controlled state transitions, and
-deterministic routing. These controls reduce noise, prevent process abuse, and ensure tickets represent
-real operational work rather than placeholders.
-</p>
-</div>
-<div class="bg-container-bg border border-gray-800 rounded-xl p-8">
-<h3 class="text-lg font-semibold text-white mb-3">
-Risk Reduction
-</h3>
-<p class="text-sm text-text-secondary leading-relaxed">
-Applied risk driven governance to change execution. High risk activities now require additional scrutiny,
-structured planning, and safe scheduling windows, significantly reducing the likelihood of
-change induced outages.
-</p>
-</div>
-<div class="bg-container-bg border border-gray-800 rounded-xl p-8">
-<h3 class="text-lg font-semibold text-white mb-3">
-Long Term Stability
-</h3>
-<p class="text-sm text-text-secondary leading-relaxed">
-Established a feedback loop between incidents, problems, and changes so recurring issues are addressed
-systematically rather than repeatedly resolved at the surface level.
-</p>
-</div>
-</div>
-</div>
+  
+<section id="remediation" class="py-16 border-b border-gray-800">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+
+    <h2 class="text-2xl font-bold font-mono text-white">
+      Remediation and Hardening Strategy
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <!-- TIER 1 -->
+      <div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
+        <h4 class="text-sm font-bold text-accent-red uppercase tracking-wider mb-2">
+          Tier 1 — Immediate Control
+        </h4>
+        <p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
+          Objective: Prevent governance bypass and eliminate high risk operational behavior.
+        </p>
+        <ul class="space-y-4 text-sm text-text-secondary">
+          <li class="flex gap-3">
+            <span class="text-accent-red font-bold">•</span>
+            <span class="leading-relaxed">
+              <strong class="text-white block text-xs mb-0.5">
+                Emergency Workflow Gating
+              </strong>
+              Restricted emergency change creation to P1 and P2 incidents and validated record context
+              to prevent misuse of emergency paths.
+            </span>
+          </li>
+          <li class="flex gap-3">
+            <span class="text-accent-red font-bold">•</span>
+            <span class="leading-relaxed">
+              <strong class="text-white block text-xs mb-0.5">
+                Mandatory Resolution Capture
+              </strong>
+              Enforced resolution documentation before closure to prevent metric gaming and
+              incomplete records.
+            </span>
+          </li>
+          <li class="flex gap-3">
+            <span class="text-accent-red font-bold">•</span>
+            <span class="leading-relaxed">
+              <strong class="text-white block text-xs mb-0.5">
+                Deterministic Routing
+              </strong>
+              Eliminated manual assignment drift by enforcing assignment rules based on structured fields.
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- TIER 2 -->
+      <div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
+        <h4 class="text-sm font-bold text-accent-action uppercase tracking-wider mb-2">
+          Tier 2 — Governance Stabilization
+        </h4>
+        <p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
+          Objective: Reduce operational risk through planning discipline and controlled execution.
+        </p>
+        <ul class="space-y-4 text-sm text-text-secondary">
+          <li class="flex gap-3">
+            <span class="text-accent-action font-bold">•</span>
+            <span class="leading-relaxed">
+              <strong class="text-white block text-xs mb-0.5">
+                Risk Driven Change Control
+              </strong>
+              Applied risk conditions to dynamically influence approvals and governance scrutiny.
+            </span>
+          </li>
+          <li class="flex gap-3">
+            <span class="text-accent-action font-bold">•</span>
+            <span class="leading-relaxed">
+              <strong class="text-white block text-xs mb-0.5">
+                Planning Completeness Enforcement
+              </strong>
+              Required implementation, test, and backout plans before change submission.
+            </span>
+          </li>
+          <li class="flex gap-3">
+            <span class="text-accent-action font-bold">•</span>
+            <span class="leading-relaxed">
+              <strong class="text-white block text-xs mb-0.5">
+                Schedule Governance
+              </strong>
+              Enforced maintenance windows and blackout periods to prevent unsafe execution timing.
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- TIER 3 -->
+      <div class="bg-secondary-bg border border-gray-700 rounded-xl p-6">
+        <h4 class="text-sm font-bold text-accent-success uppercase tracking-wider mb-2">
+          Tier 3 — Long Term Operational Resilience
+        </h4>
+        <p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
+          Objective: Establish feedback loops that prevent repeat incidents and systemic drift.
+        </p>
+        <ul class="space-y-4 text-sm text-text-secondary">
+          <li class="flex gap-3">
+            <span class="text-accent-success font-bold">•</span>
+            <span class="leading-relaxed">
+              <strong class="text-white block text-xs mb-0.5">
+                Incident to Problem Escalation
+              </strong>
+              Linked recurring incidents to problem records to enforce investigation and ownership.
+            </span>
+          </li>
+          <li class="flex gap-3">
+            <span class="text-accent-success font-bold">•</span>
+            <span class="leading-relaxed">
+              <strong class="text-white block text-xs mb-0.5">
+                Known Error Governance
+              </strong>
+              Required documented root cause analysis before problem closure or transition.
+            </span>
+          </li>
+          <li class="flex gap-3">
+            <span class="text-accent-success font-bold">•</span>
+            <span class="leading-relaxed">
+              <strong class="text-white block text-xs mb-0.5">
+                Lifecycle Feedback Loop
+              </strong>
+              Ensured incidents, problems, and changes inform each other to prevent repeat failures.
+            </span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
 </section>
+
   
 <section class="pt-12 md:pt-16 pb-12">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
