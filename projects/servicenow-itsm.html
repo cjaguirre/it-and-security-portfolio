@@ -1,1 +1,635 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ServiceNow ITSM Implementation Lab | Christian Aguirre</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary-bg": "var(--bg-default)",
+            "secondary-bg": "var(--bg-secondary)",
+            "container-bg": "var(--container-bg)",
+            "text-base": "var(--text-base)",
+            "text-secondary": "var(--text-secondary)",
+            "accent": "var(--accent-structural)",
+            "action": "var(--functional-action)",
+            "success": "var(--functional-success)",
+            "danger": "var(--accent-red)",
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
+
+    .dark {
+      --bg-default: #1e1e1e;
+      --bg-secondary: #30333a;
+      --container-bg: #171717;
+      --text-base: #ffffff;
+      --text-secondary: #abb2bf;
+      --accent-structural: #d9d9d9;
+      --functional-action: #61afef;
+      --functional-success: #98c379;
+      --accent-red: #e06c75;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background-color: var(--bg-default);
+      color: var(--text-base);
+    }
+
+    .pill {
+      border-radius: 999px;
+      padding: 0.25rem 0.75rem;
+      border: 1px solid rgba(217,217,217,0.6);
+      font-size: 0.7rem;
+      font-family: "Inconsolata", monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+  </style>
+</head>
+
+<body>
+<main>
+
+<!-- HERO -->
+<section class="pt-20 pb-16 border-b border-gray-800">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <a href="../index.html#projects" class="text-accent hover:text-danger text-sm font-mono mb-6 inline-block">
+      ← Back to Portfolio
+    </a>
+
+    <div class="flex flex-wrap gap-2 mb-6">
+      <span class="pill">ServiceNow ITSM</span>
+      <span class="pill">Incident Management</span>
+      <span class="pill">Problem Management</span>
+      <span class="pill">Change Management</span>
+      <span class="pill">Governance</span>
+      <span class="pill">UI Policies</span>
+      <span class="pill">Assignment Rules</span>
+    </div>
+
+    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+      ServiceNow ITSM Implementation Lab
+    </h1>
+
+    <p class="max-w-3xl text-text-secondary leading-relaxed mb-10">
+      A full end-to-end ITSM implementation built in a ServiceNow Developer instance, simulating
+      real enterprise onboarding. This lab configures Incident, Problem, and Change Management
+      modules from the ground up, enforcing operational governance through structured forms,
+      automated assignment, controlled risk evaluation, scheduling constraints, and restricted
+      emergency change workflows.
+    </p>
+
+  </div>
+</section>
+
+<!-- PROJECT OVERVIEW -->
+<section class="py-14 border-b border-gray-800">
+  <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-10">
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7">
+      <p class="text-xs font-mono tracking-widest uppercase text-text-secondary mb-3">
+        Project Overview
+      </p>
+      <p class="text-sm leading-relaxed mb-4">
+        This project follows a structured ITSM implementation approach similar to how ServiceNow
+        is deployed in production environments. Each module is configured incrementally to ensure
+        consistency, usability, and enforceable governance.
+      </p>
+      <p class="text-sm leading-relaxed">
+        All configurations rely on native ServiceNow capabilities such as dictionary entries,
+        UI policies, assignment rules, risk conditions, schedules, and UI actions — avoiding
+        scripting wherever possible to reflect regulated enterprise standards.
+      </p>
+    </div>
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7">
+      <p class="text-xs font-mono tracking-widest uppercase text-text-secondary mb-3">
+        Key Deliverables
+      </p>
+      <ul class="list-disc pl-5 space-y-2 text-sm">
+        <li>Incident, Problem, and Change Management fully configured</li>
+        <li>Dynamic assignment based on category and configuration item</li>
+        <li>Priority and risk driven governance</li>
+        <li>Maintenance and blackout enforcement</li>
+        <li>Controlled emergency change creation</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- WORKFLOW OVERVIEW -->
+<section class="py-14 border-b border-gray-800">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <h2 class="text-2xl font-bold font-mono text-action mb-8">
+      Workflow Overview
+    </h2>
+
+    <div class="grid md:grid-cols-5 gap-4">
+      <div class="bg-secondary-bg border border-gray-700 rounded-xl p-5">
+        <p class="font-mono text-action text-xs uppercase mb-1">Phase 1</p>
+        <p class="font-semibold text-sm mb-1">Incident Foundation</p>
+        <p class="text-xs text-text-secondary">
+          Incident form structure, categories, states, and mandatory logic.
+        </p>
+      </div>
+      <div class="bg-secondary-bg border border-gray-700 rounded-xl p-5">
+        <p class="font-mono text-action text-xs uppercase mb-1">Phase 2</p>
+        <p class="font-semibold text-sm mb-1">Assignment & Priority</p>
+        <p class="text-xs text-text-secondary">
+          Auto-routing, urgency, impact, and priority calculation.
+        </p>
+      </div>
+      <div class="bg-secondary-bg border border-gray-700 rounded-xl p-5">
+        <p class="font-mono text-action text-xs uppercase mb-1">Phase 3</p>
+        <p class="font-semibold text-sm mb-1">Problem Management</p>
+        <p class="text-xs text-text-secondary">
+          Problem records, root cause tracking, and CI-based assignment.
+        </p>
+      </div>
+      <div class="bg-secondary-bg border border-gray-700 rounded-xl p-5">
+        <p class="font-mono text-action text-xs uppercase mb-1">Phase 4</p>
+        <p class="font-semibold text-sm mb-1">Change Governance</p>
+        <p class="text-xs text-text-secondary">
+          Risk conditions, maintenance windows, blackout schedules.
+        </p>
+      </div>
+      <div class="bg-secondary-bg border border-gray-700 rounded-xl p-5">
+        <p class="font-mono text-action text-xs uppercase mb-1">Phase 5</p>
+        <p class="font-semibold text-sm mb-1">Emergency Controls</p>
+        <p class="text-xs text-text-secondary">
+          Priority-based emergency change creation.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PHASE 1 -->
+<section class="py-16 border-b border-gray-800">
+  <div class="max-w-6xl mx-auto px-6 space-y-10">
+
+    <h2 class="text-2xl font-bold font-mono text-action">
+      Phase 1 — Incident Management Foundation
+    </h2>
+
+    <p class="text-text-secondary max-w-3xl leading-relaxed">
+      The Incident Management module was configured first to establish a reliable intake and
+      triage process. Default ServiceNow behavior was refined to ensure incidents are consistently
+      captured, categorized, prioritized, and routed.
+    </p>
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7">
+      <h3 class="text-lg font-semibold mb-3">
+        1.1 Incident form structure and field visibility
+      </h3>
+      <p class="text-sm text-text-secondary leading-relaxed mb-3">
+        The incident form layout was reviewed and simplified. High-value fields such as Category,
+        Subcategory, Impact, Urgency, Priority, Assignment Group, and Configuration Item were
+        positioned prominently to guide service desk agents.
+      </p>
+      <ul class="list-disc pl-5 text-sm space-y-1">
+        <li>Removed unused default fields</li>
+        <li>Reordered fields to match triage workflow</li>
+        <li>Validated usability during record creation</li>
+      </ul>
+    </div>
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7">
+      <h3 class="text-lg font-semibold mb-3">
+        1.2 Category and subcategory configuration
+      </h3>
+      <p class="text-sm text-text-secondary leading-relaxed mb-3">
+        Categories and subcategories were configured to enforce structured classification.
+        This supports accurate reporting and downstream automation such as assignment rules
+        and problem linkage.
+      </p>
+      <ul class="list-disc pl-5 text-sm space-y-1">
+        <li>Defined consistent category taxonomy</li>
+        <li>Mapped logical subcategories</li>
+        <li>Validated form behavior during entry</li>
+      </ul>
+    </div>
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7">
+      <h3 class="text-lg font-semibold mb-3">
+        1.3 Incident state model validation
+      </h3>
+      <p class="text-sm text-text-secondary leading-relaxed mb-3">
+        Incident states were reviewed to ensure they reflect a realistic lifecycle.
+        State transitions were tested to confirm predictable progression from New
+        through Resolution and Closure.
+      </p>
+      <ul class="list-disc pl-5 text-sm space-y-1">
+        <li>Reviewed default incident states</li>
+        <li>Tested state transitions</li>
+        <li>Confirmed closure requirements</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- PHASE 2 -->
+<section class="py-16 border-b border-gray-800">
+  <div class="max-w-6xl mx-auto px-6 space-y-10">
+
+    <h2 class="text-2xl font-bold font-mono text-action">
+      Phase 2 — Assignment and Priority Automation
+    </h2>
+
+    <p class="text-text-secondary max-w-3xl leading-relaxed">
+      This phase introduces automation that reduces manual triage effort. Priority calculation
+      and assignment logic ensure incidents are routed correctly and handled according to
+      business impact.
+    </p>
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7">
+      <h3 class="text-lg font-semibold mb-3">
+        2.1 Impact, urgency, and priority calculation
+      </h3>
+      <p class="text-sm text-text-secondary leading-relaxed mb-3">
+        Priority is derived dynamically from Impact and Urgency selections. This ensures
+        consistent severity classification across the organization and prevents agents
+        from arbitrarily selecting priority values.
+      </p>
+      <ul class="list-disc pl-5 text-sm space-y-1">
+        <li>Configured impact and urgency choices</li>
+        <li>Validated automatic priority calculation</li>
+        <li>Tested multiple combinations</li>
+      </ul>
+    </div>
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7">
+      <h3 class="text-lg font-semibold mb-3">
+        2.2 Incident assignment rules
+      </h3>
+      <p class="text-sm text-text-secondary leading-relaxed mb-3">
+        Assignment rules were created to automatically route incidents to the correct
+        support group based on category and configuration item. This minimizes manual
+        reassignment and speeds resolution.
+      </p>
+      <ul class="list-disc pl-5 text-sm space-y-1">
+        <li>Created table-specific assignment rules</li>
+        <li>Validated rule execution on save</li>
+        <li>Confirmed correct group population</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+  <!-- PHASE 2 -->
+<section class="py-16 border-t border-gray-800">
+  <div class="max-w-6xl mx-auto px-6 space-y-10">
+
+    <h2 class="text-2xl font-bold font-mono text-action">
+      Phase 2 — Incident Automation and Assignment Logic
+    </h2>
+
+    <p class="text-text-secondary max-w-3xl leading-relaxed">
+      Once the Incident form structure was stabilized, the next phase focused on automation.
+      This phase ensures that incidents are routed correctly, prioritized consistently, and
+      enriched with mandatory data based on context. The goal is to reduce manual triage
+      and enforce operational discipline.
+    </p>
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7 space-y-5">
+      <h3 class="text-lg font-semibold">
+        2.1 Assignment group routing using assignment rules
+      </h3>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        Assignment rules were configured to automatically route incidents to the appropriate
+        support teams based on category, subcategory, and other key attributes. This prevents
+        incidents from sitting unassigned and mirrors how enterprise service desks operate.
+      </p>
+      <ul class="list-disc pl-5 text-sm space-y-1">
+        <li>Reviewed default assignment behavior</li>
+        <li>Configured assignment rules using incident attributes</li>
+        <li>Validated correct group assignment during record creation</li>
+      </ul>
+    </div>
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7 space-y-5">
+      <h3 class="text-lg font-semibold">
+        2.2 Priority and impact consistency
+      </h3>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        Priority handling was reviewed to ensure consistent interpretation of impact and urgency.
+        This ensures that high-impact issues receive immediate attention while low-impact issues
+        are handled appropriately.
+      </p>
+      <ul class="list-disc pl-5 text-sm space-y-1">
+        <li>Validated priority calculation logic</li>
+        <li>Ensured alignment with incident severity expectations</li>
+        <li>Tested priority behavior across multiple scenarios</li>
+      </ul>
+    </div>
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7 space-y-5">
+      <h3 class="text-lg font-semibold">
+        2.3 Conditional mandatory fields using UI policies
+      </h3>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        UI policies were applied to dynamically enforce mandatory fields based on incident state,
+        category, or assignment group. This ensures that critical information is captured
+        without overwhelming users with unnecessary requirements.
+      </p>
+      <ul class="list-disc pl-5 text-sm space-y-1">
+        <li>Configured UI policies without scripting</li>
+        <li>Applied conditional mandatory behavior</li>
+        <li>Validated enforcement during lifecycle transitions</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- PHASE 3 -->
+<section class="py-16 border-t border-gray-800">
+  <div class="max-w-6xl mx-auto px-6 space-y-10">
+
+    <h2 class="text-2xl font-bold font-mono text-action">
+      Phase 3 — Change Management Form Design and Control
+    </h2>
+
+    <p class="text-text-secondary max-w-3xl leading-relaxed">
+      With Incident Management stabilized, the implementation moved into Change Management.
+      This phase focused on redesigning the Change Request form to reflect real-world
+      implementation ownership, accountability, and data clarity.
+    </p>
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7 space-y-5">
+      <h3 class="text-lg font-semibold">
+        3.1 Change form layout cleanup
+      </h3>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        The Change Request form was simplified by removing non-essential fields that were
+        inherited from base task tables but not required for organizational change processes.
+        This improves clarity and reduces confusion during change creation.
+      </p>
+      <ul class="list-disc pl-5 text-sm space-y-1">
+        <li>Removed Service and Service Offering fields</li>
+        <li>Validated layout across change types</li>
+        <li>Ensured consistent form behavior for users</li>
+      </ul>
+    </div>
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7 space-y-5">
+      <h3 class="text-lg font-semibold">
+        3.2 Field renaming using dictionary overrides
+      </h3>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        Field labels were customized specifically for Change Requests using dictionary overrides.
+        This allowed renaming fields without impacting other tables that share the same base fields.
+      </p>
+      <ul class="list-disc pl-5 text-sm space-y-1">
+        <li>Renamed Assignment Group to Implementation Group</li>
+        <li>Renamed Assigned To to Implementer</li>
+        <li>Preserved original labels on Incident and Task tables</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- PHASE 4 -->
+<section class="py-16 border-t border-gray-800">
+  <div class="max-w-6xl mx-auto px-6 space-y-10">
+
+    <h2 class="text-2xl font-bold font-mono text-action">
+      Phase 4 — Change Risk Assessment and Governance
+    </h2>
+
+    <p class="text-text-secondary max-w-3xl leading-relaxed">
+      Change governance is a critical component of ITSM. This phase introduces formal risk
+      assessment logic and enforces organizational control through maintenance schedules
+      and blackout windows.
+    </p>
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7 space-y-5">
+      <h3 class="text-lg font-semibold">
+        4.1 Risk condition configuration
+      </h3>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        Risk conditions were configured to automatically calculate risk and impact based
+        on change attributes. This ensures consistent risk assessment and reduces subjective
+        decision-making.
+      </p>
+      <ul class="list-disc pl-5 text-sm space-y-1">
+        <li>Configured risk conditions under Change Administration</li>
+        <li>Set High risk for outage-type changes scheduled for the current day</li>
+        <li>Validated risk calculation using the Calculate Risk action</li>
+      </ul>
+    </div>
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7 space-y-5">
+      <h3 class="text-lg font-semibold">
+        4.2 Maintenance windows
+      </h3>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        Maintenance schedules were implemented to restrict when certain infrastructure
+        changes can occur. For example, email-related changes were limited to approved
+        maintenance periods.
+      </p>
+      <ul class="list-disc pl-5 text-sm space-y-1">
+        <li>Created maintenance schedules for specific CI classes</li>
+        <li>Configured weekend-only change windows</li>
+        <li>Validated conflict detection during scheduling</li>
+      </ul>
+    </div>
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7 space-y-5">
+      <h3 class="text-lg font-semibold">
+        4.3 Blackout schedules and change freeze
+      </h3>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        Blackout schedules were used to enforce organization-wide change freezes.
+        During blackout periods, no changes can be implemented regardless of type.
+      </p>
+      <ul class="list-disc pl-5 text-sm space-y-1">
+        <li>Configured year-end blackout window</li>
+        <li>Applied blackout globally across change requests</li>
+        <li>Validated conflict messaging and user feedback</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+  <!-- PHASE 5 -->
+<section class="py-16 border-t border-gray-800">
+  <div class="max-w-6xl mx-auto px-6 space-y-10">
+
+    <h2 class="text-2xl font-bold font-mono text-action">
+      Phase 5 — Emergency Change Control and Governance
+    </h2>
+
+    <p class="text-text-secondary max-w-3xl leading-relaxed">
+      The final implementation phase focuses on strict control of emergency changes.
+      Emergency changes bypass normal approval timelines and therefore must be
+      carefully restricted to genuinely critical scenarios. This phase enforces
+      those restrictions directly within the platform.
+    </p>
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7 space-y-5">
+      <h3 class="text-lg font-semibold">
+        5.1 Emergency change creation from incidents
+      </h3>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        A UI Action was configured on the Incident form to allow creation of an
+        Emergency Change Request directly from an incident. Visibility of this
+        action was restricted so that it only appears for Priority 1 and Priority 2 incidents.
+      </p>
+      <ul class="list-disc pl-5 text-sm space-y-1">
+        <li>Modified the Create Emergency Change UI Action</li>
+        <li>Applied visibility condition based on incident priority</li>
+        <li>Validated button visibility across multiple priority levels</li>
+      </ul>
+    </div>
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7 space-y-5">
+      <h3 class="text-lg font-semibold">
+        5.2 Emergency change creation from problems
+      </h3>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        A similar control was applied to the Problem form. Emergency Change creation
+        was restricted even further, allowing it only when the problem record is
+        classified as Priority 1. This reflects real-world root-cause driven emergencies.
+      </p>
+      <ul class="list-disc pl-5 text-sm space-y-1">
+        <li>Updated Emergency Change UI Action on Problem table</li>
+        <li>Restricted visibility to Priority 1 problems only</li>
+        <li>Verified behavior across problem priority levels</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- VALIDATION & TESTING -->
+<section class="py-16 border-t border-gray-800">
+  <div class="max-w-6xl mx-auto px-6 space-y-10">
+
+    <h2 class="text-2xl font-bold font-mono text-action">
+      Validation and End-to-End Testing
+    </h2>
+
+    <p class="text-text-secondary max-w-3xl leading-relaxed">
+      Each configuration was validated through hands-on testing to ensure the platform
+      behaved as expected. This included record creation, lifecycle progression,
+      conflict detection, and UI enforcement.
+    </p>
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7">
+      <ul class="list-disc pl-5 text-sm space-y-2">
+        <li>Verified assignment rules route incidents correctly at creation</li>
+        <li>Confirmed UI policies enforce mandatory fields contextually</li>
+        <li>Validated change risk calculation using real scheduling scenarios</li>
+        <li>Tested maintenance and blackout conflicts during change scheduling</li>
+        <li>Confirmed emergency change buttons appear only when allowed</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- KEY INSIGHTS -->
+<section class="py-16 border-t border-gray-800">
+  <div class="max-w-6xl mx-auto px-6 space-y-8">
+
+    <h2 class="text-2xl font-bold font-mono text-white">
+      Key Insights
+    </h2>
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7">
+      <ul class="list-disc pl-5 text-sm space-y-2 leading-relaxed">
+        <li>Out-of-the-box ITSM configurations require refinement to match enterprise workflows</li>
+        <li>UI policies and dictionary overrides provide powerful control without scripting</li>
+        <li>Risk and scheduling logic significantly reduce unsafe change implementation</li>
+        <li>Emergency change governance must be enforced at the UI level</li>
+        <li>Incremental testing prevents configuration conflicts later in the lifecycle</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS DEMONSTRATED -->
+<section class="py-16 border-t border-gray-800">
+  <div class="max-w-6xl mx-auto px-6 space-y-8">
+
+    <h2 class="text-2xl font-bold font-mono text-white">
+      Skills Demonstrated
+    </h2>
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7">
+      <div class="flex flex-wrap gap-2 text-xs font-mono">
+        <span class="pill">ServiceNow ITSM</span>
+        <span class="pill">Incident Management</span>
+        <span class="pill">Problem Management</span>
+        <span class="pill">Change Management</span>
+        <span class="pill">UI Policies</span>
+        <span class="pill">Dictionary Overrides</span>
+        <span class="pill">Assignment Rules</span>
+        <span class="pill">Risk Assessment</span>
+        <span class="pill">Maintenance Scheduling</span>
+        <span class="pill">Blackout Windows</span>
+        <span class="pill">UI Actions</span>
+        <span class="pill">IT Governance</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SUMMARY -->
+<section class="py-16 border-t border-gray-800">
+  <div class="max-w-6xl mx-auto px-6 space-y-6">
+
+    <div class="bg-secondary-bg border border-gray-700 rounded-xl p-7">
+      <h3 class="text-sm font-mono tracking-widest uppercase mb-3 text-white">
+        Project Summary
+      </h3>
+      <p class="text-sm leading-relaxed text-text-secondary">
+        This ServiceNow ITSM Implementation Lab demonstrates a full enterprise-style
+        configuration performed entirely within a developer instance. By progressively
+        building Incident, Problem, and Change Management with governance controls,
+        the platform behaves as a production-ready ITSM system.
+      </p>
+      <p class="text-sm leading-relaxed text-text-secondary mt-3">
+        The lab emphasizes structured data capture, automation, risk-based decision making,
+        and strict emergency change governance — all achieved using native ServiceNow
+        capabilities without custom scripting.
+      </p>
+    </div>
+
+    <a href="../index.html#projects" class="inline-flex text-action hover:text-danger text-sm font-mono">
+      ← Back to Portfolio
+    </a>
+
+  </div>
+</section>
+
+</main>
+</body>
+</html>
+
 
