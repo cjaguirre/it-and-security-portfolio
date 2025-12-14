@@ -612,133 +612,134 @@ Coursera & Google
 </div>
 
     
-<section id="contact" class="pt-32 pb-24">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
-        
-        <!-- Title -->
-        <h2 class="text-3xl font-mono text-accent-structural mb-12">
-            06. Contact
-        </h2>
+<section id="contact" class="pt-32 pb-24 bg-[var(--bg-default)]">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
 
-        <div class="grid lg:grid-cols-2 gap-20 items-start">
-
-            <!-- LEFT PANEL -->
-            <div class="relative p-10 rounded-2xl bg-[var(--bg-secondary)] border border-gray-800">
-                <!-- Accent bar -->
-                <div class="absolute -left-4 top-6 bottom-6 w-1.5 bg-[var(--accent-action)] rounded-full"></div>
-
-                <h3 class="text-4xl font-bold mb-6 text-text-base">
-                    Let’s connect
-                </h3>
-
-                <p class="text-text-secondary leading-relaxed text-[1.05rem] max-w-[90%] mb-10">
-                    I’m open to new roles in security operations, IT systems analysis, or data analytics.
-                    If you'd like to discuss opportunities, collaborate on projects, or compare notes on labs
-                    and investigations, feel free to reach out anytime.
-                </p>
-
-                <div class="space-y-7">
-
-                    <!-- EMAIL -->
-                    <div class="flex items-start gap-4">
-                        <div class="text-[var(--accent-structural)] text-xl mt-1">📧</div>
-                        <div class="flex flex-col">
-                            <p class="text-text-base font-medium">Email</p>
-                            <p class="text-text-secondary">cj.aguirr3@gmail.com</p>
-                        </div>
-                    </div>
-
-                    <!-- LOCATION -->
-                    <div class="flex items-start gap-4">
-                        <div class="text-[var(--accent-structural)] text-xl mt-1">📍</div>
-                        <div class="flex flex-col">
-                            <p class="text-text-base font-medium">Location</p>
-                            <p class="text-text-secondary">Fairfax, Virginia, United States</p>
-                        </div>
-                    </div>
-
-                    <!-- LINKEDIN -->
-                    <div class="flex items-start gap-4">
-                        <div class="text-[var(--accent-structural)] text-xl mt-1">🔗</div>
-                        <div class="flex flex-col">
-                            <p class="text-text-base font-medium">LinkedIn</p>
-                            <a 
-                                href="https://www.linkedin.com/in/christianaguirre/"
-                                target="_blank"
-                                class="text-text-secondary hover:text-[var(--accent-action)] transition"
-                            >
-                                linkedin.com/in/christianaguirre
-                            </a>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- RIGHT: FORM PANEL -->
-            <div class="p-[2px] rounded-2xl bg-[var(--bg-secondary)]">
-                <div class="p-10 rounded-2xl bg-[var(--bg-default)] border border-gray-800">
-
-                    <form name="contact" data-netlify="true" netlify-honeypot="bot-field">
-                        <input type="hidden" name="form-name" value="contact">
-
-                        <p class="hidden"><input name="bot-field"></p>
-
-                        <!-- NAME + EMAIL -->
-                        <div class="grid sm:grid-cols-2 gap-6 mb-6">
-                            <input 
-                                type="text" 
-                                name="name" 
-                                placeholder="Name"
-                                class="w-full p-4 rounded-lg bg-[var(--bg-secondary)] border border-gray-700 text-text-base placeholder-text-secondary focus:border-[var(--accent-action)] transition"
-                                required
-                            />
-                            <input 
-                                type="email" 
-                                name="email" 
-                                placeholder="Email"
-                                class="w-full p-4 rounded-lg bg-[var(--bg-secondary)] border border-gray-700 text-text-base placeholder-text-secondary focus:border-[var(--accent-action)] transition"
-                                required
-                            />
-                        </div>
-
-                        <!-- SUBJECT -->
-                        <div class="mb-6">
-                            <input 
-                                type="text" 
-                                name="subject" 
-                                placeholder="Subject"
-                                class="w-full p-4 rounded-lg bg-[var(--bg-secondary)] border border-gray-700 text-text-base placeholder-text-secondary focus:border-[var(--accent-action)] transition"
-                                required
-                            />
-                        </div>
-
-                        <!-- MESSAGE -->
-                        <div class="mb-10">
-                            <textarea 
-                                name="message" 
-                                rows="7" 
-                                placeholder="Your message"
-                                class="w-full p-4 rounded-lg bg-[var(--bg-secondary)] border border-gray-700 text-text-base placeholder-text-secondary focus:border-[var(--accent-action)] transition"
-                                required
-                            ></textarea>
-                        </div>
-
-                        <!-- BUTTON -->
-                        <button 
-                            type="submit" 
-                            class="w-full py-4 rounded-lg font-semibold shadow-lg transition bg-[var(--accent-action)] text-[var(--bg-default)] hover:scale-[1.03]"
-                        >
-                            Send message
-                        </button>
-                    </form>
-
-                </div>
-            </div>
-
-        </div>
+    <!-- Header -->
+    <div class="mb-14">
+      <h2 class="text-4xl font-bold text-text-base mb-3">
+        Connect with Asset Leadership
+      </h2>
+      <p class="text-text-secondary max-w-2xl leading-relaxed">
+        For corporate, asset management, or ownership related inquiries, please use the form below
+        or contact leadership directly using the provided information.
+      </p>
     </div>
+
+    <!-- Layout -->
+    <div class="grid lg:grid-cols-3 gap-14 items-start">
+
+      <!-- LEFT: FORM -->
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-2xl shadow-xl p-10">
+
+          <form name="contact" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="contact">
+            <p class="hidden"><input name="bot-field"></p>
+
+            <!-- Full Name -->
+            <div class="mb-6">
+              <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">
+                Full Name and Affiliation
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Full name and organization"
+                class="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-600"
+                required
+              />
+            </div>
+
+            <!-- Email -->
+            <div class="mb-6">
+              <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">
+                Official Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="name@agency.gov or company domain"
+                class="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-600"
+                required
+              />
+            </div>
+
+            <!-- Message -->
+            <div class="mb-8">
+              <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">
+                Inquiry Details
+              </label>
+              <textarea
+                name="message"
+                rows="6"
+                placeholder="Provide a brief description of the request, project, or coordination needed."
+                class="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-600"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Button -->
+            <button
+              type="submit"
+              class="w-full py-4 rounded-lg font-semibold text-white tracking-wide bg-red-700 hover:bg-red-800 transition"
+            >
+              SUBMIT INQUIRY
+            </button>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- RIGHT: INFO -->
+      <div class="space-y-8">
+
+        <div>
+          <h3 class="text-lg font-semibold text-text-base mb-4 border-b border-gray-700 pb-2">
+            GBA Associates LP — Asset Information
+          </h3>
+
+          <div class="space-y-6 text-sm text-text-secondary">
+
+            <div>
+              <p class="uppercase text-xs tracking-wider text-gray-400 mb-1">Address</p>
+              <p class="text-text-base">
+                7700 Arlington Blvd, Suite 100<br />
+                Falls Church, VA 22042
+              </p>
+            </div>
+
+            <div>
+              <p class="uppercase text-xs tracking-wider text-gray-400 mb-1">Direct Office Contact</p>
+              <p>Main Office Phone: (703) 560-3883</p>
+              <p>Fax Number: (703) 560-2130</p>
+            </div>
+
+            <div>
+              <p class="uppercase text-xs tracking-wider text-gray-400 mb-1">Email</p>
+              <p class="text-text-base">gba.lp.fwd@gmail.com</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Map -->
+        <div class="rounded-xl overflow-hidden border border-gray-700">
+          <iframe
+            class="w-full h-[260px]"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=-77.1145%2C38.8738%2C-77.0945%2C38.8838&layer=mapnik"
+            loading="lazy"
+          ></iframe>
+          <p class="text-xs text-text-secondary mt-2 text-center">
+            Map reference for 7700 Arlington Blvd, Suite 100
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
 </section>
+
 
     
 <footer class="bg-primary-bg text-gray-500 text-center py-4 text-sm border-t border-gray-800 transition-colors duration-500">
