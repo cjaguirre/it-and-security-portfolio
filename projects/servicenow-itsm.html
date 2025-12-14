@@ -371,31 +371,60 @@ body{
       </div>
 
       <!-- 1.1 -->
-      <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-        <div class=space-y-4>
-          <h4 class="text-lg font-semibold text-white">
-            1.1 — Incident form layout and field standardization
-          </h4>
-          <p class="text-sm text-text-secondary leading-relaxed">
-            The incident form was redesigned from a Tier 1 analyst perspective to ensure essential triage
-            information is captured immediately. Nonessential fields were removed or deprioritized to
-            prevent clutter and reduce inconsistent data entry.
-          </p>
-          <ul class="space-y-2 text-sm text-text-secondary">
-            <li class="flex gap-2"><span class=text-accent-success>●</span>Promoted core triage fields above the fold</li>
-            <li class="flex gap-2"><span class=text-accent-success>●</span>Removed unused or low value default fields</li>
-            <li class="flex gap-2"><span class=text-accent-success>●</span>Aligned field order to real service desk intake flow</li>
-            <li class="flex gap-2"><span class=text-accent-success>●</span>Preserved native behaviors such as caller lookup</li>
-          </ul>
-        </div>
-        <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4"
-             onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN1_Incident_Form_Streamlined.png')">
-          <img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN1_Incident_Form_Streamlined.png class="rounded-md w-full" alt="Streamlined incident form">
-          <p class="mt-3 text-xs italic text-text-secondary text-center">
-            Streamlined incident form for clean intake and faster triage.
-          </p>
-        </div>
-      </section>
+    <!-- 1.1 -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-14 items-start relative">
+  
+  <!-- Left Content -->
+  <div class="space-y-5">
+    <h4 class="text-lg font-semibold text-white tracking-tight">
+      1.1 — Incident form layout and field standardization
+    </h4>
+
+    <div class="h-px w-12 bg-gray-700"></div>
+
+    <p class="text-sm text-text-secondary leading-relaxed max-w-prose">
+      The incident form was redesigned from a Tier 1 analyst perspective to ensure essential
+      triage information is captured immediately. Nonessential fields were removed or
+      deprioritized to reduce clutter and inconsistent data entry.
+    </p>
+
+    <ul class="space-y-3 text-sm text-text-secondary">
+      <li class="flex items-start gap-3">
+        <span class="text-accent-success mt-1">●</span>
+        <span>Promoted core triage fields above the fold</span>
+      </li>
+      <li class="flex items-start gap-3">
+        <span class="text-accent-success mt-1">●</span>
+        <span>Removed unused or low value default fields</span>
+      </li>
+      <li class="flex items-start gap-3">
+        <span class="text-accent-success mt-1">●</span>
+        <span>Aligned field order to real service desk intake flow</span>
+      </li>
+      <li class="flex items-start gap-3">
+        <span class="text-accent-success mt-1">●</span>
+        <span>Preserved native behaviors such as caller lookup</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Image -->
+  <div
+    class="image-zoom bg-container-bg/60 backdrop-blur border border-gray-700 rounded-xl p-5 hover:border-gray-500 transition"
+    onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN1_Incident_Form_Streamlined.png')"
+  >
+    <img
+      src="/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/SN1_Incident_Form_Streamlined.png"
+      class="rounded-lg w-full"
+      alt="Streamlined incident form"
+    />
+    <p class="mt-3 text-xs italic text-text-secondary text-center">
+      Streamlined incident form for clean intake and faster triage.
+    </p>
+  </div>
+
+</section>
+
 
       <!-- 1.2 -->
       <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
