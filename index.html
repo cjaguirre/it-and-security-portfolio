@@ -606,152 +606,155 @@ Coursera & Google
 
 </section>
     
-<section id="contact" class="pt-32 pb-24">
-  <div class="max-w-6xl mx-auto px-6 lg:px-8">
+<section id="contact" class="pt-32 pb-24 bg-primary-bg">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
 
-    <!-- Title -->
+    <!-- Header -->
     <h2 class="text-3xl font-mono text-accent-structural mb-12">
       06. Contact
     </h2>
 
     <div class="grid lg:grid-cols-2 gap-20 items-start">
 
-      <!-- LEFT PANEL -->
-      <div class="bg-white rounded-2xl shadow-xl border border-white/10 overflow-hidden">
-        <div class="p-10">
-          <h3 class="text-4xl font-bold mb-4 text-[#111827]">
-            Let’s connect
-          </h3>
+      <!-- LEFT: CONTACT FORM (UNCHANGED STRUCTURE) -->
+      <div class="bg-white rounded-2xl p-10 shadow-xl">
 
-          <p class="text-[#4b5563] leading-relaxed text-[1.05rem] max-w-[95%] mb-10">
-            For roles in security operations, IT systems analysis, or data analytics, feel free to reach out.
-            I am happy to discuss opportunities, projects, or lab work and investigations.
-          </p>
+        <h3 class="text-3xl font-bold text-gray-900 mb-4">
+          Let’s connect
+        </h3>
 
-          <form name="contact" data-netlify="true" netlify-honeypot="bot-field" class="space-y-6">
-            <input type="hidden" name="form-name" value="contact" />
-            <p class="hidden"><input name="bot-field" /></p>
+        <p class="text-gray-600 mb-8 leading-relaxed">
+          For roles in security operations, IT systems analysis, or data analytics,
+          feel free to reach out. I’m happy to discuss opportunities, projects,
+          or lab work and investigations.
+        </p>
 
-            <div>
-              <label class="block text-[0.68rem] font-semibold tracking-[0.22em] uppercase text-[#6b7280] mb-2">
-                Full name
-              </label>
-              <input
-                type="text"
-                name="name"
-                placeholder="Full name"
-                class="w-full px-4 py-3 rounded-lg bg-white border border-[#e5e7eb] text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[var(--functional-success)] focus:border-[var(--functional-success)] transition"
-                required
-              />
-            </div>
+        <form name="contact" data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="contact">
+          <p class="hidden"><input name="bot-field"></p>
 
-            <div>
-              <label class="block text-[0.68rem] font-semibold tracking-[0.22em] uppercase text-[#6b7280] mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                placeholder="name@gmail.com"
-                class="w-full px-4 py-3 rounded-lg bg-white border border-[#e5e7eb] text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[var(--functional-success)] focus:border-[var(--functional-success)] transition"
-                required
-              />
-            </div>
+          <div class="mb-6">
+            <label class="block text-xs font-semibold text-gray-700 mb-2">
+              FULL NAME
+            </label>
+            <input
+              type="text"
+              name="name"
+              placeholder="Full name"
+              class="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:border-[var(--functional-success)]"
+              required
+            />
+          </div>
 
-            <div>
-              <label class="block text-[0.68rem] font-semibold tracking-[0.22em] uppercase text-[#6b7280] mb-2">
-                Message
-              </label>
-              <textarea
-                name="message"
-                rows="6"
-                placeholder="Write your message"
-                class="w-full px-4 py-3 rounded-lg bg-white border border-[#e5e7eb] text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[var(--functional-success)] focus:border-[var(--functional-success)] transition resize-none"
-                required
-              ></textarea>
-            </div>
+          <div class="mb-6">
+            <label class="block text-xs font-semibold text-gray-700 mb-2">
+              EMAIL
+            </label>
+            <input
+              type="email"
+              name="email"
+              placeholder="name@email.com"
+              class="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:border-[var(--functional-success)]"
+              required
+            />
+          </div>
 
-            <button
-              type="submit"
-              class="w-full py-4 rounded-lg font-semibold tracking-[0.22em] uppercase text-[0.8rem] shadow-lg transition hover:scale-[1.01]"
-              style="background-color: var(--functional-success); color: var(--bg-default);"
-              onmouseover="this.style.filter='brightness(1.05)'"
-              onmouseout="this.style.filter='brightness(1)'"
+          <div class="mb-8">
+            <label class="block text-xs font-semibold text-gray-700 mb-2">
+              MESSAGE
+            </label>
+            <textarea
+              name="message"
+              rows="6"
+              placeholder="Write your message"
+              class="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:border-[var(--functional-success)]"
+              required
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full py-4 rounded-lg font-semibold text-primary-bg transition hover:opacity-90"
+            style="background-color: var(--functional-success);"
+          >
+            SEND MESSAGE
+          </button>
+        </form>
+      </div>
+
+      <!-- RIGHT: CONTACT INFO + MAP (UNCHANGED LAYOUT) -->
+      <div class="bg-secondary-bg border border-gray-700 rounded-2xl p-8 space-y-6">
+
+        <h4 class="text-xs font-mono uppercase tracking-wider text-text-secondary border-b border-gray-600 pb-3">
+          Christian Aguirre — Contact Info
+        </h4>
+
+        <div class="text-sm space-y-4 text-text-secondary">
+
+          <div>
+            <p class="text-xs uppercase tracking-wider text-text-secondary mb-1">
+              Location
+            </p>
+            <p class="text-white">
+              Fairfax, Virginia, United States
+            </p>
+          </div>
+
+          <div>
+            <p class="text-xs uppercase tracking-wider text-text-secondary mb-1">
+              Email
+            </p>
+            <p class="text-white">
+              cj.aguirr3@gmail.com
+            </p>
+          </div>
+
+          <div>
+            <p class="text-xs uppercase tracking-wider text-text-secondary mb-1">
+              LinkedIn
+            </p>
+            <a
+              href="https://www.linkedin.com/in/christianaguirre/"
+              target="_blank"
+              class="text-white hover:text-accent-action transition"
             >
-              Send message
-            </button>
-          </form>
+              linkedin.com/in/christianaguirre
+            </a>
+          </div>
+
+          <div>
+            <p class="text-xs uppercase tracking-wider text-text-secondary mb-1">
+              GitHub
+            </p>
+            <a
+              href="https://github.com/cjaguirre"
+              target="_blank"
+              class="text-white hover:text-accent-action transition"
+            >
+              github.com/cjaguirre
+            </a>
+          </div>
+
         </div>
-      </div>
 
-      <!-- RIGHT PANEL -->
-      <div class="rounded-2xl bg-secondary-bg border border-gray-700 overflow-hidden">
-        <div class="p-8">
-          <div class="flex items-center justify-between">
-            <h4 class="text-xs font-semibold tracking-[0.35em] uppercase text-white/90">
-              Christian Aguirre   Contact info
-            </h4>
-          </div>
-
-          <div class="h-px bg-white/10 my-5"></div>
-
-          <div class="space-y-5 text-sm">
-            <div>
-              <p class="text-[0.62rem] font-semibold tracking-[0.35em] uppercase text-white/50 mb-2">Location</p>
-              <p class="text-white/90">Fairfax, Virginia, United States</p>
-            </div>
-
-            <div>
-              <p class="text-[0.62rem] font-semibold tracking-[0.35em] uppercase text-white/50 mb-2">Email</p>
-              <p class="text-white/90">cj.aguirr3@gmail.com</p>
-            </div>
-
-            <div>
-              <p class="text-[0.62rem] font-semibold tracking-[0.35em] uppercase text-white/50 mb-2">LinkedIn</p>
-              <a
-                href="https://www.linkedin.com/in/christianaguirre/"
-                target="_blank"
-                class="text-white/90 hover:text-[var(--functional-action)] transition"
-              >
-                linkedin.com/in/christianaguirre
-              </a>
-            </div>
-
-            <div>
-              <p class="text-[0.62rem] font-semibold tracking-[0.35em] uppercase text-white/50 mb-2">GitHub</p>
-              <a
-                href="https://github.com/cjaguirre"
-                target="_blank"
-                class="text-white/90 hover:text-[var(--functional-action)] transition"
-              >
-                github.com/cjaguirre
-              </a>
-            </div>
-          </div>
-
-          <div class="mt-7 rounded-xl overflow-hidden border border-white/10 bg-black/20">
-            <iframe
-              title="Map reference for Fairfax, Virginia"
-              width="100%"
-              height="260"
-              frameborder="0"
-              scrolling="no"
-              marginheight="0"
-              marginwidth="0"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=-77.3887%2C38.8189%2C-77.1950%2C38.9147&amp;layer=mapnik&amp;marker=38.8462%2C-77.3064"
-              style="display:block"
-            ></iframe>
-          </div>
-
-          <p class="mt-3 text-[0.7rem] text-white/50 text-center">
-            Map reference for Fairfax, Virginia
-          </p>
+        <!-- MAP (PRESERVED) -->
+        <div class="rounded-lg overflow-hidden border border-gray-700">
+          <iframe
+            src="https://www.openstreetmap.org/export/embed.html?bbox=-77.35%2C38.80%2C-77.25%2C38.88&layer=mapnik&marker=38.8462%2C-77.3064"
+            class="w-full h-56"
+            loading="lazy"
+          ></iframe>
         </div>
-      </div>
 
+        <p class="text-xs text-text-secondary text-center">
+          Map reference for Fairfax, Virginia
+        </p>
+
+      </div>
     </div>
   </div>
 </section>
+
 
 
 
