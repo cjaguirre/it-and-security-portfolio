@@ -609,162 +609,150 @@ Coursera & Google
 <section id="contact" class="pt-32 pb-24">
   <div class="max-w-6xl mx-auto px-6 lg:px-8">
 
+    <!-- Title -->
     <h2 class="text-3xl font-mono text-accent-structural mb-12">
       06. Contact
     </h2>
 
-    <div class="grid lg:grid-cols-2 gap-16 items-start">
+    <div class="grid lg:grid-cols-2 gap-20 items-start">
 
       <!-- LEFT PANEL -->
-      <div class="bg-white rounded-2xl p-10 shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
-        <h3 class="text-4xl font-extrabold text-gray-900 mb-3">
-          Let’s connect
-        </h3>
+      <div class="bg-white rounded-2xl shadow-xl border border-white/10 overflow-hidden">
+        <div class="p-10">
+          <h3 class="text-4xl font-bold mb-4 text-[#111827]">
+            Let’s connect
+          </h3>
 
-        <p class="text-gray-600 leading-relaxed text-[1.05rem] max-w-[95%] mb-8">
-          For roles in security operations, IT systems analysis, or data analytics, feel free to reach out.
-          I am happy to discuss opportunities, projects, or lab work and investigations.
-        </p>
+          <p class="text-[#4b5563] leading-relaxed text-[1.05rem] max-w-[95%] mb-10">
+            For roles in security operations, IT systems analysis, or data analytics, feel free to reach out.
+            I am happy to discuss opportunities, projects, or lab work and investigations.
+          </p>
 
-        <form name="contact" data-netlify="true" netlify-honeypot="bot-field" class="space-y-5">
-          <input type="hidden" name="form-name" value="contact" />
-          <p class="hidden"><input name="bot-field" /></p>
+          <form name="contact" data-netlify="true" netlify-honeypot="bot-field" class="space-y-6">
+            <input type="hidden" name="form-name" value="contact" />
+            <p class="hidden"><input name="bot-field" /></p>
 
-          <div>
-            <p class="text-[0.7rem] tracking-[0.22em] font-semibold text-gray-500 uppercase mb-2">
-              Full name
-            </p>
-            <input
-              type="text"
-              name="name"
-              placeholder="Full name"
-              class="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--functional-success)] focus:border-transparent"
-              required
-            />
-          </div>
+            <div>
+              <label class="block text-[0.68rem] font-semibold tracking-[0.22em] uppercase text-[#6b7280] mb-2">
+                Full name
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Full name"
+                class="w-full px-4 py-3 rounded-lg bg-white border border-[#e5e7eb] text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[var(--functional-success)] focus:border-[var(--functional-success)] transition"
+                required
+              />
+            </div>
 
-          <div>
-            <p class="text-[0.7rem] tracking-[0.22em] font-semibold text-gray-500 uppercase mb-2">
-              Email
-            </p>
-            <input
-              type="email"
-              name="email"
-              placeholder="name@email.com"
-              class="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--functional-success)] focus:border-transparent"
-              required
-            />
-          </div>
+            <div>
+              <label class="block text-[0.68rem] font-semibold tracking-[0.22em] uppercase text-[#6b7280] mb-2">
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="name@gmail.com"
+                class="w-full px-4 py-3 rounded-lg bg-white border border-[#e5e7eb] text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[var(--functional-success)] focus:border-[var(--functional-success)] transition"
+                required
+              />
+            </div>
 
-          <div>
-            <p class="text-[0.7rem] tracking-[0.22em] font-semibold text-gray-500 uppercase mb-2">
-              Message
-            </p>
-            <textarea
-              name="message"
-              rows="6"
-              placeholder="Write your message"
-              class="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--functional-success)] focus:border-transparent"
-              required
-            ></textarea>
-          </div>
+            <div>
+              <label class="block text-[0.68rem] font-semibold tracking-[0.22em] uppercase text-[#6b7280] mb-2">
+                Message
+              </label>
+              <textarea
+                name="message"
+                rows="6"
+                placeholder="Write your message"
+                class="w-full px-4 py-3 rounded-lg bg-white border border-[#e5e7eb] text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[var(--functional-success)] focus:border-[var(--functional-success)] transition resize-none"
+                required
+              ></textarea>
+            </div>
 
-          <button
-            type="submit"
-            class="w-full rounded-lg py-4 text-sm font-bold tracking-[0.14em] uppercase text-[var(--bg-default)] shadow-lg transition hover:scale-[1.01]"
-            style="background-color: var(--functional-success);"
-          >
-            Send message
-          </button>
-        </form>
+            <button
+              type="submit"
+              class="w-full py-4 rounded-lg font-semibold tracking-[0.22em] uppercase text-[0.8rem] shadow-lg transition hover:scale-[1.01]"
+              style="background-color: var(--functional-success); color: var(--bg-default);"
+              onmouseover="this.style.filter='brightness(1.05)'"
+              onmouseout="this.style.filter='brightness(1)'"
+            >
+              Send message
+            </button>
+          </form>
+        </div>
       </div>
 
       <!-- RIGHT PANEL -->
-      <aside class="bg-secondary-bg border border-gray-700 rounded-2xl p-8">
-        <div class="flex items-center justify-between gap-4 mb-3">
-          <h3 class="text-sm font-bold text-text-base tracking-[0.18em] uppercase">
-            Christian Aguirre — Contact Info
-          </h3>
-        </div>
-
-        <div class="h-px bg-gray-700/70 mb-6"></div>
-
-        <div class="space-y-5 text-sm">
-          <div>
-            <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary font-mono mb-2">
-              Location
-            </p>
-            <p class="text-text-base leading-relaxed">
-              Fairfax, Virginia, United States
-            </p>
+      <div class="rounded-2xl bg-secondary-bg border border-gray-700 overflow-hidden">
+        <div class="p-8">
+          <div class="flex items-center justify-between">
+            <h4 class="text-xs font-semibold tracking-[0.35em] uppercase text-white/90">
+              Christian Aguirre   Contact info
+            </h4>
           </div>
 
-          <div>
-            <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary font-mono mb-2">
-              Email
-            </p>
-            <a
-              href="mailto:cj.aguirr3@gmail.com"
-              class="text-text-base hover:text-accent-action transition"
-            >
-              cj.aguirr3@gmail.com
-            </a>
+          <div class="h-px bg-white/10 my-5"></div>
+
+          <div class="space-y-5 text-sm">
+            <div>
+              <p class="text-[0.62rem] font-semibold tracking-[0.35em] uppercase text-white/50 mb-2">Location</p>
+              <p class="text-white/90">Fairfax, Virginia, United States</p>
+            </div>
+
+            <div>
+              <p class="text-[0.62rem] font-semibold tracking-[0.35em] uppercase text-white/50 mb-2">Email</p>
+              <p class="text-white/90">cj.aguirr3@gmail.com</p>
+            </div>
+
+            <div>
+              <p class="text-[0.62rem] font-semibold tracking-[0.35em] uppercase text-white/50 mb-2">LinkedIn</p>
+              <a
+                href="https://www.linkedin.com/in/christianaguirre/"
+                target="_blank"
+                class="text-white/90 hover:text-[var(--functional-action)] transition"
+              >
+                linkedin.com/in/christianaguirre
+              </a>
+            </div>
+
+            <div>
+              <p class="text-[0.62rem] font-semibold tracking-[0.35em] uppercase text-white/50 mb-2">GitHub</p>
+              <a
+                href="https://github.com/cjaguirre"
+                target="_blank"
+                class="text-white/90 hover:text-[var(--functional-action)] transition"
+              >
+                github.com/cjaguirre
+              </a>
+            </div>
           </div>
 
-          <div>
-            <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary font-mono mb-2">
-              LinkedIn
-            </p>
-            <a
-              href="https://www.linkedin.com/in/christianaguirre/"
-              target="_blank"
-              class="text-text-base hover:text-accent-action transition"
-              rel="noreferrer"
-            >
-              linkedin.com/in/christianaguirre
-            </a>
-          </div>
-
-          <div>
-            <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary font-mono mb-2">
-              GitHub
-            </p>
-            <a
-              href="https://github.com/cjaguirre"
-              target="_blank"
-              class="text-text-base hover:text-accent-action transition"
-              rel="noreferrer"
-            >
-              github.com/cjaguirre
-            </a>
-          </div>
-        </div>
-
-        <!-- MAP -->
-        <div class="mt-7">
-          <div class="rounded-xl overflow-hidden border border-gray-700 bg-[var(--bg-default)]">
+          <div class="mt-7 rounded-xl overflow-hidden border border-white/10 bg-black/20">
             <iframe
-              title="Map reference for Fairfax, VA"
-              class="w-full"
+              title="Map reference for Fairfax, Virginia"
+              width="100%"
               height="260"
               frameborder="0"
               scrolling="no"
               marginheight="0"
               marginwidth="0"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=-77.3567%2C38.8214%2C-77.2403%2C38.8897&amp;layer=mapnik&amp;marker=38.8462%2C-77.3064"
-              style="border:0"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=-77.3887%2C38.8189%2C-77.1950%2C38.9147&amp;layer=mapnik&amp;marker=38.8462%2C-77.3064"
+              style="display:block"
             ></iframe>
           </div>
 
-          <p class="mt-3 text-[0.7rem] text-text-secondary text-center">
+          <p class="mt-3 text-[0.7rem] text-white/50 text-center">
             Map reference for Fairfax, Virginia
           </p>
         </div>
-      </aside>
+      </div>
 
     </div>
   </div>
 </section>
+
 
   
 <footer class="bg-primary-bg text-gray-500 text-center py-4 text-sm border-t border-gray-800 transition-colors duration-500">
