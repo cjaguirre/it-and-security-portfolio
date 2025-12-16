@@ -609,102 +609,106 @@ Coursera & Google
 <section id="contact" class="pt-32 pb-24 bg-primary-bg">
   <div class="max-w-7xl mx-auto px-6 lg:px-8">
 
+    <!-- SECTION HEADER -->
     <h2 class="text-3xl font-mono text-accent-structural mb-12">
       06. Contact
     </h2>
 
-    <!-- SINGLE OUTER CONTAINER -->
+    <!-- OUTER CONTAINER -->
     <div class="bg-secondary-bg border border-gray-700 rounded-3xl p-10">
 
       <div class="grid lg:grid-cols-2 gap-14 items-start">
 
         <!-- LEFT: FORM -->
-        <div class="bg-white rounded-2xl p-10 shadow-xl">
+        <div class="rounded-2xl border border-gray-700 bg-primary-bg p-10">
 
-          <h3 class="text-3xl font-bold text-gray-900 mb-4">
+          <h3 class="text-2xl font-mono text-white mb-3">
             Let’s connect
           </h3>
 
-          <p class="text-gray-600 mb-8 leading-relaxed">
-            For roles in security operations, IT systems analysis, or data analytics,
-            feel free to reach out. I’m happy to discuss opportunities, projects,
-            or lab work and investigations.
+          <p class="text-text-secondary mb-10 leading-relaxed max-w-md">
+            For roles in security operations, IT systems analysis, or data analytics.
+            I’m happy to discuss opportunities, projects, or hands on lab work.
           </p>
 
           <form name="contact" data-netlify="true" netlify-honeypot="bot-field">
             <input type="hidden" name="form-name" value="contact">
             <p class="hidden"><input name="bot-field"></p>
 
+            <!-- NAME -->
             <div class="mb-6">
-              <label class="block text-xs font-semibold text-gray-700 mb-2">
-                FULL NAME
+              <label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
+                Full Name
               </label>
               <input
                 type="text"
                 name="name"
-                placeholder="Full name"
-                class="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:border-[var(--functional-success)]"
+                placeholder="Your name"
+                class="w-full p-4 rounded-lg bg-secondary-bg border border-gray-700 text-white placeholder-text-secondary focus:outline-none focus:border-accent-action"
                 required
               />
             </div>
 
+            <!-- EMAIL -->
             <div class="mb-6">
-              <label class="block text-xs font-semibold text-gray-700 mb-2">
-                EMAIL
+              <label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
+                Email
               </label>
               <input
                 type="email"
                 name="email"
                 placeholder="name@email.com"
-                class="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:border-[var(--functional-success)]"
+                class="w-full p-4 rounded-lg bg-secondary-bg border border-gray-700 text-white placeholder-text-secondary focus:outline-none focus:border-accent-action"
                 required
               />
             </div>
 
+            <!-- MESSAGE -->
             <div class="mb-8">
-              <label class="block text-xs font-semibold text-gray-700 mb-2">
-                MESSAGE
+              <label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
+                Message
               </label>
               <textarea
                 name="message"
                 rows="6"
                 placeholder="Write your message"
-                class="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:border-[var(--functional-success)]"
+                class="w-full p-4 rounded-lg bg-secondary-bg border border-gray-700 text-white placeholder-text-secondary focus:outline-none focus:border-accent-action resize-none"
                 required
               ></textarea>
             </div>
 
+            <!-- SUBMIT -->
             <button
               type="submit"
-              class="w-full py-4 rounded-lg font-semibold text-primary-bg transition hover:opacity-90"
-              style="background-color: var(--functional-success);"
+              class="w-full py-4 rounded-lg font-mono uppercase tracking-wider text-primary-bg transition hover:opacity-90"
+              style="background-color: var(--accent-action);"
             >
-              SEND MESSAGE
+              Send Message
             </button>
           </form>
         </div>
 
-        <!-- RIGHT: INFO + MAP -->
-        <div class="rounded-2xl bg-[var(--bg-secondary)] border border-gray-600 p-8 space-y-6">
+        <!-- RIGHT: INFO -->
+        <div class="rounded-2xl border border-gray-700 bg-primary-bg p-8 space-y-8">
 
-          <h4 class="text-xs font-mono uppercase tracking-wider text-text-secondary border-b border-gray-600 pb-3">
-            Christian Aguirre — Contact Info
+          <h4 class="text-xs font-mono uppercase tracking-wider text-text-secondary border-b border-gray-700 pb-3">
+            Contact Information
           </h4>
 
-          <div class="text-sm space-y-4 text-text-secondary">
+          <div class="space-y-5 text-sm">
 
             <div>
-              <p class="text-xs uppercase tracking-wider mb-1">Location</p>
+              <p class="text-xs uppercase tracking-wider text-text-secondary mb-1">Location</p>
               <p class="text-white">Fairfax, Virginia, United States</p>
             </div>
 
             <div>
-              <p class="text-xs uppercase tracking-wider mb-1">Email</p>
+              <p class="text-xs uppercase tracking-wider text-text-secondary mb-1">Email</p>
               <p class="text-white">cj.aguirr3@gmail.com</p>
             </div>
 
             <div>
-              <p class="text-xs uppercase tracking-wider mb-1">LinkedIn</p>
+              <p class="text-xs uppercase tracking-wider text-text-secondary mb-1">LinkedIn</p>
               <a
                 href="https://www.linkedin.com/in/christianaguirre/"
                 target="_blank"
@@ -715,7 +719,7 @@ Coursera & Google
             </div>
 
             <div>
-              <p class="text-xs uppercase tracking-wider mb-1">GitHub</p>
+              <p class="text-xs uppercase tracking-wider text-text-secondary mb-1">GitHub</p>
               <a
                 href="https://github.com/cjaguirre"
                 target="_blank"
@@ -724,10 +728,11 @@ Coursera & Google
                 github.com/cjaguirre
               </a>
             </div>
+
           </div>
 
           <!-- MAP -->
-          <div class="rounded-lg overflow-hidden border border-gray-600">
+          <div class="rounded-lg overflow-hidden border border-gray-700">
             <iframe
               src="https://www.openstreetmap.org/export/embed.html?bbox=-77.35%2C38.80%2C-77.25%2C38.88&layer=mapnik&marker=38.8462%2C-77.3064"
               class="w-full h-56"
@@ -744,9 +749,6 @@ Coursera & Google
     </div>
   </div>
 </section>
-
-
-
 
   
 <footer class="bg-primary-bg text-gray-500 text-center py-4 text-sm border-t border-gray-800 transition-colors duration-500">
