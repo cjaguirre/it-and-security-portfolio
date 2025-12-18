@@ -513,167 +513,144 @@ Fairfax, Virginia
 </div>
 </div>
 </section>
-<section id=education class="relative hero-grid-bg pt-20 pb-24 border-t border-gray-700 transition-colors duration-500">
-<div class="max-w-5xl mx-auto px-6">
-<div class="section-title-wrapper mb-12">
-<h2>05. Education</h2>
-<span></span>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-<div class="bg-[var(--bg-secondary)] p-6 rounded-xl border border-gray-800 hover:border-[var(--accent-primary)] transition">
-<div class="flex items-center gap-3 mb-3">
-<div class="text-[var(--accent-primary)] text-3xl">🎓</div>
-<h3 class="text-xl font-semibold">Bachelor of Science, Management Information Systems</h3>
-</div>
-<p class="text-[var(--accent-primary)] mb-2">
-George Mason University
-</p>
-<p class="text-sm text-[var(--text-secondary)] mb-3">
-Completed Fall 2023
-</p>
-<p class="text-[var(--text-secondary)] leading-relaxed mb-3">
-Key coursework emphasized cybersecurity fundamentals, cloud infrastructure, database management,
-and decision analytics.
-</p>
-<ul class="list-disc list-inside text-[var(--text-secondary)] space-y-1 text-sm">
-<li>IT 357 – Networks and Security</li>
-<li>IT 353 – Cloud Computing Infrastructure</li>
-<li>IT 214 – Database Management Systems</li>
-<li>IT 304 – Advanced SQL & Data Structures</li>
-<li>OM 301 – Management Science & Analytics</li>
-</ul>
-</div>
-<div class="bg-[var(--bg-secondary)] p-6 rounded-xl border border-gray-800 hover:border-[var(--accent-primary)] transition">
-<div class="flex items-center gap-3 mb-3">
-<div class="text-[var(--accent-primary)] text-3xl">🎓</div>
-<h3 class="text-xl font-semibold">Associate of Science, Business Administration</h3>
-</div>
-<p class="text-[var(--accent-primary)] mb-2">
-Northern Virginia Community College
-</p>
-<p class="text-sm text-[var(--text-secondary)] mb-3">
-Completed Spring 2021 · Cum Laude
-</p>
-<p class="text-[var(--text-secondary)] leading-relaxed mb-3">
-Coursework strengthened foundational analytical skills, quantitative reasoning, and business
-communication essential for IT and security operations.
-</p>
-<ul class="list-disc list-inside text-[var(--text-secondary)] space-y-1 text-sm">
-<li>MTH 240 – Statistics</li>
-<li>ACC 211/212 – Principles of Accounting I & II</li>
-<li>ECO 201 – Principles of Microeconomics</li>
-<li>BUS 200 – Interpersonal Business Communication</li>
-<li>ITE 115 – Intro to Computer Applications & Concepts</li>
-</ul>
-</div>
-</div>
-<h3 class="text-2xl font-semibold text-[var(--text-base)] mb-6">
-Licenses & Certifications
-</h3>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-<div class="bg-[var(--bg-secondary)] p-6 rounded-xl border border-gray-800 hover:border-[var(--accent-primary)] transition">
-<h4 class="text-lg font-semibold mb-1" style=color:var(--accent-red)>CompTIA Security+ ce</h4>
-<p class="text-sm text-[var(--text-secondary)] mb-2">Issued November 2025</p>
-<p class="text-xs text-[var(--text-secondary)]">
-Credential ID: 9abb1113 0a29 44ed bb61 6a859edb1369
-</p>
-</div>
-<div class="bg-[var(--bg-secondary)] p-6 rounded-xl border border-gray-800 hover:border-[var(--accent-primary)] transition">
-<h4 class="text-lg font-semibold mb-1" style=color:var(--functional-success)>Google Advanced Data Analytics</h4>
-<p class="text-sm text-[var(--text-secondary)] mb-2">Issued September 2025</p>
-<p class="text-xs text-[var(--text-secondary)]">
-Credential ID: GLMK7O7YEGR0
-</p>
-</div>
-<div class="bg-[var(--bg-secondary)] p-6 rounded-xl border border-gray-800 hover:border-[var(--accent-primary)] transition">
-<h4 class="text-lg font-semibold mb-1" style=color:var(--functional-success)>Google Data Analytics Professional Certificate</h4>
-<p class="text-sm text-[var(--text-secondary)] mb-2">Issued 2024</p>
-<p class="text-xs text-[var(--text-secondary)]">
-Coursera & Google
-</p>
-</div>
-</div>
+<section id="contact" class="relative py-20 border-t border-gray-700">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Section Title -->
+    <div class="mb-12">
+      <h2 class="font-mono text-3xl text-accent-structural">06. Contact</h2>
+    </div>
+
+    <!-- Card -->
+    <div class="bg-secondary-bg border border-gray-700 rounded-3xl p-10">
+      <div class="grid lg:grid-cols-2 gap-14 items-start">
+
+        <!-- LEFT FORM -->
+        <div class="rounded-2xl border border-gray-700 bg-primary-bg p-10">
+          <h3 class="text-2xl font-mono text-white mb-3">Let’s connect</h3>
+
+          <p class="text-text-secondary mb-10 leading-relaxed max-w-md">
+            For roles in security operations, IT systems analysis, or data analytics.
+            I’m happy to discuss opportunities, projects, or hands on lab work.
+          </p>
+
+          <form
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            class="space-y-6"
+          >
+            <input type="hidden" name="form-name" value="contact" />
+            <input type="hidden" name="bot-field" />
+
+            <div>
+              <label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
+                Full Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Your name"
+                required
+                class="w-full p-4 rounded-lg bg-secondary-bg border border-gray-700 text-white focus:outline-none focus:border-accent-action"
+              />
+            </div>
+
+            <div>
+              <label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="name@email.com"
+                required
+                class="w-full p-4 rounded-lg bg-secondary-bg border border-gray-700 text-white focus:outline-none focus:border-accent-action"
+              />
+            </div>
+
+            <div>
+              <label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
+                Message
+              </label>
+              <textarea
+                name="message"
+                rows="6"
+                placeholder="Write your message"
+                required
+                class="w-full p-4 rounded-lg bg-secondary-bg border border-gray-700 text-white resize-none focus:outline-none focus:border-accent-action"
+              ></textarea>
+            </div>
+
+            <!-- EXPLICIT BUTTON -->
+            <button
+              type="submit"
+              class="w-full py-4 rounded-lg font-mono uppercase tracking-wider text-black bg-accent-action hover:opacity-90 transition"
+            >
+              Send Message
+            </button>
+          </form>
+        </div>
+
+        <!-- RIGHT INFO -->
+        <div class="rounded-2xl border border-gray-700 bg-primary-bg p-8 space-y-8">
+          <h4 class="text-xs font-mono uppercase tracking-wider text-text-secondary border-b border-gray-700 pb-3">
+            Contact Information
+          </h4>
+
+          <div class="space-y-5 text-sm">
+            <div>
+              <p class="text-xs uppercase tracking-wider text-text-secondary mb-1">Location</p>
+              <p class="text-white">Fairfax, Virginia, United States</p>
+            </div>
+
+            <div>
+              <p class="text-xs uppercase tracking-wider text-text-secondary mb-1">Email</p>
+              <p class="text-white">cj.aguirr3@gmail.com</p>
+            </div>
+
+            <div>
+              <p class="text-xs uppercase tracking-wider text-text-secondary mb-1">LinkedIn</p>
+              <a
+                href="https://www.linkedin.com/in/christianaguirre/"
+                target="_blank"
+                class="text-white hover:text-accent-action transition"
+              >
+                linkedin.com/in/christianaguirre
+              </a>
+            </div>
+
+            <div>
+              <p class="text-xs uppercase tracking-wider text-text-secondary mb-1">GitHub</p>
+              <a
+                href="https://github.com/cjaguirre"
+                target="_blank"
+                class="text-white hover:text-accent-action transition"
+              >
+                github.com/cjaguirre
+              </a>
+            </div>
+          </div>
+
+          <div class="rounded-lg overflow-hidden border border-gray-700">
+            <iframe
+              src="https://www.openstreetmap.org/export/embed.html?bbox=-77.35%2C38.80%2C-77.25%2C38.88&layer=mapnik&marker=38.8462%2C-77.3064"
+              class="w-full h-56"
+              loading="lazy"
+            ></iframe>
+          </div>
+
+          <p class="text-xs text-text-secondary text-center">
+            Map reference for Fairfax, Virginia
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
 </section>
-<section id=contact class="relative hero-grid-bg py-20 border-t border-gray-700 transition-colors duration-500"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="section-title-wrapper mx-auto mb-12">
-<h2 class="font-mono text-accent-structural text-3xl">
-06. Contact
-</h2>
-<span></span>
-</div>
-<div class="bg-secondary-bg border border-gray-700 rounded-3xl p-10">
-<div class="grid lg:grid-cols-2 gap-14 items-start">
-<div class="rounded-2xl border border-gray-700 bg-primary-bg p-10">
-<h3 class="text-2xl font-mono text-white mb-3">
-Let’s connect
-</h3>
-<p class="text-text-secondary mb-10 leading-relaxed max-w-md">
-For roles in security operations, IT systems analysis, or data analytics.
-I’m happy to discuss opportunities, projects, or hands on lab work.
-</p>
-<form name=contact data-netlify=true netlify-honeypot=bot-field>
-<input type=hidden name=form-name value=contact>
-<p class=hidden><input name=bot-field></p>
-<div class=mb-6>
-<label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
-Full Name
-</label>
-<input type=text name=name placeholder="Your name" class="w-full p-4 rounded-lg bg-secondary-bg border border-gray-700 text-white placeholder-text-secondary focus:outline-none focus:border-accent-action" required />
-</div>
-<div class=mb-6>
-<label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
-Email
-</label>
-<input type=email name=email placeholder=name@email.com class="w-full p-4 rounded-lg bg-secondary-bg border border-gray-700 text-white placeholder-text-secondary focus:outline-none focus:border-accent-action" required />
-</div>
-<div class=mb-8>
-<label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
-Message
-</label>
-<textarea name=message rows=6 placeholder="Write your message" class="w-full p-4 rounded-lg bg-secondary-bg border border-gray-700 text-white placeholder-text-secondary focus:outline-none focus:border-accent-action resize-none" required></textarea>
-</div>
-<button type=submit class="w-full py-4 rounded-lg font-mono uppercase tracking-wider text-primary-bg transition hover:opacity-90 hover:shadow-[0_0_0_1px_var(--accent-action)]" style=background-color:var(--accent-action)>
-Send Message
-</button>
-</form>
-</div>
-<div class="rounded-2xl border border-gray-700 bg-primary-bg p-8 space-y-8">
-<h4 class="text-xs font-mono uppercase tracking-wider text-text-secondary border-b border-gray-700 pb-3">
-Contact Information
-</h4>
-<div class="space-y-5 text-sm">
-<div>
-<p class="text-xs uppercase tracking-wider text-text-secondary mb-1">Location</p>
-<p class=text-white>Fairfax, Virginia, United States</p>
-</div>
-<div>
-<p class="text-xs uppercase tracking-wider text-text-secondary mb-1">Email</p>
-<p class=text-white>cj.aguirr3@gmail.com</p>
-</div>
-<div>
-<p class="text-xs uppercase tracking-wider text-text-secondary mb-1">LinkedIn</p>
-<a href=https://www.linkedin.com/in/christianaguirre/ target=_blank class="text-white hover:text-accent-action transition">
-linkedin.com/in/christianaguirre
-</a>
-</div>
-<div>
-<p class="text-xs uppercase tracking-wider text-text-secondary mb-1">GitHub</p>
-<a href=https://github.com/cjaguirre target=_blank class="text-white hover:text-accent-action transition">
-github.com/cjaguirre
-</a>
-</div>
-</div>
-<div class="rounded-lg overflow-hidden border border-gray-700 opacity-90">
-<iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-77.35%2C38.80%2C-77.25%2C38.88&layer=mapnik&marker=38.8462%2C-77.3064" class="w-full h-56" loading=lazy></iframe>
-</div>
-<p class="text-xs text-text-secondary text-center">
-Map reference for Fairfax, Virginia
-</p>
-</div>
-</div>
-</div>
-</div>
-</section>
+
 <footer class="bg-primary-bg text-gray-500 text-center py-4 text-sm border-t border-gray-800 transition-colors duration-500">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-2">
 <div class=text-left>
