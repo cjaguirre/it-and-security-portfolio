@@ -1,182 +1,437 @@
 <!DOCTYPE html>
-<html lang=en class=dark>
+<html lang="en" class="dark">
+
 <head>
-<meta charset=UTF-8>
-<meta name=viewport content="width=device-width, initial-scale=1.0">
-<title>Enterprise Entra IAM Lab | Christian Aguirre</title>
-<script src=https://cdn.tailwindcss.com></script>
-<script>function switchTab(id){document.querySelectorAll(".tab").forEach(t=>t.classList.add("hidden"));document.getElementById(id).classList.remove("hidden");}</script>
-<style>body{font-family:Inter,sans-serif;background:#111827;color:#e5e7eb}.card{background:#1f2937;border:1px solid #374151;border-radius:12px;padding:24px}h1,h2,h3{font-weight:700}.tab-btn{padding:10px 16px;border-bottom:2px solid transparent;cursor:pointer}.tab-btn:hover{color:#60a5fa}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Enterprise IAM Simulation — Microsoft Entra ID | Christian Aguirre</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+function switchTab(tab){
+document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+document.querySelectorAll(".tab-panel").forEach(p=>p.classList.remove("active"));
+document.querySelector(`[data-tab='${tab}']`).classList.add("active");
+document.getElementById(tab).classList.add("active");
+}
+
+function toggleBlock(id){
+document.getElementById(id).classList.toggle("hidden");
+}
+</script>
+
+<style>
+body{
+font-family:Inter,sans-serif;
+background:#1e1e1e;
+color:#e5e7eb;
+background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);
+background-size:22px 22px;
+}
+
+.card{
+background:#30333a;
+border:1px solid #374151;
+border-radius:14px;
+padding:28px;
+}
+
+.stat{
+background:#30333a;
+border:1px solid #374151;
+border-radius:12px;
+padding:18px;
+text-align:center;
+}
+
+.stat-num{
+font-size:2.4rem;
+font-weight:800;
+font-family:monospace;
+}
+
+.tab-btn{
+padding:14px 20px;
+font-family:monospace;
+color:#9ca3af;
+border-bottom:3px solid transparent;
+cursor:pointer;
+transition:.25s;
+white-space:nowrap;
+}
+
+.tab-btn.active{
+color:#61afef;
+border-bottom-color:#61afef;
+}
+
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+.deep-btn{
+background:#1f2937;
+border:1px solid #374151;
+padding:8px 14px;
+border-radius:6px;
+font-size:12px;
+cursor:pointer;
+}
+</style>
+
 </head>
+
 <body>
-<main class="max-w-6xl mx-auto px-6 py-12 space-y-16">
-<section>
-<h1 class="text-4xl mb-4">
-Enterprise Identity & Access Management Lab — Microsoft Entra ID
+
+<main class="max-w-6xl mx-auto px-6 py-16 space-y-16">
+
+<!-- HERO -->
+
+<section class="border-b border-gray-800 pb-12">
+
+<a href="../index.html#projects"
+class="text-blue-400 hover:text-red-400 transition text-sm">
+← Back to Portfolio
+</a>
+
+<div class="flex flex-wrap gap-2 mt-6 mb-6 text-xs uppercase font-mono">
+
+<span class="px-3 py-1 border rounded">Microsoft Entra</span>
+<span class="px-3 py-1 border rounded">Enterprise IAM</span>
+<span class="px-3 py-1 border rounded">Zero Trust</span>
+<span class="px-3 py-1 border rounded">Identity Operations</span>
+<span class="px-3 py-1 border rounded">RBAC Governance</span>
+
+</div>
+
+<h1 class="text-5xl font-extrabold mb-4">
+Enterprise Identity & Access Management Simulation — Microsoft Entra ID
 </h1>
-<p class="text-gray-400 max-w-3xl">
-This project simulates a real enterprise identity environment using Microsoft Entra ID.
-The lab demonstrates identity lifecycle management, external collaboration,
-role-based access governance, helpdesk operations, authentication monitoring,
-audit investigation, and tenant security awareness in a Zero Trust cloud model.
+
+<p class="text-gray-400 max-w-3xl leading-relaxed">
+This simulation recreates how a modern enterprise identity administrator
+manages users, contractors, access governance, authentication monitoring,
+and lifecycle recovery inside Microsoft Entra ID. The workflow mirrors
+real IAM operations performed by helpdesk, identity, and security teams
+within a Zero Trust architecture.
 </p>
-<div class="mt-6 flex flex-wrap gap-2 text-xs">
-<span class="bg-blue-900 px-3 py-1 rounded">Microsoft Entra ID</span>
-<span class="bg-blue-900 px-3 py-1 rounded">IAM Simulation</span>
-<span class="bg-blue-900 px-3 py-1 rounded">Zero Trust</span>
-<span class="bg-blue-900 px-3 py-1 rounded">Helpdesk Workflow</span>
-<span class="bg-blue-900 px-3 py-1 rounded">Audit & Monitoring</span>
+
+</section>
+
+<!-- STATS -->
+
+<section class="grid md:grid-cols-5 gap-4">
+
+<div class="stat">
+<div class="stat-num text-red-400">6</div>
+Internal Users
 </div>
+
+<div class="stat">
+<div class="stat-num text-yellow-300">1</div>
+Guest Identity
+</div>
+
+<div class="stat">
+<div class="stat-num text-green-400">3</div>
+RBAC Groups
+</div>
+
+<div class="stat">
+<div class="stat-num text-blue-400">5</div>
+Helpdesk Actions
+</div>
+
+<div class="stat">
+<div class="stat-num text-purple-400">2</div>
+Audit Investigations
+</div>
+
 </section>
-<section class=card>
-<h2 class="text-2xl mb-4">Business Scenario</h2>
+
+<!-- EXECUTIVE CONTEXT -->
+
+<section class="card">
+
+<h2 class="text-2xl font-bold mb-4">
+Executive Identity Scenario
+</h2>
+
 <p class="text-gray-400 leading-relaxed">
-Acting as a Cloud Identity Administrator, I simulated managing identities
-for a mid-size organization migrating to Microsoft Entra ID.
-Responsibilities included onboarding employees, handling guest access,
-governing role-based permissions, performing account recovery,
-monitoring authentication activity, and reviewing audit trails.
-This mirrors real IAM workflows found in enterprise helpdesk,
-security, and identity administration roles.
+An organization is migrating its identity infrastructure to Microsoft Entra.
+The identity administrator must onboard staff, enable secure vendor access,
+govern permissions, investigate authentication activity,
+and maintain audit visibility — all while enforcing Zero Trust principles.
+This lab simulates that operational lifecycle.
 </p>
+
 </section>
+
+<!-- WORKFLOW TABS -->
+
 <section>
-<h2 class="text-2xl mb-6">Lab Workflow</h2>
-<div class="flex gap-4 border-b border-gray-700 mb-6 text-sm">
-<button class=tab-btn onclick="switchTab('phase1')">Environment</button>
-<button class=tab-btn onclick="switchTab('phase2')">Identity</button>
-<button class=tab-btn onclick="switchTab('phase3')">Lifecycle</button>
-<button class=tab-btn onclick="switchTab('phase4')">Collaboration</button>
-<button class=tab-btn onclick="switchTab('phase5')">Governance</button>
-<button class=tab-btn onclick="switchTab('phase6')">Helpdesk</button>
-<button class=tab-btn onclick="switchTab('phase7')">Monitoring</button>
-<button class=tab-btn onclick="switchTab('phase8')">Audit</button>
-<button class=tab-btn onclick="switchTab('phase9')">Security</button>
-<button class=tab-btn onclick="switchTab('phase10')">Architecture</button>
+
+<h2 class="text-2xl font-bold font-mono mb-6">
+Operational Workflow
+</h2>
+
+<div class="flex overflow-x-auto border-b border-gray-700">
+
+<button class="tab-btn active" data-tab="phase1"
+onclick="switchTab('phase1')">Environment</button>
+
+<button class="tab-btn" data-tab="phase2"
+onclick="switchTab('phase2')">Onboarding</button>
+
+<button class="tab-btn" data-tab="phase3"
+onclick="switchTab('phase3')">Governance</button>
+
+<button class="tab-btn" data-tab="phase4"
+onclick="switchTab('phase4')">Helpdesk</button>
+
+<button class="tab-btn" data-tab="phase5"
+onclick="switchTab('phase5')">Monitoring</button>
+
+<button class="tab-btn" data-tab="phase6"
+onclick="switchTab('phase6')">Security</button>
+
 </div>
-<div id=phase1 class="tab card">
-<h3 class="text-xl mb-3">Phase 1 — Environment Setup</h3>
-<ul class="space-y-3 text-gray-400">
-<li><b>Step 1.1:</b> Accessed Microsoft Entra Admin Center to validate tenant and identity control plane.</li>
-<li><b>Step 1.2:</b> Explored navigation surfaces including users, roles, monitoring, and security.</li>
-</ul>
-<p class="mt-4 text-sm text-gray-500">
-Demonstrates administrative awareness of enterprise IAM tooling.
+
+<!-- PHASE 1 -->
+
+<div id="phase1" class="tab-panel active mt-8 card">
+
+<h3 class="text-xl font-semibold mb-3">
+Environment Familiarization
+</h3>
+
+<p class="text-gray-400">
+Validated tenant structure, identity dashboards,
+and monitoring interfaces to understand administrative scope.
 </p>
-<p class="mt-4 text-xs italic">
-Screenshots: Entra dashboard, navigation overview
-</p>
+
+<button class="deep-btn mt-4"
+onclick="toggleBlock('deep1')">
+Deep dive
+</button>
+
+<div id="deep1" class="hidden mt-4 text-sm text-gray-500">
+
+• Entra directory inspection  
+• Identity surface mapping  
+• Admin control awareness  
+
+📸 Screenshot placeholder: tenant dashboard
+
 </div>
-<div id=phase2 class="tab hidden card">
-<h3 class="text-xl mb-3">Phase 2 — Identity Awareness</h3>
-<ul class="space-y-3 text-gray-400">
-<li>Reviewed tenant overview, directory structure, and domain metadata.</li>
-<li>Documented cloud, on-prem, and hybrid identity models.</li>
-</ul>
-<p class="mt-4 text-sm text-gray-500">
-Shows conceptual understanding of identity architecture beyond interface usage.
-</p>
+
 </div>
-<div id=phase3 class="tab hidden card">
-<h3 class="text-xl mb-3">Phase 3 — Internal Identity Lifecycle</h3>
-<ul class="space-y-3 text-gray-400">
-<li>Created six internal users representing IT, HR, and Finance roles.</li>
-<li>Applied onboarding best practices including forced password resets.</li>
-</ul>
-<p class="mt-4 text-sm text-gray-500">
-Simulates enterprise employee onboarding workflows.
+
+<!-- PHASE 2 -->
+
+<div id="phase2" class="tab-panel mt-8 card">
+
+<h3 class="text-xl font-semibold mb-3">
+User Lifecycle Onboarding
+</h3>
+
+<p class="text-gray-400">
+Simulated onboarding employees with enforced password policies
+and directory metadata assignment.
 </p>
+
+<button class="deep-btn mt-4"
+onclick="toggleBlock('deep2')">
+Deep dive
+</button>
+
+<div id="deep2" class="hidden mt-4 text-sm text-gray-500">
+
+• Department identity segmentation  
+• Password enforcement simulation  
+• Provisioning validation  
+
+📸 Screenshot placeholder: user directory
+
 </div>
-<div id=phase4 class="tab hidden card">
-<h3 class="text-xl mb-3">Phase 4 — External Collaboration</h3>
-<ul class="space-y-3 text-gray-400">
-<li>Invited a guest contractor using B2B collaboration.</li>
-<li>Modified guest metadata to simulate lifecycle enrichment.</li>
-</ul>
-<p class="mt-4 text-sm text-gray-500">
-Demonstrates vendor and contractor identity management.
+
+</div>
+
+<!-- PHASE 3 -->
+
+<div id="phase3" class="tab-panel mt-8 card">
+
+<h3 class="text-xl font-semibold mb-3">
+Access Governance & Collaboration
+</h3>
+
+<p class="text-gray-400">
+Structured RBAC groups and invited a guest contractor identity.
 </p>
+
+<button class="deep-btn mt-4"
+onclick="toggleBlock('deep3')">
+Deep dive
+</button>
+
+<div id="deep3" class="hidden mt-4 text-sm text-gray-500">
+
+• Guest lifecycle simulation  
+• Permission segmentation  
+• Role modeling  
+
+📸 Screenshot placeholder: guest identity panel
+
 </div>
-<div id=phase5 class="tab hidden card">
-<h3 class="text-xl mb-3">Phase 5 — Access Governance</h3>
-<ul class="space-y-3 text-gray-400">
-<li>Created department security groups.</li>
-<li>Mapped users to RBAC structure.</li>
-</ul>
-<p class="mt-4 text-sm text-gray-500">
-Models enterprise role-based access segmentation.
+
+</div>
+
+<!-- PHASE 4 -->
+
+<div id="phase4" class="tab-panel mt-8 card">
+
+<h3 class="text-xl font-semibold mb-3">
+Helpdesk Identity Operations
+</h3>
+
+<p class="text-gray-400">
+Executed password resets, account suspension,
+and restoration workflows.
 </p>
+
+<button class="deep-btn mt-4"
+onclick="toggleBlock('deep4')">
+Deep dive
+</button>
+
+<div id="deep4" class="hidden mt-4 text-sm text-gray-500">
+
+• Tier-1 recovery simulation  
+• Lifecycle incident handling  
+
+📸 Screenshot placeholder: reset confirmation
+
 </div>
-<div id=phase6 class="tab hidden card">
-<h3 class="text-xl mb-3">Phase 6 — Helpdesk Operations</h3>
-<ul class="space-y-3 text-gray-400">
-<li>Password reset simulation.</li>
-<li>Account disable and restore workflow.</li>
-<li>User deletion and recovery.</li>
-</ul>
-<p class="mt-4 text-sm text-gray-500">
-Replicates Tier-1 identity support scenarios.
+
+</div>
+
+<!-- PHASE 5 -->
+
+<div id="phase5" class="tab-panel mt-8 card">
+
+<h3 class="text-xl font-semibold mb-3">
+Authentication Monitoring
+</h3>
+
+<p class="text-gray-400">
+Generated login telemetry and analyzed sign-in logs.
 </p>
+
+<button class="deep-btn mt-4"
+onclick="toggleBlock('deep5')">
+Deep dive
+</button>
+
+<div id="deep5" class="hidden mt-4 text-sm text-gray-500">
+
+• Success/failure correlation  
+• Identity event tracing  
+
+📸 Screenshot placeholder: sign-in logs
+
 </div>
-<div id=phase7 class="tab hidden card">
-<h3 class="text-xl mb-3">Phase 7 — Authentication Monitoring</h3>
-<ul class="space-y-3 text-gray-400">
-<li>Generated failed and successful login activity.</li>
-<li>Reviewed sign-in telemetry.</li>
-</ul>
-<p class="mt-4 text-sm text-gray-500">
-Demonstrates authentication troubleshooting and visibility.
+
+</div>
+
+<!-- PHASE 6 -->
+
+<div id="phase6" class="tab-panel mt-8 card">
+
+<h3 class="text-xl font-semibold mb-3">
+Security Posture Awareness
+</h3>
+
+<p class="text-gray-400">
+Reviewed tenant secure score and conditional access structure.
 </p>
+
+<button class="deep-btn mt-4"
+onclick="toggleBlock('deep6')">
+Deep dive
+</button>
+
+<div id="deep6" class="hidden mt-4 text-sm text-gray-500">
+
+• Zero Trust identity posture  
+• Risk awareness mapping  
+
+📸 Screenshot placeholder: secure score dashboard
+
 </div>
-<div id=phase8 class="tab hidden card">
-<h3 class="text-xl mb-3">Phase 8 — Audit Investigation</h3>
-<ul class="space-y-3 text-gray-400">
-<li>Generated identity change events.</li>
-<li>Analyzed audit logs and correlation metadata.</li>
-</ul>
-<p class="mt-4 text-sm text-gray-500">
-Highlights enterprise traceability and forensic awareness.
-</p>
+
 </div>
-<div id=phase9 class="tab hidden card">
-<h3 class="text-xl mb-3">Phase 9 — Security Posture Review</h3>
-<ul class="space-y-3 text-gray-400">
-<li>Reviewed tenant secure score.</li>
-<li>Observed conditional access structure.</li>
-</ul>
-<p class="mt-4 text-sm text-gray-500">
-Introduces Zero Trust security awareness.
-</p>
-</div>
-<div id=phase10 class="tab hidden card">
-<h3 class="text-xl mb-3">Phase 10 — Architecture Documentation</h3>
-<p class=text-gray-400>
-Created conceptual diagram showing identity flow:
-Users → Entra → Groups → Authentication → Logs.
-</p>
-</div>
+
 </section>
-<section class=card>
-<h2 class="text-2xl mb-4">Skills Demonstrated</h2>
+
+<!-- ARCHITECTURE -->
+
+<section class="card">
+
+<h2 class="text-2xl font-bold mb-4">
+Identity Architecture Model
+</h2>
+
+<p class="text-gray-400">
+Users → Entra Directory → RBAC → Authentication → Audit telemetry.
+</p>
+
+<p class="text-xs text-gray-500 mt-4 italic">
+📸 Architecture diagram placeholder
+</p>
+
+</section>
+
+<!-- SKILLS -->
+
+<section class="card">
+
+<h2 class="text-2xl font-bold mb-4">
+Skills Demonstrated
+</h2>
+
 <div class="flex flex-wrap gap-2 text-xs">
-<span class="bg-green-900 px-3 py-1 rounded">Microsoft Entra Administration</span>
-<span class="bg-green-900 px-3 py-1 rounded">Identity Lifecycle Management</span>
-<span class="bg-green-900 px-3 py-1 rounded">RBAC Governance</span>
-<span class="bg-green-900 px-3 py-1 rounded">Helpdesk Identity Workflows</span>
-<span class="bg-green-900 px-3 py-1 rounded">Authentication Monitoring</span>
-<span class="bg-green-900 px-3 py-1 rounded">Audit Analysis</span>
-<span class="bg-green-900 px-3 py-1 rounded">Zero Trust Awareness</span>
+
+<span class="px-3 py-1 border rounded">Entra Administration</span>
+<span class="px-3 py-1 border rounded">Identity Lifecycle</span>
+<span class="px-3 py-1 border rounded">RBAC Governance</span>
+<span class="px-3 py-1 border rounded">Helpdesk Simulation</span>
+<span class="px-3 py-1 border rounded">Authentication Monitoring</span>
+<span class="px-3 py-1 border rounded">Audit Awareness</span>
+<span class="px-3 py-1 border rounded">Zero Trust Concepts</span>
+
 </div>
+
 </section>
-<section class=card>
-<h2 class="text-2xl mb-4">Summary</h2>
+
+<!-- SUMMARY -->
+
+<section class="card">
+
+<h2 class="text-2xl font-bold mb-4">
+Operational Summary
+</h2>
+
 <p class="text-gray-400 leading-relaxed">
-This lab demonstrates how modern enterprises manage identities inside Microsoft Entra ID.
-From onboarding users and contractors to troubleshooting authentication and auditing changes,
-the workflow mirrors real IAM operations handled by identity administrators,
-helpdesk teams, and cloud security professionals.
+This simulation demonstrates enterprise identity administration
+inside Microsoft Entra, replicating onboarding, governance,
+authentication monitoring, and recovery workflows performed by
+IAM professionals operating in cloud-first environments.
 </p>
+
 </section>
+
 </main>
+
 </body>
 </html>
