@@ -1,437 +1,578 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
-
+<html lang="en" data-theme="dark" class="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enterprise IAM Simulation — Microsoft Entra ID | Christian Aguirre</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-bg": "var(--bg-default)",
+                        "secondary-bg": "var(--bg-secondary)",
+                        "container-bg": "var(--container-bg)",
+                        "text-base": "var(--text-base)",
+                        "text-secondary": "var(--text-secondary)",
+                        "accent-cyan": "var(--accent-structural)",
+                        "accent-red": "var(--accent-red)",
+                        "accent-action": "var(--functional-action)",
+                        "accent-success": "var(--functional-success)",
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
 
-<title>Enterprise IAM Simulation — Microsoft Entra ID | Christian Aguirre</title>
+        .dark {
+            --bg-default: #1e1e1e;
+            --bg-secondary: #30333a;
+            --text-base: #fff;
+            --text-secondary: #abb2bf;
+            --accent-structural: #d9d9d9;
+            --functional-action: #61afef;
+            --functional-success: #98c379;
+            --accent-red: #e06c75;
+            --container-bg: #171717;
+            background-color: var(--bg-default);
+            color: var(--text-base);
+        }
 
-<script src="https://cdn.tailwindcss.com"></script>
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: var(--bg-default);
+            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.07) 1px, rgba(0, 0, 0, 0) 1px);
+            background-size: 20px 20px;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
 
-<script>
-function switchTab(tab){
-document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
-document.querySelectorAll(".tab-panel").forEach(p=>p.classList.remove("active"));
-document.querySelector(`[data-tab='${tab}']`).classList.add("active");
-document.getElementById(tab).classList.add("active");
-}
+        .pill {
+            border-radius: 999px;
+            padding: 0.2rem 0.7rem;
+            border: 1px solid rgba(171, 178, 191, 0.6);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
 
-function toggleBlock(id){
-document.getElementById(id).classList.toggle("hidden");
-}
-</script>
+        .pill-muted {
+            color: var(--text-secondary);
+            background-color: rgba(23, 23, 23, 0.95);
+        }
 
-<style>
-body{
-font-family:Inter,sans-serif;
-background:#1e1e1e;
-color:#e5e7eb;
-background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);
-background-size:22px 22px;
-}
+        .pill-accent {
+            color: var(--accent-structural);
+            background-color: rgba(23, 23, 23, 0.95);
+            border-color: rgba(217, 217, 217, 0.9);
+        }
 
-.card{
-background:#30333a;
-border:1px solid #374151;
-border-radius:14px;
-padding:28px;
-}
+        .tab-button {
+            padding: 1rem 1.5rem;
+            background: transparent;
+            border: 0;
+            color: var(--text-secondary);
+            font-family: "Inconsolata", monospace;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+        }
 
-.stat{
-background:#30333a;
-border:1px solid #374151;
-border-radius:12px;
-padding:18px;
-text-align:center;
-}
+        .tab-button:hover {
+            color: var(--functional-action);
+            background: rgba(97, 175, 239, 0.05);
+        }
 
-.stat-num{
-font-size:2.4rem;
-font-weight:800;
-font-family:monospace;
-}
+        .tab-button.active {
+            color: var(--functional-action);
+            border-bottom-color: var(--functional-action);
+        }
 
-.tab-btn{
-padding:14px 20px;
-font-family:monospace;
-color:#9ca3af;
-border-bottom:3px solid transparent;
-cursor:pointer;
-transition:.25s;
-white-space:nowrap;
-}
+        .tab-content {
+            display: none;
+            animation: fadeSlideIn 0.4s ease-out;
+        }
 
-.tab-btn.active{
-color:#61afef;
-border-bottom-color:#61afef;
-}
+        .tab-content.active {
+            display: block;
+        }
 
-.tab-panel{display:none;}
-.tab-panel.active{display:block;}
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-.deep-btn{
-background:#1f2937;
-border:1px solid #374151;
-padding:8px 14px;
-border-radius:6px;
-font-size:12px;
-cursor:pointer;
-}
-</style>
+        .stat-card {
+            position: relative;
+            overflow: hidden;
+        }
 
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            font-family: "Inconsolata", monospace;
+        }
+
+        .nav-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--text-secondary);
+            margin: 0.75rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot:hover,
+        .nav-dot.active {
+            background: var(--functional-action);
+            transform: scale(1.4);
+        }
+
+        @media (max-width: 768px) {
+            .nav-dots {
+                display: none;
+            }
+        }
+
+        .phase-container {
+            background: var(--container-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+            padding: 2.5rem;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .card-dark {
+            background: var(--container-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .deep-dive-btn {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--functional-action);
+            font-family: "Inconsolata", monospace;
+        }
+
+        .deep-dive-btn:hover {
+            background: rgba(97, 175, 239, 0.1);
+            border-color: var(--functional-action);
+        }
+
+        .deep-dive-content {
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+        }
+    </style>
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
+            document.querySelectorAll(".tab-content").forEach(p => p.classList.remove("active"));
+            document.querySelector(`[data-tab='${tab}']`).classList.add("active");
+            document.getElementById(tab).classList.add("active");
+        }
+
+        function toggleBlock(id) {
+            document.getElementById(id).classList.toggle("hidden");
+        }
+
+        function scrollToSection(id) {
+            const target = document.getElementById(id);
+            if (!target) return;
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const dots = document.querySelectorAll('.nav-dot');
+            const sections = ['hero', 'workflow', 'architecture', 'summary'];
+            dots.forEach((dot, idx) => {
+                dot.classList.toggle('active', sections[idx] === id);
+            });
+        }
+    </script>
 </head>
 
-<body>
-
-<main class="max-w-6xl mx-auto px-6 py-16 space-y-16">
-
-<!-- HERO -->
-
-<section class="border-b border-gray-800 pb-12">
-
-<a href="../index.html#projects"
-class="text-blue-400 hover:text-red-400 transition text-sm">
-← Back to Portfolio
-</a>
-
-<div class="flex flex-wrap gap-2 mt-6 mb-6 text-xs uppercase font-mono">
-
-<span class="px-3 py-1 border rounded">Microsoft Entra</span>
-<span class="px-3 py-1 border rounded">Enterprise IAM</span>
-<span class="px-3 py-1 border rounded">Zero Trust</span>
-<span class="px-3 py-1 border rounded">Identity Operations</span>
-<span class="px-3 py-1 border rounded">RBAC Governance</span>
-
-</div>
-
-<h1 class="text-5xl font-extrabold mb-4">
-Enterprise Identity & Access Management Simulation — Microsoft Entra ID
-</h1>
-
-<p class="text-gray-400 max-w-3xl leading-relaxed">
-This simulation recreates how a modern enterprise identity administrator
-manages users, contractors, access governance, authentication monitoring,
-and lifecycle recovery inside Microsoft Entra ID. The workflow mirrors
-real IAM operations performed by helpdesk, identity, and security teams
-within a Zero Trust architecture.
-</p>
-
-</section>
-
-<!-- STATS -->
-
-<section class="grid md:grid-cols-5 gap-4">
-
-<div class="stat">
-<div class="stat-num text-red-400">6</div>
-Internal Users
-</div>
-
-<div class="stat">
-<div class="stat-num text-yellow-300">1</div>
-Guest Identity
-</div>
-
-<div class="stat">
-<div class="stat-num text-green-400">3</div>
-RBAC Groups
-</div>
-
-<div class="stat">
-<div class="stat-num text-blue-400">5</div>
-Helpdesk Actions
-</div>
-
-<div class="stat">
-<div class="stat-num text-purple-400">2</div>
-Audit Investigations
-</div>
-
-</section>
-
-<!-- EXECUTIVE CONTEXT -->
-
-<section class="card">
-
-<h2 class="text-2xl font-bold mb-4">
-Executive Identity Scenario
-</h2>
-
-<p class="text-gray-400 leading-relaxed">
-An organization is migrating its identity infrastructure to Microsoft Entra.
-The identity administrator must onboard staff, enable secure vendor access,
-govern permissions, investigate authentication activity,
-and maintain audit visibility — all while enforcing Zero Trust principles.
-This lab simulates that operational lifecycle.
-</p>
-
-</section>
-
-<!-- WORKFLOW TABS -->
-
-<section>
-
-<h2 class="text-2xl font-bold font-mono mb-6">
-Operational Workflow
-</h2>
-
-<div class="flex overflow-x-auto border-b border-gray-700">
-
-<button class="tab-btn active" data-tab="phase1"
-onclick="switchTab('phase1')">Environment</button>
-
-<button class="tab-btn" data-tab="phase2"
-onclick="switchTab('phase2')">Onboarding</button>
-
-<button class="tab-btn" data-tab="phase3"
-onclick="switchTab('phase3')">Governance</button>
-
-<button class="tab-btn" data-tab="phase4"
-onclick="switchTab('phase4')">Helpdesk</button>
-
-<button class="tab-btn" data-tab="phase5"
-onclick="switchTab('phase5')">Monitoring</button>
-
-<button class="tab-btn" data-tab="phase6"
-onclick="switchTab('phase6')">Security</button>
-
-</div>
-
-<!-- PHASE 1 -->
-
-<div id="phase1" class="tab-panel active mt-8 card">
-
-<h3 class="text-xl font-semibold mb-3">
-Environment Familiarization
-</h3>
-
-<p class="text-gray-400">
-Validated tenant structure, identity dashboards,
-and monitoring interfaces to understand administrative scope.
-</p>
-
-<button class="deep-btn mt-4"
-onclick="toggleBlock('deep1')">
-Deep dive
-</button>
-
-<div id="deep1" class="hidden mt-4 text-sm text-gray-500">
-
-• Entra directory inspection  
-• Identity surface mapping  
-• Admin control awareness  
-
-📸 Screenshot placeholder: tenant dashboard
-
-</div>
-
-</div>
-
-<!-- PHASE 2 -->
-
-<div id="phase2" class="tab-panel mt-8 card">
-
-<h3 class="text-xl font-semibold mb-3">
-User Lifecycle Onboarding
-</h3>
-
-<p class="text-gray-400">
-Simulated onboarding employees with enforced password policies
-and directory metadata assignment.
-</p>
-
-<button class="deep-btn mt-4"
-onclick="toggleBlock('deep2')">
-Deep dive
-</button>
-
-<div id="deep2" class="hidden mt-4 text-sm text-gray-500">
-
-• Department identity segmentation  
-• Password enforcement simulation  
-• Provisioning validation  
-
-📸 Screenshot placeholder: user directory
-
-</div>
-
-</div>
-
-<!-- PHASE 3 -->
-
-<div id="phase3" class="tab-panel mt-8 card">
-
-<h3 class="text-xl font-semibold mb-3">
-Access Governance & Collaboration
-</h3>
-
-<p class="text-gray-400">
-Structured RBAC groups and invited a guest contractor identity.
-</p>
-
-<button class="deep-btn mt-4"
-onclick="toggleBlock('deep3')">
-Deep dive
-</button>
-
-<div id="deep3" class="hidden mt-4 text-sm text-gray-500">
-
-• Guest lifecycle simulation  
-• Permission segmentation  
-• Role modeling  
-
-📸 Screenshot placeholder: guest identity panel
-
-</div>
-
-</div>
-
-<!-- PHASE 4 -->
-
-<div id="phase4" class="tab-panel mt-8 card">
-
-<h3 class="text-xl font-semibold mb-3">
-Helpdesk Identity Operations
-</h3>
-
-<p class="text-gray-400">
-Executed password resets, account suspension,
-and restoration workflows.
-</p>
-
-<button class="deep-btn mt-4"
-onclick="toggleBlock('deep4')">
-Deep dive
-</button>
-
-<div id="deep4" class="hidden mt-4 text-sm text-gray-500">
-
-• Tier-1 recovery simulation  
-• Lifecycle incident handling  
-
-📸 Screenshot placeholder: reset confirmation
-
-</div>
-
-</div>
-
-<!-- PHASE 5 -->
-
-<div id="phase5" class="tab-panel mt-8 card">
-
-<h3 class="text-xl font-semibold mb-3">
-Authentication Monitoring
-</h3>
-
-<p class="text-gray-400">
-Generated login telemetry and analyzed sign-in logs.
-</p>
-
-<button class="deep-btn mt-4"
-onclick="toggleBlock('deep5')">
-Deep dive
-</button>
-
-<div id="deep5" class="hidden mt-4 text-sm text-gray-500">
-
-• Success/failure correlation  
-• Identity event tracing  
-
-📸 Screenshot placeholder: sign-in logs
-
-</div>
-
-</div>
-
-<!-- PHASE 6 -->
-
-<div id="phase6" class="tab-panel mt-8 card">
-
-<h3 class="text-xl font-semibold mb-3">
-Security Posture Awareness
-</h3>
-
-<p class="text-gray-400">
-Reviewed tenant secure score and conditional access structure.
-</p>
-
-<button class="deep-btn mt-4"
-onclick="toggleBlock('deep6')">
-Deep dive
-</button>
-
-<div id="deep6" class="hidden mt-4 text-sm text-gray-500">
-
-• Zero Trust identity posture  
-• Risk awareness mapping  
-
-📸 Screenshot placeholder: secure score dashboard
-
-</div>
-
-</div>
-
-</section>
-
-<!-- ARCHITECTURE -->
-
-<section class="card">
-
-<h2 class="text-2xl font-bold mb-4">
-Identity Architecture Model
-</h2>
-
-<p class="text-gray-400">
-Users → Entra Directory → RBAC → Authentication → Audit telemetry.
-</p>
-
-<p class="text-xs text-gray-500 mt-4 italic">
-📸 Architecture diagram placeholder
-</p>
-
-</section>
-
-<!-- SKILLS -->
-
-<section class="card">
-
-<h2 class="text-2xl font-bold mb-4">
-Skills Demonstrated
-</h2>
-
-<div class="flex flex-wrap gap-2 text-xs">
-
-<span class="px-3 py-1 border rounded">Entra Administration</span>
-<span class="px-3 py-1 border rounded">Identity Lifecycle</span>
-<span class="px-3 py-1 border rounded">RBAC Governance</span>
-<span class="px-3 py-1 border rounded">Helpdesk Simulation</span>
-<span class="px-3 py-1 border rounded">Authentication Monitoring</span>
-<span class="px-3 py-1 border rounded">Audit Awareness</span>
-<span class="px-3 py-1 border rounded">Zero Trust Concepts</span>
-
-</div>
-
-</section>
-
-<!-- SUMMARY -->
-
-<section class="card">
-
-<h2 class="text-2xl font-bold mb-4">
-Operational Summary
-</h2>
-
-<p class="text-gray-400 leading-relaxed">
-This simulation demonstrates enterprise identity administration
-inside Microsoft Entra, replicating onboarding, governance,
-authentication monitoring, and recovery workflows performed by
-IAM professionals operating in cloud-first environments.
-</p>
-
-</section>
-
-</main>
-
+<body class="text-text-base">
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+        <div class="nav-dot active" onclick="scrollToSection('hero')"></div>
+        <div class="nav-dot" onclick="scrollToSection('workflow')"></div>
+        <div class="nav-dot" onclick="scrollToSection('architecture')"></div>
+        <div class="nav-dot" onclick="scrollToSection('summary')"></div>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <a href="../index.html#projects" class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition mb-6">
+                    ← Back to Portfolio
+                </a>
+
+                <div class="flex flex-wrap justify-center gap-2 mb-6 text-center">
+                    <span class="pill pill-accent">Microsoft Entra</span>
+                    <span class="pill pill-muted">Enterprise IAM</span>
+                    <span class="pill pill-muted">Zero Trust</span>
+                    <span class="pill pill-muted">Identity Operations</span>
+                    <span class="pill pill-muted">RBAC Governance</span>
+                </div>
+
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-center">
+                    Enterprise Identity & Access Management Simulation — Microsoft Entra ID
+                </h1>
+
+                <p class="max-w-3xl mx-auto text-sm sm:text-base text-text-secondary leading-relaxed mb-8 text-center">
+                    This simulation recreates how a modern enterprise identity administrator
+                    manages users, contractors, access governance, authentication monitoring,
+                    and lifecycle recovery inside Microsoft Entra ID. The workflow mirrors
+                    real IAM operations performed by helpdesk, identity, and security teams
+                    within a Zero Trust architecture.
+                </p>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+                    <div class="stat-card card-dark rounded-lg p-5 text-center">
+                        <div class="stat-number text-[#E06C75] mb-1">6</div>
+                        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Internal Users</div>
+                        <div class="text-[0.65rem] text-text-secondary mt-1">Employee identity records</div>
+                    </div>
+                    <div class="stat-card card-dark rounded-lg p-5 text-center">
+                        <div class="stat-number text-[#E5C07B] mb-1">1</div>
+                        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Guest Identity</div>
+                        <div class="text-[0.65rem] text-text-secondary mt-1">External contractor access</div>
+                    </div>
+                    <div class="stat-card card-dark rounded-lg p-5 text-center">
+                        <div class="stat-number text-[#98C379] mb-1">3</div>
+                        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">RBAC Groups</div>
+                        <div class="text-[0.65rem] text-text-secondary mt-1">Permission segmentation</div>
+                    </div>
+                    <div class="stat-card card-dark rounded-lg p-5 text-center">
+                        <div class="stat-number text-[#61AFEF] mb-1">5</div>
+                        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Helpdesk Actions</div>
+                        <div class="text-[0.65rem] text-text-secondary mt-1">Lifecycle operations</div>
+                    </div>
+                    <div class="stat-card card-dark rounded-lg p-5 text-center">
+                        <div class="stat-number text-[#C678DD] mb-1">2</div>
+                        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Audit Investigations</div>
+                        <div class="text-[0.65rem] text-text-secondary mt-1">Security monitoring</div>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center items-center gap-3 text-[0.7rem] sm:text-xs text-text-secondary mb-10 max-w-3xl mx-auto">
+                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>User lifecycle management
+                    </span>
+                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>RBAC and governance controls
+                    </span>
+                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Authentication monitoring
+                    </span>
+                </div>
+
+                <div class="grid md:grid-cols-1 gap-6">
+                    <article class="p-6 md:p-7 rounded-xl card-dark">
+                        <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">
+                            Executive Identity Scenario
+                        </p>
+                        <p class="text-sm leading-relaxed text-text-base">
+                            An organization is migrating its identity infrastructure to Microsoft Entra.
+                            The identity administrator must onboard staff, enable secure vendor access,
+                            govern permissions, investigate authentication activity,
+                            and maintain audit visibility — all while enforcing Zero Trust principles.
+                            This lab simulates that operational lifecycle.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Workflow Overview -->
+        <section id="workflow" class="py-12 md:py-14">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center gap-6 mb-8">
+                    <div class="h-px bg-gray-700 flex-1"></div>
+                    <h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
+                        Operational Workflow
+                    </h2>
+                    <div class="h-px bg-gray-700 flex-1"></div>
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="flex flex-wrap gap-0 border-b-2 border-gray-700 mb-10 overflow-x-auto">
+                    <button class="tab-button active" data-tab="phase1" onclick="switchTab('phase1')">01. Environment</button>
+                    <button class="tab-button" data-tab="phase2" onclick="switchTab('phase2')">02. Onboarding</button>
+                    <button class="tab-button" data-tab="phase3" onclick="switchTab('phase3')">03. Governance</button>
+                    <button class="tab-button" data-tab="phase4" onclick="switchTab('phase4')">04. Helpdesk</button>
+                    <button class="tab-button" data-tab="phase5" onclick="switchTab('phase5')">05. Monitoring</button>
+                    <button class="tab-button" data-tab="phase6" onclick="switchTab('phase6')">06. Security</button>
+                </div>
+
+                <!-- Phase 1: Environment -->
+                <div id="phase1" class="tab-content active">
+                    <div class="phase-container space-y-6">
+                        <h3 class="text-xl font-semibold text-white">
+                            Phase 1 — Environment Familiarization
+                        </h3>
+                        <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+                            Validated tenant structure, identity dashboards,
+                            and monitoring interfaces to understand administrative scope.
+                        </p>
+
+                        <button class="deep-dive-btn" onclick="toggleBlock('deep1')">
+                            Deep dive
+                        </button>
+
+                        <div id="deep1" class="hidden deep-dive-content">
+                            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+                                <li>Entra directory inspection</li>
+                                <li>Identity surface mapping</li>
+                                <li>Admin control awareness</li>
+                            </ul>
+                            <p class="text-xs text-text-secondary mt-4 italic">
+                                📸 Screenshot placeholder: tenant dashboard
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 2: Onboarding -->
+                <div id="phase2" class="tab-content">
+                    <div class="phase-container space-y-6">
+                        <h3 class="text-xl font-semibold text-white">
+                            Phase 2 — User Lifecycle Onboarding
+                        </h3>
+                        <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+                            Simulated onboarding employees with enforced password policies
+                            and directory metadata assignment.
+                        </p>
+
+                        <button class="deep-dive-btn" onclick="toggleBlock('deep2')">
+                            Deep dive
+                        </button>
+
+                        <div id="deep2" class="hidden deep-dive-content">
+                            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+                                <li>Department identity segmentation</li>
+                                <li>Password enforcement simulation</li>
+                                <li>Provisioning validation</li>
+                            </ul>
+                            <p class="text-xs text-text-secondary mt-4 italic">
+                                📸 Screenshot placeholder: user directory
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 3: Governance -->
+                <div id="phase3" class="tab-content">
+                    <div class="phase-container space-y-6">
+                        <h3 class="text-xl font-semibold text-white">
+                            Phase 3 — Access Governance & Collaboration
+                        </h3>
+                        <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+                            Structured RBAC groups and invited a guest contractor identity.
+                        </p>
+
+                        <button class="deep-dive-btn" onclick="toggleBlock('deep3')">
+                            Deep dive
+                        </button>
+
+                        <div id="deep3" class="hidden deep-dive-content">
+                            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+                                <li>Guest lifecycle simulation</li>
+                                <li>Permission segmentation</li>
+                                <li>Role modeling</li>
+                            </ul>
+                            <p class="text-xs text-text-secondary mt-4 italic">
+                                📸 Screenshot placeholder: guest identity panel
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 4: Helpdesk -->
+                <div id="phase4" class="tab-content">
+                    <div class="phase-container space-y-6">
+                        <h3 class="text-xl font-semibold text-white">
+                            Phase 4 — Helpdesk Identity Operations
+                        </h3>
+                        <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+                            Executed password resets, account suspension,
+                            and restoration workflows.
+                        </p>
+
+                        <button class="deep-dive-btn" onclick="toggleBlock('deep4')">
+                            Deep dive
+                        </button>
+
+                        <div id="deep4" class="hidden deep-dive-content">
+                            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+                                <li>Tier-1 recovery simulation</li>
+                                <li>Lifecycle incident handling</li>
+                            </ul>
+                            <p class="text-xs text-text-secondary mt-4 italic">
+                                📸 Screenshot placeholder: reset confirmation
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 5: Monitoring -->
+                <div id="phase5" class="tab-content">
+                    <div class="phase-container space-y-6">
+                        <h3 class="text-xl font-semibold text-white">
+                            Phase 5 — Authentication Monitoring
+                        </h3>
+                        <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+                            Generated login telemetry and analyzed sign-in logs.
+                        </p>
+
+                        <button class="deep-dive-btn" onclick="toggleBlock('deep5')">
+                            Deep dive
+                        </button>
+
+                        <div id="deep5" class="hidden deep-dive-content">
+                            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+                                <li>Success/failure correlation</li>
+                                <li>Identity event tracing</li>
+                            </ul>
+                            <p class="text-xs text-text-secondary mt-4 italic">
+                                📸 Screenshot placeholder: sign-in logs
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 6: Security -->
+                <div id="phase6" class="tab-content">
+                    <div class="phase-container space-y-6">
+                        <h3 class="text-xl font-semibold text-white">
+                            Phase 6 — Security Posture Awareness
+                        </h3>
+                        <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+                            Reviewed tenant secure score and conditional access structure.
+                        </p>
+
+                        <button class="deep-dive-btn" onclick="toggleBlock('deep6')">
+                            Deep dive
+                        </button>
+
+                        <div id="deep6" class="hidden deep-dive-content">
+                            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+                                <li>Zero Trust identity posture</li>
+                                <li>Risk awareness mapping</li>
+                            </ul>
+                            <p class="text-xs text-text-secondary mt-4 italic">
+                                📸 Screenshot placeholder: secure score dashboard
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Architecture -->
+        <section id="architecture" class="py-12 md:py-14">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center gap-6 mb-8">
+                    <div class="h-px bg-gray-700 flex-1"></div>
+                    <h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
+                        Identity Architecture Model
+                    </h2>
+                    <div class="h-px bg-gray-700 flex-1"></div>
+                </div>
+
+                <div class="card-dark rounded-xl p-6 md:p-7">
+                    <p class="text-sm text-text-secondary leading-relaxed mb-4">
+                        Users → Entra Directory → RBAC → Authentication → Audit telemetry.
+                    </p>
+                    <p class="text-xs text-text-secondary italic">
+                        📸 Architecture diagram placeholder
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills & Summary -->
+        <section id="summary" class="pt-12 md:pt-16 pb-12">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+                <!-- Skills Demonstrated -->
+                <div>
+                    <div class="flex items-center gap-6 mb-8">
+                        <div class="h-px bg-gray-700 flex-1"></div>
+                        <h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
+                            Skills demonstrated
+                        </h2>
+                        <div class="h-px bg-gray-700 flex-1"></div>
+                    </div>
+                    <div class="p-6 md:p-7 rounded-xl card-dark">
+                        <div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
+                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Entra Administration</span>
+                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Identity Lifecycle</span>
+                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">RBAC Governance</span>
+                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Helpdesk Simulation</span>
+                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Authentication Monitoring</span>
+                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Audit Awareness</span>
+                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Zero Trust Concepts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary -->
+                <div>
+                    <div class="flex items-center gap-6 mb-8">
+                        <div class="h-px bg-gray-700 flex-1"></div>
+                        <h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
+                            Summary
+                        </h2>
+                        <div class="h-px bg-gray-700 flex-1"></div>
+                    </div>
+                    <div class="card-dark rounded-xl p-6">
+                        <p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
+                            This simulation demonstrates enterprise identity administration
+                            inside Microsoft Entra, replicating onboarding, governance,
+                            authentication monitoring, and recovery workflows performed by
+                            IAM professionals operating in cloud-first environments.
+                        </p>
+                    </div>
+
+                    <div class="mt-10">
+                        <a href="../index.html#projects" class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition font-mono">
+                            ← Back to Portfolio
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 </body>
 </html>
