@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang=en data-theme=dark class=dark>
+<head>
+<meta charset=UTF-8 />
+<meta name=viewport content="width=device-width, initial-scale=1.0" />
+<title>Operations Management Analysis | Christian Aguirre</title>
+<script>function switchTab(tabId){document.querySelectorAll('.tab-button').forEach(btn=>{btn.classList.remove('active');});document.querySelectorAll('.tab-content').forEach(content=>{content.classList.remove('active');});const activeButton=[...document.querySelectorAll('.tab-button')].find(btn=>btn.getAttribute('data-tab')===tabId);if(activeButton)activeButton.classList.add('active');const target=document.getElementById(`tab-${tabId}`);if(target)target.classList.add('active');}</script>
+<script src=https://cdn.tailwindcss.com></script>
+<script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)",}}}};</script>
+<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;--functional-action:#61afef;--functional-success:#98c379;--accent-red:#e06c75;--container-bg:#171717;background-color:var(--bg-default);color:var(--text-base)}body{font-family:"Inter",sans-serif;background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center;background-attachment:fixed;min-height:100vh}.pill{border-radius:999px;padding:.2rem .7rem;border:1px solid rgba(171,178,191,0.6);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em}.pill-muted{color:var(--text-secondary);background-color:rgba(23,23,23,0.95)}.pill-accent{color:var(--accent-structural);background-color:rgba(23,23,23,0.95);border-color:rgba(217,217,217,0.9)}.tab-button{padding:1rem 1.5rem;background:transparent;border:0;color:var(--text-secondary);font-family:"Inconsolata",monospace;cursor:pointer;transition:all .3s ease;border-bottom:3px solid transparent;white-space:nowrap}.tab-button:hover{color:var(--functional-action);background:rgba(97,175,239,0.05)}.tab-button.active{color:var(--functional-action);border-bottom-color:var(--functional-action)}.tab-content{display:none;animation:fadeSlideIn .4s ease-out}.tab-content.active{display:block}@keyframes fadeSlideIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}.stat-card{position:relative;overflow:hidden}.stat-number{font-size:2.5rem;font-weight:800;font-family:"Inconsolata",monospace}.image-zoom{cursor:pointer;transition:all .3s ease}.image-zoom:hover{transform:scale(1.02);box-shadow:0 10px 40px rgba(97,175,239,0.3)}.modal{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.95)}.modal.active{display:flex;align-items:center;justify-content:center}.modal-content{max-width:95%;max-height:95%;border-radius:8px}.nav-dots{position:fixed;right:2rem;top:50%;transform:translateY(-50%);z-index:100}.nav-dot{width:10px;height:10px;border-radius:50%;background:var(--text-secondary);margin:.75rem 0;cursor:pointer;transition:all .3s ease}.nav-dot:hover,.nav-dot.active{background:var(--functional-action);transform:scale(1.4)}@media(max-width:768px){.nav-dots{display:none}}.phase-container{background:var(--container-bg);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;padding:2.5rem;box-shadow:0 12px 40px rgba(0,0,0,0.35)}.card-dark{background:var(--container-bg);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;box-shadow:0 12px 40px rgba(0,0,0,0.35)}</style>
+</head>
+<body class=text-text-base>
+<div class=nav-dots>
+<div class="nav-dot active" onclick="scrollToSection('hero')"></div>
+<div class=nav-dot onclick="scrollToSection('workflow')"></div>
+<div class=nav-dot onclick="scrollToSection('lab')"></div>
+<div class=nav-dot onclick="scrollToSection('insights')"></div>
+</div>
+<div class=modal id=imageModal onclick=closeModal()>
+<span style=position:absolute;top:2rem;right:3rem;color:white;font-size:3rem;cursor:pointer>&times;</span>
+<img class=modal-content id=modalImage alt="Enlarged view" />
+</div>
+<main>
+<section id=hero class="pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<a href=../index.html#projects class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition mb-6">
+← Back to Portfolio
+</a>
+<div class="flex flex-wrap justify-center gap-2 mb-6 text-center">
+<span class="pill pill-accent">Excel KPI Project</span>
+<span class="pill pill-muted">Operations Analytics</span>
+<span class="pill pill-muted">Statistical Testing</span>
+<span class="pill pill-muted">Dashboard Reporting</span>
+</div>
+<h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-center">
+Operations Management Analysis
+</h1>
+<p class="max-w-3xl mx-auto text-sm sm:text-base text-text-secondary leading-relaxed mb-8 text-center">
+A complete operations analytics project built in Microsoft Excel and Word to evaluate manufacturing KPIs,
+analyze delivery performance, compare transmission costs across processes, and assess employee retention
+patterns. The work moves from raw data to validated statistics and finishes with decision-ready
+recommendations for management.
+</p>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+<div class="stat-card card-dark rounded-lg p-5 text-center">
+<div class="stat-number text-[#61AFEF] mb-1">5</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Years</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">KPI history from 2014–2018</div>
+</div>
+<div class="stat-card card-dark rounded-lg p-5 text-center">
+<div class="stat-number text-[#E5C07B] mb-1">3</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">KPI Areas</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Delivery, cost and retention</div>
+</div>
+<div class="stat-card card-dark rounded-lg p-5 text-center">
+<div class="stat-number text-[#A3E635] mb-1">3</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Processes</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Current, Process A and Process B</div>
+</div>
+<div class="stat-card card-dark rounded-lg p-5 text-center">
+<div class="stat-number text-[#F97316] mb-1">95%</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Confidence Level</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Hypothesis tests at α = 0.05</div>
+</div>
+<div class="stat-card card-dark rounded-lg p-5 text-center">
+<div class="stat-number text-[#E06C75] mb-1">2</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Statistical Tests</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Proportion test and ANOVA</div>
+</div>
+</div>
+<div class="flex flex-wrap justify-center items-center gap-3 text-[0.7rem] sm:text-xs text-text-secondary mb-10 max-w-3xl mx-auto">
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Excel Dashboards · KPI Modeling
+</span>
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Statistical Analysis · ANOVA · Proportion Tests
+</span>
+</div>
+<div class="grid md:grid-cols-2 gap-6">
+<article class="p-6 md:p-7 rounded-xl card-dark">
+<p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">
+Project overview
+</p>
+<p class="text-sm leading-relaxed text-text-base mb-3">
+This senior level operations project evaluates how a lawn equipment manufacturer performs on three
+critical fronts: on time delivery, transmission cost, and workforce retention. Each KPI lives in its
+own Excel tab, with formulas, charts, and tests linked to a structured narrative.
+</p>
+<p class="text-sm leading-relaxed text-text-base mb-3">
+The analysis compares 2014 and 2018 delivery rates, tests whether alternative processes can reduce unit
+costs, and highlights demographic retention trends. All insights roll into an 8 page report aimed at
+giving leadership a clear roadmap for improving operational performance.
+</p>
+<p class="text-sm leading-relaxed text-text-base">
+The lab mirrors a real operations analyst workflow: organize the data, build KPIs, run tests at a
+defined confidence level, then translate everything into concrete business recommendations.
+</p>
+</article>
+<article class="p-6 md:p-7 rounded-xl card-dark">
+<p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">
+What was built
+</p>
+<ul class="list-disc list-outside pl-5 space-y-1.5 text-sm text-text-base">
+<li>Excel workbook with separate tabs for delivery, transmission cost, and retention</li>
+<li>On time delivery dashboard comparing 2014 and 2018 performance</li>
+<li>ANOVA based cost comparison across the current process, Process A, and Process B</li>
+<li>Pivot based retention views segmented by gender and locality</li>
+<li>Formula driven KPI modeling for proportions, rates, and comparative metrics</li>
+<li>An 8 page Word report summarizing findings, tests, and recommendations</li>
+</ul>
+</article>
+</div>
+</div>
+</section>
+<section id=workflow class="py-12 md:py-14">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center gap-6 mb-8">
+<div class="h-px bg-gray-700 flex-1"></div>
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
+Workflow Overview
+</h2>
+<div class="h-px bg-gray-700 flex-1"></div>
+</div>
+<div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
+<div class="p-4 rounded-xl card-dark">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Step 1</p>
+<p class="text-sm font-semibold mb-1">Data Import</p>
+<p class="text-xs text-text-secondary leading-relaxed">
+Loaded delivery, cost, and retention data into structured Excel tabs.
+</p>
+</div>
+<div class="p-4 rounded-xl card-dark">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Step 2</p>
+<p class="text-sm font-semibold mb-1">Cleaning</p>
+<p class="text-xs text-text-secondary leading-relaxed">
+Formatted ranges, checked for errors, and validated inputs.
+</p>
+</div>
+<div class="p-4 rounded-xl card-dark">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Step 3</p>
+<p class="text-sm font-semibold mb-1">KPI Construction</p>
+<p class="text-xs text-text-secondary leading-relaxed">
+Built delivery percent, unit cost, and retention metrics.
+</p>
+</div>
+<div class="p-4 rounded-xl card-dark">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Step 4</p>
+<p class="text-sm font-semibold mb-1">Statistical Testing</p>
+<p class="text-xs text-text-secondary leading-relaxed">
+Used proportion tests and ANOVA to validate differences.
+</p>
+</div>
+<div class="p-4 rounded-xl card-dark">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Step 5</p>
+<p class="text-sm font-semibold mb-1">Reporting</p>
+<p class="text-xs text-text-secondary leading-relaxed">
+Summarized insights and recommendations in a formal report.
+</p>
+</div>
+</div>
+</div>
+</section>
+<section id=lab class=py-14>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center gap-6 mb-10">
+<div class="h-px bg-gray-700 flex-1"></div>
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
+Lab Breakdown
+</h2>
+<div class="h-px bg-gray-700 flex-1"></div>
+</div>
+<div class="flex flex-wrap gap-0 border-b-2 border-gray-700 mb-10 overflow-x-auto">
+<button class="tab-button active" data-tab=dataset onclick="switchTab('dataset')">
+01. Dataset Overview
+</button>
+<button class=tab-button data-tab=delivery onclick="switchTab('delivery')">
+02. On Time Delivery
+</button>
+<button class=tab-button data-tab=cost onclick="switchTab('cost')">
+03. Transmission Cost
+</button>
+<button class=tab-button data-tab=retention onclick="switchTab('retention')">
+04. Employee Retention
+</button>
+<button class=tab-button data-tab=formulas onclick="switchTab('formulas')">
+05. Key Formulas
+</button>
+</div>
+<div id=tab-dataset class="tab-content active">
+<div class="phase-container space-y-10">
+<h3 class="text-xl font-semibold text-white">
+Dataset overview and workbook structure
+</h3>
+<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+The project begins with a multi tab Excel workbook that separates major KPI areas into
+their own sheets. This layout mirrors how operations teams keep delivery, cost, and
+retention data organized for recurring analysis.
+</p>
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+1.1 — Organizing KPIs into a dedicated workbook
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+All operational data from 2014 through 2018 lives inside a single workbook. Each
+KPI category uses its own tab so metrics, charts, and tests never overlap or get
+mixed together by mistake.
+</p>
+<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+<li>Segmented KPIs into On Time Delivery, Transmission Cost, and Retention tabs</li>
+<li>Labeled ranges clearly so formulas and charts point to consistent data</li>
+<li>Kept 2014–2018 values aligned across tabs for easier trend comparisons</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/OMO1_MainWorkbookOverview.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/OMO1_MainWorkbookOverview.png alt="Workbook Overview" class="mx-auto rounded-md w-full" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Excel workbook main screen with separate tabs for delivery, transmission cost, and retention.
+</p>
+</div>
+</section>
+<p class="mt-4 text-sm text-white font-semibold">
+Key actions in this phase
+</p>
+<ul class="list-disc list-outside pl-5 text-sm text-white space-y-1">
+<li>Grouped KPIs into distinct tabs to mirror a real operations workbook</li>
+<li>Ensured that all 2014–2018 data aligned by period for cross tab comparisons</li>
+<li>Prepared a structured starting point for delivery, cost, and retention analysis</li>
+</ul>
+</div>
+</div>
+<div id=tab-delivery class=tab-content>
+<div class="phase-container space-y-10">
+<h3 class="text-xl font-semibold text-white">
+On time delivery analysis and hypothesis test
+</h3>
+<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+This portion of the lab focuses on whether on time delivery performance genuinely
+improved between 2014 and 2018. The analysis combines trend visualization with a
+one sample proportion test at the 95 percent confidence level.
+</p>
+<section class=space-y-8>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+2.1 — Visual comparison of delivery trends
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+A line chart compares monthly on time delivery rates for 2014 and 2018. This
+makes it easy to see seasonal dips, recovery periods, and the overall shift
+in consistency as operations improved.
+</p>
+<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+<li>Plotted 2014 and 2018 delivery percent side by side by month</li>
+<li>Identified months where 2018 significantly outperformed the earlier year</li>
+<li>Used the chart as a visual anchor before running formal tests</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/OMO1_OnTimeDelivery_Chart.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/OMO1_OnTimeDelivery_Chart.png alt="On-Time Delivery Chart" class="mx-auto rounded-md w-full" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Monthly delivery comparison for 2014 and 2018, showing seasonal patterns and overall improvement.
+</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+2.2 — Proportion test at 95 percent confidence
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+A one sample proportion test verifies that the higher 2018 delivery rate is
+not just noise. The test uses a 5 percent significance level, aligning with
+standard business analytics practice.
+</p>
+<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+<li>Calculated the observed delivery proportion for 2018</li>
+<li>Computed the test statistic and p value using standard Excel functions</li>
+<li>Rejected the null hypothesis, confirming a significant improvement</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/OMO1_OnTimeDelivery_Test.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/OMO1_OnTimeDelivery_Test.png alt="Proportion Test Results" class="mx-auto rounded-md w-full" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Proportion test results confirming that 2018 on time delivery improved significantly at α = 0.05.
+</p>
+</div>
+</div>
+</section>
+<p class="mt-4 text-sm text-white font-semibold">
+Key actions in this phase
+</p>
+<ul class="list-disc list-outside pl-5 text-sm text-white space-y-1">
+<li>Built a clear visual comparison of 2014 versus 2018 delivery performance</li>
+<li>Applied a one sample proportion test at the 95 percent confidence level</li>
+<li>Confirmed that the observed improvement in on time delivery is statistically meaningful</li>
+</ul>
+</div>
+</div>
+<div id=tab-cost class=tab-content>
+<div class="phase-container space-y-10">
+<h3 class="text-xl font-semibold text-white">
+Transmission cost comparison and ANOVA
+</h3>
+<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+This phase evaluates whether unit transmission costs differ across the current
+manufacturing process, Process A, and Process B. The analysis uses both visual
+comparison and a one way ANOVA to identify the most cost efficient option.
+</p>
+<section class=space-y-8>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+3.1 — Visual comparison of unit costs
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+A bar style chart displays unit transmission costs for each of the three
+processes. The visual immediately highlights that Process A tends to sit
+at the lower end of the cost range.
+</p>
+<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+<li>Plotted unit cost observations for the current process, Process A, and Process B</li>
+<li>Used the chart to spot differences in both average level and variability</li>
+<li>Identified Process A as a visually strong candidate for lowest cost</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/OMO1_TransmissionCost.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/OMO1_TransmissionCost.png alt="Transmission Cost Comparison Chart" class="mx-auto rounded-md w-full" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Unit transmission cost comparison across the current process, Process A, and Process B.
+</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+3.2 — One way ANOVA with Excel ToolPak
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+A one way ANOVA quantifies whether at least one process differs in mean cost.
+The test uses the Data Analysis ToolPak and reports summary statistics, the
+F statistic, the critical F value, and the p value.
+</p>
+<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+<li>Structured the data into ToolPak friendly ranges for each process</li>
+<li>Ran a one way ANOVA to compare mean transmission costs</li>
+<li>Interpreted the p value to confirm statistically significant differences</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/OMO1_TransmissionCost_ANOVA.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/OMO1_TransmissionCost_ANOVA.png alt="ANOVA Results for Transmission Costs" class="mx-auto rounded-md w-full" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+ANOVA output confirming statistically significant cost differences across processes.
+</p>
+</div>
+</div>
+</section>
+<p class="mt-4 text-sm text-white font-semibold">
+Key actions in this phase
+</p>
+<ul class="list-disc list-outside pl-5 text-sm text-white space-y-1">
+<li>Compared unit transmission costs visually across three manufacturing processes</li>
+<li>Used a one way ANOVA to formally test for mean cost differences</li>
+<li>Identified Process A as the most cost efficient option based on both charts and statistics</li>
+</ul>
+</div>
+</div>
+<div id=tab-retention class=tab-content>
+<div class="phase-container space-y-10">
+<h3 class="text-xl font-semibold text-white">
+Employee retention by gender and locality
+</h3>
+<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+The retention analysis explores how stable the workforce is across demographic
+segments. Excel pivot tables and charts reveal which groups stay longer and where
+HR might want to focus targeted strategies.
+</p>
+<section class=space-y-8>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+4.1 — Visual retention breakdown
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+A bar chart summarizes retention counts by combinations of gender and locality.
+This view quickly highlights which segments show stronger or weaker retention.
+</p>
+<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+<li>Built a pivot table to count retained employees by demographic segment</li>
+<li>Visualized the counts to highlight stronger and weaker retention groups</li>
+<li>Used the chart as an entry point for HR oriented discussion</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/OMO1_EmployeeRetention.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/OMO1_EmployeeRetention.png alt="Employee Retention Chart" class="mx-auto rounded-md w-full" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Retention breakdown by gender and locality, highlighting key demographic patterns.
+</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+<div class=space-y-4>
+<h4 class="text-lg font-semibold text-white">
+4.2 — Underlying counts and stability
+</h4>
+<p class="text-sm text-text-secondary leading-relaxed">
+The underlying table confirms exact counts for each group and ensures the
+chart accurately reflects the data. Differences are visible but not extreme,
+suggesting generally stable retention across segments.
+</p>
+<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+<li>Reviewed raw counts for each gender and locality combination</li>
+<li>Verified that chart values match the summarized table</li>
+<li>Noted that most differences are modest rather than extreme outliers</li>
+</ul>
+</div>
+<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/OMO1_EmployeeRetention_Table.png')">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/OMO1_EmployeeRetention_Table.png alt="Employee Retention Table" class="mx-auto rounded-md w-full" />
+<p class="mt-3 text-xs italic text-text-secondary text-center">
+Retention counts summary table used to compare and validate demographic segments.
+</p>
+</div>
+</div>
+</section>
+<p class="mt-4 text-sm text-white font-semibold">
+Key actions in this phase
+</p>
+<ul class="list-disc list-outside pl-5 text-sm text-white space-y-1">
+<li>Used pivot tables to segment retention data by gender and locality</li>
+<li>Visualized retention counts to highlight where turnover might be higher</li>
+<li>Confirmed that differences across demographic groups are present but generally modest</li>
+</ul>
+</div>
+</div>
+<div id=tab-formulas class=tab-content>
+<div class="phase-container space-y-10">
+<h3 class="text-xl font-semibold text-white">
+Key Excel formulas and modeling approach
+</h3>
+<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
+Behind the charts and tests, the workbook relies on standard Excel functions to
+calculate KPIs, filter data, and support the formal hypothesis tests. This tab
+highlights representative formulas used throughout the lab.
+</p>
+<section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="p-4 rounded-xl bg-container-bg border border-gray-800">
+<p class="text-xs font-mono text-accent-cyan mb-2 uppercase tracking-[0.18em]">
+Conditional count
+</p>
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-[0.8rem] text-white">
+<code>=COUNTIFS(A:A, "Complete", B:B, ">"&DATE(2018,1,1))</code>
+              </pre>
+<p class="text-xs text-white mt-3 italic leading-relaxed">
+Counts all entries marked Complete that occurred after January 1, 2018. Used to
+filter valid events across a specific time range when building delivery related KPIs.
+</p>
+</div>
+<div class="p-4 rounded-xl bg-container-bg border border-gray-800">
+<p class="text-xs font-mono text-accent-cyan mb-2 uppercase tracking-[0.18em]">
+Retention percentage
+</p>
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-3 overflow-x-auto text-[0.8rem] text-white">
+<code>=SUMIFS(Retained, Gender, "F") / SUMIFS(Employed, Gender, "F")</code>
+              </pre>
+<p class="text-xs text-white mt-3 italic leading-relaxed">
+Calculates the retention rate for female employees by dividing those retained by
+the total number employed in the same demographic segment.
+</p>
+</div>
+</section>
+<section class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 space-y-4">
+<p class="text-xs uppercase tracking-[0.16em] text-text-secondary mb-1">
+Statistical support functions
+</p>
+<p class="text-sm text-white">
+While the ANOVA and proportion test outputs rely on the Data Analysis ToolPak, the
+supporting calculations use familiar Excel functions to compute proportions, z
+scores, and summary metrics.
+</p>
+<ul class="list-disc list-outside pl-5 space-y-1 text-sm text-white">
+<li>Proportion based calculations built from basic division and sample size checks</li>
+<li>Data validation ranges to ensure only valid periods feed the tests</li>
+<li>Helper columns that standardize inputs to the ToolPak procedures</li>
+</ul>
+</section>
+<p class="mt-2 text-sm text-white font-semibold">
+Key actions in this phase
+</p>
+<ul class="list-disc list-outside pl-5 text-sm text-white space-y-1">
+<li>Documented the most important Excel formulas behind the KPIs and tests</li>
+<li>Connected the formula layer to the visual dashboards and statistical outputs</li>
+<li>Showed how standard Excel functions support a complete operations analysis workflow</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id=insights class="py-14">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+<div>
+<div class="flex items-center gap-6 mb-8">
+<div class="h-px bg-gray-700 flex-1"></div>
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
+Analytical Structure
+</h2>
+<div class="h-px bg-gray-700 flex-1"></div>
+</div>
+<div class="p-6 md:p-7 rounded-xl card-dark grid md:grid-cols-2 gap-8 text-sm text-white">
+<div>
+<h3 class="text-base font-semibold text-white mb-3">Core Tools and Methods</h3>
+<ul class="list-disc list-outside pl-5 space-y-1">
+<li>Excel modeling for KPI creation and comparison</li>
+<li>One sample proportion testing for delivery improvements</li>
+<li>One way ANOVA to compare unit transmission costs</li>
+<li>Trend visualization through charts and dashboards</li>
+<li>Formal report writing to present findings to management</li>
+</ul>
+</div>
+<div>
+<h3 class="text-base font-semibold text-white mb-3">Analysis Flow</h3>
+<ul class="list-disc list-outside pl-5 space-y-1">
+<li>Import and clean raw operational data</li>
+<li>Build KPIs for delivery, cost, and retention</li>
+<li>Run proportion tests and ANOVA at α = 0.05</li>
+<li>Create dashboards that highlight patterns and outliers</li>
+<li>Translate results into a decision ready narrative for leaders</li>
+</ul>
+</div>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-6 mb-8">
+<div class="h-px bg-gray-700 flex-1"></div>
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
+Key insights
+</h2>
+<div class="h-px bg-gray-700 flex-1"></div>
+</div>
+<div class="p-6 md:p-7 rounded-xl card-dark">
+<ul class="list-disc list-outside pl-5 space-y-2 text-white text-sm sm:text-[0.95rem] leading-relaxed">
+<li>Delivery performance improved significantly between 2014 and 2018, confirmed by a 95 percent confidence proportion test</li>
+<li>ANOVA showed that Process A has the lowest average transmission cost, supporting a shift toward this process</li>
+<li>Seasonal patterns in delivery revealed periods where staffing and inventory planning can be adjusted for better performance</li>
+<li>Retention analysis highlighted demographic segments worth closer HR attention while confirming overall workforce stability</li>
+</ul>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-6 mb-8">
+<div class="h-px bg-gray-700 flex-1"></div>
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
+Skills demonstrated
+</h2>
+<div class="h-px bg-gray-700 flex-1"></div>
+</div>
+<div class="p-6 md:p-7 rounded-xl card-dark">
+<div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Excel Modeling</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">KPI Analysis</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Statistical Testing (ANOVA)</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Proportion Tests</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Dashboard Reporting</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Operational Analytics</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Data Cleaning and Validation</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="pb-12 md:pb-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center gap-6 mb-8">
+<div class="h-px bg-gray-700 flex-1"></div>
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
+Summary
+</h2>
+<div class="h-px bg-gray-700 flex-1"></div>
+</div>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="card-dark rounded-xl p-6">
+<p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
+This operations management lab turns a multi year set of manufacturing KPIs into a
+clear, statistically backed story. By separating delivery, transmission cost, and
+retention into focused Excel tabs, then applying proportion tests and ANOVA at a
+95 percent confidence level, the project surfaces where performance has truly
+improved and where further optimization is available. The final deliverables combine Excel models, visual dashboards, and a structured
+written report. Together they demonstrate the full workflow expected of an entry
+level operations or business analyst: clean the data, build the metrics, validate
+with statistics, and communicate recommendations in plain language.
+</p>
+</div>
+<div class=mt-10>
+<a href=../index.html#projects class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition font-mono">
+← Back to Portfolio
+</a>
+</div>
+</div>
+</section>
+<script>function scrollToSection(id){const target=document.getElementById(id);if(!target)return;target.scrollIntoView({behavior:'smooth',block:'start'});const dots=document.querySelectorAll('.nav-dot');const sections=['hero','workflow','lab','insights'];dots.forEach((dot,idx)=>{dot.classList.toggle('active',sections[idx]===id);});}
+function openModal(src){const modal=document.getElementById('imageModal');const img=document.getElementById('modalImage');img.src=src;modal.classList.add('active');}
+function closeModal(){const modal=document.getElementById('imageModal');modal.classList.remove('active');const img=document.getElementById('modalImage');img.src='';}
+document.addEventListener('DOMContentLoaded',()=>{switchTab('dataset');});</script>
+</main>
+</body>
+</html>
