@@ -4,10 +4,10 @@
 <meta charset=UTF-8 />
 <meta name=viewport content="width=device-width, initial-scale=1.0" />
 <title>World Layoffs SQL Data Cleaning | Christian Aguirre</title>
-<script>function switchTab(tabId){document.querySelectorAll(".tab-button").forEach(btn=>{btn.classList.remove("active");});document.querySelectorAll(".tab-content").forEach(content=>{content.classList.remove("active");});const activeButton=[...document.querySelectorAll(".tab-button")].find(btn=>btn.getAttribute("onclick")&&btn.getAttribute("onclick").includes(tabId));if(activeButton)activeButton.classList.add("active");const target=document.getElementById(`tab-${tabId}`);if(target)target.classList.add("active");}</script>
+<script>function switchTab(tabId){document.querySelectorAll('.tab-button').forEach(btn=>{btn.classList.remove('active');});document.querySelectorAll('.tab-content').forEach(content=>{content.classList.remove('active');});const activeButton=[...document.querySelectorAll('.tab-button')].find(btn=>btn.getAttribute('onclick')&&btn.getAttribute('onclick').includes(tabId));if(activeButton)activeButton.classList.add('active');const target=document.getElementById(`tab-${tabId}`);if(target)target.classList.add('active');}</script>
 <script src=https://cdn.tailwindcss.com></script>
 <script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)",}}}};</script>
-<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;--functional-action:#61afef;--functional-success:#98c379;--accent-red:#e06c75;--container-bg:#171717;background-color:var(--bg-default);color:var(--text-base)}body{font-family:"Inter",sans-serif;background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center;background-attachment:fixed;min-height:100vh}.pill{border-radius:999px;padding:.2rem .7rem;border:1px solid rgba(171,178,191,0.6);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;white-space:nowrap}.pill-muted{color:var(--text-secondary);background-color:rgba(23,23,23,0.95)}.pill-accent{color:var(--accent-structural);background-color:rgba(23,23,23,0.95);border-color:rgba(217,217,217,0.9)}.tab-button{padding:1rem 1.5rem;background:transparent;border:0;color:var(--text-secondary);font-family:"Inconsolata",monospace;cursor:pointer;transition:all .3s ease;border-bottom:3px solid transparent;white-space:nowrap}.tab-button:hover{color:var(--functional-action);background:rgba(97,175,239,0.05)}.tab-button.active{color:var(--functional-action);border-bottom-color:var(--functional-action)}.tab-content{display:none;animation:fadeSlideIn .4s ease-out}.tab-content.active{display:block}@keyframes fadeSlideIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}.stat-card{position:relative;overflow:hidden}.stat-card::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent,rgba(97,175,239,0.1),transparent);animation:shimmer 3s infinite}@keyframes shimmer{0%{transform:translateX(-100%) translateY(-100%) rotate(45deg)}100%{transform:translateX(100%) translateY(100%) rotate(45deg)}}.stat-number{font-size:2.5rem;font-weight:800;font-family:"Inconsolata",monospace}.image-zoom{cursor:pointer;transition:all .3s ease}.image-zoom:hover{transform:scale(1.02);box-shadow:0 10px 40px rgba(97,175,239,0.3)}.modal{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.95)}.modal.active{display:flex;align-items:center;justify-content:center}.modal-content{max-width:95%;max-height:95%;border-radius:8px}.section-title-wrapper{display:inline-flex;align-items:center;margin-bottom:2rem;font-family:"Inconsolata",monospace;width:100%}.section-title-wrapper h2{font-size:1.5rem;font-weight:700;color:var(--accent-structural);flex-shrink:0}.section-title-wrapper span{content:"";display:block;height:2px;background-color:var(--text-secondary);margin-left:.75rem;flex-grow:1;opacity:.5;min-width:150px}.nav-dots{position:fixed;right:2rem;top:50%;transform:translateY(-50%);z-index:100}.nav-dot{width:10px;height:10px;border-radius:50%;background:var(--text-secondary);margin:.75rem 0;cursor:pointer;transition:all .3s ease}.nav-dot:hover,.nav-dot.active{background:var(--functional-action);transform:scale(1.4)}@media(max-width:768px){.nav-dots{display:none}}pre code{font-family:"Inconsolata",monospace;font-size:.8rem}</style>
+<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;--functional-action:#61afef;--functional-success:#98c379;--accent-red:#e06c75;--container-bg:#171717;background-color:var(--bg-default);color:var(--text-base)}body{font-family:"Inter",sans-serif;background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center;background-attachment:fixed;min-height:100vh}.pill{border-radius:999px;padding:.2rem .7rem;border:1px solid rgba(171,178,191,0.6);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em}.pill-muted{color:var(--text-secondary);background-color:rgba(23,23,23,0.95)}.pill-accent{color:var(--accent-structural);background-color:rgba(23,23,23,0.95);border-color:rgba(217,217,217,0.9)}.tab-button{padding:1rem 1.5rem;background:transparent;border:0;color:var(--text-secondary);font-family:"Inconsolata",monospace;cursor:pointer;transition:all .3s ease;border-bottom:3px solid transparent;white-space:nowrap}.tab-button:hover{color:var(--functional-action);background:rgba(97,175,239,0.05)}.tab-button.active{color:var(--functional-action);border-bottom-color:var(--functional-action)}.tab-content{display:none;animation:fadeSlideIn .4s ease-out}.tab-content.active{display:block}@keyframes fadeSlideIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}.stat-card{position:relative;overflow:hidden}.stat-number{font-size:2.5rem;font-weight:800;font-family:"Inconsolata",monospace}.image-zoom{cursor:pointer;transition:all .3s ease}.image-zoom:hover{transform:scale(1.02);box-shadow:0 10px 40px rgba(97,175,239,0.3)}.modal{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.95)}.modal.active{display:flex;align-items:center;justify-content:center}.modal-content{max-width:95%;max-height:95%;border-radius:8px}.collapsible-content{max-height:0;overflow:hidden;transition:max-height .4s ease-out,margin .2s ease;margin:0!important}.collapsible-content.open{max-height:10000px;margin:1.75rem 0 2rem 0}.nav-dots{position:fixed;right:2rem;top:50%;transform:translateY(-50%);z-index:100}.nav-dot{width:10px;height:10px;border-radius:50%;background:var(--text-secondary);margin:.75rem 0;cursor:pointer;transition:all .3s ease}.nav-dot:hover,.nav-dot.active{background:var(--functional-action);transform:scale(1.4)}@media(max-width:768px){.nav-dots{display:none}}.ring-anim{animation:fadeInRing 1.2s ease-out forwards;opacity:0}@keyframes fadeInRing{to{opacity:1}}.phase-container{background:var(--container-bg);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;padding:2.5rem;box-shadow:0 12px 40px rgba(0,0,0,0.35)}.card-dark{background:var(--container-bg);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;box-shadow:0 12px 40px rgba(0,0,0,0.35)}</style>
 </head>
 <body class=text-text-base>
 <div class=nav-dots>
@@ -21,66 +21,66 @@
 <img class=modal-content id=modalImage alt="Enlarged view">
 </div>
 <main>
-<section id=hero class="pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16 border-b border-gray-800">
+<section id=hero class="pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<a href=../index.html#projects class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition mb-6 font-mono">
+<a href=../index.html#projects class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition mb-6">
 ← Back to Portfolio
 </a>
-<div class="flex flex-wrap gap-2 mb-6">
+<div class="flex flex-wrap justify-center gap-2 mb-6 text-center">
 <span class="pill pill-accent">SQL Data Cleaning</span>
 <span class="pill pill-muted">MySQL</span>
 <span class="pill pill-muted">Duplicate Removal</span>
 <span class="pill pill-muted">Standardization</span>
-<span class="pill pill-muted">Date Conversion</span>
 <span class="pill pill-muted">Workforce Analytics</span>
 </div>
-<h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
+<h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-center">
 World Layoffs Data Cleaning for Business Analysis
 </h1>
-<p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed mb-8">
-Cleaned a real world global layoffs dataset in MySQL to support reliable exploratory analysis and
-business reporting. Built a raw to staging pipeline, removed duplicate rows, standardized text fields,
-handled missing values, and converted dates so the final table is ready for time series and trend analysis.
+<p class="max-w-3xl mx-auto text-sm sm:text-base text-text-secondary leading-relaxed mb-8 text-center">
+Cleaned a real-world global layoffs dataset in MySQL to support reliable exploratory analysis and
+business reporting. Built a raw-to-staging pipeline, removed duplicate rows, standardized text fields,
+handled missing values, and converted dates for time series and trend analysis.
 </p>
 <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+<div class="stat-card card-dark rounded-lg p-5 text-center">
 <div class="stat-number text-[#E06C75] mb-1">3,000+</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Records Cleaned</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Records</div>
 <div class="text-[0.65rem] text-text-secondary mt-1">Layoff events standardized for analysis</div>
 </div>
-<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
-<div class="stat-number text-[#E5A36F] mb-1">6</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Cleaning Phases</div>
+<div class="stat-card card-dark rounded-lg p-5 text-center">
+<div class="stat-number text-[#E5A36F] mb-1">5</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Cleaning phases</div>
 <div class="text-[0.65rem] text-text-secondary mt-1">From raw import to final output table</div>
 </div>
-<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+<div class="stat-card card-dark rounded-lg p-5 text-center">
 <div class="stat-number text-[#E5C07B] mb-1">100%</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Duplicate Removal</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Duplicate removal</div>
 <div class="text-[0.65rem] text-text-secondary mt-1">Exact copies dropped using window functions</div>
 </div>
-<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+<div class="stat-card card-dark rounded-lg p-5 text-center">
 <div class="stat-number text-[#E5D487] mb-1">0</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Raw Data Changes</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Raw changes</div>
 <div class="text-[0.65rem] text-text-secondary mt-1">All work done in staging layers, not source</div>
 </div>
-<div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
+<div class="stat-card card-dark rounded-lg p-5 text-center">
 <div class="stat-number text-[#61AFEF] mb-1">1</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Analytics Table</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Analytics table</div>
 <div class="text-[0.65rem] text-text-secondary mt-1">Clean, trusted dataset for BI tools</div>
 </div>
 </div>
-<div class="flex flex-wrap gap-3 text-[0.7rem] sm:text-xs text-text-secondary mb-10">
-<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
-<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>
-Database Management Practice · January 2025
+<div class="flex flex-wrap justify-center items-center gap-3 text-[0.7rem] sm:text-xs text-text-secondary mb-10 max-w-3xl mx-auto">
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Database Management Practice
 </span>
-<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
-<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>
-Tools: GitHub, MySQL, MySQL Workbench
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>MySQL, MySQL Workbench
+</span>
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>January 2025
 </span>
 </div>
 <div class="grid md:grid-cols-2 gap-6">
-<article class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+<article class="p-6 md:p-7 rounded-xl card-dark">
 <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">
 Project overview
 </p>
@@ -89,431 +89,549 @@ The layoffs dataset was assembled from multiple public sources and news reports,
 noisy and inconsistent out of the box. Entries included duplicated records, inconsistent company
 and industry labels, country names with trailing punctuation, and dates stored as text strings.
 </p>
-<p class="text-sm leading-relaxed text-text-base">
-I designed a repeatable cleaning pipeline inside MySQL that preserves the original raw table,
-runs all transformations in staging tables, and outputs a cleaned dataset that analysts can use
-for industry trends, geography based reporting, and funding related layoff patterns.
-</p>
 </article>
-<article class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+<article class="p-6 md:p-7 rounded-xl card-dark">
 <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">
 Key deliverables
 </p>
 <ul class="list-disc list-outside pl-5 space-y-1.5 text-sm text-text-base">
-<li>Raw CSV import workflow and profiling in MySQL Workbench.</li>
-<li>Staging and secondary staging tables for safe, stepwise cleaning.</li>
-<li>Duplicate removal using ROW_NUMBER() window functions.</li>
-<li>Standardization of company, industry, and country values.</li>
-<li>Logic to handle missing values and discard unusable records.</li>
-<li>Date conversion from text into native DATE type for time series analysis.</li>
-<li>Documentation of usage, testing approach, and future enhancement ideas.</li>
+<li>Raw CSV import workflow and profiling in MySQL Workbench</li>
+<li>Staging and secondary staging tables for safe, stepwise cleaning</li>
+<li>Duplicate removal using ROW_NUMBER() window functions</li>
+<li>Standardization of company, industry, and country values</li>
+<li>Logic to handle missing values and discard unusable records</li>
+<li>Date conversion from text into native DATE type for time series analysis</li>
 </ul>
 </article>
 </div>
 </div>
 </section>
-<section id=workflow class="py-12 md:py-14 border-b border-gray-800">
+<section id=workflow class="py-12 md:py-14">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<h2 class="text-2xl font-bold font-mono text-accent-cyan mb-8">
-Workflow overview
+<div class="flex items-center gap-6 mb-8">
+<div class="h-px bg-gray-700 flex-1"></div>
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
+Workflow Overview
 </h2>
+<div class="h-px bg-gray-700 flex-1"></div>
+</div>
 <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
-<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-<p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 1</p>
-<p class="text-sm font-semibold text-text-base mb-1">Raw data import</p>
-<p class="text-[0.8rem] text-text-secondary leading-relaxed">
+<div class="p-4 rounded-xl card-dark">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 1</p>
+<p class="text-sm font-semibold mb-1">Raw data import</p>
+<p class="text-xs text-text-secondary leading-relaxed">
 Loaded the layoffs CSV into MySQL, confirmed columns, and profiled data quality issues.
 </p>
 </div>
-<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-<p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 2</p>
-<p class="text-sm font-semibold text-text-base mb-1">Staging architecture</p>
-<p class="text-[0.8rem] text-text-secondary leading-relaxed">
+<div class="p-4 rounded-xl card-dark">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 2</p>
+<p class="text-sm font-semibold mb-1">Staging architecture</p>
+<p class="text-xs text-text-secondary leading-relaxed">
 Created staging copies of the raw table to isolate transformations and preserve the source.
 </p>
 </div>
-<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-<p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 3</p>
-<p class="text-sm font-semibold text-text-base mb-1">Duplicate removal</p>
-<p class="text-[0.8rem] text-text-secondary leading-relaxed">
+<div class="p-4 rounded-xl card-dark">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 3</p>
+<p class="text-sm font-semibold mb-1">Duplicate removal</p>
+<p class="text-xs text-text-secondary leading-relaxed">
 Applied window functions to identify and remove exact duplicate layoff records.
 </p>
 </div>
-<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-<p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 4</p>
-<p class="text-sm font-semibold text-text-base mb-1">Standardization & nulls</p>
-<p class="text-[0.8rem] text-text-secondary leading-relaxed">
+<div class="p-4 rounded-xl card-dark">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 4</p>
+<p class="text-sm font-semibold mb-1">Standardization & nulls</p>
+<p class="text-xs text-text-secondary leading-relaxed">
 Cleaned company, industry, and country labels and resolved missing or unusable records.
 </p>
 </div>
-<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700 text-xs">
-<p class="font-mono text-accent-cyan uppercase tracking-[0.18em] mb-1">Step 5</p>
-<p class="text-sm font-semibold text-text-base mb-1">Date conversion & output</p>
-<p class="text-[0.8rem] text-text-secondary leading-relaxed">
+<div class="p-4 rounded-xl card-dark">
+<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 5</p>
+<p class="text-sm font-semibold mb-1">Date conversion</p>
+<p class="text-xs text-text-secondary leading-relaxed">
 Converted dates to DATE, dropped helper columns, and finalized the analytics table.
 </p>
 </div>
 </div>
 </div>
 </section>
-<section id=lab class="py-14 border-b border-gray-800">
+<section id=lab class=py-14>
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<h2 class="text-2xl font-bold font-mono text-accent-cyan mb-10">
-Lab breakdown
+<div class="flex items-center gap-6 mb-10">
+<div class="h-px bg-gray-700 flex-1"></div>
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
+Lab Breakdown
 </h2>
-<div class="flex flex-wrap gap-0 border-b-2 border-gray-700 mb-10 overflow-x-auto">
-<button class="tab-button active" onclick="switchTab('raw')">01. Raw data & profiling</button>
-<button class=tab-button onclick="switchTab('staging')">02. Staging architecture</button>
-<button class=tab-button onclick="switchTab('dedupe')">03. Duplicate removal</button>
-<button class=tab-button onclick="switchTab('standardization')">04. Standardization & nulls</button>
-<button class=tab-button onclick="switchTab('dates')">05. Date conversion & output</button>
+<div class="h-px bg-gray-700 flex-1"></div>
 </div>
-<div id=tab-raw class="tab-content active space-y-10">
+<div class="flex flex-wrap gap-0 border-b-2 border-gray-700 mb-10 overflow-x-auto">
+<button class="tab-button active" onclick="switchTab('raw')">01. Raw Data & Profiling</button>
+<button class=tab-button onclick="switchTab('staging')">02. Staging Architecture</button>
+<button class=tab-button onclick="switchTab('dedupe')">03. Duplicate Removal</button>
+<button class=tab-button onclick="switchTab('standardization')">04. Standardization</button>
+<button class=tab-button onclick="switchTab('dates')">05. Date Conversion</button>
+</div>
+<div id=tab-raw class="tab-content active">
+<div class="phase-container space-y-16">
 <h3 class="text-xl font-semibold text-white">
 Phase 1 — Raw dataset overview and initial profiling
 </h3>
 <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-The original dataset captured company level layoff events with columns for location, industry,
+The original dataset captured company-level layoff events with columns for location, industry,
 total employees laid off, percent laid off, layoff date, funding stage, country, and funds raised.
 It arrived as a CSV file with no constraints and visible quality issues.
 </p>
-<section class="bg-secondary-bg border border-gray-700 rounded-xl p-6 md:p-7 text-sm text-text-secondary leading-relaxed space-y-4">
-<ul class="list-disc list-outside pl-5 space-y-1 mb-2">
-<li>Duplicate rows for the same company, location, date, and layoff counts.</li>
-<li>Inconsistent capitalization and whitespace across text fields.</li>
-<li>Country names such as <em>United States.</em> with trailing punctuation.</li>
-<li>Dates stored as text strings instead of native DATE types.</li>
+<section class="space-y-6">
+<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+<li>Duplicate rows for the same company, location, date, and layoff counts</li>
+<li>Inconsistent capitalization and whitespace across text fields</li>
+<li>Country names such as <em>United States.</em> with trailing punctuation</li>
+<li>Dates stored as text strings instead of native DATE types</li>
 </ul>
 <div class="bg-container-bg rounded-lg border border-gray-700 p-4">
 <div class=image-zoom onclick="openModal('../assets/images/WL1_RawData_CSV.png')">
 <img src=../assets/images/WL1_RawData_CSV.png alt="World Layoffs raw data CSV preview" class="rounded-lg mx-auto mb-2 max-w-full object-contain" />
 </div>
 <p class="text-xs text-text-secondary text-center italic">
-Preview of the world layoffs CSV as originally delivered. Columns include company, location,
-industry, layoff counts, date, stage, country, and funds raised.
+Preview of the world layoffs CSV as originally delivered with company, location, industry, and layoff data.
 </p>
 </div>
 <div class="bg-container-bg rounded-lg border border-gray-700 p-4">
 <div class=image-zoom onclick="openModal('../assets/images/WL1_RawTable_MySQL.png')">
-<img src=../assets/images/WL1_RawTable_MySQL.png alt="World Layoffs raw table in MySQL Workbench" class="rounded-lg mx-auto mb-2 max-w-full object-contain" />
+<img src=../assets/images/WL1_RawTable_MySQL.png alt="World Layoffs raw table in MySQL" class="rounded-lg mx-auto mb-2 max-w-full object-contain" />
 </div>
 <p class="text-xs text-text-secondary text-center italic">
-The same data imported into a MySQL database (<strong>world_layoffs</strong>) and exposed as the
-<strong>layoffs</strong> table. This raw table is kept unchanged as the reference source.
+The same data imported into MySQL database (world_layoffs) and exposed as the layoffs table.
 </p>
 </div>
 </section>
 </div>
-<div id=tab-staging class="tab-content space-y-10">
+</div>
+<div id=tab-staging class=tab-content>
+<div class="phase-container space-y-16">
 <h3 class="text-xl font-semibold text-white">
 Phase 2 — Staging and cleaning setup
 </h3>
 <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-To protect the original layoff records, I created staging tables that mirror the raw structure.
+To protect the original layoff records, staging tables were created that mirror the raw structure.
 All cleaning steps run inside these staging layers, which makes the pipeline repeatable and easy
 to debug without risking the source data.
 </p>
-<section class="bg-secondary-bg border border-gray-700 rounded-xl p-6 md:p-7 text-sm text-text-secondary leading-relaxed space-y-4">
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto text-[0.8rem]">
-<code>-- Duplicate raw table into a staging table
-CREATE TABLE layoffs_staging LIKE layoffs;
-
-INSERT INTO layoffs_staging
-SELECT *
-FROM layoffs;
-
--- Create a second staging table for stepwise cleaning
-CREATE TABLE layoffs_staging2 (
-  company               TEXT,
-  location              TEXT,
-  industry              TEXT,
-  total_laid_off        INT DEFAULT NULL,
-  percentage_laid_off   TEXT,
-  `date`                TEXT,
-  stage                 TEXT,
-  country               TEXT,
-  funds_raised_millions INT DEFAULT NULL
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-
-INSERT INTO layoffs_staging2
-SELECT *
-FROM layoffs_staging;</code></pre>
+<section class="space-y-6">
+<div class="card-dark rounded-lg p-4">
+<code class="text-xs text-accent-success font-mono block leading-relaxed">
+-- Duplicate raw table into a staging table<br>
+CREATE TABLE layoffs_staging LIKE layoffs;<br><br>
+INSERT INTO layoffs_staging<br>
+SELECT *<br>
+FROM layoffs;<br><br>
+-- Create a second staging table for stepwise cleaning<br>
+CREATE TABLE layoffs_staging2 (<br>
+&nbsp;&nbsp;company&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEXT,<br>
+&nbsp;&nbsp;location&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEXT,<br>
+&nbsp;&nbsp;industry&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEXT,<br>
+&nbsp;&nbsp;total_laid_off&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INT DEFAULT NULL,<br>
+&nbsp;&nbsp;percentage_laid_off&nbsp;&nbsp;&nbsp;TEXT,<br>
+&nbsp;&nbsp;`date`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEXT,<br>
+&nbsp;&nbsp;stage&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEXT,<br>
+&nbsp;&nbsp;country&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEXT,<br>
+&nbsp;&nbsp;funds_raised_millions INT DEFAULT NULL<br>
+);<br><br>
+INSERT INTO layoffs_staging2<br>
+SELECT *<br>
+FROM layoffs_staging;
+</code>
+</div>
 <div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
 <div class=image-zoom onclick="openModal('../assets/images/WL1_StagingTable.png')">
-<img src=../assets/images/WL1_StagingTable.png alt="Staging table for world layoffs data" class="rounded-lg mx-auto mb-2 max-w-full object-contain" />
+<img src=../assets/images/WL1_StagingTable.png alt="Staging table" class="rounded-lg mx-auto mb-2 max-w-full object-contain" />
 </div>
 <p class="text-xs text-text-secondary italic">
-View of the <strong>layoffs_staging2</strong> table in MySQL Workbench after initial copy from
-the raw table. This is the workspace for all subsequent cleaning logic.
+View of the layoffs_staging2 table in MySQL Workbench after initial copy from the raw table.
 </p>
 </div>
 </section>
 </div>
-<div id=tab-dedupe class="tab-content space-y-10">
+</div>
+<div id=tab-dedupe class=tab-content>
+<div class="phase-container space-y-16">
 <h3 class="text-xl font-semibold text-white">
 Phase 3 — Removing duplicate records
 </h3>
 <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
 Exact duplicates occur when the same company, location, industry, layoff counts, date, stage,
-country, and funding appear more than once. I used a common table expression with ROW_NUMBER()
-to flag these cases and then removed all but a single instance.
+country, and funding appear more than once. A CTE with ROW_NUMBER() was used to flag these cases
+and then remove all but a single instance.
 </p>
-<section class="bg-secondary-bg border border-gray-700 rounded-xl p-6 md:p-7 text-sm text-text-secondary leading-relaxed space-y-4">
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto text-[0.8rem]">
-<code>-- Step 1: Removing duplicates
-
--- Identify duplicates using ROW_NUMBER() and partition by key fields
-WITH duplicate_cte AS (
-    SELECT *,
-           ROW_NUMBER() OVER (
-               PARTITION BY company,
-                            location,
-                            industry,
-                            total_laid_off,
-                            percentage_laid_off,
-                            `date`,
-                            stage,
-                            country,
-                            funds_raised_millions
-           ) AS row_num
-    FROM layoffs_staging
-)
-SELECT *
-FROM duplicate_cte
+<section class="space-y-6">
+<div class="card-dark rounded-lg p-4">
+<code class="text-xs text-accent-success font-mono block leading-relaxed">
+-- Identify duplicates using ROW_NUMBER()<br>
+WITH duplicate_cte AS (<br>
+&nbsp;&nbsp;&nbsp;&nbsp;SELECT *,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ROW_NUMBER() OVER (<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PARTITION BY company,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;location,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;industry,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;total_laid_off,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`date`<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;) AS row_num<br>
+&nbsp;&nbsp;&nbsp;&nbsp;FROM layoffs_staging<br>
+)<br>
+SELECT *<br>
+FROM duplicate_cte<br>
+WHERE row_num &gt; 1;<br><br>
+-- Remove duplicate rows where row_num &gt; 1<br>
+DELETE<br>
+FROM layoffs_staging2<br>
 WHERE row_num &gt; 1;
-
--- Insert data into layoffs_staging2 including the row number
-INSERT INTO layoffs_staging2
-SELECT *,
-       ROW_NUMBER() OVER (
-           PARTITION BY company,
-                        location,
-                        industry,
-                        total_laid_off,
-                        percentage_laid_off,
-                        `date`,
-                        stage,
-                        country,
-                        funds_raised_millions
-       ) AS row_num
-FROM layoffs_staging;
-
--- Remove duplicate rows where row_num &gt; 1
-DELETE
-FROM layoffs_staging2
-WHERE row_num &gt; 1;
-
--- Verify the cleaned dataset
-SELECT *
-FROM layoffs_staging2;</code></pre>
-<p class="text-xs text-text-secondary italic">
-After this step, every layoff event is represented once for each unique company, location,
-industry, date, and layoff combination.
+</code>
+</div>
+<p class="text-xs text-text-secondary italic text-center">
+After this step, every layoff event is represented once for each unique company, location, industry, and date combination.
 </p>
 </section>
 </div>
-<div id=tab-standardization class="tab-content space-y-10">
+</div>
+<div id=tab-standardization class=tab-content>
+<div class="phase-container space-y-16">
 <h3 class="text-xl font-semibold text-white">
 Phase 4 — Standardizing text fields and handling missing values
 </h3>
 <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
 Consistent text values and meaningful non-null records are essential for trustworthy analysis.
-In this phase I standardized company, industry, and country fields, then backfilled and removed
-records to ensure analysts are working with coherent data.
+In this phase company, industry, and country fields were standardized, then records were backfilled
+and removed to ensure analysts work with coherent data.
 </p>
-<section class="bg-secondary-bg border border-gray-700 rounded-xl p-6 md:p-7 text-sm text-text-secondary leading-relaxed space-y-6">
+<section class="space-y-8">
 <div>
-<h4 class="text-text-base font-semibold mb-2">
+<h4 class="text-lg font-semibold text-white mb-4">
 4.1 — Company, industry, and country standardization
 </h4>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto text-[0.8rem]">
-<code>-- Standardize company names by trimming leading and trailing whitespace
-UPDATE layoffs_staging2
-SET company = TRIM(company);
-
--- Consolidate variations of industries into a single category (Crypto)
-UPDATE layoffs_staging2
-SET industry = 'Crypto'
-WHERE industry LIKE 'Crypto%';
-
--- Remove inconsistent formatting in the country field
--- Example: "United States." becomes "United States"
-UPDATE layoffs_staging2
-SET country = TRIM(TRAILING '.' FROM country)
-WHERE country LIKE 'United States%';</code></pre>
+<div class="card-dark rounded-lg p-4">
+<code class="text-xs text-accent-success font-mono block leading-relaxed">
+-- Standardize company names by trimming whitespace<br>
+UPDATE layoffs_staging2<br>
+SET company = TRIM(company);<br><br>
+-- Consolidate industry variations (Crypto)<br>
+UPDATE layoffs_staging2<br>
+SET industry = 'Crypto'<br>
+WHERE industry LIKE 'Crypto%';<br><br>
+-- Remove inconsistent formatting in country field<br>
+UPDATE layoffs_staging2<br>
+SET country = TRIM(TRAILING '.' FROM country)<br>
+WHERE country LIKE 'United States%';
+</code>
+</div>
 <p class="text-xs text-text-secondary italic mt-2">
-These standardization steps allow analysts to roll up layoffs by industry and country without
-losing records to minor spelling or punctuation differences.
+These standardization steps allow analysts to roll up layoffs by industry and country without losing records to minor spelling differences.
 </p>
 </div>
 <div>
-<h4 class="text-text-base font-semibold mb-2">
+<h4 class="text-lg font-semibold text-white mb-4">
 4.2 — Filling gaps and removing unusable records
 </h4>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto text-[0.8rem]">
-<code>-- Populate missing industry fields by self joining on company and location
-UPDATE layoffs_staging2 t1
-JOIN layoffs_staging2 t2
-  ON t1.company = t2.company
- AND t1.location = t2.location
-SET t1.industry = t2.industry
-WHERE t1.industry IS NULL
-  AND t2.industry IS NOT NULL;
-
--- Remove rows where both total_laid_off and percentage_laid_off are NULL
-DELETE
-FROM layoffs_staging2
-WHERE total_laid_off IS NULL
-  AND percentage_laid_off IS NULL;</code></pre>
+<div class="card-dark rounded-lg p-4">
+<code class="text-xs text-accent-success font-mono block leading-relaxed">
+-- Populate missing industry fields by self joining<br>
+UPDATE layoffs_staging2 t1<br>
+JOIN layoffs_staging2 t2<br>
+&nbsp;&nbsp;ON t1.company = t2.company<br>
+&nbsp;AND t1.location = t2.location<br>
+SET t1.industry = t2.industry<br>
+WHERE t1.industry IS NULL<br>
+&nbsp;&nbsp;AND t2.industry IS NOT NULL;<br><br>
+-- Remove rows where both layoff metrics are NULL<br>
+DELETE<br>
+FROM layoffs_staging2<br>
+WHERE total_laid_off IS NULL<br>
+&nbsp;&nbsp;AND percentage_laid_off IS NULL;
+</code>
+</div>
 <p class="text-xs text-text-secondary italic mt-2">
-This step retains informative records while discarding entries that cannot contribute to
-quantitative analysis.
+This step retains informative records while discarding entries that cannot contribute to quantitative analysis.
 </p>
 </div>
 </section>
 </div>
-<div id=tab-dates class="tab-content space-y-10">
+</div>
+<div id=tab-dates class=tab-content>
+<div class="phase-container space-y-16">
 <h3 class="text-xl font-semibold text-white">
 Phase 5 — Date conversion and final analytics output
 </h3>
 <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-To support time based analysis, the date column was converted from text to a native DATE type and
-temporary helper fields were dropped. The result is a clean, analysis ready table for BI tools.
+To support time-based analysis, the date column was converted from text to a native DATE type and
+temporary helper fields were dropped. The result is a clean, analysis-ready table for BI tools.
 </p>
-<section class="bg-secondary-bg border border-gray-700 rounded-xl p-6 md:p-7 text-sm text-text-secondary leading-relaxed space-y-4">
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 overflow-x-auto text-[0.8rem]">
-<code>-- Convert the date column from TEXT to DATE format
-UPDATE layoffs_staging2
-SET `date` = STR_TO_DATE(`date`, '%m/%d/%Y');
-
--- Modify the date column type to DATE
-ALTER TABLE layoffs_staging2
-MODIFY COLUMN `date` DATE;
-
--- Drop the unnecessary row_num column from the table
-ALTER TABLE layoffs_staging2
-DROP COLUMN row_num;
-
--- Verify the final cleaned table
-SELECT *
-FROM layoffs_staging2;</code></pre>
-<p class="text-xs text-text-secondary italic">
-At this point, <strong>layoffs_staging2</strong> serves as the cleaned, analysis ready table that can be
-queried directly or exported into BI tools such as Tableau or Power BI.
+<section class="space-y-6">
+<div class="card-dark rounded-lg p-4">
+<code class="text-xs text-accent-success font-mono block leading-relaxed">
+-- Convert the date column from TEXT to DATE format<br>
+UPDATE layoffs_staging2<br>
+SET `date` = STR_TO_DATE(`date`, '%m/%d/%Y');<br><br>
+-- Modify the date column type to DATE<br>
+ALTER TABLE layoffs_staging2<br>
+MODIFY COLUMN `date` DATE;<br><br>
+-- Drop the unnecessary row_num column<br>
+ALTER TABLE layoffs_staging2<br>
+DROP COLUMN row_num;<br><br>
+-- Verify the final cleaned table<br>
+SELECT *<br>
+FROM layoffs_staging2;
+</code>
+</div>
+<p class="text-xs text-text-secondary italic text-center">
+At this point, layoffs_staging2 serves as the cleaned, analysis-ready table for BI tools like Tableau or Power BI.
 </p>
 </section>
 </div>
 </div>
+</div>
 </section>
-<section id=insights class="pt-12 md:pt-16 pb-12">
+<section id=insights class="pt-14 md:pt-16 pb-6">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center gap-6 mb-6">
+<div class="h-px bg-gray-700 flex-1"></div>
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
+Data Cleaning Impact
+</h2>
+<div class="h-px bg-gray-700 flex-1"></div>
+</div>
+<p class="text-text-secondary text-sm max-w-3xl mb-8 mx-auto text-center">
+Systematic data cleaning transformed a noisy, duplicate-heavy CSV into a structured and dependable
+database table ready for analysis and reporting.
+</p>
+<div class="card-dark rounded-xl p-8 mb-10">
+<div class="flex items-center justify-between mb-8 border-b border-gray-800 pb-4">
+<h3 class="text-sm font-bold text-white uppercase tracking-widest">
+Key Insights Enabled
+</h3>
+<span class="text-xs text-text-secondary font-mono">5 CAPABILITIES</span>
+</div>
+<div class="grid md:grid-cols-2 gap-x-12 gap-y-8">
+<div class=space-y-6>
+<div>
+<span class="text-red-400 font-mono text-xs mb-1 block tracking-wider">INDUSTRY TRENDS</span>
+<p class="text-white leading-relaxed text-sm">
+Industry-level trends showing which sectors experienced the most layoffs over time.
+</p>
+</div>
+<div>
+<span class="text-orange-400 font-mono text-xs mb-1 block tracking-wider">GEOGRAPHIC ANALYSIS</span>
+<p class="text-white leading-relaxed text-sm">
+Geographic comparisons of layoffs across countries after standardizing country names.
+</p>
+</div>
+<div>
+<span class="text-orange-500 font-mono text-xs mb-1 block tracking-wider">FUNDING STAGE INSIGHTS</span>
+<p class="text-white leading-relaxed text-sm">
+Analysis by funding stage to see how capital access relates to layoffs.
+</p>
+</div>
+</div>
+<div class=space-y-6>
+<div>
+<span class="text-yellow-500 font-mono text-xs mb-1 block tracking-wider">TIME SERIES READY</span>
+<p class="text-white leading-relaxed text-sm">
+Ability to build time series charts from the cleaned DATE column and group by year or quarter.
+</p>
+</div>
+<div>
+<span class="text-green-400 font-mono text-xs mb-1 block tracking-wider">TRUSTWORTHY METRICS</span>
+<p class="text-white leading-relaxed text-sm">
+More trustworthy totals and averages now that duplicates and unusable rows are removed.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6 mb-6">
+<div class="h-px bg-gray-700 flex-1"></div>
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
+Architecture & Usage
+</h2>
+<div class="h-px bg-gray-700 flex-1"></div>
+</div>
+<div class="grid md:grid-cols-2 gap-6 mb-8">
+<div class="card-dark rounded-xl p-6 text-sm text-text-secondary leading-relaxed">
+<h3 class="text-base font-semibold text-text-base mb-3">Architecture overview</h3>
+<ul class="list-disc list-outside pl-5 space-y-2 marker:text-white">
+<li><span class="font-semibold text-text-base">Dataset</span> — World layoffs CSV file hosted in GitHub</li>
+<li><span class="font-semibold text-text-base">Database</span> — MySQL schema world_layoffs with raw and staging tables</li>
+<li><span class="font-semibold text-text-base">Client</span> — MySQL Workbench for SQL execution and inspection</li>
+<li><span class="font-semibold text-text-base">Scripts</span> — Cleaning steps stored in version control for repeatability</li>
+</ul>
+</div>
+<div class="card-dark rounded-xl p-6 text-sm text-text-secondary leading-relaxed">
+<h3 class="text-base font-semibold text-text-base mb-3">Data flow</h3>
+<ul class="list-disc list-outside pl-5 space-y-2 marker:text-white">
+<li>CSV → raw table layoffs</li>
+<li>Raw table → layoffs_staging for safe experimentation</li>
+<li>Staging → layoffs_staging2 with deduplication and cleaning logic</li>
+<li>Clean table → analytics queries, dashboards, and exported datasets</li>
+</ul>
+</div>
+</div>
+<div class="grid md:grid-cols-3 gap-6">
+<div class="card-dark rounded-xl p-6">
+<h4 class="text-sm font-bold text-accent-red uppercase tracking-wider mb-2">
+Tier 1: Setup
+</h4>
+<p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
+Objective: Configure the data cleaning environment and prepare raw data.
+</p>
+<ul class="space-y-4 text-sm text-text-secondary">
+<li class="flex gap-3">
+<span class="text-accent-red font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">System requirements</strong>
+MySQL database server with support for window functions.</span>
+</li>
+<li class="flex gap-3">
+<span class="text-accent-red font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Initial import</strong>
+Import the raw layoffs CSV into a MySQL database.</span>
+</li>
+<li class="flex gap-3">
+<span class="text-accent-red font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Script execution</strong>
+Run staging, deduplication, and cleaning scripts in order.</span>
+</li>
+</ul>
+</div>
+<div class="card-dark rounded-xl p-6">
+<h4 class="text-sm font-bold text-accent-action uppercase tracking-wider mb-2">
+Tier 2: Analysis
+</h4>
+<p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
+Objective: Query the cleaned data to extract business insights.
+</p>
+<ul class="space-y-4 text-sm text-text-secondary">
+<li class="flex gap-3">
+<span class="text-accent-action font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Clean table access</strong>
+Use layoffs_staging2 as the cleaned table for all analysis.</span>
+</li>
+<li class="flex gap-3">
+<span class="text-accent-action font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Aggregation queries</strong>
+Aggregate by industry, country, year, or funding stage.</span>
+</li>
+<li class="flex gap-3">
+<span class="text-accent-action font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Dashboard exports</strong>
+Export results to dashboards or notebooks for storytelling.</span>
+</li>
+</ul>
+</div>
+<div class="card-dark rounded-xl p-6">
+<h4 class="text-sm font-bold text-accent-success uppercase tracking-wider mb-2">
+Tier 3: Enhancement
+</h4>
+<p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
+Objective: Extend the pipeline for ongoing data operations.
+</p>
+<ul class="space-y-4 text-sm text-text-secondary">
+<li class="flex gap-3">
+<span class="text-accent-success font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Automated ETL</strong>
+Build automated jobs to rerun cleaning scripts on updated data.</span>
+</li>
+<li class="flex gap-3">
+<span class="text-accent-success font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">Real-time integration</strong>
+Connect to upstream sources if data is refreshed regularly.</span>
+</li>
+<li class="flex gap-3">
+<span class="text-accent-success font-bold">•</span>
+<span class=leading-relaxed>
+<strong class="text-white block text-xs mb-0.5">BI connections</strong>
+Direct connections to BI tools for scheduled reporting.</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class="pt-12 md:pt-16 pb-12">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
 <div>
-<div class="flex items-center gap-4 mb-8">
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap">Usage instructions</h2>
-<div class="h-px bg-gray-700 w-full"></div>
+<div class="flex items-center gap-6 mb-8">
+<div class="h-px bg-gray-700 flex-1"></div>
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
+Key insights
+</h2>
+<div class="h-px bg-gray-700 flex-1"></div>
 </div>
-<div class="grid md:grid-cols-2 gap-6">
-<div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 text-sm text-text-secondary leading-relaxed">
-<p class="text-xs font-mono text-accent-cyan mb-2 uppercase tracking-[0.18em]">
-System requirements
-</p>
-<ul class="list-disc list-outside pl-5 space-y-1">
-<li>MySQL database server with support for window functions.</li>
-<li>GUI client such as MySQL Workbench for running scripts and viewing tables.</li>
-<li>Standard workstation hardware capable of handling the dataset volume.</li>
-</ul>
-<p class="text-xs font-mono text-accent-cyan mt-5 mb-2 uppercase tracking-[0.18em]">
-Setup
-</p>
-<ul class="list-disc list-outside pl-5 space-y-1">
-<li>Import the raw layoffs CSV into a database (schema: <strong>world_layoffs</strong>).</li>
-<li>Create the <strong>layoffs</strong> table and load the file.</li>
-<li>Run the staging, deduplication, standardization, and cleanup scripts in order.</li>
-</ul>
-</div>
-<div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 text-sm text-text-secondary leading-relaxed">
-<p class="text-xs font-mono text-accent-cyan mb-2 uppercase tracking-[0.18em]">
-Querying the data
-</p>
-<ul class="list-disc list-outside pl-5 space-y-1">
-<li>Use <strong>layoffs_staging2</strong> as the cleaned table for all analysis.</li>
-<li>Aggregate by industry, country, year, or funding stage to explore layoff trends.</li>
-<li>Export results to dashboards or notebooks for deeper business storytelling.</li>
-</ul>
-<p class="text-xs font-mono text-accent-cyan mt-5 mb-2 uppercase tracking-[0.18em]">
-Future enhancements
-</p>
-<ul class="list-disc list-outside pl-5 space-y-1">
-<li>Automated ETL jobs to rerun the cleaning scripts on updated data.</li>
-<li>Real time integration if upstream sources are refreshed regularly.</li>
-<li>Direct connections to BI tools for scheduled reporting on layoff trends.</li>
-</ul>
-</div>
-</div>
-</div>
-<div>
-<div class="flex items-center gap-4 mb-8">
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap">Architecture & insights</h2>
-<div class="h-px bg-gray-700 w-full"></div>
-</div>
-<div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700 grid md:grid-cols-2 gap-8 text-sm text-text-secondary leading-relaxed mb-8">
-<div>
-<h3 class="text-base font-semibold text-text-base mb-2">Architecture overview</h3>
-<ul class="list-disc list-outside pl-5 space-y-1">
-<li><span class="font-semibold text-text-base">Dataset</span> — World layoffs CSV file hosted in GitHub.</li>
-<li><span class="font-semibold text-text-base">Database</span> — MySQL schema <strong>world_layoffs</strong> with raw and staging tables.</li>
-<li><span class="font-semibold text-text-base">Client</span> — MySQL Workbench for SQL execution and inspection.</li>
-<li><span class="font-semibold text-text-base">Scripts</span> — Cleaning steps stored in version control for repeatability.</li>
-</ul>
-</div>
-<div>
-<h3 class="text-base font-semibold text-text-base mb-2">Data flow</h3>
-<ul class="list-disc list-outside pl-5 space-y-1">
-<li>CSV → raw table <strong>layoffs</strong>.</li>
-<li>Raw table → <strong>layoffs_staging</strong> for safe experimentation.</li>
-<li>Staging → <strong>layoffs_staging2</strong> with deduplication and cleaning logic.</li>
-<li>Clean table → analytics queries, dashboards, and exported datasets.</li>
-</ul>
-</div>
-</div>
-<div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
-<h3 class="text-base font-semibold text-white mb-3">Key insights enabled</h3>
-<ul class="list-disc list-outside pl-5 space-y-2 text-sm sm:text-[0.95rem] text-text-secondary">
-<li>Industry level trends showing which sectors experienced the most layoffs over time.</li>
-<li>Geographic comparisons of layoffs across countries after standardizing country names.</li>
-<li>Analysis by funding stage (Seed, Series A, Series B, etc.) to see how capital access relates to layoffs.</li>
-<li>Ability to build time series charts from the cleaned DATE column and group by year or quarter.</li>
-<li>More trustworthy totals and averages now that duplicates and unusable rows are removed.</li>
+<div class="p-6 md:p-7 rounded-xl card-dark">
+<ul class="list-disc list-outside pl-5 space-y-2 text-white text-sm sm:text-[0.95rem] leading-relaxed">
+<li>Staging architecture protects raw data while enabling iterative cleaning operations.</li>
+<li>Window functions provide elegant solution for identifying and removing exact duplicates.</li>
+<li>Text standardization ensures consistent aggregation across industry and geographic dimensions.</li>
+<li>Date type conversion enables native time series operations and temporal analysis.</li>
+<li>Systematic null handling ensures only informative records remain in the final dataset.</li>
 </ul>
 </div>
 </div>
 <div>
-<div class="flex items-center gap-4 mb-8">
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap">Skills demonstrated</h2>
-<div class="h-px bg-gray-700 w-full"></div>
+<div class="flex items-center gap-6 mb-8">
+<div class="h-px bg-gray-700 flex-1"></div>
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
+Skills demonstrated
+</h2>
+<div class="h-px bg-gray-700 flex-1"></div>
 </div>
-<div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+<div class="p-6 md:p-7 rounded-xl card-dark">
 <div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">MySQL</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">SQL data cleaning</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Window functions</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Text standardization</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Null handling</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Date conversion</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">ETL staging design</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Analytics preparation</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+MySQL
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+SQL Data Cleaning
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Window Functions
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Text Standardization
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Null Handling
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Date Conversion
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+ETL Staging Design
+</span>
+<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
+Analytics Preparation
+</span>
 </div>
 </div>
 </div>
-<div>
-<div class="bg-secondary-bg border border-white/30 rounded-2xl p-6 shadow-lg">
-<h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-white">
+</div>
+</section>
+<section class="pb-12 md:pb-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center gap-6 mb-8">
+<div class="h-px bg-gray-700 flex-1"></div>
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
 Summary
-</h3>
-<p class="text-sm sm:text-[0.95rem] text-text-secondary leading-relaxed">
-This World Layoffs SQL project turns a noisy, duplicate heavy CSV into a structured and dependable
+</h2>
+<div class="h-px bg-gray-700 flex-1"></div>
+</div>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="card-dark rounded-xl p-6">
+<p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
+This World Layoffs SQL project turns a noisy, duplicate-heavy CSV into a structured and dependable
 database table. By introducing staging layers, using window functions for deduplication, cleaning
 text fields, resolving missing values, and converting dates into a proper type, the final dataset
 now supports accurate industry, geography, and funding stage insights. It gives decision makers a
@@ -526,11 +644,9 @@ solid base for dashboards, time series analysis, and deeper workforce trend inve
 </a>
 </div>
 </div>
-</div>
 </section>
-</main>
-<script>function scrollToSection(id){const target=document.getElementById(id);if(!target)return;target.scrollIntoView({behavior:"smooth",block:"start"});const dots=document.querySelectorAll(".nav-dot");const sections=["hero","workflow","lab","insights"];dots.forEach((dot,idx)=>{dot.classList.toggle("active",sections[idx]===id);});}
-function openModal(src){const modal=document.getElementById("imageModal");const img=document.getElementById("modalImage");img.src=src;modal.classList.add("active");}
-function closeModal(){const modal=document.getElementById("imageModal");modal.classList.remove("active");const img=document.getElementById("modalImage");img.src="";}</script>
+<script>function scrollToSection(id){const target=document.getElementById(id);if(!target)return;target.scrollIntoView({behavior:'smooth',block:'start'});const dots=document.querySelectorAll('.nav-dot');const sections=['hero','workflow','lab','insights'];dots.forEach((dot,idx)=>{dot.classList.toggle('active',sections[idx]===id);});}
+function openModal(src){const modal=document.getElementById('imageModal');const img=document.getElementById('modalImage');img.src=src;modal.classList.add('active');}
+function closeModal(){const modal=document.getElementById('imageModal');modal.classList.remove('active');const img=document.getElementById('modalImage');img.src='';}</script>
 </body>
 </html>
