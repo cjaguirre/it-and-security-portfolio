@@ -7,7 +7,7 @@
 <script>function switchTab(tabId){document.querySelectorAll('.tab-button').forEach(btn=>{btn.classList.remove('active');});document.querySelectorAll('.tab-content').forEach(content=>{content.classList.remove('active');});const activeButton=[...document.querySelectorAll('.tab-button')].find(btn=>btn.getAttribute('onclick')&&btn.getAttribute('onclick').includes(tabId));if(activeButton)activeButton.classList.add('active');const target=document.getElementById(`tab-${tabId}`);if(target)target.classList.add('active');}</script>
 <script src=https://cdn.tailwindcss.com></script>
 <script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)",}}}};</script>
-<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;--functional-action:#61afef;--functional-success:#98c379;--accent-red:#e06c75;--container-bg:#171717;background-color:var(--bg-default);color:var(--text-base)}body{font-family:"Inter",sans-serif;background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center;background-attachment:fixed;min-height:100vh}.pill{border-radius:999px;padding:.2rem .7rem;border:1px solid rgba(171,178,191,0.6);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em}.pill-muted{color:var(--text-secondary);background-color:rgba(23,23,23,0.95)}.pill-accent{color:var(--accent-structural);background-color:rgba(23,23,23,0.95);border-color:rgba(217,217,217,0.9)}.tab-button{padding:1rem 1.5rem;background:transparent;border:0;color:var(--text-secondary);font-family:"Inconsolata",monospace;cursor:pointer;transition:all .3s ease;border-bottom:3px solid transparent;white-space:nowrap}.tab-button:hover{color:var(--functional-action);background:rgba(97,175,239,0.05)}.tab-button.active{color:var(--functional-action);border-bottom-color:var(--functional-action)}.tab-content{display:none;animation:fadeSlideIn .4s ease-out}.tab-content.active{display:block}@keyframes fadeSlideIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}.stat-card{position:relative;overflow:hidden}.stat-number{font-size:2.5rem;font-weight:800;font-family:"Inconsolata",monospace}.image-zoom{cursor:pointer;transition:all .3s ease}.image-zoom:hover{transform:scale(1.02);box-shadow:0 10px 40px rgba(97,175,239,0.3)}.modal{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.95)}.modal.active{display:flex;align-items:center;justify-content:center}.modal-content{max-width:95%;max-height:95%;border-radius:8px}.severity-critical,.severity-high,.severity-medium,.severity-low,.severity-info{padding:.25rem .75rem;border-radius:999px;font-size:.7rem;text-transform:uppercase}.severity-critical{background:rgba(185,28,28,0.15);border:1px solid #b91c1c;color:#b91c1c}.severity-high{background:rgba(194,65,12,0.15);border:1px solid #c2410c;color:#c2410c}.severity-medium{background:rgba(249,115,22,0.15);border:1px solid #f97316;color:#f97316}.severity-low{background:rgba(234,179,8,0.15);border:1px solid #eab308;color:#eab308}.severity-info{background:rgba(59,130,246,0.15);border:1px solid #3b82f6;color:#3b82f6}.collapsible-content{max-height:0;overflow:hidden;transition:max-height .4s ease-out,margin .2s ease;margin:0!important}.collapsible-content.open{max-height:10000px;margin:1.75rem 0 2rem 0}.nav-dots{position:fixed;right:2rem;top:50%;transform:translateY(-50%);z-index:100}.nav-dot{width:10px;height:10px;border-radius:50%;background:var(--text-secondary);margin:.75rem 0;cursor:pointer;transition:all .3s ease}.nav-dot:hover,.nav-dot.active{background:var(--functional-action);transform:scale(1.4)}@media(max-width:768px){.nav-dots{display:none}}.ring-anim{animation:fadeInRing 1.2s ease-out forwards;opacity:0}@keyframes fadeInRing{to{opacity:1}}.phase-container{background:var(--container-bg);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;padding:2.5rem;box-shadow:0 12px 40px rgba(0,0,0,0.35)}.card-dark{background:var(--container-bg);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;box-shadow:0 12px 40px rgba(0,0,0,0.35)}pre code{font-family:"Inconsolata",monospace;font-size:.8rem}</style>
+<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;--functional-action:#61afef;--functional-success:#98c379;--accent-red:#e06c75;--container-bg:#171717;background-color:var(--bg-default);color:var(--text-base)}body{font-family:"Inter",sans-serif;background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center;background-attachment:fixed;min-height:100vh}.pill{border-radius:999px;padding:.2rem .7rem;border:1px solid rgba(171,178,191,0.6);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em}.pill-muted{color:var(--text-secondary);background-color:rgba(23,23,23,0.95)}.pill-accent{color:var(--accent-structural);background-color:rgba(23,23,23,0.95);border-color:rgba(217,217,217,0.9)}.tab-button{padding:1rem 1.5rem;background:transparent;border:0;color:var(--text-secondary);font-family:"Inconsolata",monospace;cursor:pointer;transition:all .3s ease;border-bottom:3px solid transparent;white-space:nowrap}.tab-button:hover{color:var(--functional-action);background:rgba(97,175,239,0.05)}.tab-button.active{color:var(--functional-action);border-bottom-color:var(--functional-action)}.tab-content{display:none;animation:fadeSlideIn .4s ease-out}.tab-content.active{display:block}@keyframes fadeSlideIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}.stat-card{position:relative;overflow:hidden}.stat-number{font-size:2.5rem;font-weight:800;font-family:"Inconsolata",monospace}.image-zoom{cursor:pointer;transition:all .3s ease}.image-zoom:hover{transform:scale(1.02);box-shadow:0 10px 40px rgba(97,175,239,0.3)}.modal{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.95)}.modal.active{display:flex;align-items:center;justify-content:center}.modal-content{max-width:95%;max-height:95%;border-radius:8px}.severity-critical,.severity-high,.severity-medium,.severity-low,.severity-info{padding:.25rem .75rem;border-radius:999px;font-size:.7rem;text-transform:uppercase}.severity-critical{background:rgba(185,28,28,0.15);border:1px solid #b91c1c;color:#b91c1c}.severity-high{background:rgba(194,65,12,0.15);border:1px solid #c2410c;color:#c2410c}.severity-medium{background:rgba(249,115,22,0.15);border:1px solid #f97316;color:#f97316}.severity-low{background:rgba(234,179,8,0.15);border:1px solid #eab308;color:#eab308}.severity-info{background:rgba(59,130,246,0.15);border:1px solid #3b82f6;color:#3b82f6}.collapsible-content{max-height:0;overflow:hidden;transition:max-height .4s ease-out,margin .2s ease;margin:0!important}.collapsible-content.open{max-height:10000px;margin:1.75rem 0 2rem 0}.nav-dots{position:fixed;right:2rem;top:50%;transform:translateY(-50%);z-index:100}.nav-dot{width:10px;height:10px;border-radius:50%;background:var(--text-secondary);margin:.75rem 0;cursor:pointer;transition:all .3s ease}.nav-dot:hover,.nav-dot.active{background:var(--functional-action);transform:scale(1.4)}@media(max-width:768px){.nav-dots{display:none}}.ring-anim{animation:fadeInRing 1.2s ease-out forwards;opacity:0}@keyframes fadeInRing{to{opacity:1}}.phase-container{background:var(--container-bg);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;padding:2.5rem;box-shadow:0 12px 40px rgba(0,0,0,0.35)}.card-dark{background:var(--container-bg);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;box-shadow:0 12px 40px rgba(0,0,0,0.35)}</style>
 </head>
 <body class=text-text-base>
 <div class=nav-dots>
@@ -183,7 +183,7 @@ Phase 1 — Exploring the raw customer file
 </h3>
 <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
 The notebook begins with a simple question: what does each row represent and which fields might help
-predict churn. The confirmation was made that every record maps to a single customer and that the file includes
+predict churn. It was confirmed that every record maps to a single customer and that the file includes
 service portfolio, contract style, billing amounts and a churn outcome.
 </p>
 <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
@@ -250,12 +250,12 @@ TotalCharges column, which arrives as text and includes blank entries for new cu
 2.1 — Converting TotalCharges and dropping incomplete records
 </h4>
 <p class="text-sm text-text-secondary leading-relaxed">
-TotalCharges was cast to a numeric type and invalid strings were allowed to turn into missing values.
+TotalCharges was cast to a numeric type and invalid strings were turned into missing values.
 Those rows were then removed so the model only trains on customers with a consistent
 billing history. The customer identifier column was also dropped since it carries no
 predictive value.
 </p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.8rem] whitespace-pre">
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 text-[0.8rem] overflow-x-auto text-white">
 <code>df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
 df = df.dropna()
 df = df.drop(columns=["customerID"])</code></pre>
@@ -292,7 +292,7 @@ Pandas <code>get_dummies</code> was used to apply one hot encoding to every cate
 dropping the first level to avoid redundant dummy variables. The churn flag becomes
 <code>Churn_Yes</code>, which serves as the target label for modeling.
 </p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.8rem] whitespace-pre">
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 text-[0.8rem] overflow-x-auto text-white">
 <code>df_encoded = pd.get_dummies(df, drop_first=True)
 
 X = df_encoded.drop("Churn_Yes", axis=1)
@@ -303,11 +303,11 @@ y = df_encoded["Churn_Yes"]</code></pre>
 3.2 — Building a balanced train test split
 </h4>
 <p class="text-sm text-text-secondary leading-relaxed">
-To keep the churn rate consistent between training and evaluation,
-<code>train_test_split</code> was used with stratification on the target. This prevents the
-model from seeing a very different churn mix at training time than it will see at scoring time.
+To keep the churn rate consistent between training and evaluation, <code>train_test_split</code> 
+was used with stratification on the target. This prevents the model from seeing a very different 
+churn mix at training time than it will see at scoring time.
 </p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.8rem] whitespace-pre">
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 text-[0.8rem] overflow-x-auto text-white">
 <code>X_train, X_test, y_train, y_test = train_test_split(
     X, y,
     test_size=0.2,
@@ -337,7 +337,7 @@ on structured customer data.
 The model trains on the full feature set with a modest depth and tree count so that the
 pattern remains general rather than memorizing the training customers.
 </p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.8rem] whitespace-pre">
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 text-[0.8rem] overflow-x-auto text-white">
 <code>rf_model = RandomForestClassifier(
     n_estimators=300,
     max_depth=12,
@@ -362,7 +362,7 @@ Random Forest accuracy, confusion matrix and classification report from the note
 <h4 class="text-sm font-bold text-accent-cyan uppercase tracking-wider mb-4">
 Evaluation code
 </h4>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.8rem] whitespace-pre">
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 text-[0.8rem] overflow-x-auto text-white">
 <code>print("Random Forest Accuracy:", accuracy_score(y_test, y_rf_pred))
 print("\nConfusion Matrix:\n", confusion_matrix(y_test, y_rf_pred))
 print("\nClassification Report:\n", classification_report(y_test, y_rf_pred))</code></pre>
@@ -393,7 +393,7 @@ The tree based SHAP explainer was used, which handles ensemble models efficientl
 For every customer in the test set it returns a contribution score per feature,
 showing how that feature moves churn probability up or down.
 </p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.8rem] whitespace-pre">
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 text-[0.8rem] overflow-x-auto text-white">
 <code>explainer   = shap.TreeExplainer(rf_model)
 shap_values = explainer.shap_values(X_test)
 
@@ -479,12 +479,12 @@ Confusion matrix and classification report summarizing how well the model distin
 <div class="card-dark rounded-lg p-5 text-center">
 <div class="stat-number text-[#F97316] mb-1">49%</div>
 <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Recall (Churn)</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Churners caught by the model</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Churners caught by model</div>
 </div>
 <div class="card-dark rounded-lg p-5 text-center">
 <div class="stat-number text-[#FBBF24] mb-1">66%</div>
 <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Precision (Churn)</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Churn predictions accuracy</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Accuracy of churn predictions</div>
 </div>
 <div class="card-dark rounded-lg p-5 text-center">
 <div class="stat-number text-[#E5C07B] mb-1">26.5%</div>
@@ -634,6 +634,7 @@ decision making so marketing and service teams can act with confidence on the mo
 </div>
 </div>
 </section>
+<script src=https://cdn.jsdelivr.net/npm/chart.js></script>
 <script>function scrollToSection(id){const target=document.getElementById(id);if(!target)return;target.scrollIntoView({behavior:'smooth',block:'start'});const dots=document.querySelectorAll('.nav-dot');const sections=['hero','workflow','lab','model-overview'];dots.forEach((dot,idx)=>{dot.classList.toggle('active',sections[idx]===id);});}
 function openModal(src){const modal=document.getElementById('imageModal');const img=document.getElementById('modalImage');img.src=src;modal.classList.add('active');}
 function closeModal(){const modal=document.getElementById('imageModal');modal.classList.remove('active');const img=document.getElementById('modalImage');img.src='';}
