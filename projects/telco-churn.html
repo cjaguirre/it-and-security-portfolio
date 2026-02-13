@@ -6,186 +6,8 @@
 <title>Telco Customer Churn Analysis | Christian Aguirre</title>
 <script>function switchTab(tabId){document.querySelectorAll('.tab-button').forEach(btn=>{btn.classList.remove('active');});document.querySelectorAll('.tab-content').forEach(content=>{content.classList.remove('active');});const activeButton=[...document.querySelectorAll('.tab-button')].find(btn=>btn.getAttribute('onclick')&&btn.getAttribute('onclick').includes(tabId));if(activeButton)activeButton.classList.add('active');const target=document.getElementById(`tab-${tabId}`);if(target)target.classList.add('active');}</script>
 <script src=https://cdn.tailwindcss.com></script>
-<script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)"}}}};</script>
-<style>
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
-
-.dark {
-    --bg-default:#1e1e1e;
-    --bg-secondary:#30333a;
-    --text-base:#fff;
-    --text-secondary:#abb2bf;
-    --accent-structural:#d9d9d9;
-    --functional-action:#61afef;
-    --functional-success:#98c379;
-    --accent-red:#e06c75;
-    --container-bg:#171717;
-    background-color:var(--bg-default);
-    color:var(--text-base)
-}
-
-body {
-    font-family:"Inter",sans-serif;
-    background-color:var(--bg-default);
-    background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);
-    background-size:20px 20px;
-    background-position:center;
-    background-attachment:fixed;
-    min-height:100vh
-}
-
-.pill {
-    border-radius:999px;
-    padding:.2rem .7rem;
-    border:1px solid rgba(171,178,191,0.6);
-    font-size:.7rem;
-    text-transform:uppercase;
-    letter-spacing:.12em;
-    white-space:nowrap
-}
-
-.pill-muted {
-    color:var(--text-secondary);
-    background-color:rgba(23,23,23,0.95)
-}
-
-.pill-accent {
-    color:var(--accent-structural);
-    background-color:rgba(23,23,23,0.95);
-    border-color:rgba(217,217,217,0.9)
-}
-
-.tab-button {
-    padding:1rem 1.5rem;
-    background:transparent;
-    border:0;
-    color:var(--text-secondary);
-    font-family:"Inconsolata",monospace;
-    cursor:pointer;
-    transition:all .3s ease;
-    border-bottom:3px solid transparent;
-    white-space:nowrap
-}
-
-.tab-button:hover {
-    color:var(--functional-action);
-    background:rgba(97,175,239,0.05)
-}
-
-.tab-button.active {
-    color:var(--functional-action);
-    border-bottom-color:var(--functional-action)
-}
-
-.tab-content {
-    display:none;
-    animation:fadeSlideIn .4s ease-out
-}
-
-.tab-content.active {
-    display:block
-}
-
-@keyframes fadeSlideIn {
-    from {opacity:0;transform:translateY(15px)}
-    to {opacity:1;transform:translateY(0)}
-}
-
-.image-zoom {
-    cursor:pointer;
-    transition:all .3s ease
-}
-.image-zoom:hover {
-    transform:scale(1.02);
-    box-shadow:0 10px 40px rgba(97,175,239,0.3)
-}
-
-.modal {
-    display:none;
-    position:fixed;
-    z-index:9999;
-    left:0;top:0;
-    width:100%;height:100%;
-    background-color:rgba(0,0,0,0.95)
-}
-
-.modal.active {
-    display:flex;
-    align-items:center;
-    justify-content:center
-}
-
-.modal-content {
-    max-width:95%;
-    max-height:95%;
-    border-radius:8px
-}
-
-.nav-dots {
-    position:fixed;
-    right:2rem;
-    top:50%;
-    transform:translateY(-50%);
-    z-index:100
-}
-
-.nav-dot {
-    width:10px;
-    height:10px;
-    border-radius:50%;
-    background:var(--text-secondary);
-    margin:.75rem 0;
-    cursor:pointer;
-    transition:all .3s ease
-}
-
-.nav-dot:hover,.nav-dot.active {
-    background:var(--functional-action);
-    transform:scale(1.4)
-}
-
-@media(max-width:768px){
-    .nav-dots{display:none}
-}
-
-/* ----------------------------- */
-/* ⭐ STAT CARD ANIMATION + STYLE */
-/* ----------------------------- */
-
-.stat-card {
-  position: relative;
-  overflow: hidden;
-}
-
-.stat-card::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-      45deg,
-      transparent,
-      rgba(97, 175, 239, 0.10),
-      transparent
-  );
-  animation: shimmer 3s infinite linear;
-}
-
-@keyframes shimmer {
-  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-}
-
-.stat-number {
-  font-size: 2.4rem;
-  font-weight: 800;
-  font-family: "Inconsolata", monospace;
-}
-</style>
-
-<script>document.addEventListener("DOMContentLoaded",()=>{const html=document.documentElement;const savedTheme=localStorage.getItem("theme")||"dark";html.setAttribute("data-theme",savedTheme);html.classList.add(savedTheme);});</script>
+<script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)",}}}};</script>
+<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;--functional-action:#61afef;--functional-success:#98c379;--accent-red:#e06c75;--container-bg:#171717;background-color:var(--bg-default);color:var(--text-base)}body{font-family:"Inter",sans-serif;background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center;background-attachment:fixed;min-height:100vh}.pill{border-radius:999px;padding:.2rem .7rem;border:1px solid rgba(171,178,191,0.6);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em}.pill-muted{color:var(--text-secondary);background-color:rgba(23,23,23,0.95)}.pill-accent{color:var(--accent-structural);background-color:rgba(23,23,23,0.95);border-color:rgba(217,217,217,0.9)}.tab-button{padding:1rem 1.5rem;background:transparent;border:0;color:var(--text-secondary);font-family:"Inconsolata",monospace;cursor:pointer;transition:all .3s ease;border-bottom:3px solid transparent;white-space:nowrap}.tab-button:hover{color:var(--functional-action);background:rgba(97,175,239,0.05)}.tab-button.active{color:var(--functional-action);border-bottom-color:var(--functional-action)}.tab-content{display:none;animation:fadeSlideIn .4s ease-out}.tab-content.active{display:block}@keyframes fadeSlideIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}.stat-card{position:relative;overflow:hidden}.stat-number{font-size:2.5rem;font-weight:800;font-family:"Inconsolata",monospace}.image-zoom{cursor:pointer;transition:all .3s ease}.image-zoom:hover{transform:scale(1.02);box-shadow:0 10px 40px rgba(97,175,239,0.3)}.modal{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.95)}.modal.active{display:flex;align-items:center;justify-content:center}.modal-content{max-width:95%;max-height:95%;border-radius:8px}.severity-critical,.severity-high,.severity-medium,.severity-low,.severity-info{padding:.25rem .75rem;border-radius:999px;font-size:.7rem;text-transform:uppercase}.severity-critical{background:rgba(185,28,28,0.15);border:1px solid #b91c1c;color:#b91c1c}.severity-high{background:rgba(194,65,12,0.15);border:1px solid #c2410c;color:#c2410c}.severity-medium{background:rgba(249,115,22,0.15);border:1px solid #f97316;color:#f97316}.severity-low{background:rgba(234,179,8,0.15);border:1px solid #eab308;color:#eab308}.severity-info{background:rgba(59,130,246,0.15);border:1px solid #3b82f6;color:#3b82f6}.collapsible-content{max-height:0;overflow:hidden;transition:max-height .4s ease-out,margin .2s ease;margin:0!important}.collapsible-content.open{max-height:10000px;margin:1.75rem 0 2rem 0}.nav-dots{position:fixed;right:2rem;top:50%;transform:translateY(-50%);z-index:100}.nav-dot{width:10px;height:10px;border-radius:50%;background:var(--text-secondary);margin:.75rem 0;cursor:pointer;transition:all .3s ease}.nav-dot:hover,.nav-dot.active{background:var(--functional-action);transform:scale(1.4)}@media(max-width:768px){.nav-dots{display:none}}.ring-anim{animation:fadeInRing 1.2s ease-out forwards;opacity:0}@keyframes fadeInRing{to{opacity:1}}.phase-container{background:var(--container-bg);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;padding:2.5rem;box-shadow:0 12px 40px rgba(0,0,0,0.35)}.card-dark{background:var(--container-bg);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;box-shadow:0 12px 40px rgba(0,0,0,0.35)}pre code{font-family:"Inconsolata",monospace;font-size:.8rem}</style>
 </head>
 <body class=text-text-base>
 <div class=nav-dots>
@@ -199,12 +21,12 @@ body {
 <img class=modal-content id=modalImage alt="Enlarged view">
 </div>
 <main>
-<section id=hero class="pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16 border-b border-gray-800">
+<section id=hero class="pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 <a href=../index.html#projects class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition mb-6">
 ← Back to Portfolio
 </a>
-<div class="flex flex-wrap gap-2 mb-6">
+<div class="flex flex-wrap justify-center gap-2 mb-6 text-center">
 <span class="pill pill-accent">Machine Learning Lab</span>
 <span class="pill pill-muted">Python</span>
 <span class="pill pill-muted">Scikit Learn</span>
@@ -212,135 +34,125 @@ body {
 <span class="pill pill-muted">SHAP</span>
 <span class="pill pill-muted">Customer Analytics</span>
 </div>
-<h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
+<h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-center">
 Telco Customer Churn Analysis
 </h1>
-<p class="max-w-3xl text-sm sm:text-base text-text-secondary leading-relaxed mb-8">
+<p class="max-w-3xl mx-auto text-sm sm:text-base text-text-secondary leading-relaxed mb-8 text-center">
 Used a public telecom dataset to model which subscribers are likely to cancel service,
 then explained the drivers behind that risk so a retention team can step in before customers leave.
 </p>
-
-<!-- Telco Metric Summary Boxes (Styled Identical to Nessus Lab) -->
 <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-
-    <div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
-        <div class="stat-number text-[#61AFEF] mb-1">79.8%</div>
-        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Accuracy</div>
-        <div class="text-[0.65rem] text-text-secondary mt-1">Correct predictions</div>
-    </div>
-
-    <div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
-        <div class="stat-number text-[#A3E635] mb-1">91%</div>
-        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Recall (Stay)</div>
-        <div class="text-[0.65rem] text-text-secondary mt-1">Non-churners correctly identified</div>
-    </div>
-
-    <div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
-        <div class="stat-number text-[#F97316] mb-1">49%</div>
-        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Recall (Churn)</div>
-        <div class="text-[0.65rem] text-text-secondary mt-1">Churners detected</div>
-    </div>
-
-    <div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
-        <div class="stat-number text-[#FBBF24] mb-1">66%</div>
-        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Precision (Churn)</div>
-        <div class="text-[0.65rem] text-text-secondary mt-1">Accuracy of churn predictions</div>
-    </div>
-
-    <div class="stat-card bg-secondary-bg border border-gray-700 rounded-lg p-5 text-center">
-        <div class="stat-number text-[#E5C07B] mb-1">26.5%</div>
-        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Churn Rate</div>
-        <div class="text-[0.65rem] text-text-secondary mt-1">Portion of churners</div>
-    </div>
-
+<div class="stat-card card-dark rounded-lg p-5 text-center">
+<div class="stat-number text-[#61AFEF] mb-1">79.8%</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Accuracy</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Correct predictions</div>
 </div>
-
-    
-
-<div class="flex flex-wrap gap-3 text-[0.7rem] sm:text-xs text-text-secondary mb-10">
-<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
-<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>
-End to end churn modeling in Jupyter
+<div class="stat-card card-dark rounded-lg p-5 text-center">
+<div class="stat-number text-[#A3E635] mb-1">91%</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Recall (Stay)</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Non-churners correctly identified</div>
+</div>
+<div class="stat-card card-dark rounded-lg p-5 text-center">
+<div class="stat-number text-[#F97316] mb-1">49%</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Recall (Churn)</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Churners detected</div>
+</div>
+<div class="stat-card card-dark rounded-lg p-5 text-center">
+<div class="stat-number text-[#FBBF24] mb-1">66%</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Precision (Churn)</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Accuracy of churn predictions</div>
+</div>
+<div class="stat-card card-dark rounded-lg p-5 text-center">
+<div class="stat-number text-[#E5C07B] mb-1">26.5%</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Churn Rate</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Portion of churners</div>
+</div>
+</div>
+<div class="flex flex-wrap justify-center items-center gap-3 text-[0.7rem] sm:text-xs text-text-secondary mb-10 max-w-3xl mx-auto">
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>End to end churn modeling in Jupyter
 </span>
-<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
-<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>
-Random Forest with SHAP explainability
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Random Forest with SHAP explainability
 </span>
-<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-bg border border-gray-700">
-<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>
-Business ready retention insights
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Business ready retention insights
 </span>
 </div>
 <div class="grid md:grid-cols-2 gap-6">
-<article class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+<article class="p-6 md:p-7 rounded-xl card-dark">
 <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">
 Project overview
 </p>
 <p class="text-sm leading-relaxed text-text-base mb-3">
 The lab uses a real telecom customer file where each row represents one account with service
-history, product bundle, billing behavior and a churn label. I turned this raw table into a
+history, product bundle, billing behavior and a churn label. This raw table was transformed into a
 supervised learning pipeline that predicts churn and explains why some customers are at higher risk.
 </p>
 <p class="text-sm leading-relaxed text-text-base">
-After cleaning billing fields and encoding plan details into numeric features, I trained a
-Random Forest classifier and compared its performance to a logistic baseline. SHAP values
+After cleaning billing fields and encoding plan details into numeric features, a
+Random Forest classifier was trained and its performance was compared to a logistic baseline. SHAP values
 then translated model output into a ranked list of churn drivers that can feed marketing
 and service playbooks.
 </p>
 </article>
-<article class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+<article class="p-6 md:p-7 rounded-xl card-dark">
 <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">
 Key deliverables
 </p>
 <ul class="list-disc list-outside pl-5 space-y-1.5 text-sm text-text-base">
-<li>Notebook based workflow from raw CSV to trained model.</li>
-<li>Data cleaning steps that fix billing fields and remove incomplete records.</li>
-<li>One hot encoded feature set that preserves plan and service information.</li>
-<li>Random Forest classifier tuned and evaluated on a separate test split.</li>
-<li>Confusion matrix and classification report for both churn and non churn classes.</li>
-<li>SHAP summary plots that rank the strongest churn drivers for the business.</li>
+<li>Notebook based workflow from raw CSV to trained model</li>
+<li>Data cleaning steps that fix billing fields and remove incomplete records</li>
+<li>One hot encoded feature set that preserves plan and service information</li>
+<li>Random Forest classifier tuned and evaluated on a separate test split</li>
+<li>Confusion matrix and classification report for both churn and non churn classes</li>
+<li>SHAP summary plots that rank the strongest churn drivers for the business</li>
 </ul>
 </article>
 </div>
 </div>
 </section>
-<section id=workflow class="py-12 md:py-14 border-b border-gray-800">
+<section id=workflow class="py-12 md:py-14">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<h2 class="text-2xl font-bold font-mono text-accent-cyan mb-8">
+<div class="flex items-center gap-6 mb-8">
+<div class="h-px bg-gray-700 flex-1"></div>
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
 Workflow Overview
 </h2>
+<div class="h-px bg-gray-700 flex-1"></div>
+</div>
 <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
-<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700">
+<div class="p-4 rounded-xl card-dark">
 <p class="font-mono text-accent-cyan uppercase text-xs mb-1">Step 1</p>
-<p class="text-sm font-semibold mb-1 text-text-base">Data intake</p>
+<p class="text-sm font-semibold mb-1">Data intake</p>
 <p class="text-xs text-text-secondary leading-relaxed">
 Loaded the customer file into pandas, checked schema, row count and basic distributions.
 </p>
 </div>
-<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700">
+<div class="p-4 rounded-xl card-dark">
 <p class="font-mono text-accent-cyan uppercase text-xs mb-1">Step 2</p>
-<p class="text-sm font-semibold mb-1 text-text-base">Cleaning</p>
+<p class="text-sm font-semibold mb-1">Cleaning</p>
 <p class="text-xs text-text-secondary leading-relaxed">
 Fixed the TotalCharges field, handled missing entries and removed unreliable records.
 </p>
 </div>
-<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700">
+<div class="p-4 rounded-xl card-dark">
 <p class="font-mono text-accent-cyan uppercase text-xs mb-1">Step 3</p>
-<p class="text-sm font-semibold mb-1 text-text-base">Feature prep</p>
+<p class="text-sm font-semibold mb-1">Feature prep</p>
 <p class="text-xs text-text-secondary leading-relaxed">
 Encoded categorical columns, separated the churn label and built the final feature matrix.
 </p>
 </div>
-<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700">
+<div class="p-4 rounded-xl card-dark">
 <p class="font-mono text-accent-cyan uppercase text-xs mb-1">Step 4</p>
-<p class="text-sm font-semibold mb-1 text-text-base">Modeling</p>
+<p class="text-sm font-semibold mb-1">Modeling</p>
 <p class="text-xs text-text-secondary leading-relaxed">
 Trained a Random Forest classifier and compared results with a logistic baseline.
 </p>
 </div>
-<div class="p-4 rounded-xl bg-secondary-bg border border-gray-700">
+<div class="p-4 rounded-xl card-dark">
 <p class="font-mono text-accent-cyan uppercase text-xs mb-1">Step 5</p>
-<p class="text-sm font-semibold mb-1 text-text-base">Explainability</p>
+<p class="text-sm font-semibold mb-1">Explainability</p>
 <p class="text-xs text-text-secondary leading-relaxed">
 Used SHAP to see which features push churn risk higher or lower for each customer.
 </p>
@@ -348,11 +160,15 @@ Used SHAP to see which features push churn risk higher or lower for each custome
 </div>
 </div>
 </section>
-<section id=lab class="py-14 border-b border-gray-800">
+<section id=lab class=py-14>
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<h2 class="text-2xl font-bold font-mono text-accent-cyan mb-10">
+<div class="flex items-center gap-6 mb-10">
+<div class="h-px bg-gray-700 flex-1"></div>
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
 Lab Breakdown
 </h2>
+<div class="h-px bg-gray-700 flex-1"></div>
+</div>
 <div class="flex flex-wrap gap-0 border-b-2 border-gray-700 mb-10 overflow-x-auto">
 <button class="tab-button active" onclick="switchTab('dataset')">01. Data Intake & Understanding</button>
 <button class=tab-button onclick="switchTab('cleaning')">02. Cleaning & Transformation</button>
@@ -360,13 +176,14 @@ Lab Breakdown
 <button class=tab-button onclick="switchTab('modeling')">04. Modeling & Evaluation</button>
 <button class=tab-button onclick="switchTab('shap')">05. SHAP Explainability & Insights</button>
 </div>
-<div id=tab-dataset class="tab-content active space-y-16">
+<div id=tab-dataset class="tab-content active">
+<div class="phase-container space-y-16">
 <h3 class="text-xl font-semibold text-white">
 Phase 1 — Exploring the raw customer file
 </h3>
 <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
 The notebook begins with a simple question: what does each row represent and which fields might help
-predict churn. I confirmed that every record maps to a single customer and that the file includes
+predict churn. The confirmation was made that every record maps to a single customer and that the file includes
 service portfolio, contract style, billing amounts and a churn outcome.
 </p>
 <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
@@ -380,10 +197,10 @@ demographic attributes, service flags for internet and phone products, contract 
 and the churn flag. This check confirms that the import ran correctly and that the
 data lines up with the documentation from the provider.
 </p>
-<ul class="space-y-2 text-sm text-text-secondary">
-<li class="flex gap-2"><span class=text-accent-success>●</span>Verified column order, dtypes and row count.</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Confirmed that each customer has one record.</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Identified target column <code>Churn</code> for modeling.</li>
+<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+<li>Verified column order, dtypes and row count</li>
+<li>Confirmed that each customer has one record</li>
+<li>Identified target column <code>Churn</code> for modeling</li>
 </ul>
 </div>
 <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/TC1_Dataset Preview.png')">
@@ -399,14 +216,14 @@ Preview of the raw telco churn dataset inside Jupyter before any cleaning.
 1.2 — Correlation heatmap of numeric fields
 </h4>
 <p class="text-sm text-text-secondary leading-relaxed">
-To get an early feel for signal strength, I created a correlation matrix across numeric features
+To get an early feel for signal strength, a correlation matrix was created across numeric features
 and the churn flag. Tenure shows a clear negative relationship with churn, while higher monthly
 charges and certain contract patterns lean toward higher risk.
 </p>
-<ul class="space-y-2 text-sm text-text-secondary">
-<li class="flex gap-2"><span class=text-accent-success>●</span>Converted the frame to numeric only for the heatmap.</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Used seaborn to plot correlations and spot strong links.</li>
-<li class="flex gap-2"><span class=text-accent-success>●</span>Flagged tenure and billing features as promising signals.</li>
+<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+<li>Converted the frame to numeric only for the heatmap</li>
+<li>Used seaborn to plot correlations and spot strong links</li>
+<li>Flagged tenure and billing features as promising signals</li>
 </ul>
 </div>
 <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/TC1_Correlation Heatmap.png')">
@@ -417,7 +234,9 @@ Correlation heatmap of numeric variables, including the churn label.
 </div>
 </section>
 </div>
-<div id=tab-cleaning class="tab-content space-y-16">
+</div>
+<div id=tab-cleaning class=tab-content>
+<div class="phase-container space-y-16">
 <h3 class="text-xl font-semibold text-white">
 Phase 2 — Cleaning and fixing billing fields
 </h3>
@@ -431,12 +250,12 @@ TotalCharges column, which arrives as text and includes blank entries for new cu
 2.1 — Converting TotalCharges and dropping incomplete records
 </h4>
 <p class="text-sm text-text-secondary leading-relaxed">
-I cast TotalCharges to a numeric type and let invalid strings turn into missing values.
+TotalCharges was cast to a numeric type and invalid strings were allowed to turn into missing values.
 Those rows were then removed so the model only trains on customers with a consistent
 billing history. The customer identifier column was also dropped since it carries no
 predictive value.
 </p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 text-[0.8rem] overflow-x-auto text-white">
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.8rem] whitespace-pre">
 <code>df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
 df = df.dropna()
 df = df.drop(columns=["customerID"])</code></pre>
@@ -453,7 +272,9 @@ Notebook cell that converts TotalCharges, drops missing rows and removes identif
 </div>
 </section>
 </div>
-<div id=tab-features class="tab-content space-y-16">
+</div>
+<div id=tab-features class=tab-content>
+<div class="phase-container space-y-16">
 <h3 class="text-xl font-semibold text-white">
 Phase 3 — Feature engineering and train test split
 </h3>
@@ -467,11 +288,11 @@ These need to become numeric while keeping their original meaning intact.
 3.1 — One hot encoding churn features
 </h4>
 <p class="text-sm text-text-secondary leading-relaxed">
-I used pandas <code>get_dummies</code> to apply one hot encoding to every categorical column,
+Pandas <code>get_dummies</code> was used to apply one hot encoding to every categorical column,
 dropping the first level to avoid redundant dummy variables. The churn flag becomes
 <code>Churn_Yes</code>, which serves as the target label for modeling.
 </p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 text-[0.8rem] overflow-x-auto text-white">
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.8rem] whitespace-pre">
 <code>df_encoded = pd.get_dummies(df, drop_first=True)
 
 X = df_encoded.drop("Churn_Yes", axis=1)
@@ -482,11 +303,11 @@ y = df_encoded["Churn_Yes"]</code></pre>
 3.2 — Building a balanced train test split
 </h4>
 <p class="text-sm text-text-secondary leading-relaxed">
-To keep the churn rate consistent between training and evaluation, I used
-<code>train_test_split</code> with stratification on the target. This prevents the
+To keep the churn rate consistent between training and evaluation,
+<code>train_test_split</code> was used with stratification on the target. This prevents the
 model from seeing a very different churn mix at training time than it will see at scoring time.
 </p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 text-[0.8rem] overflow-x-auto text-white">
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.8rem] whitespace-pre">
 <code>X_train, X_test, y_train, y_test = train_test_split(
     X, y,
     test_size=0.2,
@@ -496,12 +317,14 @@ model from seeing a very different churn mix at training time than it will see a
 </div>
 </section>
 </div>
-<div id=tab-modeling class="tab-content space-y-16">
+</div>
+<div id=tab-modeling class=tab-content>
+<div class="phase-container space-y-16">
 <h3 class="text-xl font-semibold text-white">
 Phase 4 — Random Forest modeling and evaluation
 </h3>
 <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-With features in place, I moved into modeling using a Random Forest classifier.
+With features in place, modeling moved forward using a Random Forest classifier.
 This ensemble balances flexibility and interpretability and usually performs well
 on structured customer data.
 </p>
@@ -514,7 +337,7 @@ on structured customer data.
 The model trains on the full feature set with a modest depth and tree count so that the
 pattern remains general rather than memorizing the training customers.
 </p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 text-[0.8rem] overflow-x-auto text-white">
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.8rem] whitespace-pre">
 <code>rf_model = RandomForestClassifier(
     n_estimators=300,
     max_depth=12,
@@ -539,7 +362,7 @@ Random Forest accuracy, confusion matrix and classification report from the note
 <h4 class="text-sm font-bold text-accent-cyan uppercase tracking-wider mb-4">
 Evaluation code
 </h4>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 text-[0.8rem] overflow-x-auto text-white">
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.8rem] whitespace-pre">
 <code>print("Random Forest Accuracy:", accuracy_score(y_test, y_rf_pred))
 print("\nConfusion Matrix:\n", confusion_matrix(y_test, y_rf_pred))
 print("\nClassification Report:\n", classification_report(y_test, y_rf_pred))</code></pre>
@@ -550,7 +373,9 @@ which means the model favors catching many churners while keeping false alarms a
 </p>
 </section>
 </div>
-<div id=tab-shap class="tab-content space-y-16">
+</div>
+<div id=tab-shap class=tab-content>
+<div class="phase-container space-y-16">
 <h3 class="text-xl font-semibold text-white">
 Phase 5 — SHAP driven explainability and business insight
 </h3>
@@ -564,11 +389,11 @@ SHAP values provide that missing piece by attributing each prediction to individ
 5.1 — Computing SHAP values for the Random Forest
 </h4>
 <p class="text-sm text-text-secondary leading-relaxed">
-I used the tree based SHAP explainer, which handles ensemble models efficiently.
+The tree based SHAP explainer was used, which handles ensemble models efficiently.
 For every customer in the test set it returns a contribution score per feature,
 showing how that feature moves churn probability up or down.
 </p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 text-[0.8rem] overflow-x-auto text-white">
+<pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.8rem] whitespace-pre">
 <code>explainer   = shap.TreeExplainer(rf_model)
 shap_values = explainer.shap_values(X_test)
 
@@ -616,106 +441,81 @@ long term contracts with security and technical support keep customers more stab
 </section>
 </div>
 </div>
+</div>
 </section>
-<section id=model-overview class="pt-12 pb-6">
+<section id=model-overview class="py-14">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<h2 class="text-2xl font-bold font-mono text-white mb-6">
+<div class="flex items-center gap-6 mb-6">
+<div class="h-px bg-gray-700 flex-1"></div>
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
 Model Performance Overview
 </h2>
-<p class="text-white text-sm max-w-3xl mb-8 leading-relaxed">
+<div class="h-px bg-gray-700 flex-1"></div>
+</div>
+<p class="text-text-secondary text-sm max-w-3xl mb-8 mx-auto text-center">
 The trained Random Forest reaches roughly eighty percent accuracy on the test set and balances
 performance between churn and non churn classes. The model recognizes most customers who stay,
 while still catching nearly half of customers who leave which is enough to support focused outreach.
 </p>
-<div class="bg-secondary-bg border border-gray-700 rounded-xl p-5 shadow-lg flex flex-col justify-center mb-10">
+<div class="card-dark rounded-xl p-5 mb-10">
 <div class=image-zoom onclick="openModal('/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/TC1_Modeling & Performance Evaluation.png')">
-<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/TC1_Modeling%20&%20Performance%20Evaluation.png class="rounded-lg w-full object-contain max-h-[350px]" alt="Model evaluation output">
+<img src=/Cybersecurity-and-Data-Analytics-Portfolio/assets/images/TC1_Modeling%20&%20Performance%20Evaluation.png class="rounded-lg w-full object-contain" alt="Model evaluation output">
 </div>
-<p class="mt-4 text-xs italic text-white text-center">
+<p class="mt-4 text-xs italic text-text-secondary text-center">
 Confusion matrix and classification report summarizing how well the model distinguishes churn and non churn customers.
 </p>
 </div>
 <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
-<div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
-<p class="text-3xl font-bold text-[#61AFEF] mb-1">79.8%</p>
-<p class="text-xs tracking-widest text-white uppercase">Accuracy</p>
-<p class="text-[0.68rem] text-text-secondary mt-2">Share of correct predictions in the test set</p>
+<div class="card-dark rounded-lg p-5 text-center">
+<div class="stat-number text-[#61AFEF] mb-1">79.8%</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Accuracy</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Share of correct predictions</div>
 </div>
-<div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
-<p class="text-3xl font-bold text-[#A3E635] mb-1">91%</p>
-<p class="text-xs tracking-widest text-white uppercase">Recall (Stay)</p>
-<p class="text-[0.68rem] text-text-secondary mt-2">Portion of non churn customers identified correctly</p>
+<div class="card-dark rounded-lg p-5 text-center">
+<div class="stat-number text-[#A3E635] mb-1">91%</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Recall (Stay)</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Non churn customers identified</div>
 </div>
-<div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
-<p class="text-3xl font-bold text-[#F97316] mb-1">49%</p>
-<p class="text-xs tracking-widest text-white uppercase">Recall (Churn)</p>
-<p class="text-[0.68rem] text-text-secondary mt-2">Portion of churners caught by the model</p>
+<div class="card-dark rounded-lg p-5 text-center">
+<div class="stat-number text-[#F97316] mb-1">49%</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Recall (Churn)</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Churners caught by the model</div>
 </div>
-<div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
-<p class="text-3xl font-bold text-[#FBBF24] mb-1">66%</p>
-<p class="text-xs tracking-widest text-white uppercase">Precision (Churn)</p>
-<p class="text-[0.68rem] text-text-secondary mt-2">When the model predicts churn, it is right most of the time</p>
+<div class="card-dark rounded-lg p-5 text-center">
+<div class="stat-number text-[#FBBF24] mb-1">66%</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Precision (Churn)</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Churn predictions accuracy</div>
 </div>
-<div class="rounded-xl bg-secondary-bg border border-gray-700 p-6 text-center shadow">
-<p class="text-3xl font-bold text-[#E5C07B] mb-1">26.5%</p>
-<p class="text-xs tracking-widest text-white uppercase">Churn Rate</p>
-<p class="text-[0.68rem] text-text-secondary mt-2">Observed churn share in the test population</p>
-</div>
-</div>
-<div class="grid md:grid-cols-2 gap-6 mb-12">
-<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6 shadow">
-<h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">
-Churn vs non churn distribution
-</h3>
-<p class="text-xs text-text-secondary leading-relaxed mb-3">
-Count of churners and non churners in the evaluation sample of 1,409 customers.
-</p>
-<div class=chart-container>
-<canvas id=churnDistributionChart></canvas>
-</div>
-<p class="mt-3 text-[0.7rem] text-text-secondary italic">
-Roughly one quarter of the evaluation customers churned which matches the original dataset.
-</p>
-</div>
-<div class="bg-secondary-bg border border-gray-700 rounded-xl p-6 shadow">
-<h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">
-Class wise F1 scores
-</h3>
-<p class="text-xs text-text-secondary leading-relaxed mb-3">
-F1 score balances precision and recall for each class and offers a compact view of performance.
-</p>
-<div class=chart-container>
-<canvas id=f1ScoreChart></canvas>
-</div>
-<p class="mt-3 text-[0.7rem] text-text-secondary italic">
-The model performs better on customers who stay but still provides useful signal on churners.
-</p>
+<div class="card-dark rounded-lg p-5 text-center">
+<div class="stat-number text-[#E5C07B] mb-1">26.5%</div>
+<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Churn Rate</div>
+<div class="text-[0.65rem] text-text-secondary mt-1">Observed churn share</div>
 </div>
 </div>
-<div class="bg-secondary-bg border border-gray-700 rounded-xl p-8 mb-10">
+<div class="card-dark rounded-xl p-8 mb-10">
 <div class="flex items-center justify-between mb-8 border-b border-gray-800 pb-4">
 <h3 class="text-sm font-bold text-white uppercase tracking-widest">
 Retention Strategy Highlights
 </h3>
-<span class="text-xs text-white font-mono">6 KEY IDEAS</span>
+<span class="text-xs text-text-secondary font-mono">6 KEY IDEAS</span>
 </div>
 <div class="grid md:grid-cols-2 gap-x-12 gap-y-8">
 <div class=space-y-6>
 <div>
-<span class="text-white font-mono text-xs mb-1 block tracking-wider">EARLY TENURE OUTREACH</span>
+<span class="text-red-400 font-mono text-xs mb-1 block tracking-wider">EARLY TENURE OUTREACH</span>
 <p class="text-white leading-relaxed text-sm">
 Focus retention campaigns on customers with short tenure who carry higher modeled risk.
 </p>
 </div>
 <div>
-<span class="text-white font-mono text-xs mb-1 block tracking-wider">PRICING SENSITIVITY</span>
+<span class="text-red-400 font-mono text-xs mb-1 block tracking-wider">PRICING SENSITIVITY</span>
 <p class="text-white leading-relaxed text-sm">
 High monthly charges are a strong driver of churn so discounts or plan reviews for that
 segment can reduce loss.
 </p>
 </div>
 <div>
-<span class="text-white font-mono text-xs mb-1 block tracking-wider">CONTRACT DESIGN</span>
+<span class="text-orange-400 font-mono text-xs mb-1 block tracking-wider">CONTRACT DESIGN</span>
 <p class="text-white leading-relaxed text-sm">
 Moving customers from month to month to longer contracts with valuable add ons can make
 the relationship more stable.
@@ -724,21 +524,21 @@ the relationship more stable.
 </div>
 <div class=space-y-6>
 <div>
-<span class="text-white font-mono text-xs mb-1 block tracking-wider">SUPPORT BUNDLES</span>
+<span class="text-orange-500 font-mono text-xs mb-1 block tracking-wider">SUPPORT BUNDLES</span>
 <p class="text-white leading-relaxed text-sm">
 Security and technical support services appear protective so they are good candidates
 for targeted cross sell.
 </p>
 </div>
 <div>
-<span class="text-white font-mono text-xs mb-1 block tracking-wider">PLAYBOOK TEMPLATES</span>
+<span class="text-yellow-500 font-mono text-xs mb-1 block tracking-wider">PLAYBOOK TEMPLATES</span>
 <p class="text-white leading-relaxed text-sm">
 High risk customers can follow a standard outreach play that blends proactive service
 checks and tailored offers.
 </p>
 </div>
 <div>
-<span class="text-white font-mono text-xs mb-1 block tracking-wider">CYCLE OF IMPROVEMENT</span>
+<span class="text-green-400 font-mono text-xs mb-1 block tracking-wider">CYCLE OF IMPROVEMENT</span>
 <p class="text-white leading-relaxed text-sm">
 New outcomes can feed back into the model, sharpening feature importance and improving
 the targeting strategy over time.
@@ -752,11 +552,14 @@ the targeting strategy over time.
 <section class="pt-12 md:pt-16 pb-12">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
 <div>
-<div class="flex items-center gap-4 mb-8">
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap">Key insights</h2>
-<div class="h-px bg-gray-700 w-full"></div>
+<div class="flex items-center gap-6 mb-8">
+<div class="h-px bg-gray-700 flex-1"></div>
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
+Key insights
+</h2>
+<div class="h-px bg-gray-700 flex-1"></div>
 </div>
-<div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+<div class="p-6 md:p-7 rounded-xl card-dark">
 <ul class="list-disc list-outside pl-5 space-y-2 text-white text-sm sm:text-[0.95rem] leading-relaxed">
 <li>Tenure, monthly charges and contract style are the strongest global indicators of churn risk.</li>
 <li>Even a simple tree ensemble can deliver almost eighty percent accuracy with clear business signal.</li>
@@ -767,11 +570,14 @@ the targeting strategy over time.
 </div>
 </div>
 <div>
-<div class="flex items-center gap-4 mb-8">
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap">Skills demonstrated</h2>
-<div class="h-px bg-gray-700 w-full"></div>
+<div class="flex items-center gap-6 mb-8">
+<div class="h-px bg-gray-700 flex-1"></div>
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
+Skills demonstrated
+</h2>
+<div class="h-px bg-gray-700 flex-1"></div>
 </div>
-<div class="p-6 md:p-7 rounded-xl bg-secondary-bg border border-gray-700">
+<div class="p-6 md:p-7 rounded-xl card-dark">
 <div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
 <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
 Python Data Analysis
@@ -804,16 +610,21 @@ Storytelling With Notebooks
 </section>
 <section class="pb-12 md:pb-16">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="bg-secondary-bg border border-white/30 rounded-2xl p-6 shadow-lg">
-<h3 class="text-xs sm:text-sm font-semibold tracking-[0.18em] uppercase mb-3 text-white">
+<div class="flex items-center gap-6 mb-8">
+<div class="h-px bg-gray-700 flex-1"></div>
+<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
 Summary
-</h3>
+</h2>
+<div class="h-px bg-gray-700 flex-1"></div>
+</div>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="card-dark rounded-xl p-6">
 <p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
 This telco churn lab walks from raw customer records to a production style modeling pipeline
 that flags at risk subscribers and explains why they might leave. Along the way it shows how
 careful cleaning, solid feature engineering, stratified splits and honest evaluation combine
 into a reliable classifier. SHAP based insights bridge the gap between data science and
-decision making so marketing and service teams can act with confidence on the model’s signals.
+decision making so marketing and service teams can act with confidence on the model's signals.
 </p>
 </div>
 <div class=mt-10>
@@ -823,12 +634,11 @@ decision making so marketing and service teams can act with confidence on the mo
 </div>
 </div>
 </section>
-</main>
-<script src=https://cdn.jsdelivr.net/npm/chart.js></script>
 <script>function scrollToSection(id){const target=document.getElementById(id);if(!target)return;target.scrollIntoView({behavior:'smooth',block:'start'});const dots=document.querySelectorAll('.nav-dot');const sections=['hero','workflow','lab','model-overview'];dots.forEach((dot,idx)=>{dot.classList.toggle('active',sections[idx]===id);});}
 function openModal(src){const modal=document.getElementById('imageModal');const img=document.getElementById('modalImage');img.src=src;modal.classList.add('active');}
 function closeModal(){const modal=document.getElementById('imageModal');modal.classList.remove('active');const img=document.getElementById('modalImage');img.src='';}
-document.addEventListener('DOMContentLoaded',()=>{if(window.Chart){const churnCtx=document.getElementById('churnDistributionChart');if(churnCtx){new Chart(churnCtx,{type:'bar',data:{labels:['Stay','Churn'],datasets:[{data:[1036,373],backgroundColor:['#22c55e','#ef4444'],borderRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#e5e7eb',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#9ca3af',font:{size:10}},grid:{color:'rgba(75,85,99,0.4)'}}}}});}
-const f1Ctx=document.getElementById('f1ScoreChart');if(f1Ctx){new Chart(f1Ctx,{type:'bar',data:{labels:['Stay (class 0)','Churn (class 1)'],datasets:[{data:[0.87,0.56],backgroundColor:['#60a5fa','#f97316'],borderRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#e5e7eb',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#9ca3af',font:{size:10}},grid:{color:'rgba(75,85,99,0.4)'},suggestedMin:0,suggestedMax:1}}}});}}});</script>
+function toggleSeverity(level){const panel=document.getElementById(`panel-${level}`);if(!panel)return;panel.classList.toggle('open');}
+document.addEventListener('DOMContentLoaded',()=>{const chart=document.getElementById('severity-donut');if(chart){const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){chart.classList.remove('opacity-0');obs.disconnect();}});});obs.observe(chart);}});</script>
+</main>
 </body>
 </html>
