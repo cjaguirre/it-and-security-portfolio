@@ -5,7 +5,43 @@
 <meta name=viewport content="width=device-width, initial-scale=1.0" />
 <title>Christian Aguirre | Cybersecurity & Data Analytics Portfolio</title>
 <script src=https://cdn.tailwindcss.com></script>
-<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;--functional-action:#61afef;--functional-success:#98c379;--accent-primary:var(--accent-structural);--accent-red:#e06c75;--container-bg:#171717;background-color:var(--bg-default);color:var(--text-base)}.light{--bg-default:#fff;--bg-secondary:#f3f4f6;--text-base:#111827;--text-secondary:#4b5563;--accent-primary:#0891b2;--accent-red:#dc2626;--container-bg:#fff;background-color:var(--bg-default);color:var(--text-base)}body{font-family:"Inter",sans-serif;transition:background-color .5s,color .5s}.section-title-wrapper{display:inline-flex;align-items:center;margin-bottom:2rem;font-family:"Inconsolata",monospace;width:100%}.section-title-wrapper h2{font-size:1.875rem;font-weight:700;color:var(--accent-structural);flex-shrink:0}.section-title-wrapper span{content:'';display:block;height:2px;background-color:var(--text-secondary);margin-left:.75rem;flex-grow:1;opacity:.5;min-width:150px}.progress-bar-container{height:4px;background-color:var(--bg-secondary);border-radius:9999px;overflow:hidden}.progress-bar{height:100%;background-color:var(--functional-success);transition:width .8s ease-out}.hero-grid-bg{background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center}</style>
+<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;--functional-action:#61afef;--functional-success:#98c379;--accent-primary:var(--accent-structural);--accent-red:#e06c75;--container-bg:#171717;background-color:var(--bg-default);color:var(--text-base)}.light{--bg-default:#fff;--bg-secondary:#f3f4f6;--text-base:#111827;--text-secondary:#4b5563;--accent-primary:#0891b2;--accent-red:#dc2626;--container-bg:#fff;background-color:var(--bg-default);color:var(--text-base)}body{font-family:"Inter",sans-serif;transition:background-color .5s,color .5s}.section-title-wrapper{display:inline-flex;align-items:center;margin-bottom:2rem;font-family:"Inconsolata",monospace;width:100%}.section-title-wrapper h2{font-size:1.875rem;font-weight:700;color:var(--accent-structural);flex-shrink:0}.section-title-wrapper span{content:'';display:block;height:2px;background-color:var(--text-secondary);margin-left:.75rem;flex-grow:1;opacity:.5;min-width:150px}.progress-bar-container{height:4px;background-color:var(--bg-secondary);border-radius:9999px;overflow:hidden}.progress-bar{height:100%;background-color:var(--functional-success);transition:width .8s ease-out}
+  .hero-grid-bg{background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center}
+
+.hero-video-bg{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+object-fit:cover;
+z-index:0;
+opacity:0.35;
+}
+
+.hero-overlay{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:linear-gradient(
+to bottom,
+rgba(0,0,0,0.6),
+rgba(0,0,0,0.85)
+);
+z-index:1;
+}
+
+.hero-content{
+position:relative;
+z-index:2;
+}
+
+
+</style>
+
+  
 <script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)",}}}};document.addEventListener("DOMContentLoaded",()=>{setInitialTheme();initSmoothScroll();initProjectFilters();const toggle=document.getElementById("theme-toggle");if(toggle)toggle.addEventListener("click",toggleTheme);animateProgressBars();});function setInitialTheme(){const html=document.documentElement;const savedTheme=localStorage.getItem("theme");const systemPrefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;let initialTheme='dark';if(savedTheme){initialTheme=savedTheme;}else if(!systemPrefersDark){initialTheme='light';}
 html.setAttribute("data-theme",initialTheme);html.classList.add(initialTheme);}
 function toggleTheme(){const html=document.documentElement;const currentTheme=html.getAttribute("data-theme");const newTheme=currentTheme==="dark"?"light":"dark";html.classList.remove(currentTheme);html.classList.add(newTheme);html.setAttribute("data-theme",newTheme);localStorage.setItem("theme",newTheme);}
@@ -40,8 +76,16 @@ GitHub Repo
 </div>
 </div>
 </nav>
-<section id=hero class="hero-grid-bg pt-20 pb-12 sm:pt-24 md:pt-32 md:pb-24 min-h-screen flex items-center transition-colors duration-500 text-center">
-<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+<section id=hero class="hero-grid-bg relative pt-20 pb-12 sm:pt-24 md:pt-32 md:pb-24 min-h-screen flex items-center transition-colors duration-500 text-center overflow-hidden">
+
+<video id="heroVideo" autoplay muted playsinline class="hero-video-bg">
+<source src="assets/videos/CYP1_bluecable.mp4" type="video/mp4">
+</video>
+
+<div class="hero-overlay"></div>
+
+  
+<div class="hero-content max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 <p class="hero-text-secondary font-mono text-lg mx-auto">Hello, my name is</p>
 <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-3 text-text-base">
 Christian Aguirre
@@ -711,5 +755,46 @@ Back to top <span class=ml-1>⬆️</span>
 </div>
 </div>
 </footer>
+
+
+<script>
+
+const heroVideos = [
+
+"assets/videos/CYP1_techstack.mp4",
+"assets/videos/CYP1_bluecable.mp4",
+"assets/videos/CYP1_ports.mp4",
+"assets/videos/CYP1_script1.mp4",
+"assets/videos/CYP1_script2.mp4",
+"assets/videos/CYP1_script3.mp4"
+
+];
+
+
+const videoElement = document.getElementById("heroVideo");
+
+function getRandomVideo(){
+
+return heroVideos[Math.floor(Math.random() * heroVideos.length)];
+
+}
+
+function playRandomVideo(){
+
+videoElement.src = getRandomVideo();
+videoElement.play();
+
+}
+
+videoElement.addEventListener("ended", playRandomVideo);
+
+playRandomVideo();
+
+</script>
+
+  
 </body>
+
+
+  
 </html>
