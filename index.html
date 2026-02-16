@@ -42,9 +42,8 @@ z-index:2;
 </style>
 
   
-<script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)",}}}};document.addEventListener("DOMContentLoaded",()=>{setInitialTheme();initSmoothScroll();initProjectFilters();const toggle=document.getElementById("theme-toggle");if(toggle)toggle.addEventListener("click",toggleTheme);animateProgressBars();});function setInitialTheme(){const html=document.documentElement;const savedTheme=localStorage.getItem("theme");const systemPrefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;let initialTheme='dark';if(savedTheme){initialTheme=savedTheme;}else if(!systemPrefersDark){initialTheme='light';}
-html.setAttribute("data-theme",initialTheme);html.classList.add(initialTheme);}
-function toggleTheme(){const html=document.documentElement;const currentTheme=html.getAttribute("data-theme");const newTheme=currentTheme==="dark"?"light":"dark";html.classList.remove(currentTheme);html.classList.add(newTheme);html.setAttribute("data-theme",newTheme);localStorage.setItem("theme",newTheme);}
+<script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)",}}}};
+  
 function initSmoothScroll(){document.querySelectorAll('a[href^="#"]').forEach((anchor)=>{anchor.addEventListener("click",function(e){const target=document.querySelector(this.getAttribute("href"));if(!target)return;e.preventDefault();target.scrollIntoView({behavior:"smooth"});});});}
 function animateProgressBars(){document.querySelectorAll(".progress-bar").forEach((bar)=>{const percentage=bar.dataset.percentage;bar.style.width=percentage;});}
 function initProjectFilters(){const filterButtons=document.querySelectorAll(".filter-btn");const projectCards=document.querySelectorAll(".project-card");const initialAllButton=document.querySelector('.filter-btn[data-filter="all"]');if(initialAllButton){initialAllButton.classList.add("bg-accent-red","text-white");initialAllButton.classList.remove("bg-secondary-bg","text-text-secondary");}
@@ -69,9 +68,9 @@ projectCards.forEach((card)=>card.classList.remove("hidden"));filterButtons.forE
 <a href=https://github.com/cjaguirre/Cybersecurity-and-Data-Analytics-Portfolio target=_blank class="hidden sm:inline-flex items-center border border-accent-cyan text-accent-cyan px-3 py-1 rounded-md text-xs hover:bg-accent-cyan hover:text-primary-bg transition">
 GitHub Repo
 </a>
-<button id=theme-toggle class="p-2 rounded-full hover:bg-primary-bg transition-colors duration-300 text-text-secondary" aria-label="Toggle theme">
-<span>🌓</span>
-</button>
+  
+
+  
 </div>
 </div>
 </div>
