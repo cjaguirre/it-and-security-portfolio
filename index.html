@@ -81,9 +81,8 @@ GitHub Repo
 </nav>
 <section id=hero class="hero-grid-bg relative pt-20 pb-12 sm:pt-24 md:pt-32 md:pb-24 min-h-screen flex items-center transition-colors duration-500 text-center overflow-hidden">
 
-<video id="heroVideo" autoplay muted playsinline class="hero-video-bg">
-<source src="assets/videos/CYP1_bluecable.mp4" type="video/mp4">
-</video>
+<video id="heroVideo" autoplay muted playsinline class="hero-video-bg"></video>
+
 
 <div class="hero-overlay"></div>
 
@@ -762,6 +761,8 @@ Back to top <span class=ml-1>⬆️</span>
 
 <script>
 
+    
+
 const heroVideos = [
 
 "assets/videos/CYP1_techstack.mp4",
@@ -773,26 +774,36 @@ const heroVideos = [
 
 ];
 
-
 const videoElement = document.getElementById("heroVideo");
 
-function getRandomVideo(){
+let currentVideoIndex = 0;
 
-return heroVideos[Math.floor(Math.random() * heroVideos.length)];
+function playNextVideo(){
 
+currentVideoIndex++;
+
+if(currentVideoIndex >= heroVideos.length){
+currentVideoIndex = 0;
 }
 
-function playRandomVideo(){
-
-videoElement.src = getRandomVideo();
+videoElement.src = heroVideos[currentVideoIndex];
 videoElement.play();
 
 }
 
-videoElement.addEventListener("ended", playRandomVideo);
+videoElement.addEventListener("ended", playNextVideo);
 
-playRandomVideo();
+// start first video
+videoElement.src = heroVideos[0];
+videoElement.play();
 
+
+
+
+
+
+
+    
 </script>
 
   
