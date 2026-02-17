@@ -1,102 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang=en class=dark>
 <head>
 <meta charset=UTF-8 />
 <meta name=viewport content="width=device-width, initial-scale=1.0" />
 <title>Christian Aguirre | Cybersecurity & Data Analytics Portfolio</title>
 <script src=https://cdn.tailwindcss.com></script>
-<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;--functional-action:#61afef;--functional-success:#98c379;--accent-primary:var(--accent-structural);--accent-red:#e06c75;--container-bg:#171717;background-color:var(--bg-default);color:var(--text-base)}
-    
-  body{font-family:"Inter",sans-serif;transition:background-color .5s,color .5s}
-  
-  .section-title-wrapper{display:inline-flex;align-items:center;margin-bottom:2rem;font-family:"Inconsolata",monospace;width:100%}.section-title-wrapper h2{font-size:1.875rem;font-weight:700;color:var(--accent-structural);flex-shrink:0}.section-title-wrapper span{content:'';display:block;height:2px;background-color:var(--text-secondary);margin-left:.75rem;flex-grow:1;opacity:.5;min-width:150px}.progress-bar-container{height:4px;background-color:var(--bg-secondary);border-radius:9999px;overflow:hidden}.progress-bar{height:100%;background-color:var(--functional-success);transition:width .8s ease-out}
-  .hero-grid-bg{background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center}
-
-.hero-video-bg{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-object-fit:cover;
-z-index:0;
-opacity:0.35;
-}
-
-.hero-overlay{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:linear-gradient(
-to bottom,
-rgba(0,0,0,0.6),
-rgba(0,0,0,0.85)
-);
-z-index:1;
-}
-
-.hero-content{
-position:relative;
-z-index:2;
-}
-
-
-.section-header{
-display:flex;
-align-items:center;
-justify-content:center;
-gap:1.5rem;
-margin-bottom:2.5rem;
-}
-
-.section-header::before,
-.section-header::after{
-content:"";
-flex:1;
-height:1px;
-background:rgba(255,255,255,0.18);
-}
-
-.section-header h2{
-font-family:"Inconsolata", monospace;
-font-size:1.5rem;
-font-weight:700;
-color:#ffffff;
-white-space:nowrap;
-letter-spacing:0.03em;
-}
-
-
-
-.skill-box:hover{
-box-shadow:0 0 12px rgba(97,175,239,0.25);
-}
-
-.project-box:hover{
-box-shadow:0 0 14px rgba(97,175,239,0.18);
-transform:translateY(-2px);
-}
-
-
-
-
-
-
-
-
-    
-
-</style>
-
-  
-<script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)",}}}};
-  
-function initSmoothScroll(){document.querySelectorAll('a[href^="#"]').forEach((anchor)=>{anchor.addEventListener("click",function(e){const target=document.querySelector(this.getAttribute("href"));if(!target)return;e.preventDefault();target.scrollIntoView({behavior:"smooth"});});});}
+<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;--functional-action:#61afef;--functional-success:#98c379;--accent-primary:var(--accent-structural);--accent-red:#e06c75;--container-bg:#171717;background-color:var(--bg-default);color:var(--text-base)}body{font-family:"Inter",sans-serif;transition:background-color .5s,color .5s}.section-title-wrapper{display:inline-flex;align-items:center;margin-bottom:2rem;font-family:"Inconsolata",monospace;width:100%}.section-title-wrapper h2{font-size:1.875rem;font-weight:700;color:var(--accent-structural);flex-shrink:0}.section-title-wrapper span{content:'';display:block;height:2px;background-color:var(--text-secondary);margin-left:.75rem;flex-grow:1;opacity:.5;min-width:150px}.progress-bar-container{height:4px;background-color:var(--bg-secondary);border-radius:9999px;overflow:hidden}.progress-bar{height:100%;background-color:var(--functional-success);transition:width .8s ease-out}.hero-grid-bg{background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center}.hero-video-bg{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.35}.hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom,rgba(0,0,0,0.6),rgba(0,0,0,0.85));z-index:1}.hero-content{position:relative;z-index:2}.section-header{display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-bottom:2.5rem}.section-header::before,.section-header::after{content:"";flex:1;height:1px;background:rgba(255,255,255,0.18)}.section-header h2{font-family:"Inconsolata",monospace;font-size:1.5rem;font-weight:700;color:#fff;white-space:nowrap;letter-spacing:.03em}.skill-box:hover{box-shadow:0 0 12px rgba(97,175,239,0.25)}.project-box:hover{box-shadow:0 0 14px rgba(97,175,239,0.18);transform:translateY(-2px)}</style>
+<script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)",}}}};function initSmoothScroll(){document.querySelectorAll('a[href^="#"]').forEach((anchor)=>{anchor.addEventListener("click",function(e){const target=document.querySelector(this.getAttribute("href"));if(!target)return;e.preventDefault();target.scrollIntoView({behavior:"smooth"});});});}
 function animateProgressBars(){document.querySelectorAll(".progress-bar").forEach((bar)=>{const percentage=bar.dataset.percentage;bar.style.width=percentage;});}
-function initProjectFilters(){const filterButtons=document.querySelectorAll(".filter-btn");const projectCards=document.querySelectorAll(".project-card");const initialAllButton=document.querySelector('.filter-btn[data-filter="all"]');if(initialAllButton){initialAllButton.style.borderColor = "var(--functional-action)"; initialAllButton.style.color = "white";initialAllButton.classList.remove("bg-secondary-bg","text-text-secondary");}
-projectCards.forEach((card)=>card.classList.remove("hidden"));filterButtons.forEach((button)=>{button.addEventListener("click",()=>{const filter=button.dataset.filter;filterButtons.forEach((btn)=>{btn.classList.remove("bg-accent-red","text-white");btn.style.borderColor = "rgba(217,217,217,0.18)"; btn.style.color = "var(--text-secondary)";});button.style.borderColor = "var(--functional-action)"; button.style.color = "white";button.classList.remove("bg-secondary-bg","text-text-secondary");projectCards.forEach((card)=>{const tags=card.dataset.tags||"";if(filter==="all"||tags.includes(filter)){card.classList.remove("hidden");}else{card.classList.add("hidden");}});});});}</script>
+function initProjectFilters(){const filterButtons=document.querySelectorAll(".filter-btn");const projectCards=document.querySelectorAll(".project-card");const initialAllButton=document.querySelector('.filter-btn[data-filter="all"]');if(initialAllButton){initialAllButton.style.borderColor="var(--functional-action)";initialAllButton.style.color="white";initialAllButton.classList.remove("bg-secondary-bg","text-text-secondary");}
+projectCards.forEach((card)=>card.classList.remove("hidden"));filterButtons.forEach((button)=>{button.addEventListener("click",()=>{const filter=button.dataset.filter;filterButtons.forEach((btn)=>{btn.classList.remove("bg-accent-red","text-white");btn.style.borderColor="rgba(217,217,217,0.18)";btn.style.color="var(--text-secondary)";});button.style.borderColor="var(--functional-action)";button.style.color="white";button.classList.remove("bg-secondary-bg","text-text-secondary");projectCards.forEach((card)=>{const tags=card.dataset.tags||"";if(filter==="all"||tags.includes(filter)){card.classList.remove("hidden");}else{card.classList.add("hidden");}});});});}</script>
 </head>
 <body class="transition-colors duration-500">
 <nav class="sticky top-0 z-50 bg-container-bg shadow-md transition-colors duration-500">
@@ -117,22 +30,13 @@ projectCards.forEach((card)=>card.classList.remove("hidden"));filterButtons.forE
 <a href=https://github.com/cjaguirre/Cybersecurity-and-Data-Analytics-Portfolio target=_blank class="hidden sm:inline-flex items-center border border-accent-cyan text-accent-cyan px-3 py-1 text-xs hover:bg-accent-cyan hover:text-primary-bg transition rounded-none">
 GitHub Repo
 </a>
-
-  
-
-  
 </div>
 </div>
 </div>
 </nav>
 <section id=hero class="hero-grid-bg relative pt-20 pb-12 sm:pt-24 md:pt-32 md:pb-24 min-h-screen flex items-center transition-colors duration-500 text-center overflow-hidden">
-
-<video id="heroVideo" autoplay muted playsinline class="hero-video-bg"></video>
-
-
-<div class="hero-overlay"></div>
-
-  
+<video id=heroVideo autoplay muted playsinline class=hero-video-bg></video>
+<div class=hero-overlay></div>
 <div class="hero-content max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 <p class="hero-text-secondary font-mono text-lg mx-auto">Hello, my name is</p>
 <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-3 text-text-base">
@@ -142,148 +46,78 @@ Christian Aguirre
 IT Support & Security Operations Analyst
 </h2>
 <p class="text-lg max-w-3xl mx-auto mb-10 text-text-secondary leading-relaxed">
-Security+ certified IT professional focused on Security Operations, SIEM monitoring, and threat detection. 
-I build and operate hands on labs using Microsoft Sentinel, Sysmon, Active Directory, and Azure to investigate 
-system activity, analyze logs, and detect suspicious behavior. Combined with real world operational experience 
+Security+ certified IT professional focused on Security Operations, SIEM monitoring, and threat detection.
+I build and operate hands on labs using Microsoft Sentinel, Sysmon, Active Directory, and Azure to investigate
+system activity, analyze logs, and detect suspicious behavior. Combined with real world operational experience
 supporting a federal environment, I bring both technical security skills and production level IT support discipline.
 <div class="flex justify-center flex-wrap gap-4">
-    
-<a
-href="#contact"
-class="inline-block border-2 font-semibold py-3 px-8 transition duration-300 transform hover:scale-[1.02]"
-style="
-border-radius:0;
-background-color:var(--functional-action);
-border-color:var(--functional-action);
-color:var(--bg-default);
-"
-onmouseover="this.style.backgroundColor='#4f96e4'"
-onmouseout="this.style.backgroundColor='var(--functional-action)'"
->
+<a href=#contact class="inline-block border-2 font-semibold py-3 px-8 transition duration-300 transform hover:scale-[1.02]" style=border-radius:0;background-color:var(--functional-action);border-color:var(--functional-action);color:var(--bg-default) onmouseover="this.style.backgroundColor='#4f96e4'" onmouseout="this.style.backgroundColor='var(--functional-action)'">
 Get in touch
 </a>
-
-    
-<a href=https://www.linkedin.com/in/christianaguirre/ target=_blank class="inline-flex items-center border-2 border-accent-cyan text-accent-cyan font-semibold py-3 px-8 hover:bg-accent-cyan hover:text-primary-bg transition duration-300 transform hover:scale-[1.02]"
-style="border-radius:0;"
->
+<a href=https://www.linkedin.com/in/christianaguirre/ target=_blank class="inline-flex items-center border-2 border-accent-cyan text-accent-cyan font-semibold py-3 px-8 hover:bg-accent-cyan hover:text-primary-bg transition duration-300 transform hover:scale-[1.02]" style=border-radius:0>
 LinkedIn
 </a>
-<a href=https://github.com/cjaguirre target=_blank class="inline-flex items-center border-2 border-accent-cyan text-accent-cyan font-semibold py-3 px-8 hover:bg-accent-cyan hover:text-primary-bg transition duration-300 transform hover:scale-[1.02]" style="border-radius:0;">
+<a href=https://github.com/cjaguirre target=_blank class="inline-flex items-center border-2 border-accent-cyan text-accent-cyan font-semibold py-3 px-8 hover:bg-accent-cyan hover:text-primary-bg transition duration-300 transform hover:scale-[1.02]" style=border-radius:0>
 GitHub
 </a>
 </div>
 </div>
 </section>
-    
 <section id=about class="hero-grid-bg py-16 sm:py-20 md:py-24 bg-primary-bg transition-colors duration-500">
-
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-    <div class="section-header">
-      <h2>01. About Me</h2>
-    </div>
-
-
-      
-<div class="bg-container-bg border p-10 md:p-12" style="border-color:rgba(217,217,217,0.18); border-radius:0;">
-
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class=section-header>
+<h2>01. About Me</h2>
+</div>
+<div class="bg-container-bg border p-10 md:p-12" style=border-color:rgba(217,217,217,0.18);border-radius:0>
 <div class="grid lg:grid-cols-3 gap-12 items-center">
-
-    <!-- LEFT TEXT -->
-<div class="lg:col-span-2 space-y-4 pr-8 lg:border-r" style="border-color:rgba(217,217,217,0.12);">
-
-      <p class="text-text-secondary text-base leading-relaxed">
-     I am an IT Support and Security Operations focused professional with hands on experience in SIEM monitoring,
+<div class="lg:col-span-2 space-y-4 pr-8 lg:border-r" style=border-color:rgba(217,217,217,0.12)>
+<p class="text-text-secondary text-base leading-relaxed">
+I am an IT Support and Security Operations focused professional with hands on experience in SIEM monitoring,
 threat detection, vulnerability scanning, and Windows log analysis. Through structured cybersecurity labs and
 independent projects, I have built and investigated environments using Microsoft Sentinel, Sysmon, Active Directory,
 and Azure to simulate real world SOC workflows including alert triage, log analysis, and identity monitoring.
-      </p>
-
-      <p class="text-text-secondary text-base leading-relaxed">
-   In my current role supporting a federal facility, I coordinate technical issues, maintain operational systems,
+</p>
+<p class="text-text-secondary text-base leading-relaxed">
+In my current role supporting a federal facility, I coordinate technical issues, maintain operational systems,
 and work directly with infrastructure, vendors, and contractors to ensure reliability and continuity.
 This experience strengthens my ability to troubleshoot systems, document technical issues clearly, and operate
 within structured environments — skills that translate directly into Security Operations and IT systems roles.
-      </p>
-
+</p>
 <div class="flex flex-wrap gap-3 pt-4">
-
-<span class="text-xs font-mono text-accent-cyan border px-3 py-1"
-style="border-color:rgba(217,217,217,0.25);">
+<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>
 Microsoft Sentinel (KQL)
 </span>
-
-<span class="text-xs font-mono text-accent-cyan border px-3 py-1"
-style="border-color:rgba(217,217,217,0.25);">
+<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>
 Azure Security Monitoring
 </span>
-
-<span class="text-xs font-mono text-accent-cyan border px-3 py-1"
-style="border-color:rgba(217,217,217,0.25);">
+<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>
 Threat Detection & Log Analysis
 </span>
-
-<span class="text-xs font-mono text-accent-cyan border px-3 py-1"
-style="border-color:rgba(217,217,217,0.25);">
+<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>
 SIEM Investigation
 </span>
-
-<span class="text-xs font-mono text-accent-cyan border px-3 py-1"
-style="border-color:rgba(217,217,217,0.25);">
+<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>
 Python & SQL Analysis
 </span>
-
-<span class="text-xs font-mono text-accent-cyan border px-3 py-1"
-style="border-color:rgba(217,217,217,0.25);">
+<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>
 Security+ Certified
 </span>
-
-</div>
-
-
-    </div>
-
-    <!-- RIGHT IMAGE -->
-    <div class="flex justify-center lg:justify-end">
-
-      <img src="assets/images/professional photo of myself.jpg"
-      alt="Christian Aguirre"
-      onerror="this.onerror=null;this.src='https://placehold.co/420x550/30333a/D9D9D9?text=Image+Placeholder'"
-class="shadow-lg object-cover border hover:border-accent-action transition duration-300 w-[320px]"
-style="border-color:rgba(217,217,217,0.18); border-radius:0;"
-
-    </div>
-
-  </div>
-
 </div>
 </div>
-
-
-
-
-
-
-      
-  </div>
-
+<div class="flex justify-center lg:justify-end">
+<img src="assets/images/professional photo of myself.jpg" alt="Christian Aguirre" onerror="this.onerror=null;this.src='https://placehold.co/420x550/30333a/D9D9D9?text=Image+Placeholder'" class="shadow-lg object-cover border hover:border-accent-action transition duration-300 w-[320px]" style=border-color:rgba(217,217,217,0.18);border-radius:0 </div>
+</div>
+</div>
+</div>
+</div>
 </section>
-
-
-
-    
 <section id=skills class="hero-grid-bg py-16 sm:py-20 md:py-24 transition-colors duration-500">
-
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-<div class="section-header">
+<div class=section-header>
 <h2>02. Skills</h2>
 </div>
-
 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
-
-<div class="bg-container-bg border p-8 transition duration-300 hover:border-accent-action skill-box" style="border-color:rgba(217,217,217,0.18); border-radius:0;">
+<div class="bg-container-bg border p-8 transition duration-300 hover:border-accent-action skill-box" style=border-color:rgba(217,217,217,0.18);border-radius:0>
 <h3 class="text-lg font-bold text-text-base flex items-center gap-2">
 <svg class="h-6 w-6 opacity-80 stroke-current" fill=none stroke-width=1.8 viewBox="0 0 24 24" stroke-linecap=round stroke-linejoin=round>
 <path d="M12 3l7 4v5c0 5-3.5 9-7 9s-7-4-7-9V7l7-4z"/>
@@ -297,8 +131,7 @@ Security & Operations
 <li>• Windows event analysis</li>
 </ul>
 </div>
-
-<div class="bg-container-bg border p-8 transition duration-300 hover:border-accent-action skill-box" style="border-color:rgba(217,217,217,0.18); border-radius:0;">
+<div class="bg-container-bg border p-8 transition duration-300 hover:border-accent-action skill-box" style=border-color:rgba(217,217,217,0.18);border-radius:0>
 <h3 class="text-lg font-bold text-text-base flex items-center gap-2">
 <svg class="h-6 w-6 opacity-80 stroke-current" fill=none stroke-width=1.8 viewBox="0 0 24 24" stroke-linecap=round stroke-linejoin=round>
 <rect x=4 y=10 width=3 height=8 rx="0.8"/>
@@ -315,8 +148,7 @@ Data & Analytics
 <li>• Excel modeling & KPI design</li>
 </ul>
 </div>
-
-<div class="bg-container-bg border p-8 transition duration-300 hover:border-accent-action skill-box" style="border-color:rgba(217,217,217,0.18); border-radius:0;">
+<div class="bg-container-bg border p-8 transition duration-300 hover:border-accent-action skill-box" style=border-color:rgba(217,217,217,0.18);border-radius:0>
 <h3 class="text-lg font-bold text-text-base flex items-center gap-2">
 <svg class="h-6 w-6 opacity-80 stroke-current" fill=none stroke-width=1.8 viewBox="0 0 24 24" stroke-linecap=round stroke-linejoin=round>
 <rect x=3 y=4 width=18 height=16 rx="2"/>
@@ -332,8 +164,7 @@ Tools & Languages
 <li>• Documentation & SOP writing</li>
 </ul>
 </div>
-
-<div class="bg-container-bg border p-8 transition duration-300 hover:border-accent-action skill-box" style="border-color:rgba(217,217,217,0.18); border-radius:0;">
+<div class="bg-container-bg border p-8 transition duration-300 hover:border-accent-action skill-box" style=border-color:rgba(217,217,217,0.18);border-radius:0>
 <h3 class="text-lg font-bold text-text-base flex items-center gap-2">
 <svg class="h-6 w-6 opacity-80 stroke-current" fill=none stroke-width=1.8 viewBox="0 0 24 24" stroke-linecap=round stroke-linejoin=round>
 <circle cx=12 cy=8 r="4"/>
@@ -347,79 +178,36 @@ Certifications
 <li>• Google Data Analytics</li>
 </ul>
 </div>
-
 </div>
-
 </div>
-
 </section>
-
-
-
-
-
-
-
-
-
-
-
-
-    
 <section id=projects class="hero-grid-bg py-16 sm:py-20 md:py-24 bg-primary-bg transition-colors duration-500">
-
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-<div class="section-header">
+<div class=section-header>
 <h2>03. Projects</h2>
 </div>
-
-
-
-    
 <div class="flex flex-wrap gap-3 mb-8 text-sm">
-
-<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition"
-style="border-color:rgba(217,217,217,0.18); border-radius:0;"
-data-filter="all">
+<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-filter=all>
 All
 </button>
-
-<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition"
-style="border-color:rgba(217,217,217,0.18); border-radius:0;"
-data-filter="soc">
+<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-filter=soc>
 Cybersecurity & SOC
 </button>
-
-<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition"
-style="border-color:rgba(217,217,217,0.18); border-radius:0;"
-data-filter="ml">
+<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-filter=ml>
 Machine Learning & Modeling
 </button>
-
-<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition"
-style="border-color:rgba(217,217,217,0.18); border-radius:0;"
-data-filter="analytics">
+<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-filter=analytics>
 Data Analytics
 </button>
-
-<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition"
-style="border-color:rgba(217,217,217,0.18); border-radius:0;"
-data-filter="sql">
+<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-filter=sql>
 SQL & Databases
 </button>
-
-<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition"
-style="border-color:rgba(217,217,217,0.18); border-radius:0;"
-data-filter="or">
+<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-filter=or>
 Optimization & Operations Research
 </button>
-
 </div>
-
-  
 <div class="grid md:grid-cols-2 gap-8">
-<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18); border-radius:0;" data-tags="soc vulnerability scanning nessus">
+<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-tags="soc vulnerability scanning nessus">
 <div class="flex justify-between items-center mb-1">
 <h3 class="text-xl font-semibold text-text-base m-0 p-0">Nessus Vulnerability Scanning Lab</h3>
 <svg class="h-6 w-6 opacity-80 stroke-current" fill=none viewBox="0 0 24 24" stroke-width=1.8 stroke-linecap=round stroke-linejoin=round>
@@ -438,7 +226,7 @@ Skills: Vulnerability Scanning, Host Discovery, Authenticated SSH Scanning, Malw
 ➜ Learn more
 </a>
 </article>
-<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18); border-radius:0;" data-tags="soc servicenow itsm incident problem change governance">
+<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-tags="soc servicenow itsm incident problem change governance">
 <div class="flex justify-between items-center mb-1">
 <h3 class="text-xl font-semibold text-text-base m-0 p-0">
 ServiceNow ITSM Implementation Lab
@@ -463,49 +251,33 @@ UI Policies, and Risk Assessment.
 ➜ Learn more
 </a>
 </article>
-
-<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18); border-radius:0;"
-data-tags="soc iam entra azure">
-
+<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-tags="soc iam entra azure">
 <div class="flex justify-between items-center mb-1">
 <h3 class="text-xl font-semibold text-text-base m-0 p-0">
 Enterprise Entra IAM Lab
 </h3>
-
-<svg class="h-6 w-6 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.6">
+<svg class="h-6 w-6 opacity-80 stroke-current" fill=none viewBox="0 0 24 24" stroke-width=1.6>
 <path d="M12 3l7 4v5c0 5-3.5 9-7 9s-7-4-7-9V7l7-4z"/>
 <path d="M9 12l2 2 4-4"/>
 </svg>
-
 </div>
-
 <p class="text-xs font-mono text-accent-cyan mb-3">
 Microsoft Entra ID · IAM Simulation · RBAC · Audit & Monitoring
 </p>
-
 <p class="text-sm text-text-secondary mb-3">
 Simulated an enterprise identity lifecycle using Microsoft Entra ID. Built internal and guest identities,
 implemented RBAC groups, performed helpdesk account workflows, analyzed authentication telemetry,
 and reviewed audit logs to mirror real world IAM operations.
 </p>
-
 <p class="text-xs text-text-secondary">
 Skills: Entra ID administration, identity lifecycle management, RBAC governance,
 authentication monitoring, audit investigation, helpdesk IAM workflows.
 </p>
-
-<a href=projects/enterprise-iam-azure.html
-class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition"
-style="color:var(--functional-success)">
+<a href=projects/enterprise-iam-azure.html class="mt-4 inline-flex items-center font-mono text-sm hover:text-accent-red transition" style=color:var(--functional-success)>
 ➜ Learn more
 </a>
-
 </article>
-
-
-
-  
-<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18); border-radius:0;" data-tags="soc analytics">
+<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-tags="soc analytics">
 <div class="flex justify-between items-center mb-1">
 <h3 class="text-xl font-semibold text-text-base m-0 p-0">Azure Sentinel Threat Analysis</h3>
 <svg class="h-6 w-6 opacity-80 stroke-current" fill=none viewBox="0 0 24 24" stroke-width=1.8 stroke-linecap=round stroke-linejoin=round>
@@ -521,7 +293,7 @@ Designed and deployed a Windows honeypot in Azure to capture and analyze global 
 ➜ Learn more
 </a>
 </article>
-<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18); border-radius:0;" data-tags=soc>
+<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-tags=soc>
 <div class="flex justify-between items-center mb-1">
 <h3 class="text-xl font-semibold text-text-base m-0 p-0">Active Directory Beginner Lab</h3>
 <svg class="h-6 w-6 opacity-80 stroke-current" fill=none viewBox="0 0 24 24" stroke-width=1.6>
@@ -542,7 +314,7 @@ Skills: AD DS configuration, DNS setup, user lifecycle management, group/OU desi
 ➜ Learn more
 </a>
 </article>
-<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18); border-radius:0;" data-tags="ml analytics">
+<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-tags="ml analytics">
 <div class="flex justify-between items-center mb-1">
 <h3 class="text-xl font-semibold text-text-base m-0 p-0">Telco Customer Churn Analysis</h3>
 <svg class="h-6 w-6 opacity-80 stroke-current" fill=none viewBox="0 0 24 24" stroke-width=1.8 stroke-linecap=round stroke-linejoin=round>
@@ -560,7 +332,7 @@ Cleaned and engineered telecom customer data, built predictive machine learning 
 ➜ Learn more
 </a>
 </article>
-<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18); border-radius:0;" data-tags="soc detection blue-team">
+<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-tags="soc detection blue-team">
 <div class="flex justify-between items-center mb-1">
 <h3 class="text-xl font-semibold text-text-base m-0 p-0">Windows Sysmon Threat Detection Lab</h3>
 <svg class="h-6 w-6 opacity-80 stroke-current" fill=none viewBox="0 0 24 24" stroke-width=1.6 stroke-linecap=round stroke-linejoin=round>
@@ -580,7 +352,7 @@ Skills: Sysmon, Windows Logging, Threat Detection, MITRE Mapping, Reporting.
 ➜ Learn more
 </a>
 </article>
-<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18); border-radius:0;" data-tags=analytics>
+<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-tags=analytics>
 <div class="flex justify-between items-center mb-1">
 <h3 class="text-xl font-semibold text-text-base m-0 p-0">Operations Management Analysis</h3>
 <svg class="h-6 w-6 opacity-80 stroke-current" fill=none viewBox="0 0 24 24" stroke-width=1.8 stroke-linecap=round stroke-linejoin=round>
@@ -599,7 +371,7 @@ Built a complete KPI reporting story that highlighted manufacturing performance 
 ➜ Learn more
 </a>
 </article>
-<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18); border-radius:0;" data-tags=analytics>
+<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-tags=analytics>
 <div class="flex justify-between items-center mb-1">
 <h3 class="text-xl font-semibold text-text-base m-0 p-0">Cyclistic Rider Behavior Analysis</h3>
 <svg class="h-6 w-6 opacity-80 stroke-current" fill=none viewBox="0 0 24 24" stroke-width=1.7 stroke-linecap=round stroke-linejoin=round>
@@ -618,7 +390,7 @@ Analyzed Chicago ridership patterns across customer types, identified demographi
 ➜ Learn more
 </a>
 </article>
-<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18); border-radius:0;" data-tags=analytics>
+<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-tags=analytics>
 <div class="flex justify-between items-center mb-1">
 <h3 class="text-xl font-semibold text-text-base m-0 p-0">Bellabeat Smart Device Usage Analysis</h3>
 <svg class="h-6 w-6 opacity-80 stroke-current" fill=none viewBox="0 0 24 24" stroke-width=1.7 stroke-linecap=round stroke-linejoin=round>
@@ -634,7 +406,7 @@ Explored Fitbit activity data to uncover user engagement trends, segmented behav
 ➜ Learn more
 </a>
 </article>
-<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18); border-radius:0;" data-tags=sql>
+<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-tags=sql>
 <div class="flex justify-between items-center mb-1">
 <h3 class="text-xl font-semibold text-text-base m-0 p-0">Landscape Database Revitalization</h3>
 <svg class="h-6 w-6 opacity-80 stroke-current" fill=none viewBox="0 0 24 24" stroke-width=1.7 stroke-linecap=round stroke-linejoin=round>
@@ -652,7 +424,7 @@ Redesigned a fragmented database into a clean, normalized, analytics-ready schem
 ➜ Learn more
 </a>
 </article>
-<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18); border-radius:0;" data-tags="sql analytics">
+<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-tags="sql analytics">
 <div class="flex justify-between items-center mb-1">
 <h3 class="text-xl font-semibold text-text-base m-0 p-0">World Layoffs SQL Data Cleaning</h3>
 <svg class="h-6 w-6 opacity-80 stroke-current" fill=none viewBox="0 0 24 24" stroke-width=1.7 stroke-linecap=round stroke-linejoin=round>
@@ -672,7 +444,7 @@ Built a SQL pipeline to clean global layoffs data, resolve inconsistencies, stan
 ➜ Learn more
 </a>
 </article>
-<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18); border-radius:0;" data-tags="or analytics">
+<article class="project-card project-box bg-container-bg border p-8 transition duration-300 hover:border-accent-action" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-tags="or analytics">
 <div class="flex justify-between items-center mb-1">
 <h3 class="text-xl font-semibold text-text-base m-0 p-0">Quantitative Decision Modeling</h3>
 <svg class="h-6 w-6 opacity-80 stroke-current" fill=none viewBox="0 0 24 24" stroke-width=1.7 stroke-linecap=round stroke-linejoin=round>
@@ -697,308 +469,165 @@ Applied operations research techniques including Monte Carlo simulation, linear 
 </a>
 </article>
 </div>
-
 </div>
 </section>
-
-
-    
-<section id="experience" class="hero-grid-bg py-20 transition-colors duration-500">
-
+<section id=experience class="hero-grid-bg py-20 transition-colors duration-500">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-<div class="section-header">
+<div class=section-header>
 <h2>04. Experience</h2>
 </div>
-
-<!-- OUTER CONTAINER BOX -->
-<div class="bg-container-bg border p-12 relative"
-style="border-color:rgba(217,217,217,0.18); border-radius:0;">
-
-<!-- vertical timeline line -->
-<div class="absolute left-1/2 w-px"
-style="
-top:32px;
-bottom:32px;
-transform:translateX(-50%);
-background-color:rgba(217,217,217,0.18);
-"></div>
-
-
-<div class="space-y-16">
-
-<!-- ITEM 1 -->
+<div class="bg-container-bg border p-12 relative" style=border-color:rgba(217,217,217,0.18);border-radius:0>
+<div class="absolute left-1/2 w-px" style=top:32px;bottom:32px;transform:translateX(-50%);background-color:rgba(217,217,217,0.18)></div>
+<div class=space-y-16>
 <div class="relative grid md:grid-cols-2 gap-10 items-center">
-
-<!-- LEFT -->
 <div class="md:text-right md:pr-12">
 <h3 class="text-xl font-semibold text-white">
 Facility Support Manager
 </h3>
-
 <p class="text-accent-cyan text-sm mb-2">
 GBA Associates LP · Defense Health Headquarters
 </p>
-
 <p class="text-text-secondary text-sm leading-relaxed">
 Oversee daily facility operations, coordinate vendors and contractors, manage work orders,
 and support building maintenance and infrastructure projects across a federal campus.
 </p>
 </div>
-
-<!-- RIGHT -->
-<div class="md:pl-12">
+<div class=md:pl-12>
 <p class="text-sm font-mono text-text-secondary">
 March 2025 — Present
 </p>
-
 <p class="text-sm text-text-secondary">
 Falls Church, Virginia · on site
 </p>
 </div>
-
-<!-- DOT -->
-<div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 border" style="background-color:rgba(217,217,217,0.55); border-color:rgba(217,217,217,0.25); border-radius:0;"></div>
-
+<div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 border" style=background-color:rgba(217,217,217,0.55);border-color:rgba(217,217,217,0.25);border-radius:0></div>
 </div>
-
-
-<!-- ITEM 2 -->
 <div class="relative grid md:grid-cols-2 gap-10 items-center">
-
 <div class="md:text-right md:pr-12">
 <h3 class="text-xl font-semibold text-white">
 Pro Sales Associate
 </h3>
-
 <p class="text-accent-cyan text-sm mb-2">
 Lowe’s Companies, Inc.
 </p>
-
 <p class="text-text-secondary text-sm leading-relaxed">
 Supported contractors and business customers with quotes, orders, and material coordination.
 Helped plan deliveries and resolve issues on tight timelines.
 </p>
 </div>
-
-<div class="md:pl-12">
+<div class=md:pl-12>
 <p class="text-sm font-mono text-text-secondary">
 January 2022 — March 2025
 </p>
-
 <p class="text-sm text-text-secondary">
 Fairfax, Virginia
 </p>
 </div>
-
-<div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 border" style="background-color:rgba(217,217,217,0.55); border-color:rgba(217,217,217,0.25); border-radius:0;"></div>
-
+<div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 border" style=background-color:rgba(217,217,217,0.55);border-color:rgba(217,217,217,0.25);border-radius:0></div>
 </div>
-
-
-<!-- ITEM 3 -->
 <div class="relative grid md:grid-cols-2 gap-10 items-center">
-
 <div class="md:text-right md:pr-12">
 <h3 class="text-xl font-semibold text-white">
 Building Materials and Lumber Associate
 </h3>
-
 <p class="text-accent-cyan text-sm mb-2">
 Lowe’s Companies, Inc.
 </p>
-
 <p class="text-text-secondary text-sm leading-relaxed">
 Assisted customers with product selection, maintained inventory, and ensured a safe and organized sales floor.
 </p>
 </div>
-
-<div class="md:pl-12">
+<div class=md:pl-12>
 <p class="text-sm font-mono text-text-secondary">
 January 2021 — December 2022
 </p>
-
 <p class="text-sm text-text-secondary">
 Fairfax, Virginia
 </p>
 </div>
-
-<div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 border" style="background-color:rgba(217,217,217,0.55); border-color:rgba(217,217,217,0.25); border-radius:0;"></div>
-
-</div>
-
+<div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 border" style=background-color:rgba(217,217,217,0.55);border-color:rgba(217,217,217,0.25);border-radius:0></div>
 </div>
 </div>
-
+</div>
 </div>
 </section>
-
-
-
-
-
-    
-  
-<section id="contact" class="hero-grid-bg py-20 transition-colors duration-500">
-
+<section id=contact class="hero-grid-bg py-20 transition-colors duration-500">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-<div class="section-header">
+<div class=section-header>
 <h2>05. Contact</h2>
 </div>
-
-
-
-
-    <!-- SINGLE UNIFIED CARD -->
-<div class="bg-container-bg border p-12 relative"
-style="border-color:rgba(217,217,217,0.18); border-radius:0;">
-      <div class="grid lg:grid-cols-2 gap-16 items-start">
-
-        <!-- LEFT FORM PANEL -->
-        <div>
-          <h3 class="text-2xl font-mono text-white mb-3">Let’s connect</h3>
-
-          <p class="text-text-secondary mb-10 leading-relaxed max-w-md">
-            For roles in security operations, IT systems analysis, or data analytics.
-            I’m happy to discuss opportunities, projects, or hands on lab work.
-          </p>
-
-          <form
-            name="contact"
-            method="POST"
-            data-netlify="true"
-            netlify-honeypot="bot-field"
-            class="space-y-6"
-          >
-            <input type="hidden" name="form-name" value="contact" />
-            <input type="hidden" name="bot-field" />
-
-            <div>
-              <label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
-                Full Name
-              </label>
-              <input
-                type="text"
-                name="name"
-                placeholder="Your name"
-                required
-                class="w-full p-4 bg-primary-bg border text-white focus:outline-none focus:border-accent-action transition" style="border-color:rgba(217,217,217,0.18); border-radius:0;" focus:outline-none focus:border-accent-action"
-              />
-            </div>
-
-            <div>
-              <label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                placeholder="name@email.com"
-                required
-                class="w-full p-4 bg-primary-bg border text-white focus:outline-none focus:border-accent-action transition" style="border-color:rgba(217,217,217,0.18); border-radius:0;" focus:outline-none focus:border-accent-action"
-              />
-            </div>
-
-            <div>
-              <label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
-                Message
-              </label>
-              <textarea
-                name="message"
-                rows="6"
-                placeholder="Write your message"
-                required
-                class="w-full p-4 bg-primary-bg border text-white focus:outline-none focus:border-accent-action transition" style="border-color:rgba(217,217,217,0.18); border-radius:0;" resize-none focus:outline-none focus:border-accent-action"
-              ></textarea>
-            </div>
-
-            <button
-              type="submit"
-class="w-full py-4 font-mono uppercase tracking-wider transition"
-style="
-background-color:var(--functional-action);
-color:var(--bg-default);
-border-radius:0;
-"
-onmouseover="this.style.backgroundColor='#4f96e4'"
-onmouseout="this.style.backgroundColor='var(--functional-action)'"
-            >
-              Send Message
-            </button>
-          </form>
-        </div>
-
-        <!-- RIGHT INFO PANEL -->
-        <div class="space-y-8">
-          <h4 class="text-xs font-mono uppercase tracking-wider text-text-secondary border-b
-style="border-color:rgba(217,217,217,0.18);"
- pb-3">
-            Contact Information
-          </h4>
-
-          <div class="space-y-5 text-sm">
-            <div>
-              <p class="text-xs uppercase tracking-wider text-text-secondary mb-1">Location</p>
-              <p class="text-white">Fairfax, Virginia, United States</p>
-            </div>
-
-            <div>
-              <p class="text-xs uppercase tracking-wider text-text-secondary mb-1">Email</p>
-              <p class="text-white">cj.aguirr3@gmail.com</p>
-            </div>
-
-            <div>
-              <p class="text-xs uppercase tracking-wider text-text-secondary mb-1">LinkedIn</p>
-              
-<a
-href="https://www.linkedin.com/in/christianaguirre/"
-target="_blank"
-class="text-white hover:text-accent-action transition"
->
+<div class="bg-container-bg border p-12 relative" style=border-color:rgba(217,217,217,0.18);border-radius:0>
+<div class="grid lg:grid-cols-2 gap-16 items-start">
+<div>
+<h3 class="text-2xl font-mono text-white mb-3">Let’s connect</h3>
+<p class="text-text-secondary mb-10 leading-relaxed max-w-md">
+For roles in security operations, IT systems analysis, or data analytics.
+I’m happy to discuss opportunities, projects, or hands on lab work.
+</p>
+<form name=contact method=POST data-netlify=true netlify-honeypot=bot-field class=space-y-6>
+<input type=hidden name=form-name value=contact />
+<input type=hidden name=bot-field />
+<div>
+<label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
+Full Name
+</label>
+<input type=text name=name placeholder="Your name" required class="w-full p-4 bg-primary-bg border text-white focus:outline-none focus:border-accent-action transition" style=border-color:rgba(217,217,217,0.18);border-radius:0 focus:outline-none focus:border-accent-action" />
+</div>
+<div>
+<label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
+Email
+</label>
+<input type=email name=email placeholder=name@email.com required class="w-full p-4 bg-primary-bg border text-white focus:outline-none focus:border-accent-action transition" style=border-color:rgba(217,217,217,0.18);border-radius:0 focus:outline-none focus:border-accent-action" />
+</div>
+<div>
+<label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
+Message
+</label>
+<textarea name=message rows=6 placeholder="Write your message" required class="w-full p-4 bg-primary-bg border text-white focus:outline-none focus:border-accent-action transition" style=border-color:rgba(217,217,217,0.18);border-radius:0 resize-none focus:outline-none focus:border-accent-action"></textarea>
+</div>
+<button type=submit class="w-full py-4 font-mono uppercase tracking-wider transition" style=background-color:var(--functional-action);color:var(--bg-default);border-radius:0 onmouseover="this.style.backgroundColor='#4f96e4'" onmouseout="this.style.backgroundColor='var(--functional-action)'">
+Send Message
+</button>
+</form>
+</div>
+<div class=space-y-8>
+<h4 class="text-xs font-mono uppercase tracking-wider text-text-secondary border-b style="border-color:rgba(217,217,217,0.18);" pb-3">
+Contact Information
+</h4>
+<div class="space-y-5 text-sm">
+<div>
+<p class="text-xs uppercase tracking-wider text-text-secondary mb-1">Location</p>
+<p class=text-white>Fairfax, Virginia, United States</p>
+</div>
+<div>
+<p class="text-xs uppercase tracking-wider text-text-secondary mb-1">Email</p>
+<p class=text-white>cj.aguirr3@gmail.com</p>
+</div>
+<div>
+<p class="text-xs uppercase tracking-wider text-text-secondary mb-1">LinkedIn</p>
+<a href=https://www.linkedin.com/in/christianaguirre/ target=_blank class="text-white hover:text-accent-action transition">
 linkedin.com/in/christianaguirre
 </a>
-
-
-
-                
-            </div>
-
-            <div>
-              <p class="text-xs uppercase tracking-wider text-text-secondary mb-1">GitHub</p>
-              <a
-                href="https://github.com/cjaguirre"
-                target="_blank"
-                class="text-white hover:text-accent-action transition"
-              >
-                github.com/cjaguirre
-              </a>
-            </div>
-          </div>
-
-<div class="overflow-hidden border"
-style="border-color:rgba(217,217,217,0.18); border-radius:0;">
-            <iframe
-              src="https://www.openstreetmap.org/export/embed.html?bbox=-77.35%2C38.80%2C-77.25%2C38.88&layer=mapnik&marker=38.8462%2C-77.3064"
-              class="w-full h-56"
-              loading="lazy"
-            ></iframe>
-          </div>
-
-          <p class="text-xs text-text-secondary text-center">
-            Map reference for Fairfax, Virginia
-          </p>
-        </div>
-
-      </div>
-    </div>
-  </div>
+</div>
+<div>
+<p class="text-xs uppercase tracking-wider text-text-secondary mb-1">GitHub</p>
+<a href=https://github.com/cjaguirre target=_blank class="text-white hover:text-accent-action transition">
+github.com/cjaguirre
+</a>
+</div>
+</div>
+<div class="overflow-hidden border" style=border-color:rgba(217,217,217,0.18);border-radius:0>
+<iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-77.35%2C38.80%2C-77.25%2C38.88&layer=mapnik&marker=38.8462%2C-77.3064" class="w-full h-56" loading=lazy></iframe>
+</div>
+<p class="text-xs text-text-secondary text-center">
+Map reference for Fairfax, Virginia
+</p>
+</div>
+</div>
+</div>
+</div>
 </section>
-
 <footer class="bg-container-bg text-gray-500 py-6 text-sm transition-colors duration-500">
-
-
-    
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
 <div class=text-left>
 <p class="text-xl font-mono text-accent-cyan mb-1">&lt;Christian Aguirre /&gt;</p>
@@ -1009,88 +638,14 @@ cybersecurity.
 <p class="mt-2 text-xs">&copy; 2025 Christian Aguirre. All rights reserved.</p>
 </div>
 <div class="flex items-center space-x-4 text-xs">
-    
-<a href="#hero"
-class="font-mono text-xs border px-4 py-2 flex items-center gap-2 transition"
-style="
-border-color:rgba(217,217,217,0.18);
-color:var(--text-secondary);
-border-radius:0;
-"
-onmouseover="
-this.style.borderColor='var(--functional-action)';
-this.style.color='white';
-"
-onmouseout="
-this.style.borderColor='rgba(217,217,217,0.18)';
-this.style.color='var(--text-secondary)';
-"
->
+<a href=#hero class="font-mono text-xs border px-4 py-2 flex items-center gap-2 transition" style=border-color:rgba(217,217,217,0.18);color:var(--text-secondary);border-radius:0 onmouseover="this.style.borderColor='var(--functional-action)';this.style.color='white'" onmouseout="this.style.borderColor='rgba(217,217,217,0.18)';this.style.color='var(--text-secondary)'">
 ↑ Back to top
 </a>
-
-    
 </div>
 </div>
 </footer>
-
-
-<script>
-
-    
-
-const heroVideos = [
-
-"assets/videos/CYP1_techstack.mp4",
-"assets/videos/CYP1_bluecable.mp4",
-"assets/videos/CYP1_ports.mp4",
-"assets/videos/CYP1_script1.mp4",
-"assets/videos/CYP1_script2.mp4",
-"assets/videos/CYP1_script3.mp4"
-
-];
-
-const videoElement = document.getElementById("heroVideo");
-
-let currentVideoIndex = 0;
-
-function playNextVideo(){
-
-currentVideoIndex++;
-
-if(currentVideoIndex >= heroVideos.length){
-currentVideoIndex = 0;
-}
-
-videoElement.src = heroVideos[currentVideoIndex];
-videoElement.play();
-
-}
-
-videoElement.addEventListener("ended", playNextVideo);
-
-// start first video
-videoElement.src = heroVideos[0];
-videoElement.play();
-
-
-
-// initialize all interactive features
-document.addEventListener("DOMContentLoaded", () => {
-initProjectFilters();
-initSmoothScroll();
-animateProgressBars();
-});
-
-
-
-
-    
-</script>
-
-  
+<script>const heroVideos=["assets/videos/CYP1_techstack.mp4","assets/videos/CYP1_bluecable.mp4","assets/videos/CYP1_ports.mp4","assets/videos/CYP1_script1.mp4","assets/videos/CYP1_script2.mp4","assets/videos/CYP1_script3.mp4"];const videoElement=document.getElementById("heroVideo");let currentVideoIndex=0;function playNextVideo(){currentVideoIndex++;if(currentVideoIndex>=heroVideos.length){currentVideoIndex=0;}
+videoElement.src=heroVideos[currentVideoIndex];videoElement.play();}
+videoElement.addEventListener("ended",playNextVideo);videoElement.src=heroVideos[0];videoElement.play();document.addEventListener("DOMContentLoaded",()=>{initProjectFilters();initSmoothScroll();animateProgressBars();});</script>
 </body>
-
-
-  
 </html>
