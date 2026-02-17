@@ -16,10 +16,9 @@ projectCards.forEach((card)=>card.classList.remove("hidden"));filterButtons.forE
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex justify-between h-16">
 <div class="flex items-center">
-<button id="mobileMenuButton" class="md:hidden text-accent-cyan focus:outline-none ml-4">
-<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-d="M4 6h16M4 12h16M4 18h16"/>
+<button id=mobileMenuButton class="md:hidden text-accent-cyan focus:outline-none ml-4">
+<svg xmlns=http://www.w3.org/2000/svg class="h-6 w-6" fill=none viewBox="0 0 24 24" stroke=currentColor>
+<path stroke-linecap=round stroke-linejoin=round stroke-width=2 d="M4 6h16M4 12h16M4 18h16"/>
 </svg>
 </button>
 <a href=#hero class="text-xl font-mono text-accent-cyan hover:text-accent-red transition duration-300">
@@ -40,20 +39,19 @@ GitHub Repo
 </div>
 </div>
 </nav>
-<div id="mobileMenu" class="md:hidden hidden bg-container-bg border-t"
-style="border-color:rgba(217,217,217,0.18)">
+<div id=mobileMenu class="md:hidden hidden bg-container-bg border-t" style=border-color:rgba(217,217,217,0.18)>
 <div class="px-4 py-4 flex flex-col gap-4 text-sm">
-<a href="#about">About</a>
-<a href="#skills">Skills</a>
-<a href="#projects">Projects</a>
-<a href="#experience">Experience</a>
-<a href="#education">Education</a>
-<a href="#contact">Contact</a>
-<a href="https://github.com/cjaguirre/Cybersecurity-and-Data-Analytics-Portfolio" target="_blank">
+<a href=#about>About</a>
+<a href=#skills>Skills</a>
+<a href=#projects>Projects</a>
+<a href=#experience>Experience</a>
+<a href=#education>Education</a>
+<a href=#contact>Contact</a>
+<a href=https://github.com/cjaguirre/Cybersecurity-and-Data-Analytics-Portfolio target=_blank>
 GitHub Repo
 </a>
 </div>
-</div> 
+</div>
 <section id=hero class="hero-grid-bg relative pt-20 pb-12 sm:pt-24 md:pt-32 md:pb-24 min-h-screen flex items-center transition-colors duration-500 text-center overflow-hidden">
 <video id=heroVideo autoplay muted playsinline class=hero-video-bg></video>
 <div class=hero-overlay></div>
@@ -666,19 +664,6 @@ cybersecurity.
 </footer>
 <script>const heroVideos=["assets/videos/CYP1_techstack.mp4","assets/videos/CYP1_bluecable.mp4","assets/videos/CYP1_ports.mp4","assets/videos/CYP1_script1.mp4","assets/videos/CYP1_script2.mp4","assets/videos/CYP1_script3.mp4"];const videoElement=document.getElementById("heroVideo");let currentVideoIndex=0;function playNextVideo(){currentVideoIndex++;if(currentVideoIndex>=heroVideos.length){currentVideoIndex=0;}
 videoElement.src=heroVideos[currentVideoIndex];videoElement.play();}
-videoElement.addEventListener("ended",playNextVideo);videoElement.src=heroVideos[0];videoElement.play();document.addEventListener("DOMContentLoaded",()=>{initProjectFilters();initSmoothScroll();animateProgressBars();});
-
-document.addEventListener("DOMContentLoaded",()=>{
-initProjectFilters();
-initSmoothScroll();
-animateProgressBars();
-
-document.getElementById("mobileMenuButton").addEventListener("click",()=>{
-document.getElementById("mobileMenu").classList.toggle("hidden");
-});
-
-});
-
-</script>
+videoElement.addEventListener("ended",playNextVideo);videoElement.src=heroVideos[0];videoElement.play();document.addEventListener("DOMContentLoaded",()=>{initProjectFilters();initSmoothScroll();animateProgressBars();});</script>
 </body>
 </html>
