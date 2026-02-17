@@ -666,6 +666,19 @@ cybersecurity.
 </footer>
 <script>const heroVideos=["assets/videos/CYP1_techstack.mp4","assets/videos/CYP1_bluecable.mp4","assets/videos/CYP1_ports.mp4","assets/videos/CYP1_script1.mp4","assets/videos/CYP1_script2.mp4","assets/videos/CYP1_script3.mp4"];const videoElement=document.getElementById("heroVideo");let currentVideoIndex=0;function playNextVideo(){currentVideoIndex++;if(currentVideoIndex>=heroVideos.length){currentVideoIndex=0;}
 videoElement.src=heroVideos[currentVideoIndex];videoElement.play();}
-videoElement.addEventListener("ended",playNextVideo);videoElement.src=heroVideos[0];videoElement.play();document.addEventListener("DOMContentLoaded",()=>{initProjectFilters();initSmoothScroll();animateProgressBars();});</script>
+videoElement.addEventListener("ended",playNextVideo);videoElement.src=heroVideos[0];videoElement.play();document.addEventListener("DOMContentLoaded",()=>{initProjectFilters();initSmoothScroll();animateProgressBars();});
+
+document.addEventListener("DOMContentLoaded",()=>{
+initProjectFilters();
+initSmoothScroll();
+animateProgressBars();
+
+document.getElementById("mobileMenuButton").addEventListener("click",()=>{
+document.getElementById("mobileMenu").classList.toggle("hidden");
+});
+
+});
+
+</script>
 </body>
 </html>
