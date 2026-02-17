@@ -16,11 +16,17 @@ projectCards.forEach((card)=>card.classList.remove("hidden"));filterButtons.forE
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex justify-between h-16">
 <div class="flex items-center">
+<button id="mobileMenuButton" class="md:hidden text-accent-cyan focus:outline-none ml-4">
+<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+d="M4 6h16M4 12h16M4 18h16"/>
+</svg>
+</button>
 <a href=#hero class="text-xl font-mono text-accent-cyan hover:text-accent-red transition duration-300">
 &lt;Christian Aguirre /&gt;
 </a>
 </div>
-<div class="flex items-center gap-8 text-sm">
+<div class="hidden md:flex items-center gap-8 text-sm">
 <a href=#about class="font-medium hover:text-accent-cyan transition duration-300">About</a>
 <a href=#skills class="font-medium hover:text-accent-cyan transition duration-300">Skills</a>
 <a href=#projects class="font-medium hover:text-accent-cyan transition duration-300">Projects</a>
@@ -34,15 +40,29 @@ GitHub Repo
 </div>
 </div>
 </nav>
+<div id="mobileMenu" class="md:hidden hidden bg-container-bg border-t"
+style="border-color:rgba(217,217,217,0.18)">
+<div class="px-4 py-4 flex flex-col gap-4 text-sm">
+<a href="#about">About</a>
+<a href="#skills">Skills</a>
+<a href="#projects">Projects</a>
+<a href="#experience">Experience</a>
+<a href="#education">Education</a>
+<a href="#contact">Contact</a>
+<a href="https://github.com/cjaguirre/Cybersecurity-and-Data-Analytics-Portfolio" target="_blank">
+GitHub Repo
+</a>
+</div>
+</div> 
 <section id=hero class="hero-grid-bg relative pt-20 pb-12 sm:pt-24 md:pt-32 md:pb-24 min-h-screen flex items-center transition-colors duration-500 text-center overflow-hidden">
 <video id=heroVideo autoplay muted playsinline class=hero-video-bg></video>
 <div class=hero-overlay></div>
 <div class="hero-content max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 <p class="hero-text-secondary font-mono text-lg mx-auto">Hello, my name is</p>
-<h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-3 text-text-base">
+<h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-3 text-text-base">
 Christian Aguirre
 </h1>
-<h2 class="text-2xl sm:text-3xl lg:text-4xl font-semibold mb-6 text-text-secondary">
+<h2 class="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-semibold mb-6 text-text-secondary">
 IT Support & Security Operations Analyst
 </h2>
 <p class="text-lg max-w-3xl mx-auto mb-10 text-text-secondary leading-relaxed">
@@ -50,7 +70,7 @@ Security+ certified IT professional focused on Security Operations, SIEM monitor
 I build and operate hands on labs using Microsoft Sentinel, Sysmon, Active Directory, and Azure to investigate
 system activity, analyze logs, and detect suspicious behavior. Combined with real world operational experience
 supporting a federal environment, I bring both technical security skills and production level IT support discipline.
-<div class="flex justify-center flex-wrap gap-4">
+<div class="flex flex-col sm:flex-row justify-center items-center gap-4">
 <a href=#contact class="inline-block border-2 font-semibold py-3 px-8 transition duration-300 transform hover:scale-[1.02]" style=border-radius:0;background-color:var(--functional-action);border-color:var(--functional-action);color:var(--bg-default) onmouseover="this.style.backgroundColor='#4f96e4'" onmouseout="this.style.backgroundColor='var(--functional-action)'">
 Get in touch
 </a>
@@ -105,7 +125,7 @@ Security+ Certified
 </div>
 </div>
 <div class="flex justify-center lg:justify-end">
-<img src="assets/images/professional photo of myself.jpg" alt="Christian Aguirre" onerror="this.onerror=null;this.src='https://placehold.co/420x550/30333a/D9D9D9?text=Image+Placeholder'" class="shadow-lg object-cover border hover:border-accent-action transition duration-300 w-[320px]" style=border-color:rgba(217,217,217,0.18);border-radius:0 </div>
+<img src="assets/images/professional photo of myself.jpg" alt="Christian Aguirre" onerror="this.onerror=null;this.src='https://placehold.co/420x550/30333a/D9D9D9?text=Image+Placeholder'" class="shadow-lg object-cover border hover:border-accent-action transition duration-300 w-full max-w-[320px]" style=border-color:rgba(217,217,217,0.18);border-radius:0 </div>
 </div>
 </div>
 </div>
@@ -477,7 +497,7 @@ Applied operations research techniques including Monte Carlo simulation, linear 
 <h2>04. Experience</h2>
 </div>
 <div class="bg-container-bg border p-12 relative" style=border-color:rgba(217,217,217,0.18);border-radius:0>
-<div class="absolute left-1/2 w-px" style=top:32px;bottom:32px;transform:translateX(-50%);background-color:rgba(217,217,217,0.18)></div>
+<div class="hidden md:block absolute left-1/2 w-px" style=top:32px;bottom:32px;transform:translateX(-50%);background-color:rgba(217,217,217,0.18)></div>
 <div class=space-y-16>
 <div class="relative grid md:grid-cols-2 gap-10 items-center">
 <div class="md:text-right md:pr-12">
@@ -500,7 +520,7 @@ March 2025 — Present
 Falls Church, Virginia · on site
 </p>
 </div>
-<div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 border" style=background-color:rgba(217,217,217,0.55);border-color:rgba(217,217,217,0.25);border-radius:0></div>
+<div class="hidden md:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 border" style=background-color:rgba(217,217,217,0.55);border-color:rgba(217,217,217,0.25);border-radius:0></div>
 </div>
 <div class="relative grid md:grid-cols-2 gap-10 items-center">
 <div class="md:text-right md:pr-12">
@@ -523,7 +543,7 @@ January 2022 — March 2025
 Fairfax, Virginia
 </p>
 </div>
-<div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 border" style=background-color:rgba(217,217,217,0.55);border-color:rgba(217,217,217,0.25);border-radius:0></div>
+<div class="hidden md:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 border" style=background-color:rgba(217,217,217,0.55);border-color:rgba(217,217,217,0.25);border-radius:0></div>
 </div>
 <div class="relative grid md:grid-cols-2 gap-10 items-center">
 <div class="md:text-right md:pr-12">
@@ -545,7 +565,7 @@ January 2021 — December 2022
 Fairfax, Virginia
 </p>
 </div>
-<div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 border" style=background-color:rgba(217,217,217,0.55);border-color:rgba(217,217,217,0.25);border-radius:0></div>
+<div class="hidden md:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 border" style=background-color:rgba(217,217,217,0.55);border-color:rgba(217,217,217,0.25);border-radius:0></div>
 </div>
 </div>
 </div>
