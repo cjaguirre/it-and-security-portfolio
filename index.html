@@ -54,7 +54,7 @@ function initProjectFilters(){const filterButtons=document.querySelectorAll(".fi
 projectCards.forEach((card)=>card.classList.remove("hidden"));filterButtons.forEach((button)=>{button.addEventListener("click",()=>{const filter=button.dataset.filter;filterButtons.forEach((btn)=>{btn.classList.remove("bg-accent-red","text-white");btn.classList.add("bg-secondary-bg","text-text-secondary");});button.classList.add("bg-accent-red","text-white");button.classList.remove("bg-secondary-bg","text-text-secondary");projectCards.forEach((card)=>{const tags=card.dataset.tags||"";if(filter==="all"||tags.includes(filter)){card.classList.remove("hidden");}else{card.classList.add("hidden");}});});});}</script>
 </head>
 <body class="transition-colors duration-500">
-<nav class="sticky top-0 z-50 bg-secondary-bg shadow-lg border-b border-gray-800 transition-colors duration-500">
+<nav class="sticky top-0 z-50 bg-container-bg border-b border-gray-700 transition-colors duration-500">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex justify-between h-16">
 <div class="flex items-center">
