@@ -184,12 +184,7 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
         </p>
       </div>
 
-      <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Admin_Panel_User_Details_View.png')">
-        <img src="../assets/images/EIAMS1_Admin_Panel_User_Details_View.png" class="w-full" alt="IAM admin surface overview">
-        <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">
-          Microsoft Entra administrative surface showing identity governance, access control, and monitoring components.
-        </p>
-      </div>
+      
 
     </div>
 
@@ -202,14 +197,16 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
     <div class="card p-6 md:p-8 space-y-14">
       <div>
         <h3 class="text-lg font-semibold mb-2">Phase 3 — Internal User Provisioning</h3>
-        <p class="text-sm" style="color:var(--muted)">Six internal accounts were created across IT, HR, and Finance. Each account was configured through the Basics → Properties → Assignments → Review + create workflow with auto-generated passwords, department metadata, manager relationships, and role assignments applied during creation.</p>
+        <p class="text-sm" style="color:var(--muted)">Six internal identities were provisioned to model a basic enterprise org chart across IT,
+          HR, and Finance. Admin privileges were assigned only to IT accounts, while HR and Finance access is governed primarily through group
+          based RBAC to reinforce least privilege.</p>
       </div>
 
       <!-- it.admin creation -->
       <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <p class="step-num">3.1 — it.admin — Basics tab</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">UPN and display name set, auto-generate password enabled. This is the first step in the creation wizard before moving to Properties to set department and manager.</p>
+          <p class="text-sm leading-relaxed" style="color:var(--muted)">Provisioned the primary IT administrator identity used to manage directory operations and support workflows.</p>
         </div>
         <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_User_Basics.png')">
           <img src="../assets/images/EIAMS1_Azure_Create_User_Basics.png" class="w-full" alt="it.admin basics tab">
@@ -221,7 +218,7 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
       <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <p class="step-num">3.2 — it.admin — Role Assignments</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">Three roles were assigned to it.admin directly during creation: Global Reader, Helpdesk Administrator, and User Administrator. Assigning roles at provisioning time, rather than after, ensures the account is access-ready immediately with no gap.</p>
+          <p class="text-sm leading-relaxed" style="color:var(--muted)">Assigned directory roles during provisioning to avoid a post creation access gap. Roles: Global Reader, Helpdesk Administrator, User Administrator.</p>
         </div>
         <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_User_Role_Assignments.png')">
           <img src="../assets/images/EIAMS1_Azure_User_Role_Assignments.png" class="w-full" alt="it.admin role assignments">
@@ -233,7 +230,7 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
       <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <p class="step-num">3.3 — it.admin — Review + Create</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">Final review confirms all configured attributes before the account is created: UPN, department (IT), manager (Christian Aguirre), usage location (United States), and the three assigned directory roles.</p>
+          <p class="text-sm leading-relaxed" style="color:var(--muted)">Validated governance metadata and role scope before creation, including department, manager relationship, usage location, and assigned roles.</p>
         </div>
         <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_ITAdmin_User.png')">
           <img src="../assets/images/EIAMS1_Azure_Create_ITAdmin_User.png" class="w-full" alt="it.admin review">
@@ -245,7 +242,7 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
       <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <p class="step-num">3.4 — it.support — Review + Create</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">it.support is provisioned under the IT department with it.admin as manager. Assigned roles: Global Reader and Helpdesk Administrator — fewer privileges than it.admin, reflecting a lower-tier IT identity.</p>
+          <p class="text-sm leading-relaxed" style="color:var(--muted)">Provisioned a lower privilege IT support identity. Scoped to support responsibilities with Global Reader and Helpdesk Administrator only.</p>
         </div>
         <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_ITSupport_User.png')">
           <img src="../assets/images/EIAMS1_Azure_Create_ITSupport_User.png" class="w-full" alt="it.support review">
@@ -257,7 +254,7 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
       <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <p class="step-num">3.5 — hr.manager — Review + Create</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">hr.manager is provisioned under HR. No directory roles — access scoped through HR-Team group membership, reflecting least-privilege for non-IT accounts.</p>
+          <p class="text-sm leading-relaxed" style="color:var(--muted)">Provisioned HR manager identity with no directory roles. Access is intended to be controlled through HR Team group membership rather than direct admin privileges.</p>
         </div>
         <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_HRManager_User.png')">
           <img src="../assets/images/EIAMS1_Azure_Create_HRManager_User.png" class="w-full" alt="hr.manager review">
@@ -269,7 +266,7 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
       <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <p class="step-num">3.6 — hr.staff — Review + Create</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">hr.staff provisioned under HR with hr.manager as manager, establishing the department reporting chain.</p>
+          <p class="text-sm leading-relaxed" style="color:var(--muted)">Provisioned HR staff identity and established the department reporting chain by assigning hr.manager as manager.</p>
         </div>
         <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_HRStaff_User.png')">
           <img src="../assets/images/EIAMS1_Azure_Create_HRStaff_User.png" class="w-full" alt="hr.staff review">
@@ -281,7 +278,7 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
       <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <p class="step-num">3.7 — fin.analyst — Review + Create</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">fin.analyst is provisioned under Finance with it.admin as manager. Assigned Global Reader role. Finance identities carry elevated data governance requirements relative to other departments.</p>
+          <p class="text-sm leading-relaxed" style="color:var(--muted)">Provisioned Finance analyst identity with limited directory visibility using Global Reader. This models a finance user who needs oversight context without admin control.</p>
         </div>
         <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_FinAnalyst_User.png')">
           <img src="../assets/images/EIAMS1_Azure_Create_FinAnalyst_User.png" class="w-full" alt="fin.analyst review">
@@ -290,16 +287,18 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
       </div>
 
       <!-- fin.staff -->
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
+
+            <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <p class="step-num">3.8 — fin.staff — Review + Create</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">fin.staff provisioned under Finance with fin.analyst as manager. No directory roles — access governed entirely through Finance-Team group membership.</p>
+          <p class="text-sm leading-relaxed" style="color:var(--muted)">Provisioned Finance staff identity with no directory roles. Access is governed through Finance Team group membership to keep permissions centralized and auditable.</p>
         </div>
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_FinStaff_User.png')">
-          <img src="../assets/images/EIAMS1_Azure_Create_FinStaff_User.png" class="w-full" alt="fin.staff review">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">fin.staff review — Finance dept, fin.analyst as manager, no directory roles assigned.</p>
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_FinAnalyst_User.png')">
+          <img src="../assets/images/EIAMS1_Azure_Create_FinAnalyst_User.png" class="w-full" alt="fin.analyst review">
+          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">fin.staff review — Finance dept, it.admin manager, Global Reader role.</p>
         </div>
       </div>
+      
     </div>
   </div>
 
