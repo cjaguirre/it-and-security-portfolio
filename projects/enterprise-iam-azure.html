@@ -149,8 +149,8 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
           <p class="step-num">1.1 — Tenant Overview</p>
           <p class="text-sm leading-relaxed" style="color:var(--muted)">The Default Directory overview confirms the tenant identity — tenant ID, primary domain, license tier, and current user/group count before any provisioning. This is the baseline state of the environment.</p>
         </div>
-        <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Azure_EntraID_Overview.png')">
-          <img src="assets/images/EIAMS1_Azure_EntraID_Overview.png" class="w-full" alt="Entra ID tenant overview">
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_EntraID_Overview.png')">
+          <img src="../assets/images/EIAMS1_Azure_EntraID_Overview.png" class="w-full" alt="Entra ID tenant overview">
           <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Default Directory overview — tenant ID, domain, license, and baseline user/group count.</p>
         </div>
       </div>
@@ -171,8 +171,8 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
           <p class="step-num">3.1 — it.admin — Basics tab</p>
           <p class="text-sm leading-relaxed" style="color:var(--muted)">UPN and display name set, auto-generate password enabled. This is the first step in the creation wizard before moving to Properties to set department and manager.</p>
         </div>
-        <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Azure_Create_User_Basics.png')">
-          <img src="assets/images/EIAMS1_Azure_Create_User_Basics.png" class="w-full" alt="it.admin basics tab">
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_User_Basics.png')">
+          <img src="../assets/images/EIAMS1_Azure_Create_User_Basics.png" class="w-full" alt="it.admin basics tab">
           <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">it.admin — Basics tab with UPN set and auto-generate password enabled.</p>
         </div>
       </div>
@@ -183,8 +183,8 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
           <p class="step-num">3.2 — it.admin — Role Assignments</p>
           <p class="text-sm leading-relaxed" style="color:var(--muted)">Three roles were assigned to it.admin directly during creation: Global Reader, Helpdesk Administrator, and User Administrator. Assigning roles at provisioning time, rather than after, ensures the account is access-ready immediately with no gap.</p>
         </div>
-        <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Azure_User_Role_Assignments.png')">
-          <img src="assets/images/EIAMS1_Azure_User_Role_Assignments.png" class="w-full" alt="it.admin role assignments">
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_User_Role_Assignments.png')">
+          <img src="../assets/images/EIAMS1_Azure_User_Role_Assignments.png" class="w-full" alt="it.admin role assignments">
           <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Assignments tab — Global Reader, Helpdesk Administrator, User Administrator applied to it.admin.</p>
         </div>
       </div>
@@ -195,8 +195,8 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
           <p class="step-num">3.3 — it.admin — Review + Create</p>
           <p class="text-sm leading-relaxed" style="color:var(--muted)">Final review confirms all configured attributes before the account is created: UPN, department (IT), manager (Christian Aguirre), usage location (United States), and the three assigned directory roles.</p>
         </div>
-        <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Azure_Create_ITAdmin_User.png')">
-          <img src="assets/images/EIAMS1_Azure_Create_ITAdmin_User.png" class="w-full" alt="it.admin review">
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_ITAdmin_User.png')">
+          <img src="../assets/images/EIAMS1_Azure_Create_ITAdmin_User.png" class="w-full" alt="it.admin review">
           <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">it.admin review — IT dept, manager, location, and three role assignments confirmed.</p>
         </div>
       </div>
@@ -207,20 +207,44 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
           <p class="step-num">3.4 — it.support — Review + Create</p>
           <p class="text-sm leading-relaxed" style="color:var(--muted)">it.support is provisioned under the IT department with it.admin as manager. Assigned roles: Global Reader and Helpdesk Administrator — fewer privileges than it.admin, reflecting a lower-tier IT identity.</p>
         </div>
-        <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Azure_Create_ITSupport_User.png')">
-          <img src="assets/images/EIAMS1_Azure_Create_ITSupport_User.png" class="w-full" alt="it.support review">
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_ITSupport_User.png')">
+          <img src="../assets/images/EIAMS1_Azure_Create_ITSupport_User.png" class="w-full" alt="it.support review">
           <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">it.support review — IT dept, it.admin as manager, Global Reader + Helpdesk Admin roles.</p>
+        </div>
+      </div>
+
+      <!-- hr.manager -->
+      <div class="grid lg:grid-cols-2 gap-10 items-start">
+        <div>
+          <p class="step-num">3.5 — hr.manager — Review + Create</p>
+          <p class="text-sm leading-relaxed" style="color:var(--muted)">hr.manager is provisioned under HR. No directory roles — access scoped through HR-Team group membership, reflecting least-privilege for non-IT accounts.</p>
+        </div>
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_HRManager_User.png')">
+          <img src="../assets/images/EIAMS1_Azure_Create_HRManager_User.png" class="w-full" alt="hr.manager review">
+          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">hr.manager review — HR dept, manager assigned, no directory roles.</p>
+        </div>
+      </div>
+
+      <!-- hr.staff -->
+      <div class="grid lg:grid-cols-2 gap-10 items-start">
+        <div>
+          <p class="step-num">3.6 — hr.staff — Review + Create</p>
+          <p class="text-sm leading-relaxed" style="color:var(--muted)">hr.staff provisioned under HR with hr.manager as manager, establishing the department reporting chain.</p>
+        </div>
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_HRStaff_User.png')">
+          <img src="../assets/images/EIAMS1_Azure_Create_HRStaff_User.png" class="w-full" alt="hr.staff review">
+          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">hr.staff review — HR dept, hr.manager as manager, no directory roles.</p>
         </div>
       </div>
 
       <!-- fin.analyst -->
       <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div>
-          <p class="step-num">3.5 — fin.analyst — Review + Create</p>
+          <p class="step-num">3.7 — fin.analyst — Review + Create</p>
           <p class="text-sm leading-relaxed" style="color:var(--muted)">fin.analyst is provisioned under Finance with it.admin as manager. Assigned Global Reader role. Finance identities carry elevated data governance requirements relative to other departments.</p>
         </div>
-        <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Azure_Create_FinAnalyst_User.png')">
-          <img src="assets/images/EIAMS1_Azure_Create_FinAnalyst_User.png" class="w-full" alt="fin.analyst review">
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_FinAnalyst_User.png')">
+          <img src="../assets/images/EIAMS1_Azure_Create_FinAnalyst_User.png" class="w-full" alt="fin.analyst review">
           <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">fin.analyst review — Finance dept, it.admin manager, Global Reader role.</p>
         </div>
       </div>
@@ -228,11 +252,11 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
       <!-- fin.staff -->
       <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div>
-          <p class="step-num">3.6 — fin.staff — Review + Create</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">fin.staff is provisioned under Finance with fin.analyst as manager, establishing a department reporting structure. No directory roles — access governed entirely through Finance-Team group membership.</p>
+          <p class="step-num">3.8 — fin.staff — Review + Create</p>
+          <p class="text-sm leading-relaxed" style="color:var(--muted)">fin.staff provisioned under Finance with fin.analyst as manager. No directory roles — access governed entirely through Finance-Team group membership.</p>
         </div>
-        <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Create_New_User_Basics.png')">
-          <img src="assets/images/EIAMS1_Create_New_User_Basics.png" class="w-full" alt="fin.staff review">
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_FinStaff_User.png')">
+          <img src="../assets/images/EIAMS1_Azure_Create_FinStaff_User.png" class="w-full" alt="fin.staff review">
           <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">fin.staff review — Finance dept, fin.analyst as manager, no directory roles assigned.</p>
         </div>
       </div>
@@ -253,12 +277,12 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
           <p class="text-sm leading-relaxed" style="color:var(--muted)">Invitation initiated with external email address and display name "Contractor Test." An onboarding message was written and an invite redirect URL was set to deliver the user directly to My Apps on acceptance.</p>
         </div>
         <div class="space-y-4">
-          <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Invite_External_User_Basics.png')">
-            <img src="assets/images/EIAMS1_Invite_External_User_Basics.png" class="w-full" alt="Guest invite basics">
+          <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Invite_External_User_Basics.png')">
+            <img src="../assets/images/EIAMS1_Invite_External_User_Basics.png" class="w-full" alt="Guest invite basics">
             <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Basics tab — external email and display name set before filling invitation message.</p>
           </div>
-          <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_External_User_Invitation_Message.png')">
-            <img src="assets/images/EIAMS1_External_User_Invitation_Message.png" class="w-full" alt="Guest invite with message">
+          <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_External_User_Invitation_Message.png')">
+            <img src="../assets/images/EIAMS1_External_User_Invitation_Message.png" class="w-full" alt="Guest invite with message">
             <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Invitation message filled — "Please join our platform to begin onboarding."</p>
           </div>
         </div>
@@ -270,12 +294,12 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
           <p class="text-sm leading-relaxed" style="color:var(--muted)">The Review + invite summary confirms Guest user type, message enabled, and redirect URL. After sending, the Contractor Test account appears in the directory as Guest with invitation state "Pending acceptance" — the expected state before the external user accepts.</p>
         </div>
         <div class="space-y-4">
-          <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Review_Create_External_User.png')">
-            <img src="assets/images/EIAMS1_Review_Create_External_User.png" class="w-full" alt="Guest review + invite">
+          <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Review_Create_External_User.png')">
+            <img src="../assets/images/EIAMS1_Review_Create_External_User.png" class="w-full" alt="Guest review + invite">
             <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Review + invite — Guest user type, message confirmed, redirect URL set.</p>
           </div>
-          <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Contractor_Test_Account_Profile.png')">
-            <img src="assets/images/EIAMS1_Contractor_Test_Account_Profile.png" class="w-full" alt="Contractor guest account">
+          <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Contractor_Test_Account_Profile.png')">
+            <img src="../assets/images/EIAMS1_Contractor_Test_Account_Profile.png" class="w-full" alt="Contractor guest account">
             <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Contractor Test overview — Guest type, #EXT# UPN, B2B invitation pending acceptance.</p>
           </div>
         </div>
@@ -286,8 +310,8 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
           <p class="step-num">4.3 — Guest Properties and Attribute Enrichment</p>
           <p class="text-sm leading-relaxed" style="color:var(--muted)">The Properties tab was reviewed to confirm the full identity profile — job title (External Contractor), department (Contractor / IT), usage location, and manager assignment. Enriching the guest profile ensures accurate identity attribution even before invitation acceptance.</p>
         </div>
-        <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_User_Properties_Full_Attribute_List.png')">
-          <img src="assets/images/EIAMS1_User_Properties_Full_Attribute_List.png" class="w-full" alt="Guest full properties">
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_User_Properties_Full_Attribute_List.png')">
+          <img src="../assets/images/EIAMS1_User_Properties_Full_Attribute_List.png" class="w-full" alt="Guest full properties">
           <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Contractor Test Properties tab — job title, dept, UPN with #EXT#, creation type: Invitation.</p>
         </div>
       </div>
@@ -307,8 +331,8 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
           <p class="step-num">5.1 — All Groups</p>
           <p class="text-sm leading-relaxed" style="color:var(--muted)">Finance-Team, HR-Team, and IT-Team are all Security type with Assigned membership — no dynamic rules. Each maps directly to a department and will control that department's resource access going forward.</p>
         </div>
-        <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Groups_List_All_Overview.png')">
-          <img src="assets/images/EIAMS1_Groups_List_All_Overview.png" class="w-full" alt="All groups">
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Groups_List_All_Overview.png')">
+          <img src="../assets/images/EIAMS1_Groups_List_All_Overview.png" class="w-full" alt="All groups">
           <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">All groups — Finance-Team, HR-Team, IT-Team created as Security type with Assigned membership.</p>
         </div>
       </div>
@@ -318,8 +342,8 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
           <p class="step-num">5.2 — IT-Team Members</p>
           <p class="text-sm leading-relaxed" style="color:var(--muted)">IT-Team contains it.admin, it.support, and notably the Contractor Test guest. The guest is assigned as a Guest user type within the same group — demonstrating that B2B identities can be scoped into specific departmental groups while remaining distinct from member identities.</p>
         </div>
-        <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Group_Properties_General_Info.png')">
-          <img src="assets/images/EIAMS1_Group_Properties_General_Info.png" class="w-full" alt="IT-Team members">
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Group_Properties_General_Info.png')">
+          <img src="../assets/images/EIAMS1_Group_Properties_General_Info.png" class="w-full" alt="IT-Team members">
           <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">IT-Team members — Contractor Test (Guest), it.admin, it.support. Guest user type clearly differentiated.</p>
         </div>
       </div>
@@ -330,12 +354,12 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
           <p class="text-sm leading-relaxed" style="color:var(--muted)">HR-Team contains hr.manager and hr.staff. The add members panel was used during assignment to search and select users from the directory — confirming group membership reflects the intended departmental structure.</p>
         </div>
         <div class="space-y-4">
-          <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Enterprise_Applications_User_Access.png')">
-            <img src="assets/images/EIAMS1_Enterprise_Applications_User_Access.png" class="w-full" alt="HR-Team add members panel">
+          <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Enterprise_Applications_User_Access.png')">
+            <img src="../assets/images/EIAMS1_Enterprise_Applications_User_Access.png" class="w-full" alt="HR-Team add members panel">
             <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">HR-Team add members panel — selecting users from directory search during group assignment.</p>
           </div>
-          <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Security_Group_Settings_Config.png')">
-            <img src="assets/images/EIAMS1_Security_Group_Settings_Config.png" class="w-full" alt="HR-Team members">
+          <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Security_Group_Settings_Config.png')">
+            <img src="../assets/images/EIAMS1_Security_Group_Settings_Config.png" class="w-full" alt="HR-Team members">
             <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">HR-Team members — hr.manager and hr.staff confirmed as direct members.</p>
           </div>
         </div>
@@ -346,8 +370,8 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
           <p class="step-num">5.4 — Finance-Team Members</p>
           <p class="text-sm leading-relaxed" style="color:var(--muted)">Finance-Team contains fin.analyst and fin.staff, completing the three-group RBAC structure. All users are now mapped to exactly one departmental group, maintaining clean access boundaries.</p>
         </div>
-        <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Group_Membership_Assignment_View.png')">
-          <img src="assets/images/EIAMS1_Group_Membership_Assignment_View.png" class="w-full" alt="Finance-Team members">
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Group_Membership_Assignment_View.png')">
+          <img src="../assets/images/EIAMS1_Group_Membership_Assignment_View.png" class="w-full" alt="Finance-Team members">
           <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Finance-Team members — fin.analyst and fin.staff confirmed as direct members.</p>
         </div>
       </div>
@@ -376,12 +400,12 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
         <p class="text-sm leading-relaxed" style="color:var(--muted)">A password reset was initiated from the admin portal on fin.staff. The operation generated a temporary password displayed in the reset panel. The reset was then verified from the user side — hr.staff triggered the "Update your password" prompt on first sign-in, confirming the forced reset policy works end-to-end.</p>
       </div>
       <div class="space-y-4">
-        <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Assigned_Roles_Permissions_Overview.png')">
-          <img src="assets/images/EIAMS1_Assigned_Roles_Permissions_Overview.png" class="w-full" alt="Password reset confirmation">
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Assigned_Roles_Permissions_Overview.png')">
+          <img src="../assets/images/EIAMS1_Assigned_Roles_Permissions_Overview.png" class="w-full" alt="Password reset confirmation">
           <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Admin-side reset — "Password has been reset" with temporary password generated for fin.staff.</p>
         </div>
-        <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Microsoft_Account_Update_Password_Prompt.png')">
-          <img src="assets/images/EIAMS1_Microsoft_Account_Update_Password_Prompt.png" class="w-full" alt="First sign-in password update prompt">
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Microsoft_Account_Update_Password_Prompt.png')">
+          <img src="../assets/images/EIAMS1_Microsoft_Account_Update_Password_Prompt.png" class="w-full" alt="First sign-in password update prompt">
           <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">End-user side — hr.staff prompted to update password on first sign-in, confirming forced reset policy.</p>
         </div>
       </div>
@@ -394,12 +418,12 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
         <p class="text-sm leading-relaxed" style="color:var(--muted)">Account suspension was performed by disabling fin.staff — simulating an offboarding or access freeze scenario. The delete confirmation panel shows associated roles (0) and groups (0) before deletion, and the user overview confirms the Disabled account status after the action.</p>
       </div>
       <div class="space-y-4">
-        <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Admin_MFA_Setup_Enforcement.png')">
-          <img src="assets/images/EIAMS1_Admin_MFA_Setup_Enforcement.png" class="w-full" alt="Account deletion confirmation">
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Admin_MFA_Setup_Enforcement.png')">
+          <img src="../assets/images/EIAMS1_Admin_MFA_Setup_Enforcement.png" class="w-full" alt="Account deletion confirmation">
           <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Delete hr.staff confirmation — associated assets (0 roles, 0 groups) reviewed before proceeding.</p>
         </div>
-        <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_User_Security_Summary_Profile.png')">
-          <img src="assets/images/EIAMS1_User_Security_Summary_Profile.png" class="w-full" alt="fin.staff disabled">
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_User_Security_Summary_Profile.png')">
+          <img src="../assets/images/EIAMS1_User_Security_Summary_Profile.png" class="w-full" alt="fin.staff disabled">
           <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">fin.staff overview — Account status: Disabled, confirming suspension is active.</p>
         </div>
       </div>
@@ -412,12 +436,12 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
         <p class="text-sm leading-relaxed" style="color:var(--muted)">After deletion, hr.staff was restored from the Deleted users panel before the 30-day permanent deletion window. The restore confirmation dialog shows the selected user, permanent deletion date, and confirms the account can be reinstated. Post-restore, fin.staff is confirmed back to Enabled status.</p>
       </div>
       <div class="space-y-4">
-        <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Directory_Role_Assignment_List.png')">
-          <img src="assets/images/EIAMS1_Directory_Role_Assignment_List.png" class="w-full" alt="Restore user panel">
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Directory_Role_Assignment_List.png')">
+          <img src="../assets/images/EIAMS1_Directory_Role_Assignment_List.png" class="w-full" alt="Restore user panel">
           <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Deleted users panel — Restore hr.staff confirmation with permanent deletion date shown.</p>
         </div>
-        <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_User_Authentication_Methods_Status.png')">
-          <img src="assets/images/EIAMS1_User_Authentication_Methods_Status.png" class="w-full" alt="fin.staff re-enabled">
+        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_User_Authentication_Methods_Status.png')">
+          <img src="../assets/images/EIAMS1_User_Authentication_Methods_Status.png" class="w-full" alt="fin.staff re-enabled">
           <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">fin.staff overview — Account status: Enabled, 1 group membership, confirming successful restore.</p>
         </div>
       </div>
@@ -429,8 +453,8 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
         <p class="step-num">6.4 — End-User First Sign-in</p>
         <p class="text-sm leading-relaxed" style="color:var(--muted)">After restoration, the end-user experience was validated by signing in as hr.staff, confirming the account lands on the Azure portal welcome screen with the correct identity — no residual access restrictions from the delete/restore cycle.</p>
       </div>
-      <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Security_Info_Verification_Setup.png')">
-        <img src="assets/images/EIAMS1_Security_Info_Verification_Setup.png" class="w-full" alt="hr.staff post-restore sign-in">
+      <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Security_Info_Verification_Setup.png')">
+        <img src="../assets/images/EIAMS1_Security_Info_Verification_Setup.png" class="w-full" alt="hr.staff post-restore sign-in">
         <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">hr.staff signed into Azure portal — confirming clean access state after restore.</p>
       </div>
     </div>
@@ -457,8 +481,8 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
         <p class="step-num">7.1 — Sign-in Log Review</p>
         <p class="text-sm leading-relaxed" style="color:var(--muted)">Sign-in logs show a mix of failures and successes across hr.staff and the admin account — generated intentionally by signing in with the temporary password and then completing the reset cycle. Both failure and success events are captured with IP, application, and location metadata.</p>
       </div>
-      <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Audit_Log_User_Activity_Report.png')">
-        <img src="assets/images/EIAMS1_Audit_Log_User_Activity_Report.png" class="w-full" alt="Sign-in logs">
+      <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Audit_Log_User_Activity_Report.png')">
+        <img src="../assets/images/EIAMS1_Audit_Log_User_Activity_Report.png" class="w-full" alt="Sign-in logs">
         <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Sign-in logs — hr.staff failures followed by successful admin logins, with IP and location captured.</p>
       </div>
     </div>
@@ -469,8 +493,8 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
         <p class="step-num">7.2 — Audit Log — Group Management Events</p>
         <p class="text-sm leading-relaxed" style="color:var(--muted)">The audit log captures every group management event from Phase 5 — Add group, Add member to group — timestamped and attributed to the initiating actor. This is the exact evidence trail required during a compliance audit or access review.</p>
       </div>
-      <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_System_Activity_Log_Preview.png')">
-        <img src="assets/images/EIAMS1_System_Activity_Log_Preview.png" class="w-full" alt="Audit logs group events">
+      <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_System_Activity_Log_Preview.png')">
+        <img src="../assets/images/EIAMS1_System_Activity_Log_Preview.png" class="w-full" alt="Audit logs group events">
         <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Audit log — Add group, Add member to group events from Phase 5 with full timestamps.</p>
       </div>
     </div>
@@ -481,8 +505,8 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
         <p class="step-num">7.3 — Audit Log — User Management Events</p>
         <p class="text-sm leading-relaxed" style="color:var(--muted)">A second audit log view shows user management events — password reset, disable account, enable account, restore user, and delete user — all logged with service, category, activity, status, and status reason. This full event chain confirms every Phase 6 help desk action is fully traceable.</p>
       </div>
-      <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_Role_Assignment_Details_Admin.png')">
-        <img src="assets/images/EIAMS1_Role_Assignment_Details_Admin.png" class="w-full" alt="Audit logs user events">
+      <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Role_Assignment_Details_Admin.png')">
+        <img src="../assets/images/EIAMS1_Role_Assignment_Details_Admin.png" class="w-full" alt="Audit logs user events">
         <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Audit log — password reset, disable/enable account, delete user, restore user all captured.</p>
       </div>
     </div>
@@ -509,22 +533,16 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
         <p class="step-num">9.1 — Identity Secure Score</p>
         <p class="text-sm leading-relaxed" style="color:var(--muted)">The Identity Secure Score reports 54.17% with five active recommendations. High-priority item: "Do not expire passwords" (8/8 points) is already completed. Open items include using least privileged administrative roles, designating more than one global admin, and restricting user consent to applications.</p>
       </div>
-      <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_User_Access_Permissions_Grid.png')">
-        <img src="assets/images/EIAMS1_User_Access_Permissions_Grid.png" class="w-full" alt="Identity Secure Score">
+      <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_User_Access_Permissions_Grid.png')">
+        <img src="../assets/images/EIAMS1_User_Access_Permissions_Grid.png" class="w-full" alt="Identity Secure Score">
         <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Identity Secure Score — 54.17%, 5 recommendations, score history since Nov 2025.</p>
       </div>
     </div>
 
     <!-- Conditional access -->
-    <div class="grid lg:grid-cols-2 gap-10 items-start">
-      <div>
-        <p class="step-num">9.2 — Conditional Access Overview</p>
-        <p class="text-sm leading-relaxed" style="color:var(--muted)">The Conditional Access surface was reviewed. No policies are currently active — the overview describes example conditions such as requiring MFA for users outside the company network and requiring compliant devices for manager sign-ins. This represents a gap identified for the hardening strategy.</p>
-      </div>
-      <div class="card img-click p-3" onclick="zoom('assets/images/EIAMS1_User_Properties_Full_Attribute_List.png')">
-        <img src="assets/images/EIAMS1_User_Properties_Full_Attribute_List.png" class="w-full" alt="Conditional Access overview">
-        <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Conditional Access overview — no active policies; example conditions and controls documented.</p>
-      </div>
+    <div>
+      <p class="step-num">9.2 — Conditional Access Overview</p>
+      <p class="text-sm max-w-3xl" style="color:var(--muted)">The Conditional Access surface was reviewed — no policies are currently active. This is the primary gap identified from the security review. The Conditional Access overview documents example policy conditions: requiring MFA for users outside the corporate network and requiring compliant/domain-joined devices for manager sign-ins. Creating these policies is the highest-priority hardening action from this lab.</p>
     </div>
   </div>
 
@@ -532,8 +550,8 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
   <div class="card p-6 md:p-8">
     <p class="step-num mb-3">Phase 10 — IAM Architecture Diagram</p>
     <p class="text-sm mb-6 max-w-3xl" style="color:var(--muted)">The final deliverable documents the complete identity flow built across all ten phases — from user provisioning through security groups, authentication, and monitoring.</p>
-    <div class="card img-click p-4" onclick="zoom('assets/images/EIAMS1_IAM_Diagram_Chart.png')">
-      <img src="assets/images/EIAMS1_IAM_Diagram_Chart.png" class="mx-auto max-h-96 w-auto object-contain" alt="IAM Architecture Diagram">
+    <div class="card img-click p-4" onclick="zoom('../assets/images/EIAMS1_IAM_Diagram_Chart.png')">
+      <img src="../assets/images/EIAMS1_IAM_Diagram_Chart.png" class="mx-auto max-h-96 w-auto object-contain" alt="IAM Architecture Diagram">
     </div>
     <p class="mt-3 text-xs italic text-center" style="color:var(--muted)">Users → Entra ID → Security Groups → Authentication Layer → Monitoring &amp; Logs</p>
   </div>
