@@ -79,21 +79,17 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
     Enterprise Identity &amp; Access Management
   </h1>
   <p class="text-center max-w-2xl mx-auto text-sm leading-relaxed mb-12" style="color:var(--muted)">
-    A ten-phase lab covering the full identity lifecycle in Microsoft Entra ID — provisioning
-    departmental users, enforcing RBAC via security groups, onboarding a B2B guest, executing
-    help desk operations, reviewing authentication controls, and investigating audit logs.
+    Enterprise IAM implementation in Microsoft Entra ID simulating identity provisioning,
+    RBAC governance, external collaboration, authentication monitoring, and audit investigation.
   </p>
 
   <div class="grid md:grid-cols-2 gap-5 mb-10">
     <div class="card p-6">
       <p class="step-num">What was built</p>
       <p class="text-sm leading-relaxed" style="color:var(--muted)">
-        A fully configured Entra ID tenant simulating enterprise IAM from scratch. Six internal accounts
-        were provisioned across IT, HR, and Finance with role assignments enforced at creation.
-        Three security groups were built to own the access governance model. An external contractor
-        was onboarded via B2B guest invitation. Help desk workflows — password reset, account
-        suspension, restore — were executed and verified end-to-end. Sign-in telemetry was generated
-        and audit logs were reviewed for event traceability.
+        Configured a full Microsoft Entra ID tenant to simulate enterprise identity lifecycle
+        operations including user provisioning, RBAC enforcement, external collaboration,
+        identity lifecycle management, authentication monitoring, and audit investigation.
       </p>
     </div>
     <div class="card p-6">
@@ -102,8 +98,6 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
         <li class="flex gap-2"><span style="color:var(--green)">✓</span>6 internal users — IT (admin + support), HR (manager + staff), Finance (analyst + staff)</li>
         <li class="flex gap-2"><span style="color:var(--green)">✓</span>3 RBAC security groups with assigned membership</li>
         <li class="flex gap-2"><span style="color:var(--green)">✓</span>B2B guest contractor identity — EXT designation, pending acceptance</li>
-        <li class="flex gap-2"><span style="color:var(--green)">✓</span>Password reset cycle confirmed from admin to end-user prompt</li>
-        <li class="flex gap-2"><span style="color:var(--green)">✓</span>Account suspension and restore verified in deleted users panel</li>
         <li class="flex gap-2"><span style="color:var(--green)">✓</span>Sign-in logs and audit logs reviewed with event-level investigation</li>
         <li class="flex gap-2"><span style="color:var(--green)">✓</span>Identity Secure Score assessed with actionable recommendations</li>
         <li class="flex gap-2"><span style="color:var(--green)">✓</span>IAM architecture diagram documenting the full identity flow</li>
@@ -113,11 +107,11 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
 
   <!-- Workflow strip -->
   <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
-    <div class="card p-4"><p class="step-num">Phase 1–2</p><p class="text-xs font-semibold mb-1">Environment Setup</p><p class="text-xs" style="color:var(--muted)">Tenant access, IAM surface exploration</p></div>
-    <div class="card p-4"><p class="step-num">Phase 3–4</p><p class="text-xs font-semibold mb-1">Identity Provisioning</p><p class="text-xs" style="color:var(--muted)">6 internal users + B2B guest</p></div>
-    <div class="card p-4"><p class="step-num">Phase 5–6</p><p class="text-xs font-semibold mb-1">Access &amp; Help Desk</p><p class="text-xs" style="color:var(--muted)">RBAC groups, password reset, suspend/restore</p></div>
-    <div class="card p-4"><p class="step-num">Phase 7–8</p><p class="text-xs font-semibold mb-1">Auth &amp; Monitoring</p><p class="text-xs" style="color:var(--muted)">Sign-in logs, audit log investigation</p></div>
-    <div class="card p-4"><p class="step-num">Phase 9–10</p><p class="text-xs font-semibold mb-1">Security Posture</p><p class="text-xs" style="color:var(--muted)">Secure score, conditional access, architecture</p></div>
+    <div class="card p-4"><p class="step-num">Phase 1–2</p><p class="text-xs font-semibold mb-1">Tenant Initialization</p><p class="text-xs" style="color:var(--muted)">Directory baseline validation and IAM surface readiness</p></div>
+    <div class="card p-4"><p class="step-num">Phase 3–4</p><p class="text-xs font-semibold mb-1">Identity Provisioning</p><p class="text-xs" style="color:var(--muted)">Internal user provisioning and B2B guest onboarding</p></div>
+    <div class="card p-4"><p class="step-num">Phase 5–6</p><p class="text-xs font-semibold mb-1">Access Governance and Lifecycle</p><p class="text-xs" style="color:var(--muted)">RBAC group architecture and identity lifecycle operations</p></div>
+    <div class="card p-4"><p class="step-num">Phase 7–8</p><p class="text-xs font-semibold mb-1">Authentication and Audit Monitoring</p><p class="text-xs" style="color:var(--muted)">Sign in telemetry and administrative audit investigation</p></div>
+    <div class="card p-4"><p class="step-num">Phase 9–10</p><p class="text-xs font-semibold mb-1">Security Posture and Architecture</p><p class="text-xs" style="color:var(--muted)">Secure Score assessment, conditional access review, and IAM architecture documentation</p></div>
   </div>
 </section>
 
@@ -140,14 +134,17 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
   <div id="t-setup" class="tab-pane on">
     <div class="card p-6 md:p-8 space-y-14">
       <div>
-        <h3 class="text-lg font-semibold mb-2">Phase 1–2 — Environment Setup</h3>
-        <p class="text-sm" style="color:var(--muted)">Accessed the Entra Admin Center, confirmed tenant details, and explored the full IAM navigation surface before making any changes — covering Users, Groups, Roles, Sign-in Logs, Audit Logs, and Conditional Access.</p>
+        <h3 class="text-lg font-semibold mb-2">Phase 1 Environment Setup</h3>
+        <p class="text-sm" style="color:var(--muted)">Initialized the Microsoft Entra ID tenant and validated baseline directory configuration,
+          including identity structure, administrative surfaces, and authentication monitoring. This established a verified IAM environment prior
+          to provisioning and RBAC implementation.</p>
       </div>
 
       <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <p class="step-num">1.1 — Tenant Overview</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">The Default Directory overview confirms the tenant identity — tenant ID, primary domain, license tier, and current user/group count before any provisioning. This is the baseline state of the environment.</p>
+          <p class="text-sm leading-relaxed" style="color:var(--muted)">Validated tenant identity configuration including directory ID,
+            primary domain, licensing, and existing identity objects. This confirmed the baseline directory state before identity provisioning.</p>
         </div>
         <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_EntraID_Overview.png')">
           <img src="../assets/images/EIAMS1_Azure_EntraID_Overview.png" class="w-full" alt="Entra ID tenant overview">
