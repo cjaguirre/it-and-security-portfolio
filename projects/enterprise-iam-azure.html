@@ -307,13 +307,13 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
     <div class="card p-6 md:p-8 space-y-14">
       <div>
         <h3 class="text-lg font-semibold mb-2">Phase 4 — B2B Guest Collaboration</h3>
-        <p class="text-sm" style="color:var(--muted)">An external contractor was onboarded via Entra's guest invitation workflow. Guest identities are visually and functionally distinct from internal members — identified by the #EXT# suffix in their UPN and a Guest user type in the directory.</p>
+        <p class="text-sm" style="color:var(--muted)">An external contractor identity was onboarded using Microsoft Entra B2B collaboration. Guest identities allow external users to authenticate with their own credentials while remaining fully governed within the organization's identity and access management framework.</p>
       </div>
 
       <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <p class="step-num">4.1 — Invite External User</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">Invitation initiated with external email address and display name "Contractor Test." An onboarding message was written and an invite redirect URL was set to deliver the user directly to My Apps on acceptance.</p>
+          <p class="text-sm leading-relaxed" style="color:var(--muted)">Initiated guest onboarding by submitting an external email address and defining the contractor identity. This creates a guest object in the directory and generates a secure invitation workflow for external authentication.</p>
         </div>
         <div class="space-y-4">
           <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Invite_External_User_Basics.png')">
@@ -330,7 +330,7 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
       <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <p class="step-num">4.2 — Review + Invite and Post-Invite State</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">The Review + invite summary confirms Guest user type, message enabled, and redirect URL. After sending, the Contractor Test account appears in the directory as Guest with invitation state "Pending acceptance" — the expected state before the external user accepts.</p>
+          <p class="text-sm leading-relaxed" style="color:var(--muted)">Verified guest identity configuration and issued the invitation. The account appears in the directory with Guest user type and Pending acceptance status, confirming successful external identity provisioning.</p>
         </div>
         <div class="space-y-4">
           <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Review_Create_External_User.png')">
@@ -347,7 +347,7 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
       <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <p class="step-num">4.3 — Guest Properties and Attribute Enrichment</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">The Properties tab was reviewed to confirm the full identity profile — job title (External Contractor), department (Contractor / IT), usage location, and manager assignment. Enriching the guest profile ensures accurate identity attribution even before invitation acceptance.</p>
+          <p class="text-sm leading-relaxed" style="color:var(--muted)">Validated identity metadata including department, job title, usage location, and manager assignment. Maintaining complete identity attributes ensures guest users can be governed, audited, and assigned access consistently with internal identities.</p>
         </div>
         <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_User_Properties_Full_Attribute_List.png')">
           <img src="../assets/images/EIAMS1_User_Properties_Full_Attribute_List.png" class="w-full" alt="Guest full properties">
