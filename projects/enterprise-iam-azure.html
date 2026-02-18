@@ -1,1 +1,877 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" class="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Enterprise IAM Lab — Microsoft Entra ID | Christian Aguirre</title>
+<script>
+function switchTab(tabId){
+  document.querySelectorAll('.tab-button').forEach(btn=>btn.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  const btn=[...document.querySelectorAll('.tab-button')].find(b=>b.getAttribute('onclick')&&b.getAttribute('onclick').includes(tabId));
+  if(btn)btn.classList.add('active');
+  const t=document.getElementById('tab-'+tabId);
+  if(t)t.classList.add('active');
+}
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)"}}}};</script>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
+.dark{
+  --bg-default:#1e1e1e;
+  --bg-secondary:#30333a;
+  --text-base:#fff;
+  --text-secondary:#abb2bf;
+  --accent-structural:#d9d9d9;
+  --functional-action:#61afef;
+  --functional-success:#98c379;
+  --accent-red:#e06c75;
+  --container-bg:#171717;
+  background-color:var(--bg-default);
+  color:var(--text-base);
+}
+body{
+  font-family:"Inter",sans-serif;
+  background-color:var(--bg-default);
+  background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);
+  background-size:20px 20px;
+  background-attachment:fixed;
+  min-height:100vh;
+}
+.pill{border-radius:999px;padding:.2rem .7rem;border:1px solid rgba(171,178,191,0.6);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em}
+.pill-muted{color:var(--text-secondary);background-color:rgba(23,23,23,0.95)}
+.pill-accent{color:var(--accent-structural);background-color:rgba(23,23,23,0.95);border-color:rgba(217,217,217,0.9)}
+.tab-button{padding:1rem 1.5rem;background:transparent;border:0;color:var(--text-secondary);font-family:"Inconsolata",monospace;cursor:pointer;transition:all .3s ease;border-bottom:3px solid transparent;white-space:nowrap}
+.tab-button:hover{color:var(--functional-action);background:rgba(97,175,239,0.05)}
+.tab-button.active{color:var(--functional-action);border-bottom-color:var(--functional-action)}
+.tab-content{display:none;animation:fadeSlideIn .4s ease-out}
+.tab-content.active{display:block}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+.image-zoom{cursor:pointer;transition:all .3s ease}
+.image-zoom:hover{transform:scale(1.02);box-shadow:0 10px 40px rgba(97,175,239,0.3)}
+.modal{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.95)}
+.modal.active{display:flex;align-items:center;justify-content:center}
+.modal-content{max-width:95%;max-height:95%}
+.nav-dots{position:fixed;right:2rem;top:50%;transform:translateY(-50%);z-index:100}
+.nav-dot{width:10px;height:10px;border-radius:50%;background:var(--text-secondary);margin:.75rem 0;cursor:pointer;transition:all .3s ease}
+.nav-dot:hover,.nav-dot.active{background:var(--functional-action);transform:scale(1.4)}
+@media(max-width:768px){.nav-dots{display:none}}
+.phase-container{background:var(--container-bg);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;padding:2.5rem;box-shadow:0 12px 40px rgba(0,0,0,0.35)}
+.card-dark{background:var(--container-bg);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;box-shadow:0 12px 40px rgba(0,0,0,0.35)}
+.collapsible-content{max-height:0;overflow:hidden;transition:max-height .4s ease-out,margin .2s ease;margin:0!important}
+.collapsible-content.open{max-height:10000px;margin:1.75rem 0 2rem 0}
+* { border-radius: 0 !important; }
+</style>
+</head>
+<body class="text-text-base">
 
+<div class="nav-dots">
+  <div class="nav-dot active" onclick="scrollToSection('hero')"></div>
+  <div class="nav-dot" onclick="scrollToSection('workflow')"></div>
+  <div class="nav-dot" onclick="scrollToSection('lab')"></div>
+  <div class="nav-dot" onclick="scrollToSection('operations-summary')"></div>
+</div>
+
+<div class="modal" id="imageModal" onclick="closeModal()">
+  <span style="position:absolute;top:2rem;right:3rem;color:white;font-size:3rem;cursor:pointer">&times;</span>
+  <img class="modal-content" id="modalImage" alt="Enlarged view">
+</div>
+
+<main>
+
+<!-- HERO -->
+<section id="hero" class="pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <a href="../index.html#projects" class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition mb-6">← Back to Portfolio</a>
+    <div class="flex flex-wrap justify-center gap-2 mb-6">
+      <span class="pill pill-accent">Enterprise IAM Lab</span>
+      <span class="pill pill-muted">Microsoft Entra ID</span>
+      <span class="pill pill-muted">Azure AD</span>
+      <span class="pill pill-muted">RBAC</span>
+      <span class="pill pill-muted">Identity Lifecycle</span>
+      <span class="pill pill-muted">Audit Logging</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-center">
+      Enterprise Identity &amp; Access Management Lab
+    </h1>
+    <p class="max-w-3xl mx-auto text-sm sm:text-base text-text-secondary leading-relaxed mb-10 text-center">
+      End-to-end identity lifecycle management in Microsoft Entra ID — provisioning users across departments,
+      enforcing RBAC, managing external B2B collaboration, executing help desk workflows, and validating
+      security posture through audit logs and authentication monitoring.
+    </p>
+
+    <div class="grid md:grid-cols-2 gap-6 mb-10">
+      <article class="p-6 md:p-7 card-dark">
+        <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">Project overview</p>
+        <p class="text-sm leading-relaxed text-text-base">
+          Deployed a full enterprise IAM environment inside Microsoft Entra ID to simulate real-world
+          identity operations from the ground up — tenant setup, user provisioning, group-based access
+          control, external collaboration, help desk operations, MFA enforcement, and audit log analysis,
+          all translated into a structured hardening strategy.
+        </p>
+      </article>
+      <article class="p-6 md:p-7 card-dark">
+        <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">Key deliverables</p>
+        <ul class="list-disc list-outside pl-5 space-y-1.5 text-sm text-text-base">
+          <li>6 internal users provisioned across IT, HR, and Finance departments</li>
+          <li>3 security groups implementing RBAC access governance</li>
+          <li>B2B guest identity onboarded with attribute enrichment and scoped access</li>
+          <li>Help desk operations — password reset, account suspension, and user restore</li>
+          <li>MFA enforcement and authentication method review across users</li>
+          <li>Sign-in and audit log analysis for event investigation and compliance</li>
+          <li>IAM architecture diagram documenting the complete identity flow</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="flex flex-wrap justify-center items-center gap-3 text-[0.7rem] text-text-secondary">
+      <span class="inline-flex items-center gap-2 px-3 py-1 card-dark">
+        <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Microsoft Entra ID (Azure AD)
+      </span>
+      <span class="inline-flex items-center gap-2 px-3 py-1 card-dark">
+        <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Full Identity Lifecycle Coverage
+      </span>
+      <span class="inline-flex items-center gap-2 px-3 py-1 card-dark">
+        <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Audit Log Analysis &amp; Security Review
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- WORKFLOW -->
+<section id="workflow" class="py-12 md:py-14">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center gap-6 mb-8">
+      <div class="h-px bg-gray-700 flex-1"></div>
+      <h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap">Workflow Overview</h2>
+      <div class="h-px bg-gray-700 flex-1"></div>
+    </div>
+    <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
+      <div class="p-4 card-dark">
+        <p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 1–2</p>
+        <p class="text-sm font-semibold mb-1">Environment Setup</p>
+        <p class="text-xs text-text-secondary leading-relaxed">Accessed Entra Admin Center, explored IAM surfaces, and reviewed tenant and identity model structure.</p>
+      </div>
+      <div class="p-4 card-dark">
+        <p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 3–4</p>
+        <p class="text-sm font-semibold mb-1">Identity Provisioning</p>
+        <p class="text-xs text-text-secondary leading-relaxed">Created six internal department users and onboarded an external B2B guest contractor identity.</p>
+      </div>
+      <div class="p-4 card-dark">
+        <p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 5–6</p>
+        <p class="text-sm font-semibold mb-1">Access &amp; Help Desk</p>
+        <p class="text-xs text-text-secondary leading-relaxed">Built RBAC security groups, assigned users, and executed password resets and account lifecycle ops.</p>
+      </div>
+      <div class="p-4 card-dark">
+        <p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 7–8</p>
+        <p class="text-sm font-semibold mb-1">Auth &amp; Monitoring</p>
+        <p class="text-xs text-text-secondary leading-relaxed">Enforced MFA, generated sign-in telemetry, and reviewed audit logs and activity reports.</p>
+      </div>
+      <div class="p-4 card-dark">
+        <p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 9–10</p>
+        <p class="text-sm font-semibold mb-1">Security &amp; Architecture</p>
+        <p class="text-xs text-text-secondary leading-relaxed">Reviewed conditional access and security settings, then documented the complete IAM architecture.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LAB BREAKDOWN -->
+<section id="lab" class="py-14">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center gap-6 mb-10">
+      <div class="h-px bg-gray-700 flex-1"></div>
+      <h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap">Lab Breakdown</h2>
+      <div class="h-px bg-gray-700 flex-1"></div>
+    </div>
+
+    <div class="flex flex-wrap gap-0 border-b-2 border-gray-700 mb-10 overflow-x-auto">
+      <button class="tab-button active" onclick="switchTab('setup')">01. Environment Setup</button>
+      <button class="tab-button" onclick="switchTab('provisioning')">02. User Provisioning</button>
+      <button class="tab-button" onclick="switchTab('external')">03. External Collaboration</button>
+      <button class="tab-button" onclick="switchTab('access')">04. Access Governance</button>
+      <button class="tab-button" onclick="switchTab('helpdesk')">05. Help Desk Ops</button>
+      <button class="tab-button" onclick="switchTab('monitoring')">06. Auth &amp; Monitoring</button>
+      <button class="tab-button" onclick="switchTab('security')">07. Security &amp; Architecture</button>
+    </div>
+
+    <!-- TAB 1 -->
+    <div id="tab-setup" class="tab-content active">
+      <div class="phase-container space-y-16">
+        <div>
+          <h3 class="text-xl font-semibold text-white mb-2">Phase 1–2 — Environment Setup and Identity Awareness</h3>
+          <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">Before any provisioning, the Entra Admin Center was accessed and explored to understand the full IAM surface. The tenant identity model was reviewed to distinguish cloud, on-premises AD, and hybrid identity types — foundational knowledge for the lab phases ahead.</p>
+        </div>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">1.1 — Accessing the Entra Admin Center</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">Signed into the Microsoft Entra Admin Center to establish access to the enterprise identity control plane. The dashboard centralizes all identity management capabilities — users, groups, roles, monitoring, and security — from a single portal.</p>
+            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+              <li>Authenticated to <code>entra.microsoft.com</code> with admin credentials</li>
+              <li>Confirmed tenant name and dashboard accessibility</li>
+            </ul>
+          </div>
+          <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Azure_EntraID_Overview.png')">
+            <img src="assets/images/EIAMS1_Azure_EntraID_Overview.png" class="w-full" alt="Entra ID dashboard">
+            <p class="mt-3 text-xs italic text-text-secondary text-center">Entra ID overview dashboard — admin access confirmed to the tenant identity control plane.</p>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">1.2 — Exploring IAM Navigation Surfaces</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">Navigated through Identity, Monitoring, and Security sections to familiarize with available IAM surfaces before making any changes. This scoping step ensures deliberate, informed action across all subsequent phases.</p>
+            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+              <li>Surfaces explored: Users, Groups, Roles &amp; Admins, Sign-in Logs, Audit Logs, Conditional Access</li>
+              <li>No changes — awareness and orientation only</li>
+            </ul>
+          </div>
+          <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Active_Directory_User_Selection_Menu.png')">
+            <img src="assets/images/EIAMS1_Active_Directory_User_Selection_Menu.png" class="w-full" alt="AD navigation menu">
+            <p class="mt-3 text-xs italic text-text-secondary text-center">Active Directory user selection menu confirming navigation across identity management surfaces.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- TAB 2 -->
+    <div id="tab-provisioning" class="tab-content">
+      <div class="phase-container space-y-16">
+        <div>
+          <h3 class="text-xl font-semibold text-white mb-2">Phase 3 — Internal User Provisioning</h3>
+          <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">Six internal accounts were created across IT, HR, and Finance to simulate enterprise employee onboarding. Each account was configured with an auto-generated password, forced reset on first sign-in, and a usage location set for licensing compliance.</p>
+        </div>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">3.1 — IT Department (<code>it.admin</code>, <code>it.support</code>)</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">The IT Admin and IT Support accounts were provisioned first to establish the IT department's identity footprint. Admin accounts carry elevated access requirements and will receive stricter authentication controls.</p>
+            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+              <li>Identity → Users → New user → Create new user</li>
+              <li>Auto password with force-reset applied to both accounts</li>
+              <li>Usage location configured for licensing compliance</li>
+            </ul>
+          </div>
+          <div class="space-y-4">
+            <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Azure_Create_ITAdmin_User.png')">
+              <img src="assets/images/EIAMS1_Azure_Create_ITAdmin_User.png" class="w-full" alt="IT Admin creation">
+              <p class="mt-3 text-xs italic text-text-secondary text-center">it.admin account created with password policy and location configured.</p>
+            </div>
+            <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Azure_Create_ITSupport_User.png')">
+              <img src="assets/images/EIAMS1_Azure_Create_ITSupport_User.png" class="w-full" alt="IT Support creation">
+              <p class="mt-3 text-xs italic text-text-secondary text-center">it.support provisioned with matching enforced password reset policy.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">3.2 — HR Department (<code>hr.manager</code>)</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">The HR Manager account was provisioned to represent the HR department's management tier. HR identities will be assigned to the HR-Team security group and scoped to HR-relevant resources via RBAC.</p>
+          </div>
+          <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Azure_Create_HRManager_User.png')">
+            <img src="assets/images/EIAMS1_Azure_Create_HRManager_User.png" class="w-full" alt="HR Manager creation">
+            <p class="mt-3 text-xs italic text-text-secondary text-center">hr.manager provisioned — HR department management-tier identity.</p>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">3.3 — Finance Department (<code>fin.analyst</code>)</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">The Finance Analyst account was provisioned to represent a high-sensitivity departmental identity. Finance accounts carry elevated data governance requirements given the sensitivity of the resources they access.</p>
+          </div>
+          <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Azure_Create_FinAnalyst_User.png')">
+            <img src="assets/images/EIAMS1_Azure_Create_FinAnalyst_User.png" class="w-full" alt="Finance Analyst creation">
+            <p class="mt-3 text-xs italic text-text-secondary text-center">fin.analyst created — high-sensitivity Finance department identity.</p>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">3.4 — Validating the Complete User Roster</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">After all six accounts were created, the directory user list was reviewed to confirm every identity was correctly reflected — accurate UPNs, display names, and department metadata across all provisioned accounts.</p>
+            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+              <li>Confirmed: it.admin, it.support, hr.manager, hr.staff, fin.analyst, fin.staff</li>
+              <li>UPNs, directory presence, and attribute population verified for each</li>
+            </ul>
+          </div>
+          <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Azure_Final_User_Validation.png')">
+            <img src="assets/images/EIAMS1_Azure_Final_User_Validation.png" class="w-full" alt="User list validation">
+            <p class="mt-3 text-xs italic text-text-secondary text-center">Complete user roster — all six departmental identities confirmed in the directory.</p>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">3.5 — Reviewing Identity Details and Properties</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">Individual user profiles were opened to verify identity metadata — job title, department, and usage location — ensuring attributes were fully populated for accurate RBAC targeting downstream.</p>
+          </div>
+          <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Azure_User_Identity_Details.png')">
+            <img src="assets/images/EIAMS1_Azure_User_Identity_Details.png" class="w-full" alt="User identity details">
+            <p class="mt-3 text-xs italic text-text-secondary text-center">Identity details panel showing complete attribute profile for a provisioned internal account.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- TAB 3 -->
+    <div id="tab-external" class="tab-content">
+      <div class="phase-container space-y-16">
+        <div>
+          <h3 class="text-xl font-semibold text-white mb-2">Phase 4 — External Collaboration (B2B Guest Identity)</h3>
+          <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">Phase 4 simulates enterprise B2B collaboration by onboarding an external contractor through Entra's guest invitation workflow. Guest identities maintain a clear separation from internal member accounts via the #EXT# designation in their UPN and a Guest user type in the directory.</p>
+        </div>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">4.1 — Inviting the External Contractor</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">The guest invitation was initiated via Users → New user → Invite external user. An invitation email was dispatched to the external address. Once accepted, the account appears in the directory with a #EXT# suffix and Guest user type — visually and functionally distinct from internal identities.</p>
+            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+              <li>Invitation sent to personal email — simulating a contractor onboarding scenario</li>
+              <li>Guest account confirmed with #EXT# suffix in UPN</li>
+              <li>User type set to Guest — clearly separated from Member identities</li>
+            </ul>
+          </div>
+          <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Invite_External_User_Basics.png')">
+            <img src="assets/images/EIAMS1_Invite_External_User_Basics.png" class="w-full" alt="Guest invitation form">
+            <p class="mt-3 text-xs italic text-text-secondary text-center">External user invitation form — initiating the B2B guest onboarding workflow.</p>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">4.2 — Reviewing the Invitation Message</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">The invitation message was reviewed before dispatch to confirm the communication that external collaborators receive — including tenant context and access instructions.</p>
+          </div>
+          <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_External_User_Invitation_Message.png')">
+            <img src="assets/images/EIAMS1_External_User_Invitation_Message.png" class="w-full" alt="Invitation message">
+            <p class="mt-3 text-xs italic text-text-secondary text-center">Invitation message preview confirming B2B onboarding communication sent to external user.</p>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">4.3 — Enriching the Guest Profile and Confirming Access Scope</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">After the invitation, the guest account was enriched with organizational metadata and reviewed to verify EXT designation and Guest user type — confirming clean separation from internal member identities.</p>
+            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+              <li>Job title, department, and usage location added to guest properties</li>
+              <li>EXT designation and Guest user type confirmed in directory</li>
+            </ul>
+          </div>
+          <div class="space-y-4">
+            <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Review_Create_External_User.png')">
+              <img src="assets/images/EIAMS1_Review_Create_External_User.png" class="w-full" alt="Guest profile review">
+              <p class="mt-3 text-xs italic text-text-secondary text-center">Guest account review — EXT designation and Guest user type confirmed.</p>
+            </div>
+            <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Contractor_Test_Account_Profile.png')">
+              <img src="assets/images/EIAMS1_Contractor_Test_Account_Profile.png" class="w-full" alt="Contractor profile">
+              <p class="mt-3 text-xs italic text-text-secondary text-center">Contractor identity profile showing enriched metadata and scoped guest access.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- TAB 4 -->
+    <div id="tab-access" class="tab-content">
+      <div class="phase-container space-y-16">
+        <div>
+          <h3 class="text-xl font-semibold text-white mb-2">Phase 5 — Access Governance (RBAC Groups and Role Assignments)</h3>
+          <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">Three departmental security groups formed the RBAC foundation. Users were mapped to their respective groups, and role assignments were reviewed to validate least-privilege access boundaries across the directory. Group-based access control scales governance without per-user complexity.</p>
+        </div>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">5.1 — Creating Security Groups</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">IT-Team, HR-Team, and Finance-Team security groups were created — each representing a departmental access boundary. Group type set to Security with manual membership assignment.</p>
+            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+              <li>Identity → Groups → New group → Security type</li>
+              <li>Groups created: IT-Team, HR-Team, Finance-Team</li>
+            </ul>
+          </div>
+          <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Groups_List_All_Overview.png')">
+            <img src="assets/images/EIAMS1_Groups_List_All_Overview.png" class="w-full" alt="Groups list">
+            <p class="mt-3 text-xs italic text-text-secondary text-center">All three departmental security groups — the RBAC structure foundation.</p>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">5.2 — Assigning Users to Groups</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">Internal users were mapped to their departmental groups. Group membership is the mechanism through which access permissions propagate — users inherit the access rights of every group they belong to, keeping permissions manageable at scale.</p>
+          </div>
+          <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Group_Membership_Assignment_View.png')">
+            <img src="assets/images/EIAMS1_Group_Membership_Assignment_View.png" class="w-full" alt="Group membership">
+            <p class="mt-3 text-xs italic text-text-secondary text-center">Users assigned to departmental groups — access inheritance via group membership confirmed.</p>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">5.3 — Reviewing Role Assignments and Permissions</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">The directory role assignment list and assigned permissions overview were reviewed to confirm access was correctly bounded by least privilege — no account held permissions beyond what their role required.</p>
+          </div>
+          <div class="space-y-4">
+            <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Assigned_Roles_Permissions_Overview.png')">
+              <img src="assets/images/EIAMS1_Assigned_Roles_Permissions_Overview.png" class="w-full" alt="Roles overview">
+              <p class="mt-3 text-xs italic text-text-secondary text-center">Assigned roles and permissions — least-privilege access scope confirmed.</p>
+            </div>
+            <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_User_Access_Permissions_Grid.png')">
+              <img src="assets/images/EIAMS1_User_Access_Permissions_Grid.png" class="w-full" alt="Permissions grid">
+              <p class="mt-3 text-xs italic text-text-secondary text-center">User access permissions grid validating role-to-user mapping across the directory.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- TAB 5 -->
+    <div id="tab-helpdesk" class="tab-content">
+      <div class="phase-container space-y-16">
+        <div>
+          <h3 class="text-xl font-semibold text-white mb-2">Phase 6 — Help Desk Operations</h3>
+          <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">Common Tier 1 identity lifecycle workflows were executed — password resets, account suspension, and user restore — demonstrating the most frequent day-to-day operations in any enterprise IAM environment.</p>
+        </div>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">6.1 — Password Reset</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">A password reset was performed to simulate a Tier 1 support ticket. The operation generates a temporary credential with a forced change on next sign-in, minimizing the exposure window of the temp password.</p>
+            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+              <li>Opened target user → Reset password</li>
+              <li>Temporary password generated with forced reset enforced</li>
+              <li>End-user password update prompt confirmed the complete cycle</li>
+            </ul>
+          </div>
+          <div class="space-y-4">
+            <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Password_Reset_Portal_Interface.png')">
+              <img src="assets/images/EIAMS1_Password_Reset_Portal_Interface.png" class="w-full" alt="Password reset portal">
+              <p class="mt-3 text-xs italic text-text-secondary text-center">Password reset portal — Tier 1 credential management workflow from admin side.</p>
+            </div>
+            <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Microsoft_Account_Update_Password_Prompt.png')">
+              <img src="assets/images/EIAMS1_Microsoft_Account_Update_Password_Prompt.png" class="w-full" alt="Password update prompt">
+              <p class="mt-3 text-xs italic text-text-secondary text-center">End-user password update prompt — completing the admin-to-user reset cycle.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">6.2 — User Properties Review Before Lifecycle Actions</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">Full attribute and security profile reviews were performed before any account status changes — confirming current state, MFA enrollment, and authentication methods as part of a responsible lifecycle management workflow.</p>
+          </div>
+          <div class="space-y-4">
+            <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_User_Properties_Full_Attribute_List.png')">
+              <img src="assets/images/EIAMS1_User_Properties_Full_Attribute_List.png" class="w-full" alt="Full attribute list">
+              <p class="mt-3 text-xs italic text-text-secondary text-center">Full attribute list confirming identity metadata state before lifecycle modification.</p>
+            </div>
+            <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_User_Security_Summary_Profile.png')">
+              <img src="assets/images/EIAMS1_User_Security_Summary_Profile.png" class="w-full" alt="Security summary">
+              <p class="mt-3 text-xs italic text-text-secondary text-center">Security summary profile showing MFA enrollment and authentication method state.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- TAB 6 -->
+    <div id="tab-monitoring" class="tab-content">
+      <div class="phase-container space-y-16">
+        <div>
+          <h3 class="text-xl font-semibold text-white mb-2">Phase 7–8 — Authentication Monitoring and Audit Investigation</h3>
+          <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">MFA was enforced on privileged accounts, sign-in telemetry was generated and reviewed, and audit logs were analyzed to confirm full event traceability — a critical capability for compliance reviews, security investigations, and ongoing threat detection.</p>
+        </div>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">7.1 — Admin Account Security Info Review</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">The admin account's security information was reviewed to verify MFA registration status and authentication method coverage — the baseline check before generating sign-in activity.</p>
+          </div>
+          <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Admin_Account_Security_Info.png')">
+            <img src="assets/images/EIAMS1_Admin_Account_Security_Info.png" class="w-full" alt="Admin security info">
+            <p class="mt-3 text-xs italic text-text-secondary text-center">Admin account security info — MFA registration and method coverage confirmed.</p>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">7.2 — MFA Enforcement on Admin Accounts</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">MFA was configured and enforced on admin-tier accounts — simulating the authentication hardening applied to privileged identities in enterprise environments. A compromised admin credential without MFA represents one of the highest-impact breach scenarios in cloud IAM.</p>
+            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+              <li>MFA enforcement applied to admin-tier accounts</li>
+              <li>Authentication method registered and verified</li>
+            </ul>
+          </div>
+          <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Admin_MFA_Setup_Enforcement.png')">
+            <img src="assets/images/EIAMS1_Admin_MFA_Setup_Enforcement.png" class="w-full" alt="MFA enforcement">
+            <p class="mt-3 text-xs italic text-text-secondary text-center">MFA enforcement configured on admin account — authentication hardening applied to privileged identities.</p>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">7.3 — Authentication Method Status Across Users</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">Authentication method status was reviewed across all user accounts to identify any identities lacking MFA enrollment — accounts without secondary authentication represent the most exposed gap in any enterprise identity environment.</p>
+          </div>
+          <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_User_Authentication_Methods_Status.png')">
+            <img src="assets/images/EIAMS1_User_Authentication_Methods_Status.png" class="w-full" alt="Auth methods status">
+            <p class="mt-3 text-xs italic text-text-secondary text-center">Authentication methods status — MFA enrollment coverage reviewed across all user accounts.</p>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">8.1 — System Activity Log Review</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">The system activity log was reviewed to capture all administrative events generated across the lab — user creation, group assignments, role changes, and help desk actions — providing a complete, timestamped record for compliance review.</p>
+            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+              <li>Events captured: user creates, password resets, group membership changes</li>
+              <li>Metadata reviewed: timestamps, initiating actor, target object</li>
+            </ul>
+          </div>
+          <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_System_Activity_Log_Preview.png')">
+            <img src="assets/images/EIAMS1_System_Activity_Log_Preview.png" class="w-full" alt="Activity log">
+            <p class="mt-3 text-xs italic text-text-secondary text-center">System activity log capturing all administrative events across the lab workflow.</p>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">8.2 — Audit Log User Activity Report</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">The audit log was used to investigate specific administrative events — confirming the chain of actions, their initiating actor, and timestamps. This directly mirrors the investigation workflow used during real security incidents or compliance audits.</p>
+          </div>
+          <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Audit_Log_User_Activity_Report.png')">
+            <img src="assets/images/EIAMS1_Audit_Log_User_Activity_Report.png" class="w-full" alt="Audit log">
+            <p class="mt-3 text-xs italic text-text-secondary text-center">Audit log user activity report — event traceability confirmed for compliance and investigation.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- TAB 7 -->
+    <div id="tab-security" class="tab-content">
+      <div class="phase-container space-y-16">
+        <div>
+          <h3 class="text-xl font-semibold text-white mb-2">Phase 9–10 — Security Posture Review and Architecture Documentation</h3>
+          <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">Phase 9 reviewed security configuration across the directory — group governance, enterprise app access, and directory role assignments. Phase 10 closed the lab by documenting the complete IAM architecture built across all ten phases.</p>
+        </div>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">9.1 — Security Group Settings and Governance</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">Security group settings were reviewed to enforce governance controls — restricting group self-service creation, controlling external collaboration scope, and ensuring group management stays admin-controlled.</p>
+          </div>
+          <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Security_Group_Settings_Config.png')">
+            <img src="assets/images/EIAMS1_Security_Group_Settings_Config.png" class="w-full" alt="Group settings">
+            <p class="mt-3 text-xs italic text-text-secondary text-center">Security group settings enforcing governance controls on group creation and management scope.</p>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">9.2 — Enterprise Application Access and Role Validation</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">Enterprise application access was reviewed to confirm user-to-application assignments reflected the RBAC group structure from Phase 5. Directory roles were reviewed and admin role assignments validated to ensure no excessive permissions existed.</p>
+          </div>
+          <div class="space-y-4">
+            <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Enterprise_Applications_User_Access.png')">
+              <img src="assets/images/EIAMS1_Enterprise_Applications_User_Access.png" class="w-full" alt="Enterprise app access">
+              <p class="mt-3 text-xs italic text-text-secondary text-center">Enterprise application access — RBAC group assignment integrity confirmed.</p>
+            </div>
+            <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_Role_Assignment_Details_Admin.png')">
+              <img src="assets/images/EIAMS1_Role_Assignment_Details_Admin.png" class="w-full" alt="Admin role assignment">
+              <p class="mt-3 text-xs italic text-text-secondary text-center">Admin role assignment details — privileged access correctly scoped and bounded.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div class="space-y-4">
+            <h4 class="text-lg font-semibold text-white">10.1 — IAM Architecture Diagram</h4>
+            <p class="text-sm text-text-secondary leading-relaxed">A complete IAM architecture diagram was produced documenting the full identity flow constructed across all ten phases — from initial user provisioning through group membership, role assignment, authentication enforcement, and audit logging. This is the lab's final deliverable.</p>
+            <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
+              <li>Users → Entra ID → Groups → Role Assignments → App Access</li>
+              <li>Authentication → MFA → Sign-in Logs → Audit Logs → Security Review</li>
+            </ul>
+          </div>
+          <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_IAM_Diagram_Chart.png')">
+            <img src="assets/images/EIAMS1_IAM_Diagram_Chart.png" class="w-full" alt="IAM architecture diagram">
+            <p class="mt-3 text-xs italic text-text-secondary text-center">IAM architecture diagram — complete identity flow from provisioning through governance and audit.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- OPERATIONS SUMMARY -->
+<section id="operations-summary" class="pt-14 md:pt-16 pb-6">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="flex items-center gap-6 mb-6">
+      <div class="h-px bg-gray-700 flex-1"></div>
+      <h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap">Operations Summary</h2>
+      <div class="h-px bg-gray-700 flex-1"></div>
+    </div>
+    <p class="text-text-secondary text-sm max-w-3xl mb-8 mx-auto text-center">A categorized view of everything done in the lab. Click any row to expand screenshots from that phase.</p>
+
+    <div class="space-y-3 mb-12">
+
+      <div onclick="togglePanel('panel-users')" class="card-dark p-5 cursor-pointer hover:border-blue-900/60 transition flex items-center justify-between">
+        <div class="flex items-center gap-5">
+          <span class="text-blue-400 font-mono text-2xl font-bold w-8 shrink-0">6</span>
+          <div>
+            <p class="text-white text-sm font-semibold">Internal Users Provisioned</p>
+            <p class="text-text-secondary text-xs">IT, HR, and Finance departments — auto password, forced reset, location configured</p>
+          </div>
+        </div>
+        <span class="text-text-secondary font-mono text-xs shrink-0 ml-4">↓</span>
+      </div>
+      <div id="panel-users" class="collapsible-content">
+        <div class="card-dark border border-blue-900/30 p-5">
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="image-zoom bg-container-bg border border-gray-700 p-3" onclick="openModal('assets/images/EIAMS1_Azure_Create_ITAdmin_User.png')">
+              <img src="assets/images/EIAMS1_Azure_Create_ITAdmin_User.png" class="w-full object-contain" alt="">
+              <p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">it.admin creation</p>
+            </div>
+            <div class="image-zoom bg-container-bg border border-gray-700 p-3" onclick="openModal('assets/images/EIAMS1_Azure_Create_ITSupport_User.png')">
+              <img src="assets/images/EIAMS1_Azure_Create_ITSupport_User.png" class="w-full object-contain" alt="">
+              <p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">it.support creation</p>
+            </div>
+            <div class="image-zoom bg-container-bg border border-gray-700 p-3" onclick="openModal('assets/images/EIAMS1_Azure_Create_HRManager_User.png')">
+              <img src="assets/images/EIAMS1_Azure_Create_HRManager_User.png" class="w-full object-contain" alt="">
+              <p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">hr.manager creation</p>
+            </div>
+            <div class="image-zoom bg-container-bg border border-gray-700 p-3" onclick="openModal('assets/images/EIAMS1_Azure_Create_FinAnalyst_User.png')">
+              <img src="assets/images/EIAMS1_Azure_Create_FinAnalyst_User.png" class="w-full object-contain" alt="">
+              <p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">fin.analyst creation</p>
+            </div>
+            <div class="image-zoom bg-container-bg border border-gray-700 p-3" onclick="openModal('assets/images/EIAMS1_Azure_Final_User_Validation.png')">
+              <img src="assets/images/EIAMS1_Azure_Final_User_Validation.png" class="w-full object-contain" alt="">
+              <p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">Full roster validated</p>
+            </div>
+            <div class="image-zoom bg-container-bg border border-gray-700 p-3" onclick="openModal('assets/images/EIAMS1_Azure_User_Identity_Details.png')">
+              <img src="assets/images/EIAMS1_Azure_User_Identity_Details.png" class="w-full object-contain" alt="">
+              <p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">Identity attribute review</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div onclick="togglePanel('panel-rbac')" class="card-dark p-5 cursor-pointer hover:border-green-900/60 transition flex items-center justify-between">
+        <div class="flex items-center gap-5">
+          <span class="text-green-400 font-mono text-2xl font-bold w-8 shrink-0">3</span>
+          <div>
+            <p class="text-white text-sm font-semibold">Security Groups — RBAC Structure</p>
+            <p class="text-text-secondary text-xs">IT-Team, HR-Team, Finance-Team — group-based access governance with role validation</p>
+          </div>
+        </div>
+        <span class="text-text-secondary font-mono text-xs shrink-0 ml-4">↓</span>
+      </div>
+      <div id="panel-rbac" class="collapsible-content">
+        <div class="card-dark border border-green-900/30 p-5">
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="image-zoom bg-container-bg border border-gray-700 p-3" onclick="openModal('assets/images/EIAMS1_Groups_List_All_Overview.png')">
+              <img src="assets/images/EIAMS1_Groups_List_All_Overview.png" class="w-full object-contain" alt="">
+              <p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">All security groups</p>
+            </div>
+            <div class="image-zoom bg-container-bg border border-gray-700 p-3" onclick="openModal('assets/images/EIAMS1_Group_Membership_Assignment_View.png')">
+              <img src="assets/images/EIAMS1_Group_Membership_Assignment_View.png" class="w-full object-contain" alt="">
+              <p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">Membership assignments</p>
+            </div>
+            <div class="image-zoom bg-container-bg border border-gray-700 p-3" onclick="openModal('assets/images/EIAMS1_Assigned_Roles_Permissions_Overview.png')">
+              <img src="assets/images/EIAMS1_Assigned_Roles_Permissions_Overview.png" class="w-full object-contain" alt="">
+              <p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">Roles &amp; permissions overview</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div onclick="togglePanel('panel-guest')" class="card-dark p-5 cursor-pointer hover:border-yellow-900/60 transition flex items-center justify-between">
+        <div class="flex items-center gap-5">
+          <span class="text-yellow-400 font-mono text-2xl font-bold w-8 shrink-0">1</span>
+          <div>
+            <p class="text-white text-sm font-semibold">B2B Guest Identity</p>
+            <p class="text-text-secondary text-xs">External contractor onboarded — EXT designation, enriched profile, scoped access</p>
+          </div>
+        </div>
+        <span class="text-text-secondary font-mono text-xs shrink-0 ml-4">↓</span>
+      </div>
+      <div id="panel-guest" class="collapsible-content">
+        <div class="card-dark border border-yellow-900/30 p-5">
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="image-zoom bg-container-bg border border-gray-700 p-3" onclick="openModal('assets/images/EIAMS1_Invite_External_User_Basics.png')">
+              <img src="assets/images/EIAMS1_Invite_External_User_Basics.png" class="w-full object-contain" alt="">
+              <p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">Guest invitation form</p>
+            </div>
+            <div class="image-zoom bg-container-bg border border-gray-700 p-3" onclick="openModal('assets/images/EIAMS1_Contractor_Test_Account_Profile.png')">
+              <img src="assets/images/EIAMS1_Contractor_Test_Account_Profile.png" class="w-full object-contain" alt="">
+              <p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">Contractor account profile</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div onclick="togglePanel('panel-logs')" class="card-dark p-5 cursor-pointer hover:border-purple-900/60 transition flex items-center justify-between">
+        <div class="flex items-center gap-5">
+          <span class="text-purple-400 font-mono text-2xl font-bold w-8 shrink-0">2</span>
+          <div>
+            <p class="text-white text-sm font-semibold">Log Sources Reviewed</p>
+            <p class="text-text-secondary text-xs">System activity log and audit log — full event traceability confirmed</p>
+          </div>
+        </div>
+        <span class="text-text-secondary font-mono text-xs shrink-0 ml-4">↓</span>
+      </div>
+      <div id="panel-logs" class="collapsible-content">
+        <div class="card-dark border border-purple-900/30 p-5">
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="image-zoom bg-container-bg border border-gray-700 p-3" onclick="openModal('assets/images/EIAMS1_System_Activity_Log_Preview.png')">
+              <img src="assets/images/EIAMS1_System_Activity_Log_Preview.png" class="w-full object-contain" alt="">
+              <p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">System activity log</p>
+            </div>
+            <div class="image-zoom bg-container-bg border border-gray-700 p-3" onclick="openModal('assets/images/EIAMS1_Audit_Log_User_Activity_Report.png')">
+              <img src="assets/images/EIAMS1_Audit_Log_User_Activity_Report.png" class="w-full object-contain" alt="">
+              <p class="mt-2 text-[0.68rem] text-text-secondary italic text-center">Audit log user activity report</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Architecture diagram as standalone deliverable -->
+    <div class="card-dark p-5 mb-12">
+      <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-4 font-mono">Phase 10 — Architecture Deliverable</p>
+      <div class="image-zoom bg-container-bg border border-gray-700 p-4" onclick="openModal('assets/images/EIAMS1_IAM_Diagram_Chart.png')">
+        <img src="assets/images/EIAMS1_IAM_Diagram_Chart.png" class="w-full object-contain max-h-96" alt="IAM Architecture Diagram">
+      </div>
+      <p class="mt-4 text-xs italic text-text-secondary text-center">IAM architecture diagram — complete identity flow from provisioning through access governance, authentication, and audit.</p>
+    </div>
+
+    <!-- Hardening strategy -->
+    <div class="flex items-center gap-6 mb-6">
+      <div class="h-px bg-gray-700 flex-1"></div>
+      <h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap">IAM Hardening Strategy</h2>
+      <div class="h-px bg-gray-700 flex-1"></div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="card-dark p-6">
+        <h4 class="text-sm font-bold text-accent-red uppercase tracking-wider mb-2">Tier 1 — Identity Control</h4>
+        <p class="text-xs text-white opacity-70 mb-5 leading-relaxed">Enforce strict identity governance and close overprivileged access paths.</p>
+        <ul class="space-y-4 text-sm text-text-secondary">
+          <li class="flex gap-3"><span class="text-accent-red font-bold">•</span><span><strong class="text-white block text-xs mb-0.5">MFA Everywhere</strong>Require MFA for all users, not just admin accounts.</span></li>
+          <li class="flex gap-3"><span class="text-accent-red font-bold">•</span><span><strong class="text-white block text-xs mb-0.5">Least Privilege RBAC</strong>Audit and remove excessive role assignments regularly.</span></li>
+          <li class="flex gap-3"><span class="text-accent-red font-bold">•</span><span><strong class="text-white block text-xs mb-0.5">Privileged Identity Management</strong>Enable PIM for just-in-time admin elevation.</span></li>
+        </ul>
+      </div>
+      <div class="card-dark p-6">
+        <h4 class="text-sm font-bold text-accent-action uppercase tracking-wider mb-2">Tier 2 — Access Hardening</h4>
+        <p class="text-xs text-white opacity-70 mb-5 leading-relaxed">Restrict the attack surface and enforce policy-driven access controls.</p>
+        <ul class="space-y-4 text-sm text-text-secondary">
+          <li class="flex gap-3"><span class="text-accent-action font-bold">•</span><span><strong class="text-white block text-xs mb-0.5">Conditional Access Policies</strong>Block legacy auth protocols, require compliant devices.</span></li>
+          <li class="flex gap-3"><span class="text-accent-action font-bold">•</span><span><strong class="text-white block text-xs mb-0.5">Guest Access Scoping</strong>Restrict external identities to explicitly approved resources.</span></li>
+          <li class="flex gap-3"><span class="text-accent-action font-bold">•</span><span><strong class="text-white block text-xs mb-0.5">Self-Service Password Reset</strong>Enable SSPR to reduce credential reset volume at help desk.</span></li>
+        </ul>
+      </div>
+      <div class="card-dark p-6">
+        <h4 class="text-sm font-bold text-accent-success uppercase tracking-wider mb-2">Tier 3 — Continuous Visibility</h4>
+        <p class="text-xs text-white opacity-70 mb-5 leading-relaxed">Maintain ongoing identity visibility to detect risk and prevent regression.</p>
+        <ul class="space-y-4 text-sm text-text-secondary">
+          <li class="flex gap-3"><span class="text-accent-success font-bold">•</span><span><strong class="text-white block text-xs mb-0.5">Risky Sign-in Alerts</strong>Alert on anomalous sign-ins and impossible travel events.</span></li>
+          <li class="flex gap-3"><span class="text-accent-success font-bold">•</span><span><strong class="text-white block text-xs mb-0.5">Audit Log Retention</strong>Configure retention and export to SIEM for investigation.</span></li>
+          <li class="flex gap-3"><span class="text-accent-success font-bold">•</span><span><strong class="text-white block text-xs mb-0.5">Secure Score Reviews</strong>Track identity secure score on a recurring cycle.</span></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- INSIGHTS + SKILLS -->
+<section class="pt-12 md:pt-16 pb-12">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <div>
+      <div class="flex items-center gap-6 mb-8">
+        <div class="h-px bg-gray-700 flex-1"></div>
+        <h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap">Key Insights</h2>
+        <div class="h-px bg-gray-700 flex-1"></div>
+      </div>
+      <div class="p-6 md:p-7 card-dark">
+        <ul class="list-disc list-outside pl-5 space-y-2 text-white text-sm sm:text-[0.95rem] leading-relaxed">
+          <li>Group-based RBAC scales access governance without per-user management complexity.</li>
+          <li>Audit logging enables full event traceability — essential for compliance and incident investigation.</li>
+          <li>Enforcing MFA on privileged accounts significantly narrows the credential compromise attack surface.</li>
+          <li>Separating guest identities with EXT designation maintains clean access boundaries during external collaboration.</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="flex items-center gap-6 mb-8">
+        <div class="h-px bg-gray-700 flex-1"></div>
+        <h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap">Skills Demonstrated</h2>
+        <div class="h-px bg-gray-700 flex-1"></div>
+      </div>
+      <div class="p-6 md:p-7 card-dark">
+        <div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
+          <span class="px-3 py-1 border border-accent-cyan text-white font-mono">Microsoft Entra ID (Azure AD)</span>
+          <span class="px-3 py-1 border border-accent-cyan text-white font-mono">Identity Lifecycle Management</span>
+          <span class="px-3 py-1 border border-accent-cyan text-white font-mono">RBAC Group Management</span>
+          <span class="px-3 py-1 border border-accent-cyan text-white font-mono">B2B External Collaboration</span>
+          <span class="px-3 py-1 border border-accent-cyan text-white font-mono">MFA Enforcement</span>
+          <span class="px-3 py-1 border border-accent-cyan text-white font-mono">Audit Log Analysis</span>
+          <span class="px-3 py-1 border border-accent-cyan text-white font-mono">Help Desk Operations (Tier 1)</span>
+          <span class="px-3 py-1 border border-accent-cyan text-white font-mono">Conditional Access Awareness</span>
+          <span class="px-3 py-1 border border-accent-cyan text-white font-mono">IAM Architecture Documentation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUMMARY -->
+<section class="pb-12 md:pb-16">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center gap-6 mb-8">
+      <div class="h-px bg-gray-700 flex-1"></div>
+      <h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap">Summary</h2>
+      <div class="h-px bg-gray-700 flex-1"></div>
+    </div>
+    <div class="card-dark p-6 mb-10">
+      <p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
+        This lab demonstrates end-to-end enterprise identity and access management in Microsoft Entra ID —
+        spanning user provisioning, RBAC group enforcement, B2B external collaboration, MFA hardening,
+        audit log analysis, and security posture review, all translated into a structured IAM hardening
+        strategy and architecture documentation.
+      </p>
+    </div>
+    <a href="../index.html#projects" class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition font-mono">← Back to Portfolio</a>
+  </div>
+</section>
+
+</main>
+
+<script>
+function scrollToSection(id){
+  const t=document.getElementById(id);
+  if(!t)return;
+  t.scrollIntoView({behavior:'smooth',block:'start'});
+  const sections=['hero','workflow','lab','operations-summary'];
+  document.querySelectorAll('.nav-dot').forEach((d,i)=>d.classList.toggle('active',sections[i]===id));
+}
+function openModal(src){
+  document.getElementById('modalImage').src=src;
+  document.getElementById('imageModal').classList.add('active');
+}
+function closeModal(){
+  document.getElementById('imageModal').classList.remove('active');
+  document.getElementById('modalImage').src='';
+}
+function togglePanel(id){
+  const p=document.getElementById(id);
+  if(p)p.classList.toggle('open');
+}
+</script>
+</body>
+</html>
