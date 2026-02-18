@@ -450,23 +450,41 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
       </div>
     </div>
 
-    <!-- Account suspension -->
-    <div class="grid lg:grid-cols-2 gap-10 items-start">
-      <div>
-        <p class="step-num">6.2 — Account Suspension</p>
-        <p class="text-sm leading-relaxed" style="color:var(--muted)">Account suspension was performed by disabling fin.staff — simulating an offboarding or access freeze scenario. The delete confirmation panel shows associated roles (0) and groups (0) before deletion, and the user overview confirms the Disabled account status after the action.</p>
-      </div>
-      <div class="space-y-4">
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Admin_MFA_Setup_Enforcement.png')">
-          <img src="../assets/images/EIAMS1_Admin_MFA_Setup_Enforcement.png" class="w-full" alt="Account deletion confirmation">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Delete hr.staff confirmation — associated assets (0 roles, 0 groups) reviewed before proceeding.</p>
-        </div>
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_User_Security_Summary_Profile.png')">
-          <img src="../assets/images/EIAMS1_User_Security_Summary_Profile.png" class="w-full" alt="fin.staff disabled">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">fin.staff overview — Account status: Disabled, confirming suspension is active.</p>
-        </div>
-      </div>
-    </div>
+    <!-- Account deletion review -->
+<div class="grid lg:grid-cols-2 gap-10 items-start">
+  <div>
+    <p class="step-num">6.2 — Account Deletion Review</p>
+    <p class="text-sm leading-relaxed" style="color:var(--muted)">
+      The deletion workflow was initiated to validate identity removal controls. The delete confirmation panel displays associated roles and group membership prior to removal, ensuring administrators can verify identity scope and dependencies before executing permanent deletion.
+    </p>
+  </div>
+
+  <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Admin_MFA_Setup_Enforcement.png')">
+    <img src="../assets/images/EIAMS1_Admin_MFA_Setup_Enforcement.png" class="w-full" alt="Account deletion confirmation">
+    <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">
+      Delete user confirmation panel showing identity scope prior to removal.
+    </p>
+  </div>
+</div>
+
+
+<!-- Account suspension -->
+<div class="grid lg:grid-cols-2 gap-10 items-start">
+  <div>
+    <p class="step-num">6.3 — Account Suspension</p>
+    <p class="text-sm leading-relaxed" style="color:var(--muted)">
+      Account suspension was enforced by disabling the fin.staff identity. This immediately revokes authentication access while preserving the identity object, supporting offboarding, access freeze, and lifecycle control scenarios.
+    </p>
+  </div>
+
+  <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_User_Security_Summary_Profile.png')">
+    <img src="../assets/images/EIAMS1_User_Security_Summary_Profile.png" class="w-full" alt="Account disabled">
+    <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">
+      fin.staff overview showing Account status: Disabled.
+    </p>
+  </div>
+</div>
+
 
     <!-- Restore -->
     <div class="grid lg:grid-cols-2 gap-10 items-start">
