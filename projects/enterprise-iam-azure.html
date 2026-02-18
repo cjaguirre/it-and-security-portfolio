@@ -124,10 +124,10 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
   </div>
 
   <div class="flex overflow-x-auto border-b-2 mb-8" style="border-color:rgba(255,255,255,0.1)">
-    <button class="tab-btn on" onclick="tab(this,'t-setup')">01. Setup</button>
-    <button class="tab-btn" onclick="tab(this,'t-users')">02. User Provisioning</button>
-    <button class="tab-btn" onclick="tab(this,'t-guest')">03. B2B Guest</button>
-    <button class="tab-btn" onclick="tab(this,'t-rbac')">04. RBAC Groups</button>
+    <button class="tab-btn on" onclick="tab(this,'t-setup')">01. Setup 02. Validation</button>
+    <button class="tab-btn" onclick="tab(this,'t-users')">03. User Provisioning</button>
+    <button class="tab-btn" onclick="tab(this,'t-guest')">04. B2B Guest</button>
+    <button class="tab-btn" onclick="tab(this,'t-rbac')">05. RBAC Groups</button>
   </div>
 
   
@@ -362,13 +362,13 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
     <div class="card p-6 md:p-8 space-y-14">
       <div>
         <h3 class="text-lg font-semibold mb-2">Phase 5 — RBAC Security Groups</h3>
-        <p class="text-sm" style="color:var(--muted)">Three Security groups were created to own the access governance model. Group-based access control means permissions are managed once at the group level and inherited by all members — reducing per-user management overhead significantly.</p>
+        <p class="text-sm" style="color:var(--muted)">Department based security groups were implemented to enforce role based access control. Group centric access governance ensures permissions are assigned once at the group level and inherited by all members, reducing administrative overhead and maintaining consistent access boundaries.</p>
       </div>
 
       <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <p class="step-num">5.1 — All Groups</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">Finance-Team, HR-Team, and IT-Team are all Security type with Assigned membership — no dynamic rules. Each maps directly to a department and will control that department's resource access going forward.</p>
+          <p class="text-sm leading-relaxed" style="color:var(--muted)">Created three security groups aligned to organizational structure: IT Team, HR Team, and Finance Team. Each group serves as the access control boundary for its respective department.</p>
         </div>
         <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Groups_List_All_Overview.png')">
           <img src="../assets/images/EIAMS1_Groups_List_All_Overview.png" class="w-full" alt="All groups">
@@ -379,7 +379,7 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
       <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <p class="step-num">5.2 — IT-Team Members</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">IT-Team contains it.admin, it.support, and notably the Contractor Test guest. The guest is assigned as a Guest user type within the same group — demonstrating that B2B identities can be scoped into specific departmental groups while remaining distinct from member identities.</p>
+          <p class="text-sm leading-relaxed" style="color:var(--muted)">Assigned IT administrator, IT support, and contractor guest identities to the IT Team group. This demonstrates that both internal and external identities can be governed under the same RBAC structure while preserving identity type distinction.</p>
         </div>
         <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Group_Properties_General_Info.png')">
           <img src="../assets/images/EIAMS1_Group_Properties_General_Info.png" class="w-full" alt="IT-Team members">
@@ -390,7 +390,7 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
       <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <p class="step-num">5.3 — HR-Team Members</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">HR-Team contains hr.manager and hr.staff. The add members panel was used during assignment to search and select users from the directory — confirming group membership reflects the intended departmental structure.</p>
+          <p class="text-sm leading-relaxed" style="color:var(--muted)">Assigned HR manager and HR staff identities to the HR Team group. Access for HR users is now governed entirely through group membership rather than direct role assignment.</p>
         </div>
         <div class="space-y-4">
           <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Enterprise_Applications_User_Access.png')">
@@ -407,7 +407,7 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
       <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <p class="step-num">5.4 — Finance-Team Members</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">Finance-Team contains fin.analyst and fin.staff, completing the three-group RBAC structure. All users are now mapped to exactly one departmental group, maintaining clean access boundaries.</p>
+          <p class="text-sm leading-relaxed" style="color:var(--muted)">Assigned Finance analyst and Finance staff identities to the Finance Team group, completing the RBAC structure. All users are now mapped to a defined access boundary based on department.</p>
         </div>
         <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Group_Membership_Assignment_View.png')">
           <img src="../assets/images/EIAMS1_Group_Membership_Assignment_View.png" class="w-full" alt="Finance-Team members">
