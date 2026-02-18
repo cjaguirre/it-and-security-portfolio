@@ -130,29 +130,72 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
     <button class="tab-btn" onclick="tab(this,'t-rbac')">04. RBAC Groups</button>
   </div>
 
-  <!-- TAB: SETUP -->
-  <div id="t-setup" class="tab-pane on">
-    <div class="card p-6 md:p-8 space-y-14">
+  
+<!-- TAB: SETUP -->
+<div id="t-setup" class="tab-pane on">
+  <div class="card p-6 md:p-8 space-y-14">
+
+    <!-- Phase 1 -->
+    <div>
+      <h3 class="text-lg font-semibold mb-2">Phase 1 — Tenant Initialization</h3>
+      <p class="text-sm" style="color:var(--muted)">
+        The Microsoft Entra ID tenant was initialized and validated to establish a controlled identity baseline.
+        Core directory attributes including tenant identity, domain configuration, licensing state, and existing identity objects
+        were confirmed prior to provisioning users or enforcing access controls.
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-10 items-start">
       <div>
-        <h3 class="text-lg font-semibold mb-2">Phase 1 Environment Setup</h3>
-        <p class="text-sm" style="color:var(--muted)">Initialized the Microsoft Entra ID tenant and validated baseline directory configuration,
-          including identity structure, administrative surfaces, and authentication monitoring. This established a verified IAM environment prior
-          to provisioning and RBAC implementation.</p>
+        <p class="step-num">1.1 — Tenant Overview</p>
+        <p class="text-sm leading-relaxed" style="color:var(--muted)">
+          The Default Directory overview confirms tenant identity, primary domain, license tier, and current identity object count.
+          This establishes the baseline state used to support identity provisioning, RBAC assignment, and lifecycle operations.
+        </p>
       </div>
 
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div>
-          <p class="step-num">1.1 — Tenant Overview</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">Validated tenant identity configuration including directory ID,
-            primary domain, licensing, and existing identity objects. This confirmed the baseline directory state before identity provisioning.</p>
-        </div>
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_EntraID_Overview.png')">
-          <img src="../assets/images/EIAMS1_Azure_EntraID_Overview.png" class="w-full" alt="Entra ID tenant overview">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Default Directory overview — tenant ID, domain, license, and baseline user/group count.</p>
-        </div>
+      <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_EntraID_Overview.png')">
+        <img src="../assets/images/EIAMS1_Azure_EntraID_Overview.png" class="w-full" alt="Entra ID tenant overview">
+        <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">
+          Default Directory overview confirming tenant identity and baseline configuration.
+        </p>
       </div>
     </div>
+
+
+    <!-- Phase 2 -->
+    <div>
+      <h3 class="text-lg font-semibold mb-2">Phase 2 — IAM Surface Validation</h3>
+      <p class="text-sm max-w-3xl" style="color:var(--muted)">
+        Core identity governance components were reviewed to confirm operational readiness. This included Users, Groups,
+        Roles and administrators, Sign-in logs, Audit logs, and Conditional Access. Validating these surfaces ensures the
+        tenant supports identity provisioning, access governance, authentication monitoring, and audit traceability.
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-10 items-start">
+
+      <div>
+        <p class="step-num">2.1 — Identity Governance Surfaces</p>
+        <p class="text-sm leading-relaxed" style="color:var(--muted)">
+          Administrative surfaces were verified to confirm visibility and control over identities, group membership,
+          directory roles, authentication activity, and audit telemetry. This ensures full lifecycle management capability
+          before introducing production identities.
+        </p>
+      </div>
+
+      <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Admin_Panel_User_Details_View.png')">
+        <img src="../assets/images/EIAMS1_Admin_Panel_User_Details_View.png" class="w-full" alt="IAM admin surface overview">
+        <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">
+          Microsoft Entra administrative surface showing identity governance, access control, and monitoring components.
+        </p>
+      </div>
+
+    </div>
+
   </div>
+</div>
+
 
   <!-- TAB: USERS -->
   <div id="t-users" class="tab-pane">
