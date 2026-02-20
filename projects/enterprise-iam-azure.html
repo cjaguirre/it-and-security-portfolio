@@ -65,8 +65,10 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
 
 <!-- ══════════════════════════ HERO ══════════════════════════ -->
 <section id="hero" class="pt-16 pb-14 sm:pt-20 md:pt-24">
-  <a href="../index.html#projects" class="inline-block text-sm mb-8" style="color:var(--cyan)">← Back to Portfolio</a>
-
+<a href="../index.html#projects"
+   class="inline-block text-sm mb-8 font-mono text-white opacity-80 hover:opacity-100 transition">
+← Back to Portfolio
+</a>
   <div class="flex flex-wrap justify-center gap-2 mb-6">
     <span class="pill pill-w">Enterprise IAM Lab</span>
     <span class="pill">Microsoft Entra ID</span>
@@ -94,14 +96,14 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
     </div>
     <div class="card p-6">
       <p class="step-num">Deliverables</p>
-      <ul class="text-sm space-y-1.5" style="color:var(--muted)">
-        <li class="flex gap-2"><span style="color:var(--green)">✓</span>6 internal users — IT (admin + support), HR (manager + staff), Finance (analyst + staff)</li>
-        <li class="flex gap-2"><span style="color:var(--green)">✓</span>3 RBAC security groups with assigned membership</li>
-        <li class="flex gap-2"><span style="color:var(--green)">✓</span>B2B guest contractor identity — EXT designation, pending acceptance</li>
-        <li class="flex gap-2"><span style="color:var(--green)">✓</span>Sign-in logs and audit logs reviewed with event-level investigation</li>
-        <li class="flex gap-2"><span style="color:var(--green)">✓</span>Identity Secure Score assessed with actionable recommendations</li>
-        <li class="flex gap-2"><span style="color:var(--green)">✓</span>IAM architecture diagram documenting the full identity flow</li>
-      </ul>
+<ul class="list-disc list-outside pl-5 space-y-1.5 text-sm" style="color:var(--muted)">
+  <li>6 internal users — IT (admin + support), HR (manager + staff), Finance (analyst + staff)</li>
+  <li>3 RBAC security groups with assigned membership</li>
+  <li>B2B guest contractor identity — EXT designation, pending acceptance</li>
+  <li>Sign-in logs and audit logs reviewed with event-level investigation</li>
+  <li>Identity Secure Score assessed with actionable recommendations</li>
+  <li>IAM architecture diagram documenting the full identity flow</li>
+</ul>
     </div>
   </div>
 
@@ -695,11 +697,10 @@ body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:
     </div>
 
     <div class="mt-10 text-center">
-      <a href="../index.html#projects"
-         class="inline-flex text-sm font-mono transition"
-         style="color:var(--cyan)">
-        ← Back to Portfolio
-      </a>
+ <a href="../index.html#projects"
+   class="inline-flex text-sm font-mono text-white opacity-80 hover:opacity-100 transition">
+← Back to Portfolio
+</a>
     </div>
 
   </div>
