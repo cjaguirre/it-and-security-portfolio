@@ -1,42 +1,47 @@
-Christian Aguirre — Cybersecurity and Data Analytics Portfolio
+# Christian Aguirre — IT Support & Security Operations Portfolio
 
-This repository contains the core work featured on my cybersecurity and analytics portfolio website. It highlights my hands on experience in security operations, system behavior analysis, foundational IT workflows, and data driven investigation.
+This repository contains the projects featured on my portfolio website, showcasing my hands on work across IT support, system troubleshooting, and security focused labs.
 
-I focus on SIEM monitoring, Sysmon based threat detection, Windows event analysis, Active Directory, SQL, and Python. My goal is to demonstrate practical, entry level skills that support security operations, IT analysis, and technical problem solving.
+I currently work in an operations role supporting a federal facility, where I coordinate technical issues, assist users, and work with vendors and infrastructure teams. Alongside that, I build labs to strengthen my skills in security monitoring, system behavior, and log analysis.
 
-Cybersecurity Focus Areas:
-- SIEM monitoring using Azure Sentinel
-- Sysmon and Windows Security Event log analysis
-- Basic threat detection and investigation workflows
-- Nessus vulnerability scanning
-- Active Directory administration and user management
+## What I Focus On
 
-Analytics and Technical Skills:
-- SQL: joins, CTEs, data cleaning pipelines
-- Python: pandas, analysis, preprocessing
-- Tableau: dashboard creation and visual analysis
-- Excel: KPI development and modeling
-- PowerShell: connectivity testing and system checks
+- IT support workflows and troubleshooting  
+- Active Directory and Microsoft 365 environments  
+- Windows system behavior and event log analysis  
+- SIEM monitoring using Microsoft Sentinel  
+- Basic security investigation and detection workflows  
 
-Certifications:
-- CompTIA Security+ (SYO-701)
-- Google Advanced Data Analytics
-- Google Data Analytics Professional Certificate
+## Technical Skills
 
-Repository Contents:
+- **Systems & Support:** Windows 10/11, Active Directory, Microsoft 365, ServiceNow  
+- **Security:** Microsoft Sentinel, Sysmon, Windows Event Logs, Nessus  
+- **Data & Analytics:** SQL, Python (pandas), Tableau, Excel  
+- **Scripting & Tools:** PowerShell, GitHub  
 
-This repository includes work aligned to my portfolio website, including:
-- SIEM and Windows log investigation labs
-- Sysmon based detection exercises
-- Azure cloud security workflows
-- SQL data cleaning and modeling work
-- Python and Tableau analytical projects
-- Foundational IT and system administration exercises
+## Certifications
 
-Each project demonstrates skills relevant to entry level roles in security operations, incident support, and IT analysis.
+- CompTIA Security+ (SY0-701)  
+- Google Advanced Data Analytics  
+- Google Data Analytics Professional Certificate  
 
-Contact:
-- Email: cj.aguirr3@gmail.com
-- LinkedIn: https://www.linkedin.com/in/christianaguirre
+## Repository Contents
 
-  
+This repository includes a mix of hands on labs and analytical projects, such as:
+
+- IT support and system administration labs  
+- Active Directory and identity management exercises  
+- SIEM and Windows log investigations  
+- Sysmon based threat detection labs  
+- SQL data cleaning and database projects  
+- Python and Tableau analysis projects  
+
+Each project reflects practical, entry level skills relevant to IT support, security operations, and technical analysis roles.
+
+## Portfolio Website  
+https://cjaguirre.github.io/Cybersecurity-and-Data-Analytics-Portfolio/
+
+## Contact
+
+- Email: cj.aguirr3@gmail.com  
+- LinkedIn: https://www.linkedin.com/in/christianaguirre  
