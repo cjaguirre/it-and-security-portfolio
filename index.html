@@ -61,7 +61,7 @@ projectCards.forEach((card)=>card.classList.remove("hidden"));filterButtons.forE
 <div class="hidden md:flex items-center gap-8 text-sm">
 <a href=#about class="font-medium hover:text-accent-cyan transition duration-300">About</a>
 <a href=#skills class="font-medium hover:text-accent-cyan transition duration-300">Skills</a>
-<a href=#skills class="font-medium hover:text-accent-cyan transition duration-300">Certifications</a>
+<a href="#certifications" class="font-medium hover:text-accent-cyan transition duration-300">Certifications</a>
 <a href=#projects class="font-medium hover:text-accent-cyan transition duration-300">Projects</a>
 <a href=#experience class="font-medium hover:text-accent-cyan transition duration-300">Experience</a>
 <a href=#education class="font-medium hover:text-accent-cyan transition duration-300">Education</a>
@@ -103,7 +103,7 @@ Security+ certified IT professional focused on IT support and troubleshooting. I
 </p>
   
 <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-<a href=#contact class="inline-block border-2 font-semibold py-3 px-8 transition duration-300 transform hover:scale-[1.02]" style=border-radius:0;background-color:var(--functional-action);border-color:var(--functional-action);color:var(--bg-default) onmouseover="this.style.backgroundColor='#4f96e4'" onmouseout="this.style.backgroundColor='var(--functional-action)'">
+<a href="#contact" class="inline-block border-2 font-semibold py-3 px-8 transition duration-300 transform hover:scale-[1.02]" style="border-radius:0;background-color:var(--functional-action);border-color:var(--functional-action);color:var(--bg-default);" onmouseover="this.style.backgroundColor='#4f96e4'" onmouseout="this.style.backgroundColor='var(--functional-action)'">
 Get in touch
 </a>
 <a href=https://www.linkedin.com/in/christianaguirre/ target=_blank class="inline-flex items-center border-2 border-accent-cyan text-accent-cyan font-semibold py-3 px-8 hover:bg-accent-cyan hover:text-primary-bg transition duration-300 transform hover:scale-[1.02]" style=border-radius:0>
@@ -885,21 +885,21 @@ I’m happy to discuss opportunities, projects, or hands on lab work.
 <label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
 Full Name
 </label>
-<input type=text name=name placeholder="Your name" required class="w-full p-4 bg-primary-bg border text-white focus:outline-none focus:border-accent-action transition" style=border-color:rgba(217,217,217,0.18);border-radius:0 focus:outline-none focus:border-accent-action" />
+<input type="text" name="name" placeholder="Your name" required class="w-full p-4 bg-primary-bg border text-white focus:outline-none focus:border-accent-action transition" style="border-color:rgba(217,217,217,0.18);border-radius:0;" />
 </div>
 <div>
 <label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
 Email
 </label>
-<input type=email name=email placeholder=name@email.com required class="w-full p-4 bg-primary-bg border text-white focus:outline-none focus:border-accent-action transition" style=border-color:rgba(217,217,217,0.18);border-radius:0 focus:outline-none focus:border-accent-action" />
+<input type="email" name="email" placeholder="name@email.com" required class="w-full p-4 bg-primary-bg border text-white focus:outline-none focus:border-accent-action transition" style="border-color:rgba(217,217,217,0.18);border-radius:0;" />
 </div>
 <div>
 <label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
 Message
 </label>
-<textarea name=message rows=6 placeholder="Write your message" required class="w-full p-4 bg-primary-bg border text-white focus:outline-none focus:border-accent-action transition" style=border-color:rgba(217,217,217,0.18);border-radius:0 resize-none focus:outline-none focus:border-accent-action"></textarea>
+<textarea name="message" rows="6" placeholder="Write your message" required class="w-full p-4 bg-primary-bg border text-white resize-none focus:outline-none focus:border-accent-action transition" style="border-color:rgba(217,217,217,0.18);border-radius:0;"></textarea>
 </div>
-<button type=submit class="w-full py-4 font-mono uppercase tracking-wider transition" style=background-color:var(--functional-action);color:var(--bg-default);border-radius:0 onmouseover="this.style.backgroundColor='#4f96e4'" onmouseout="this.style.backgroundColor='var(--functional-action)'">
+<button type="submit" class="w-full py-4 font-mono uppercase tracking-wider transition" style="background-color:var(--functional-action);color:var(--bg-default);border-radius:0;" onmouseover="this.style.backgroundColor='#4f96e4'" onmouseout="this.style.backgroundColor='var(--functional-action)'">
 Send Message
 </button>
 </form>
@@ -952,7 +952,7 @@ cybersecurity.
 <p class="mt-2 text-xs">&copy; 2025 Christian Aguirre. All rights reserved.</p>
 </div>
 <div class="flex items-center space-x-4 text-xs">
-<a href=#hero class="font-mono text-xs border px-4 py-2 flex items-center gap-2 transition" style=border-color:rgba(217,217,217,0.18);color:var(--text-secondary);border-radius:0 onmouseover="this.style.borderColor='var(--functional-action)';this.style.color='white'" onmouseout="this.style.borderColor='rgba(217,217,217,0.18)';this.style.color='var(--text-secondary)'">
+<a href="#hero" class="font-mono text-xs border px-4 py-2 flex items-center gap-2 transition" style="border-color:rgba(217,217,217,0.18);color:var(--text-secondary);border-radius:0;" onmouseover="this.style.borderColor='var(--functional-action)';this.style.color='white'" onmouseout="this.style.borderColor='rgba(217,217,217,0.18)';this.style.color='var(--text-secondary)'">
 ↑ Back to top
 </a>
 </div>
@@ -968,6 +968,24 @@ setInterval(() => {
   playNextVideo();
 }, 10000);
   
-document.addEventListener("DOMContentLoaded",()=>{initProjectFilters();initSmoothScroll();animateProgressBars();});</script>
+document.addEventListener("DOMContentLoaded",()=>{initProjectFilters();initSmoothScroll();animateProgressBars();});
+
+
+document.getElementById("mobileMenuButton").addEventListener("click", function() {
+  document.getElementById("mobileMenu").classList.toggle("hidden");
+});
+
+  const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("show");
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll(".fade-up, .fade-soft").forEach(el => {
+  observer.observe(el);
+});
+</script>
 </body>
 </html>
