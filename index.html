@@ -9,14 +9,18 @@
   
 .skill-box:hover {
   box-shadow: none;
-  transform: transform: translateY(-3px) scale(1.015);
-}
-  
-.project-box:hover {
-  box-shadow: none;
-  transform: transform: translateY(-3px) scale(1.015);
+  transform: translateY(-3px) scale(1.015);
 }
 
+.project-box:hover {
+  box-shadow: none;
+  transform: translateY(-3px) scale(1.015);
+}
+
+  .skill-box,
+.project-box {
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
 
 /* ===== Smooth Scroll Animations ===== */
   
