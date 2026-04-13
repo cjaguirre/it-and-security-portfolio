@@ -12,10 +12,11 @@
   
 .fade-up {
   opacity: 0;
-  transform: translateY(50px) scale(0.97);
+  transform: translateY(55px) scale(0.97);
   transition: 
-    opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: 0.15s;
 }
 
 .fade-up.show {
@@ -26,14 +27,14 @@
 /* Optional: softer entrance for big sections */
 .fade-soft {
   opacity: 0;
-  transform: translateY(25px);
-  transition: all 1.4s ease;
+  transform: translateY(30px);
+  transition: all 1.8s ease;
 }
 
-  .fade-up {
-  transition-delay: 0.1s;
+.fade-up.show {
+  transition-delay: 0s;
 }
-
+  
 .fade-soft.show {
   opacity: 1;
   transform: translateY(0);
