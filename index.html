@@ -1035,28 +1035,22 @@ function typeText(element, text, speed = 30, delay = 0) {
 }
 
 async function runTypingAnimation() {
-  await typeText(
-    document.getElementById("type-intro"),
-    "Hello, my name is",
-    25
-  );
+  await typeText(document.getElementById("type-intro"), "Hello, my name is", 45);
+  
+  await new Promise(r => setTimeout(r, 300));
 
-  await typeText(
-    document.getElementById("type-name"),
-    "Christian Aguirre",
-    40
-  );
+  await typeText(document.getElementById("type-name"), "Christian Aguirre", 65);
 
-  await typeText(
-    document.getElementById("type-role"),
-    "IT Support & Security Operations Analyst",
-    25
-  );
+  await new Promise(r => setTimeout(r, 400));
+
+  await typeText(document.getElementById("type-role"), "IT Support & Security Operations Analyst", 40);
+
+  await new Promise(r => setTimeout(r, 400));
 
   await typeText(
     document.getElementById("type-desc"),
     "Security+ certified IT professional focused on IT support and troubleshooting. I support users, resolve technical issues, and work with tools like Active Directory and Microsoft 365. I also build hands on labs using Microsoft Sentinel and Sysmon to strengthen my security and monitoring skills.",
-    15
+    22
   );
 }
 
