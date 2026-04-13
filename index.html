@@ -1080,11 +1080,7 @@ await new Promise(r => setTimeout(r, 150));
     22
   );
 
-  // 👇 DO NOT remove here so cursor stays at end
-}
-
-  // 👇 THIS LINE IS NEW (adds blinking cursor AFTER typing finishes)
-  desc.classList.add("typing-active");
+  // keep cursor blinking on the last paragraph
 }
 
 document.addEventListener("DOMContentLoaded", () => {
