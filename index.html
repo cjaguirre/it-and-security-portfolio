@@ -1045,25 +1045,43 @@ function typeText(element, text, speed = 30, delay = 0) {
 }
 
 async function runTypingAnimation() {
-  await typeText(document.getElementById("type-intro"), "Hello, my name is", 45);
-  
-  await new Promise(r => setTimeout(r, 300));
 
-  await typeText(document.getElementById("type-name"), "Christian Aguirre", 65);
-
-  await new Promise(r => setTimeout(r, 400));
-
-  await typeText(document.getElementById("type-role"), "IT Support & Security Operations Analyst", 40);
-
-  await new Promise(r => setTimeout(r, 400));
-
+  const intro = document.getElementById("type-intro");
+  const name = document.getElementById("type-name");
+  const role = document.getElementById("type-role");
   const desc = document.getElementById("type-desc");
 
+  // Step 1
+  intro.classList.add("typing-active");
+  await typeText(intro, "Hello, my name is", 45);
+  intro.classList.remove("typing-active");
+
+await new Promise(r => setTimeout(r, 150));
+  
+  // Step 2
+  name.classList.add("typing-active");
+  await typeText(name, "Christian Aguirre", 65);
+  name.classList.remove("typing-active");
+
+  await new Promise(r => setTimeout(r, 300));
+
+  // Step 3
+  role.classList.add("typing-active");
+  await typeText(role, "IT Support & Security Operations Analyst", 40);
+  role.classList.remove("typing-active");
+
+  await new Promise(r => setTimeout(r, 300));
+
+  // Step 4 (final stays blinking)
+  desc.classList.add("typing-active");
   await typeText(
     desc,
     "Security+ certified IT professional focused on IT support and troubleshooting. I support users, resolve technical issues, and work with tools like Active Directory and Microsoft 365. I also build hands on labs using Microsoft Sentinel and Sysmon to strengthen my security and monitoring skills.",
     22
   );
+
+  // 👇 DO NOT remove here so cursor stays at end
+}
 
   // 👇 THIS LINE IS NEW (adds blinking cursor AFTER typing finishes)
   desc.classList.add("typing-active");
