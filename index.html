@@ -13,41 +13,45 @@
 #certifications .project-box,
 #projects .project-box {
   transition: 
-    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.25s ease;
+    transform 0.25s ease-out,
+    box-shadow 0.25s ease-out,
+    border-color 0.2s ease-out;
+
   will-change: transform;
+  transform: translateZ(0); /* 🔥 GPU acceleration */
 }
 
-/* Hover lift */
 #skills .skill-box:hover,
 #certifications .project-box:hover,
 #projects .project-box:hover {
-  transform: translateY(-10px) scale(1.03);
+  transform: translateY(-6px); /* smoother */
 
   box-shadow: 
-    0 10px 25px rgba(0, 0, 0, 0.35),
-    0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 0 12px rgba(255, 255, 255, 0.04);
+    0 8px 20px rgba(0,0,0,0.35),
+    0 0 0 1px rgba(255,255,255,0.05);
+
+  border-color: rgba(255,255,255,0.25);
 }
 
+  #projects .project-box {
+  backface-visibility: hidden;
+}
+  
 /* ===== Smooth Scroll Animations ===== */
   
 .fade-up {
   opacity: 0;
-  transform: translateY(80px); /* 👈 more noticeable */
+  transform: translateY(40px);
   transition:
-    opacity 0.8s ease,
-    transform 0.8s ease;
+    opacity 0.6s ease,
+    transform 0.6s ease;
 }
 
 .fade-up.show {
   opacity: 1;
-  transform: translateY(0) scale(1); /* 👈 IMPORTANT */
+  transform: translateY(0) translateZ(0);
 }
 
-  .fade-up {
-  opacity: 0;
-}
 
   /* stagger animation for project cards */
 #projects .project-card {
