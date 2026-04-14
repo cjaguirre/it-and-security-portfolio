@@ -13,19 +13,19 @@
 #certifications .project-box,
 #projects .project-box {
   transition: 
-    transform 0.25s ease-out,
-    box-shadow 0.25s ease-out,
-    border-color 0.2s ease-out;
+    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.12s linear;
 
   will-change: transform;
-  transform: translateZ(0); /* 🔥 GPU acceleration */
+  transform: translateZ(0);
 }
 
 #skills .skill-box:hover,
 #certifications .project-box:hover,
 #projects .project-box:hover {
-  transform: translateY(-6px); /* smoother */
-
+transform: translateY(-4px);
+  
   box-shadow: 
     0 8px 20px rgba(0,0,0,0.35),
     0 0 0 1px rgba(255,255,255,0.05);
@@ -33,6 +33,10 @@
   border-color: rgba(255,255,255,0.25);
 }
 
+  #projects .project-box:hover {
+  transition-duration: 0.12s;
+}
+  
   #projects .project-box {
   backface-visibility: hidden;
 }
