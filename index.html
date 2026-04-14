@@ -10,7 +10,8 @@
 /* ===== Lift Animation (Skills + Certifications ONLY) ===== */
 
 #skills .skill-box,
-#certifications .project-box {
+#certifications .project-box,
+#projects .project-box {
   transition: 
     transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
     border-color 0.25s ease;
@@ -19,8 +20,10 @@
 
 /* Hover lift */
 #skills .skill-box:hover,
-#certifications .project-box:hover {
-  transform: translateY(-10px) scale(1.02);
+#certifications .project-box:hover,
+#projects .project-box:hover {
+  transform: translateY(-10px) scale(1.03);
+}
 
   /* subtle white highlight */
   box-shadow: 
@@ -39,10 +42,9 @@
     transform 0.8s ease;
 }
 
-/* when visible */
 .fade-up.show {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1); /* 👈 IMPORTANT */
 }
 
   /* stagger animation for project cards */
