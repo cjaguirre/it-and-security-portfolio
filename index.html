@@ -23,20 +23,18 @@
 #certifications .project-box:hover,
 #projects .project-box:hover {
   transform: translateY(-10px) scale(1.03);
-}
 
-  /* subtle white highlight */
   box-shadow: 
-    0 10px 25px rgba(0, 0, 0, 0.35),   /* depth */
-    0 0 0 1px rgba(255, 255, 255, 0.06), /* faint edge highlight */
-    0 0 12px rgba(255, 255, 255, 0.04); /* soft white glow */
+    0 10px 25px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 0 12px rgba(255, 255, 255, 0.04);
 }
 
 /* ===== Smooth Scroll Animations ===== */
   
 .fade-up {
   opacity: 0;
-  transform: translateY(60px);
+  transform: translateY(80px); /* 👈 more noticeable */
   transition:
     opacity 0.8s ease,
     transform 0.8s ease;
@@ -45,6 +43,10 @@
 .fade-up.show {
   opacity: 1;
   transform: translateY(0) scale(1); /* 👈 IMPORTANT */
+}
+
+  .fade-up {
+  opacity: 0;
 }
 
   /* stagger animation for project cards */
@@ -1033,13 +1035,17 @@ document.getElementById("mobileMenuButton").addEventListener("click", function()
 });
 
 const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
+  entries.forEach((entry, index) => {
     if (entry.isIntersecting) {
-      entry.target.classList.add("show");
-      observer.unobserve(entry.target); // 👈 prevents re-trigger flicker
+
+      setTimeout(() => {
+        entry.target.classList.add("show");
+      }, index * 80); // 👈 adds stagger + fixes instant trigger
+
+      observer.unobserve(entry.target);
     }
   });
-}, { threshold: 0.12 });
+}, { threshold: 0.2 });
 
 document.querySelectorAll(".fade-up, .fade-soft").forEach(el => {
   observer.observe(el);
