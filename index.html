@@ -33,17 +33,33 @@
   
 .fade-up {
   opacity: 0;
-  transform: translateY(55px) scale(0.97);
-  transition: 
-    opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: 0.15s;
+  transform: translateY(60px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
 }
 
+/* when visible */
 .fade-up.show {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: translateY(0);
 }
+
+  /* stagger animation for project cards */
+#projects .project-card {
+  transition-delay: 0s;
+}
+
+#projects .project-card:nth-child(1) { transition-delay: 0.05s; }
+#projects .project-card:nth-child(2) { transition-delay: 0.1s; }
+#projects .project-card:nth-child(3) { transition-delay: 0.15s; }
+#projects .project-card:nth-child(4) { transition-delay: 0.2s; }
+#projects .project-card:nth-child(5) { transition-delay: 0.25s; }
+#projects .project-card:nth-child(6) { transition-delay: 0.3s; }
+#projects .project-card:nth-child(7) { transition-delay: 0.35s; }
+#projects .project-card:nth-child(8) { transition-delay: 0.4s; }
+#projects .project-card:nth-child(9) { transition-delay: 0.45s; }
+#projects .project-card:nth-child(10) { transition-delay: 0.5s; }
 
 /* Optional: softer entrance for big sections */
 .fade-soft {
@@ -1014,13 +1030,14 @@ document.getElementById("mobileMenuButton").addEventListener("click", function()
   document.getElementById("mobileMenu").classList.toggle("hidden");
 });
 
-  const observer = new IntersectionObserver((entries) => {
+const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add("show");
+      observer.unobserve(entry.target); // 👈 prevents re-trigger flicker
     }
   });
-}, { threshold: 0.15 });
+}, { threshold: 0.12 });
 
 document.querySelectorAll(".fade-up, .fade-soft").forEach(el => {
   observer.observe(el);
