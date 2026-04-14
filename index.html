@@ -13,25 +13,20 @@
 #certifications .project-box,
 #projects .project-box {
   transition: 
-    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 0.12s linear;
+    transform 0.13s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.13s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.1s linear;
 
   will-change: transform;
   transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
-  #projects .project-box {
-  transition: 
-    transform 0.12s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.12s cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 0.1s linear;
-}
 
 #skills .skill-box:hover,
 #certifications .project-box:hover,
 #projects .project-box:hover {
-transform: translateY(-8px) scale(1.015);
+  transform: translateY(-10px) scale(1.02);
   
 box-shadow: 
   0 16px 40px rgba(0,0,0,0.45),
@@ -67,6 +62,7 @@ box-shadow:
 .fade-up.show {
   opacity: 1;
   transform: translateY(0) translateZ(0);
+  transition: none;
 }
 
 
@@ -497,7 +493,7 @@ Data Projects
   
 </div>
 <div class="grid md:grid-cols-2 gap-8">
-<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 transition-none hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="soc" data-link="./projects/nessus-vulnerability-scanning-lab.html">
+<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="soc" data-link="./projects/nessus-vulnerability-scanning-lab.html">
 <div class="flex gap-8 items-stretch">
 
   <div class="w-[55%]">
@@ -528,7 +524,7 @@ Data Projects
 </div>
   
 </article>
-<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 transition-none hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="itsupport" data-link="./projects/servicenow-itsm.html">
+<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="itsupport" data-link="./projects/servicenow-itsm.html">
 
   <div class="flex gap-8 items-stretch">
 
@@ -561,7 +557,7 @@ Data Projects
 
 </article>
   
-<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 transition-none hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="itsupport" data-link="./projects/enterprise-iam-azure.html">
+<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="itsupport" data-link="./projects/enterprise-iam-azure.html">
   <div class="flex gap-8 items-stretch">
 
   <div class="w-[55%]">
@@ -592,7 +588,7 @@ Data Projects
   
 </article>
   
-<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 transition-none hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="soc" data-link="./projects/azure-soc-honeypot.html">
+<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="soc" data-link="./projects/azure-soc-honeypot.html">
  <div class="flex gap-8 items-stretch">
 
   <div class="w-[55%]">
@@ -622,7 +618,7 @@ Data Projects
 </div>
 </article>
   
-<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 transition-none hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="itsupport" data-link="./projects/active-directory-iam-project.html">
+<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="itsupport" data-link="./projects/active-directory-iam-project.html">
   <div class="flex gap-8 items-stretch">
 
   <div class="w-[55%]">
@@ -653,7 +649,7 @@ Data Projects
   
 </article>
   
-<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 transition-none hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="analytics" data-link="projects/telco-churn.html">
+<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="analytics" data-link="projects/telco-churn.html">
   <div class="flex gap-8 items-stretch">
     <div class="w-[55%]">
       <h3 class="text-xl font-semibold">Telco Customer Churn Analysis</h3>
@@ -683,7 +679,7 @@ Data Projects
 </article>
 
   
-<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 transition-none hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="soc" data-link="projects/sysmon-lab.html">
+<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="soc" data-link="projects/sysmon-lab.html">
   <div class="flex gap-8 items-stretch">
     <div class="w-[55%]">
       <h3 class="text-xl font-semibold">Windows Sysmon Threat Detection Lab</h3>
@@ -712,7 +708,7 @@ Data Projects
   </div>
 </article>
   
-<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 transition-none hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="analytics" data-link="./projects/opm-analysis.html">
+<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="analytics" data-link="./projects/opm-analysis.html">
   <div class="flex gap-8 items-stretch">
     <div class="w-[55%]">
       <h3 class="text-xl font-semibold">Operations Management Analysis</h3>
@@ -741,7 +737,7 @@ Data Projects
   </div>
 </article>
   
-<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 transition-none hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="analytics" data-link="./projects/cyclist-analysis.html">
+<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="analytics" data-link="./projects/cyclist-analysis.html">
   <div class="flex gap-8 items-stretch">
     <div class="w-[55%]">
       <h3 class="text-xl font-semibold">Cyclistic Rider Behavior Analysis</h3>
@@ -770,7 +766,7 @@ Data Projects
   </div>
 </article>
   
-<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 transition-none hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="analytics" data-link="./projects/bellabeat-device-analysis.html">
+<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="analytics" data-link="./projects/bellabeat-device-analysis.html">
   <div class="flex gap-8 items-stretch">
     <div class="w-[55%]">
       <h3 class="text-xl font-semibold">Bellabeat Smart Device Usage Analysis</h3>
@@ -799,7 +795,7 @@ Data Projects
   </div>
 </article>
   
-<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 transition-none hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="sql" data-link="./projects/landscape-database-revitalization.html">
+<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="sql" data-link="./projects/landscape-database-revitalization.html">
   <div class="flex gap-8 items-stretch">
     <div class="w-[55%]">
       <h3 class="text-xl font-semibold">Landscape Database Revitalization</h3>
@@ -828,7 +824,7 @@ Data Projects
   </div>
 </article>
   
-<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 transition-none hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="sql" data-link="./projects/world-layoffs-sql-cleaning.html">
+<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="sql" data-link="./projects/world-layoffs-sql-cleaning.html">
   <div class="flex gap-8 items-stretch">
     <div class="w-[55%]">
       <h3 class="text-xl font-semibold">World Layoffs SQL Data Cleaning</h3>
@@ -857,7 +853,7 @@ Data Projects
   </div>
 </article>
   
-<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 transition-none hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="analytics" data-link="./projects/qd-models.html">
+<article class="fade-up project-card project-box cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="analytics" data-link="./projects/qd-models.html">
   <div class="flex gap-8 items-stretch">
     <div class="w-[55%]">
       <h3 class="text-xl font-semibold">Quantitative Decision Modeling</h3>
