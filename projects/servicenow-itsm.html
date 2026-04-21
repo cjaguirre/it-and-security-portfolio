@@ -1,1483 +1,760 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" class="dark">
+<html lang="en" class="dark">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ServiceNow ITSM Implementation Lab | Christian Aguirre</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary-bg": "var(--bg-default)",
-                        "secondary-bg": "var(--bg-secondary)",
-                        "container-bg": "var(--container-bg)",
-                        "text-base": "var(--text-base)",
-                        "text-secondary": "var(--text-secondary)",
-                        "accent-cyan": "var(--accent-structural)",
-                        "accent-red": "var(--accent-red)",
-                        "accent-action": "var(--functional-action)",
-                        "accent-success": "var(--functional-success)",
-                    }
-                }
-            }
-        };
-    </script>
-    <style>
-        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ServiceNow ITSM Implementation Lab | Christian Aguirre</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
 
-        .dark {
-            --bg-default: #1e1e1e;
-            --bg-secondary: #30333a;
-            --text-base: #fff;
-            --text-secondary: #abb2bf;
-            --accent-structural: #d9d9d9;
---functional-action: #ffffff;            --functional-success: #98c379;
-            --accent-red: #e06c75;
-            --container-bg: #171717;
-            background-color: var(--bg-default);
-            color: var(--text-base);
-        }
-
-        body {
-            font-family: "Inter", sans-serif;
-            background-color: var(--bg-default);
-            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.07) 1px, rgba(0, 0, 0, 0) 1px);
-            background-size: 20px 20px;
-            background-position: center;
-            background-attachment: fixed;
-            min-height: 100vh;
-        }
-
-        .pill {
-            border-radius: 999px;
-            padding: 0.2rem 0.7rem;
-            border: 1px solid rgba(171, 178, 191, 0.6);
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-        }
-
-        .pill-muted {
-            color: var(--text-secondary);
-            background-color: rgba(23, 23, 23, 0.95);
-        }
-
-        .pill-accent {
-            color: var(--accent-structural);
-            background-color: rgba(23, 23, 23, 0.95);
-            border-color: rgba(217, 217, 217, 0.9);
-        }
-
-        .tab-button {
-            padding: 1rem 1.5rem;
-            background: transparent;
-            border: 0;
-            color: var(--text-secondary);
-            font-family: "Inconsolata", monospace;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
-            white-space: nowrap;
-        }
-
-        .tab-button:hover {
-            color: var(--functional-action);
-            background: rgba(97, 175, 239, 0.05);
-        }
-
-        .tab-button.active {
-            color: var(--functional-action);
-            border-bottom-color: var(--functional-action);
-        }
-
-        .tab-content {
-            display: none;
-            animation: fadeSlideIn 0.4s ease-out;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes fadeSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .stat-card {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 800;
-            font-family: "Inconsolata", monospace;
-        }
-
-        .image-zoom {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .image-zoom:hover {
-            transform: scale(1.02);
-            box-shadow: 0 10px 40px rgba(97, 175, 239, 0.3);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-        }
-
-        .modal.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            max-width: 95%;
-            max-height: 95%;
-            border-radius: 8px;
-        }
-
-        .nav-dots {
-            position: fixed;
-            right: 2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 100;
-        }
-
-        .nav-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--text-secondary);
-            margin: 0.75rem 0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .nav-dot:hover,
-        .nav-dot.active {
-            background: var(--functional-action);
-            transform: scale(1.4);
-        }
-
-        @media (max-width: 768px) {
-            .nav-dots {
-                display: none;
-            }
-        }
-
-        .phase-container {
-            background: var(--container-bg);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 1rem;
-            padding: 2.5rem;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
-        }
-
-        .card-dark {
-            background: var(--container-bg);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 1rem;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
-        }
-        *{
-border-radius:0 !important;
+.dark {
+  --bg-default: #1e1e1e;
+  --bg-secondary: #30333a;
+  --text-base: #fff;
+  --text-secondary: #abb2bf;
+  --accent-structural: #d9d9d9;
+  --functional-action: #61afef;
+  --functional-success: #98c379;
+  --accent-red: #e06c75;
+  --container-bg: #171717;
+  background-color: var(--bg-default);
+  color: var(--text-base);
 }
 
-    </style>
-    <script>
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            const activeButton = [...document.querySelectorAll('.tab-button')].find(btn => {
-                return btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(tabId);
-            });
-            if (activeButton) activeButton.classList.add('active');
-            const target = document.getElementById(`tab-${tabId}`);
-            if (target) target.classList.add('active');
-        }
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--bg-default);
+  background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, rgba(0,0,0,0) 1px);
+  background-size: 20px 20px;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
 
-        function scrollToSection(id) {
-            const target = document.getElementById(id);
-            if (!target) return;
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            const dots = document.querySelectorAll('.nav-dot');
-            const sections = ['hero', 'workflow', 'lab', 'results'];
-            dots.forEach((dot, idx) => {
-                dot.classList.toggle('active', sections[idx] === id);
-            });
-        }
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--functional-action);
+  z-index: 9999;
+  pointer-events: none;
+  transition: width 0.08s linear;
+}
 
-        function openModal(src) {
-            const modal = document.getElementById('imageModal');
-            const img = document.getElementById('modalImage');
-            img.src = src;
-            modal.classList.add('active');
-        }
+.nav-dots {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+}
+.nav-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+  margin: 0.75rem 0;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+.nav-dot:hover, .nav-dot.active {
+  background: var(--functional-action);
+  transform: scale(1.4);
+}
+@media (max-width: 768px) { .nav-dots { display: none; } }
 
-        function closeModal() {
-            const modal = document.getElementById('imageModal');
-            modal.classList.remove('active');
-            const img = document.getElementById('modalImage');
-            img.src = '';
-        }
-    </script>
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+.section-header::before, .section-header::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.18);
+}
+.section-header h2 {
+  font-family: "Inconsolata", monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  letter-spacing: .03em;
+}
+
+.card-dark {
+  background: var(--container-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.pill {
+  display: inline-block;
+  border-radius: 999px;
+  padding: .2rem .7rem;
+  border: 1px solid rgba(171,178,191,0.6);
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+.pill-muted  { color: var(--text-secondary); background: rgba(23,23,23,0.95); }
+.pill-accent { color: var(--accent-structural); background: rgba(23,23,23,0.95); border-color: rgba(217,217,217,0.9); }
+
+.tab-button {
+  padding: .75rem 1.25rem;
+  background: transparent;
+  border: 0;
+  color: var(--text-secondary);
+  font-family: "Inconsolata", monospace;
+  font-size: .85rem;
+  cursor: pointer;
+  transition: color 0.25s, border-color 0.25s;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.tab-button:hover  { color: var(--functional-action); }
+.tab-button.active { color: var(--functional-action); border-bottom-color: var(--functional-action); }
+
+.tab-content { display: none; }
+.tab-content.active {
+  display: block;
+  animation: fadeSlideIn .4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.image-zoom {
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+.image-zoom:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 40px rgba(97,175,239,0.2);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  align-items: center;
+  justify-content: center;
+}
+.modal.active { display: flex; }
+.modal-content { max-width: 95%; max-height: 95%; border-radius: 4px; }
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.fade-up.show { opacity: 1; transform: translateY(0); }
+
+.fade-soft {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.fade-soft.show { opacity: 1; transform: translateY(0); }
+
+.stat-stagger:nth-child(1) { transition-delay: 0.05s; }
+.stat-stagger:nth-child(2) { transition-delay: 0.10s; }
+.stat-stagger:nth-child(3) { transition-delay: 0.15s; }
+.stat-stagger:nth-child(4) { transition-delay: 0.20s; }
+.stat-stagger:nth-child(5) { transition-delay: 0.25s; }
+
+.phase-card {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.2s ease,
+              box-shadow 0.25s ease;
+}
+.phase-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(97,175,239,0.35);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+}
+
+* { border-radius: 0 !important; }
+</style>
+<script>
+tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+  "container-bg": "var(--container-bg)",
+  "text-secondary": "var(--text-secondary)",
+  "accent-cyan": "var(--accent-structural)",
+  "accent-action": "var(--functional-action)",
+  "accent-success": "var(--functional-success)",
+  "accent-red": "var(--accent-red)",
+}}}};
+
+function switchTab(id) {
+  document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+  const btn = [...document.querySelectorAll(".tab-button")].find(b => b.dataset.tab === id);
+  if (btn) btn.classList.add("active");
+  const tab = document.getElementById("tab-" + id);
+  if (tab) tab.classList.add("active");
+}
+
+function openModal(src) {
+  document.getElementById("modalImage").src = src;
+  document.getElementById("imageModal").classList.add("active");
+}
+function closeModal() {
+  document.getElementById("imageModal").classList.remove("active");
+  document.getElementById("modalImage").src = "";
+}
+</script>
 </head>
+<body class="text-white">
 
-<body class="text-text-base">
-    <!-- Navigation Dots -->
-    <div class="nav-dots">
-        <div class="nav-dot active" onclick="scrollToSection('hero')"></div>
-        <div class="nav-dot" onclick="scrollToSection('workflow')"></div>
-        <div class="nav-dot" onclick="scrollToSection('lab')"></div>
-        <div class="nav-dot" onclick="scrollToSection('results')"></div>
+<div id="scroll-progress"></div>
+
+<div class="modal" id="imageModal" onclick="closeModal()">
+  <span style="position:absolute;top:2rem;right:3rem;color:white;font-size:3rem;cursor:pointer">&times;</span>
+  <img class="modal-content" id="modalImage" alt="Enlarged view">
+</div>
+
+<div class="nav-dots">
+  <div class="nav-dot active" onclick="scrollToSection('hero')"></div>
+  <div class="nav-dot" onclick="scrollToSection('overview')"></div>
+  <div class="nav-dot" onclick="scrollToSection('phases')"></div>
+  <div class="nav-dot" onclick="scrollToSection('strategy')"></div>
+  <div class="nav-dot" onclick="scrollToSection('takeaways')"></div>
+</div>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section id="hero" class="pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+  <div class="fade-up">
+    <a href="../index.html#projects" class="inline-flex text-accent-action text-sm hover:text-accent-red transition mb-8 font-mono">
+      ← Back to Portfolio
+    </a>
+  </div>
+
+  <div class="fade-up flex flex-wrap justify-center gap-2 mb-6" style="transition-delay:.05s">
+    <span class="pill pill-accent">ServiceNow ITSM</span>
+    <span class="pill pill-muted">Incident</span>
+    <span class="pill pill-muted">Problem</span>
+    <span class="pill pill-muted">Change</span>
+    <span class="pill pill-muted">Governance</span>
+    <span class="pill pill-muted">Assignment Rules</span>
+  </div>
+
+  <h1 class="fade-up text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-center" style="transition-delay:.1s">
+    ServiceNow ITSM Implementation Lab
+  </h1>
+
+  <p class="fade-up max-w-2xl mx-auto text-base text-text-secondary leading-relaxed mb-10 text-center" style="transition-delay:.15s">
+    Built a full ITSM environment from scratch in a ServiceNow Developer instance — covering incident intake,
+    automated routing, problem tracking, and change governance, all using native platform features.
+  </p>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">3</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">ITSM Modules</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Incident, Problem, Change</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">5</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Build Phases</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Foundation to governance</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">20</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Config Steps</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Documented milestones</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">0</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Custom Scripts</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Native features only</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">P1–P2</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Emergency Gate</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Priority-gated emergency workflow</div>
+    </div>
+  </div>
+
+  <!-- Summary cards -->
+  <div class="fade-up grid md:grid-cols-2 gap-5" style="transition-delay:.3s">
+    <div class="card-dark p-6">
+      <p class="text-[0.7rem] tracking-[0.2em] uppercase text-text-secondary font-mono mb-3">What I built</p>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        A production-style ITSM setup using only ServiceNow's native tools — no scripting.
+        The goal was to configure the platform the way regulated teams actually use it:
+        structured forms, controlled state changes, automated routing, and guardrails that stop bad changes from reaching production.
+      </p>
+    </div>
+    <div class="card-dark p-6">
+      <p class="text-[0.7rem] tracking-[0.2em] uppercase text-text-secondary font-mono mb-3">Key outcomes</p>
+      <ul class="text-sm text-text-secondary space-y-1.5">
+        <li>• Consistent incident intake with mandatory field enforcement</li>
+        <li>• Automated ticket routing using category and CI context</li>
+        <li>• Problem records linked to incidents with root cause tracking</li>
+        <li>• Change risk scoring, blackout windows, and conflict detection</li>
+        <li>• Emergency changes locked to P1/P2 incidents only</li>
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════ OVERVIEW ══════════════ -->
+<section id="overview" class="fade-soft py-16 md:py-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+  <div class="section-header"><h2>How It Works</h2></div>
+
+  <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 1</p>
+      <p class="text-sm font-semibold mb-1">Incident Foundation</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Designed a clean intake form, defined categories, and locked down the incident lifecycle so tickets can't skip resolution steps.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 2</p>
+      <p class="text-sm font-semibold mb-1">Routing & Automation</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Set up assignment rules to auto-route tickets by category and CI, plus notifications and CSAT surveys tied to lifecycle events.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 3</p>
+      <p class="text-sm font-semibold mb-1">Problem Control</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Linked recurring incidents to problem records, enforced root cause analysis fields, and validated lifecycle progression.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 4</p>
+      <p class="text-sm font-semibold mb-1">Change Governance</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Added dynamic risk scoring, maintenance windows, blackout schedules, and conflict detection to prevent unsafe production changes.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 5</p>
+      <p class="text-sm font-semibold mb-1">Emergency Control</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Restricted emergency change creation to P1/P2 incidents only using UI actions and priority gating — preventing misuse as a shortcut.</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════ PHASES ══════════════ -->
+<section id="phases" class="fade-soft py-16 md:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="section-header"><h2>Lab Walkthrough</h2></div>
+
+    <div class="flex flex-wrap gap-0 border-b border-gray-700 mb-8 overflow-x-auto">
+      <button class="tab-button active" data-tab="incident"   onclick="switchTab('incident')">Incident</button>
+      <button class="tab-button"        data-tab="automation" onclick="switchTab('automation')">Routing & Automation</button>
+      <button class="tab-button"        data-tab="problem"    onclick="switchTab('problem')">Problem</button>
+      <button class="tab-button"        data-tab="change"     onclick="switchTab('change')">Change</button>
+      <button class="tab-button"        data-tab="emergency"  onclick="switchTab('emergency')">Emergency</button>
     </div>
 
-    <!-- Image Modal -->
-    <div class="modal" id="imageModal" onclick="closeModal()">
-        <span style="position: absolute; top: 2rem; right: 3rem; color: white; font-size: 3rem; cursor: pointer;">&times;</span>
-        <img class="modal-content" id="modalImage" alt="Enlarged view">
+    <!-- ── Incident ── -->
+    <div id="tab-incident" class="tab-content active">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Phase 1 — Incident Management Foundation</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            The goal was to make every incident record useful from the moment it's created.
+            That means a clean form, consistent categories, and lifecycle rules that prevent tickets from being
+            closed without proper documentation.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">Form design & categories</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• Promoted core triage fields above the fold</li>
+              <li>• Removed unused default fields to reduce clutter</li>
+              <li>• Category drives subcategory options — no free-text workarounds</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_Incident_Form_Streamlined.png')">
+            <img src="/it-and-security-portfolio/assets/images/SN1_Incident_Form_Streamlined.png" class="w-full" alt="Streamlined incident form">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Cleaned-up incident form focused on fast, consistent triage</p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">Lifecycle enforcement</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• UI policies make resolution fields mandatory before closing</li>
+              <li>• Dictionary controls restrict invalid state transitions</li>
+              <li>• SLAs track response and resolution time per priority</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_incident_record_resolved_sla_results.png')">
+            <img src="/it-and-security-portfolio/assets/images/SN1_incident_record_resolved_sla_results.png" class="w-full" alt="SLA results on resolved incident">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">SLA timers tracked end-to-end on a resolved incident record</p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_incident_create_form_office_infra_subcategory_dropdown.png')">
+            <img src="/it-and-security-portfolio/assets/images/SN1_incident_create_form_office_infra_subcategory_dropdown.png" class="w-full" alt="Category subcategory dependency">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Category selection filters subcategory options for clean classification</p>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_Incident_Creation_Mandatory.png')">
+            <img src="/it-and-security-portfolio/assets/images/SN1_Incident_Creation_Mandatory.png" class="w-full" alt="Mandatory fields enforced">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">UI policy enforcement — required fields block premature closure</p>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <main>
-        <!-- Hero Section -->
-        <section id="hero" class="pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <a href="../index.html#projects" class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition mb-6">
-                    ← Back to Portfolio
-                </a>
+    <!-- ── Automation ── -->
+    <div id="tab-automation" class="tab-content">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Phase 2 — Routing & Automation</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            Manually dispatching tickets is slow and inconsistent. Assignment rules route incidents automatically
+            based on category and CI, while notifications and UI policies keep the right people informed
+            without creating noise.
+          </p>
+        </div>
 
-                <div class="flex flex-wrap justify-center gap-2 mb-6 text-center">
-                    <span class="pill pill-accent">ServiceNow ITSM</span>
-                    <span class="pill pill-muted">Incident</span>
-                    <span class="pill pill-muted">Problem</span>
-                    <span class="pill pill-muted">Change</span>
-                    <span class="pill pill-muted">Governance</span>
-                    <span class="pill pill-muted">UI Policies</span>
-                    <span class="pill pill-muted">Assignment</span>
-                </div>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">Assignment rules</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• Category and CI drive routing — no manual dispatch needed</li>
+              <li>• Rule execution order prevents overlap and ambiguity</li>
+              <li>• Data lookup approach keeps logic auditable and maintainable</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_assignment_rules_execution_order.png')">
+            <img src="/it-and-security-portfolio/assets/images/SN1_assignment_rules_execution_order.png" class="w-full" alt="Assignment rules execution order">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Rule priority order ensuring deterministic, conflict-free routing</p>
+          </div>
+        </div>
 
-                <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-center">
-                    ServiceNow ITSM Implementation Lab
-                </h1>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">Notifications & feedback</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• Notifications fire on ownership changes and priority escalations</li>
+              <li>• CSAT surveys trigger automatically after resolution</li>
+              <li>• UI policies hide/show fields based on context — no clutter</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_email_preview_incident_notification.png')">
+            <img src="/it-and-security-portfolio/assets/images/SN1_email_preview_incident_notification.png" class="w-full" alt="Email notification preview">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">User-facing notification showing incident status and ownership</p>
+          </div>
+        </div>
 
-                <p class="max-w-3xl mx-auto text-sm sm:text-base text-text-secondary leading-relaxed mb-8 text-center">
-                    Built an end-to-end ITSM implementation in a ServiceNow Developer instance using native configuration.
-                    The lab focuses on governance, consistent data capture, controlled lifecycle transitions, and realistic
-                    operational routing across Incident, Problem, and Change Management.
-                </p>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_assignment_data_lookup_create_record.png')">
+            <img src="/it-and-security-portfolio/assets/images/SN1_assignment_data_lookup_create_record.png" class="w-full" alt="Assignment data lookup">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Category-to-group mapping via assignment data lookup</p>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_UI_Policy_Action_Config.png')">
+            <img src="/it-and-security-portfolio/assets/images/SN1_UI_Policy_Action_Config.png" class="w-full" alt="UI Policy Action config">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">UI policy actions controlling dynamic field visibility</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-                <!-- Stats -->
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-                    <div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-white mb-1">20</div>
-                        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Core Config Steps</div>
-                        <div class="text-[0.65rem] text-text-secondary mt-1">Major build milestones documented</div>
-                    </div>
-                    <div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-white mb-1">0</div>
-                        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Custom Scripts</div>
-                        <div class="text-[0.65rem] text-text-secondary mt-1">Configured with native features</div>
-                    </div>
-                    <div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-white mb-1">5</div>
-                        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Workflow Phases</div>
-                        <div class="text-[0.65rem] text-text-secondary mt-1">Build from foundation to governance</div>
-                    </div>
-                    <div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-white mb-1">3</div>
-                        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">ITSM Modules</div>
-                        <div class="text-[0.65rem] text-text-secondary mt-1">Incident, Problem, Change</div>
-                    </div>
-                    <div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-white mb-1">P1–P2</div>
-                        <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Emergency Control</div>
-                        <div class="text-[0.65rem] text-text-secondary mt-1">Priority gated emergency workflow</div>
-                    </div>
-                </div>
+    <!-- ── Problem ── -->
+    <div id="tab-problem" class="tab-content">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Phase 3 — Problem Management</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            When the same issue keeps coming back, closing individual incidents isn't enough.
+            Problem Management ties recurring incidents together, assigns ownership for root cause analysis,
+            and enforces investigation steps before a problem can be closed.
+          </p>
+        </div>
 
-                <div class="flex flex-wrap justify-center items-center gap-3 text-[0.7rem] sm:text-xs text-text-secondary mb-10 max-w-3xl mx-auto">
-                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
-                        <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Consistent incident intake and lifecycle
-                    </span>
-                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
-                        <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Assignment rules and routing discipline
-                    </span>
-                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
-                        <span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Change governance with schedules and risk
-                    </span>
-                </div>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">Record structure & ownership</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• Incidents link to a parent problem — patterns become visible</li>
+              <li>• Investigation fields enforce root cause documentation</li>
+              <li>• States prevent closure without completed analysis</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_problem_record_created_from_incident.png')">
+            <img src="/it-and-security-portfolio/assets/images/SN1_problem_record_created_from_incident.png" class="w-full" alt="Problem record from incident">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Problem record created from an incident, preserving context and linkage</p>
+          </div>
+        </div>
 
-                <div class="grid md:grid-cols-2 gap-6">
-                    <article class="p-6 md:p-7 rounded-xl card-dark">
-                        <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">
-                            Project overview
-                        </p>
-                        <p class="text-sm leading-relaxed text-text-base mb-3">
-                            This lab simulates an ITSM implementation you would build during platform onboarding or process
-                            modernization. Instead of isolated features, the focus is on how pieces work together:
-                            structured forms, clean classification, predictable state changes, disciplined routing, and
-                            governance that prevents bad changes from slipping into production.
-                        </p>
-                        <p class="text-sm leading-relaxed text-text-base">
-                            The implementation intentionally avoids custom scripting so the configuration mirrors how many
-                            regulated teams operate: using dictionary settings, UI policies, assignment rules, notifications,
-                            maintenance schedules, blackout windows, and controlled UI actions.
-                        </p>
-                    </article>
-                    <article class="p-6 md:p-7 rounded-xl card-dark">
-                        <p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">
-                            Key deliverables
-                        </p>
-                        <ul class="list-disc list-outside pl-5 space-y-1.5 text-sm text-text-base">
-                            <li>Incident form redesign with standard fields, categories, and lifecycle enforcement</li>
-                            <li>Conditional mandatory behavior via UI policies and dictionary controls</li>
-                            <li>Assignment rules that route tickets using category, CI, and priority context</li>
-                            <li>Problem records aligned to incident trends and governance-focused ownership</li>
-                            <li>Change governance: risk logic, maintenance windows, blackout periods, and emergency gating</li>
-                        </ul>
-                    </article>
-                </div>
-            </div>
-        </section>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_problem_root_cause_analysis_high_priority.png')">
+            <img src="/it-and-security-portfolio/assets/images/SN1_problem_root_cause_analysis_high_priority.png" class="w-full" alt="Root cause analysis enforced">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">High-priority problems require root cause fields before progression</p>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_problem_record_new_state_auto_assignment_test.png')">
+            <img src="/it-and-security-portfolio/assets/images/SN1_problem_record_new_state_auto_assignment_test.png" class="w-full" alt="Problem auto assignment test">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Workflow test confirming state transitions and auto-assignment behavior</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        <!-- Workflow Overview -->
-        <section id="workflow" class="py-12 md:py-14">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center gap-6 mb-8">
-                    <div class="h-px bg-gray-700 flex-1"></div>
-                    <h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-                        Workflow Overview
-                    </h2>
-                    <div class="h-px bg-gray-700 flex-1"></div>
-                </div>
+    <!-- ── Change ── -->
+    <div id="tab-change" class="tab-content">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Phase 4 — Change Governance</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            Most production outages come from uncontrolled changes. This phase adds risk scoring,
+            scheduling constraints, and conflict detection so changes are reviewed, approved, and timed
+            appropriately — not just rubber-stamped.
+          </p>
+        </div>
 
-                <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
-                    <div class="p-4 rounded-xl card-dark">
-                        <p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 1</p>
-                        <p class="text-sm font-semibold mb-1">Incident foundation</p>
-                        <p class="text-xs text-text-secondary leading-relaxed">
-                            Standardize the incident intake process by configuring form layout, categories,
-                            subcategories, and state flow to ensure consistent triage, documentation, and closure.
-                        </p>
-                    </div>
-                    <div class="p-4 rounded-xl card-dark">
-                        <p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 2</p>
-                        <p class="text-sm font-semibold mb-1">Automation and assignment</p>
-                        <p class="text-xs text-text-secondary leading-relaxed">
-                            Implement assignment rules and conditional logic to route incidents automatically
-                            and enforce required fields based on priority and lifecycle stage.
-                        </p>
-                    </div>
-                    <div class="p-4 rounded-xl card-dark">
-                        <p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 3</p>
-                        <p class="text-sm font-semibold mb-1">Problem control</p>
-                        <p class="text-xs text-text-secondary leading-relaxed">
-                            Establish structured problem records to link recurring incidents, assign ownership,
-                            document root cause analysis, and track long-term resolution efforts.
-                        </p>
-                    </div>
-                    <div class="p-4 rounded-xl card-dark">
-                        <p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 4</p>
-                        <p class="text-sm font-semibold mb-1">Change governance</p>
-                        <p class="text-xs text-text-secondary leading-relaxed">
-                            Enforce controlled change execution through standardized forms, mandatory planning
-                            fields, risk assessment logic, and scheduling constraints.
-                        </p>
-                    </div>
-                    <div class="p-4 rounded-xl card-dark">
-                        <p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 5</p>
-                        <p class="text-sm font-semibold mb-1">Emergency control</p>
-                        <p class="text-xs text-text-secondary leading-relaxed">
-                            Restrict emergency change creation using priority-based UI actions to prevent misuse
-                            while preserving rapid response for critical incidents.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">Risk & approvals</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• Risk level updates dynamically as change attributes change</li>
+              <li>• High-risk changes surface clearly for reviewer attention</li>
+              <li>• Planning fields (backout plan, test steps) required before submission</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_risk_conditions_list_with_outage_risk.png')">
+            <img src="/it-and-security-portfolio/assets/images/SN1_risk_conditions_list_with_outage_risk.png" class="w-full" alt="Risk condition rules">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Risk conditions driving score based on outage potential and CI criticality</p>
+          </div>
+        </div>
 
-        <!-- Lab Breakdown -->
-        <section id="lab" class="py-14">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center gap-6 mb-10">
-                    <div class="h-px bg-gray-700 flex-1"></div>
-                    <h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-                        Lab Breakdown
-                    </h2>
-                    <div class="h-px bg-gray-700 flex-1"></div>
-                </div>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">Scheduling & conflict detection</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• Maintenance windows define when changes are allowed</li>
+              <li>• Blackout periods block changes during critical business times</li>
+              <li>• Conflict banners warn submitters before changes go for approval</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_change_request_conflict_detected_banner.png')">
+            <img src="/it-and-security-portfolio/assets/images/SN1_change_request_conflict_detected_banner.png" class="w-full" alt="Conflict detected banner">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Conflict banner appearing when a change violates scheduling constraints</p>
+          </div>
+        </div>
 
-                <!-- Tab Navigation -->
-                <div class="flex flex-wrap gap-0 border-b-2 border-gray-700 mb-10 overflow-x-auto">
-                    <button class="tab-button active" onclick="switchTab('incident')">01. Incident</button>
-                    <button class="tab-button" onclick="switchTab('automation')">02. Automation</button>
-                    <button class="tab-button" onclick="switchTab('problem')">03. Problem</button>
-                    <button class="tab-button" onclick="switchTab('change')">04. Change</button>
-                    <button class="tab-button" onclick="switchTab('emergency')">05. Emergency</button>
-                </div>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_blackout_schedules_list_view.png')">
+            <img src="/it-and-security-portfolio/assets/images/SN1_blackout_schedules_list_view.png" class="w-full" alt="Blackout schedules">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Blackout schedules restricting change execution during sensitive periods</p>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_change_conflict_calendar_month_view.png')">
+            <img src="/it-and-security-portfolio/assets/images/SN1_change_conflict_calendar_month_view.png" class="w-full" alt="Conflict calendar">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Monthly calendar view for spotting overlapping change schedules</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-                <!-- Tab 1: Incident -->
-                <div id="tab-incident" class="tab-content active">
-                    <div class="phase-container space-y-16">
-                        <h3 class="text-xl font-semibold text-white">
-                            Phase 1 — Incident Management Foundation
-                        </h3>
-                        <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-                            This phase establishes a predictable, governable incident lifecycle. The focus is on removing noisy
-                            defaults, enforcing consistent classification, and ensuring incidents move through defined states
-                            without bypassing required documentation or controls.
-                        </p>
+    <!-- ── Emergency ── -->
+    <div id="tab-emergency" class="tab-content">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Phase 5 — Emergency Change Control</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            Emergency changes exist to restore service fast during a critical incident — not as a workaround for normal governance.
+            This phase gates emergency change creation to P1 and P2 incidents only, so the fast lane
+            stays reserved for when it's actually needed.
+          </p>
+        </div>
 
-                        <!-- 1.1 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    1.1 — Incident Form Layout and Field Standardization
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    The incident form was redesigned from a Tier 1 analyst perspective to ensure essential
-                                    triage information is captured immediately. Nonessential fields were removed or
-                                    deprioritized to reduce clutter and inconsistent data entry.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Promoted core triage fields above the fold</li>
-                                    <li>Removed unused or low-value default fields</li>
-                                    <li>Aligned field order to real service desk intake flow</li>
-                                    <li>Preserved native behaviors such as caller lookup</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_Incident_Form_Streamlined.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_Incident_Form_Streamlined.png" class="rounded-md w-full" alt="Streamlined incident form">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Streamlined incident form for clean intake and faster triage.
-                                </p>
-                            </div>
-                        </section>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">How the gating works</h4>
+            <ol class="text-sm text-text-secondary space-y-2 list-decimal list-inside">
+              <li>Emergency change option only appears on P1/P2 incident records</li>
+              <li>UI action creates the change and inherits source record context</li>
+              <li>Script logic blocks the action on any lower-priority incident</li>
+              <li>Context menu integration speeds up response without bypassing controls</li>
+            </ol>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_ui_action_create_emergency_change_script_logic.png')">
+            <img src="/it-and-security-portfolio/assets/images/SN1_ui_action_create_emergency_change_script_logic.png" class="w-full" alt="Priority gating script logic">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Script enforcing P1/P2 priority gate on emergency change creation</p>
+          </div>
+        </div>
 
-                        <!-- 1.2 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    1.2 — Category and Subcategory Taxonomy
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    A structured category and subcategory taxonomy was defined to eliminate ambiguous
-                                    classification and enable reliable reporting, routing, and downstream automation.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Defined categories aligned to common IT support domains</li>
-                                    <li>Mapped subcategories to prevent free-text workarounds</li>
-                                    <li>Validated dynamic subcategory filtering and reporting views</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_incident_create_form_office_infra_subcategory_dropdown.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_incident_create_form_office_infra_subcategory_dropdown.png" class="rounded-md w-full" alt="Category and subcategory dependency">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Category selection controls the available subcategories for consistent classification.
-                                </p>
-                            </div>
-                        </section>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_incident_context_menu_create_emergency_change.png')">
+            <img src="/it-and-security-portfolio/assets/images/SN1_incident_context_menu_create_emergency_change.png" class="w-full" alt="Context menu emergency change">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Context menu access point for faster emergency change creation during major incidents</p>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_change_request_new_record_emergency_type.png')">
+            <img src="/it-and-security-portfolio/assets/images/SN1_change_request_new_record_emergency_type.png" class="w-full" alt="Emergency change record created">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Final emergency change record — correct type set, fully traceable</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-                        <!-- 1.3 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    1.3 — Mandatory Fields and Lifecycle Enforcement
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    Mandatory field enforcement was applied at appropriate lifecycle stages to prevent
-                                    premature resolution or closure without required context, while avoiding unnecessary
-                                    friction during incident creation.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Applied conditional mandatory logic using UI policies</li>
-                                    <li>Enforced resolution documentation before state changes</li>
-                                    <li>Used dictionary controls for global enforcement where needed</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_Incident_Creation_Mandatory.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_Incident_Creation_Mandatory.png" class="rounded-md w-full" alt="Mandatory fields enforced on incident form">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    UI policy enforcement in the form view, requiring key data before progression.
-                                </p>
-                            </div>
-                        </section>
+  </div>
+</section>
 
-                        <!-- 1.4 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    1.4 — State Model Validation and Controlled Transitions
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    Incident state transitions were validated to ensure tickets follow a controlled
-                                    path from creation through resolution and closure, preventing skipped governance
-                                    and metric manipulation.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Validated New → In Progress → Resolved → Closed flow</li>
-                                    <li>Blocked direct closure without resolution documentation</li>
-                                    <li>Tested reopen paths to preserve audit and SLA integrity</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_dictionary_entry_state_choice_list_on_hold.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_dictionary_entry_state_choice_list_on_hold.png" class="rounded-md w-full" alt="State choice restriction via dictionary entry">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Dictionary-driven restriction of state choices to prevent invalid transitions.
-                                </p>
-                            </div>
-                        </section>
+<!-- ══════════════ STRATEGY ══════════════ -->
+<section id="strategy" class="fade-soft py-16 md:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                        <!-- 1.5 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    1.5 — Backend UI Policy Configuration Validation
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    This step validates that mandatory enforcement is intentional rather than accidental.
-                                    The UI policy is configured at the platform level so behavior remains repeatable,
-                                    auditable, and maintainable over time.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Verified condition logic aligns with the intended lifecycle stage</li>
-                                    <li>Confirmed field-level mandatory settings are applied by policy</li>
-                                    <li>Ensured consistent behavior across form and related UI contexts</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_ui_policy_incident_assigned_to_mandatory_form.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_ui_policy_incident_assigned_to_mandatory_form.png" class="rounded-md w-full" alt="UI Policy backend configuration">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Backend UI policy configuration ensuring mandatory behavior integrity.
-                                </p>
-                            </div>
-                        </section>
+    <div class="section-header"><h2>Governance Strategy</h2></div>
 
-                        <!-- 1.6 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    1.6 — SLA definition for response and resolution tracking
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    Response and resolution expectations were formalized using SLAs to ensure the service
-                                    desk is measured against consistent time-based commitments rather than informal or
-                                    ad-hoc escalation.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Defined SLA targets tied to incident priority and lifecycle stage</li>
-                                    <li>Validated start and stop conditions to prevent false timing</li>
-                                    <li>Ensured resolution measurement supports operational and performance reporting</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_service_desk_resolution_sla_definition.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_service_desk_resolution_sla_definition.png" class="rounded-md w-full" alt="SLA definition configuration">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    SLA definition showing response and resolution timer configuration.
-                                </p>
-                            </div>
-                        </section>
+    <p class="fade-up text-sm text-text-secondary max-w-2xl mx-auto text-center mb-10 leading-relaxed">
+      The implementation treats ServiceNow as a control system, not just a ticket tracker.
+      Each tier adds a layer of enforcement — from clean intake up to production safety.
+    </p>
 
-                        <!-- 1.7 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    1.7 — SLA results proven on a resolved incident
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    This step verifies that SLA configuration is actively enforced on real records.
-                                    The incident timeline demonstrates tracked SLA progress across the full lifecycle
-                                    from creation through resolution.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Confirmed SLA timers display directly on the incident record</li>
-                                    <li>Validated correct pause and stop behavior during state transitions</li>
-                                    <li>Verified evidence quality supports audit and operational reporting</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_incident_record_resolved_sla_results.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_incident_record_resolved_sla_results.png" class="rounded-md w-full" alt="SLA results on resolved incident">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    SLA timeline visible on the incident record, proving end-to-end tracking.
-                                </p>
-                            </div>
-                        </section>
-                    </div>
-                </div>
+    <div class="grid md:grid-cols-3 gap-5">
+      <div class="fade-up card-dark border border-red-900/30 p-6 phase-card" style="transition-delay:.05s">
+        <h4 class="text-sm font-bold text-accent-red uppercase tracking-wider mb-3">Tier 1 — Foundation</h4>
+        <p class="text-xs text-text-secondary mb-4 leading-relaxed">Clean intake and lifecycle integrity.</p>
+        <ul class="text-sm text-text-secondary space-y-2">
+          <li>• Structured categories prevent classification drift</li>
+          <li>• Triage-first form design for analyst speed</li>
+          <li>• Locked state transitions enforce proper closure</li>
+        </ul>
+      </div>
+      <div class="fade-up card-dark border border-blue-900/30 p-6 phase-card" style="transition-delay:.1s">
+        <h4 class="text-sm font-bold text-accent-action uppercase tracking-wider mb-3">Tier 2 — Automation</h4>
+        <p class="text-xs text-text-secondary mb-4 leading-relaxed">Logic-driven routing and behavior.</p>
+        <ul class="text-sm text-text-secondary space-y-2">
+          <li>• Assignment rules replace manual dispatch</li>
+          <li>• UI policies enforce fields based on context</li>
+          <li>• Notifications and SLAs tied to lifecycle events</li>
+        </ul>
+      </div>
+      <div class="fade-up card-dark border border-green-900/30 p-6 phase-card" style="transition-delay:.15s">
+        <h4 class="text-sm font-bold text-accent-success uppercase tracking-wider mb-3">Tier 3 — Governance</h4>
+        <p class="text-xs text-text-secondary mb-4 leading-relaxed">Production safety and risk control.</p>
+        <ul class="text-sm text-text-secondary space-y-2">
+          <li>• Dynamic risk scoring drives approval decisions</li>
+          <li>• Blackout windows and scheduling conflicts enforced</li>
+          <li>• Emergency changes gated to critical incidents only</li>
+        </ul>
+      </div>
+    </div>
 
-                <!-- Tab 2: Automation -->
-                <div id="tab-automation" class="tab-content">
-                    <div class="phase-container space-y-16">
-                        <h3 class="text-xl font-semibold text-white">
-                            Phase 2 — Automation and Assignment Discipline
-                        </h3>
-                        <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-                            This phase focuses on ensuring incidents reach the correct team quickly and predictably.
-                            Assignment behavior is driven by structured data rather than manual decisions, making routing
-                            auditable, repeatable, and aligned with service ownership.
-                        </p>
+  </div>
+</section>
 
-                        <!-- 2.1 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    2.1 — Assignment Group Strategy and Ownership Model
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    Before automation was introduced, assignment behavior was designed around clear
-                                    ownership boundaries. Routing logic must be deterministic so reassignment loops
-                                    do not become the default operating mode.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Designed routing logic to minimize overlap and ownership ambiguity</li>
-                                    <li>Aligned rule priority to mirror real-world support triage</li>
-                                    <li>Validated predictable outcomes using a consistent rule execution order</li>
-                                    <li>Ensured routing inputs are captured reliably during incident intake</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_assignment_rules_execution_order.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_assignment_rules_execution_order.png" class="rounded-md w-full" alt="Assignment rules execution order">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Execution order view showing rule priority and deterministic evaluation behavior.
-                                </p>
-                            </div>
-                        </section>
+<!-- ══════════════ TAKEAWAYS ══════════════ -->
+<section id="takeaways" class="fade-soft py-16 md:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                        <!-- 2.2 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    2.2 — Assignment Rules for Category and CI Driven Routing
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    Assignment logic was implemented so routing is driven by structured classification
-                                    rather than manual dispatch. Category and subcategory serve as the primary
-                                    routing inputs for consistent ownership decisions.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Mapped classification to ownership using lookup-based routing logic</li>
-                                    <li>Reduced conditional complexity through an assignment data lookup approach</li>
-                                    <li>Improved auditability and transparency of routing decisions</li>
-                                    <li>Validated consistent routing across multiple test incidents</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_assignment_data_lookup_create_record.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_assignment_data_lookup_create_record.png" class="rounded-md w-full" alt="Assignment data lookup record">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Category to assignment group mapping using assignment data lookup.
-                                </p>
-                            </div>
-                        </section>
+    <div class="section-header"><h2>What I Learned</h2></div>
 
-                        <!-- 2.3 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    2.3 — Notification Triggers and Delivery Control
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    Notification logic was aligned to meaningful lifecycle events so teams are alerted
-                                    only when action is required. Triggers are tied to ownership changes, priority
-                                    escalation, resolution, and reopen behavior while minimizing unnecessary noise.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Validated notification triggers against real workflow events</li>
-                                    <li>Confirmed recipients align with assignment group ownership</li>
-                                    <li>Removed overlapping or duplicate notification conditions</li>
-                                    <li>Tested delivery behavior across classic and modern UI experiences</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_notification_incident_opened_configuration_view.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_notification_incident_opened_configuration_view.png" class="rounded-md w-full" alt="Notification configuration view">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Backend notification setup aligned to lifecycle events and ownership.
-                                </p>
-                            </div>
-                        </section>
+    <div class="grid md:grid-cols-2 gap-8 mb-10">
+      <div class="fade-up card-dark p-6">
+        <h4 class="text-sm font-semibold mb-3">Key takeaways</h4>
+        <ul class="text-sm text-text-secondary space-y-2">
+          <li>• Out-of-the-box ServiceNow needs refinement before it enforces real governance</li>
+          <li>• Good intake design is what makes downstream automation actually work</li>
+          <li>• Emergency workflows must be gated — otherwise they become a loophole</li>
+          <li>• Risk logic and scheduling controls are what separate safe change programs from chaotic ones</li>
+          <li>• Problem Management only adds value when investigation is genuinely enforced</li>
+        </ul>
+      </div>
+      <div class="fade-up card-dark p-6" style="transition-delay:.1s">
+        <h4 class="text-sm font-semibold mb-3">Skills demonstrated</h4>
+        <div class="flex flex-wrap gap-2">
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">ServiceNow Admin</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Incident Management</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Problem Management</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Change Management</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">ITIL Governance</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">UI Policies</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Assignment Rules</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Risk-Based Change Control</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Audit Readiness</span>
+        </div>
+      </div>
+    </div>
 
-                        <!-- 2.4 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    2.4 — Email Output Validation for End User Experience
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    After notification logic was configured, the HTML email output was validated to
-                                    confirm readability, context, and usefulness. This ensures the user-facing
-                                    experience matches the intended design and operational intent.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Verified subject and body include actionable incident context</li>
-                                    <li>Confirmed formatting is readable, consistent, and scannable</li>
-                                    <li>Reduced noise by focusing content on ownership, status, and next steps</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_email_preview_incident_notification.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_email_preview_incident_notification.png" class="rounded-md w-full" alt="Email preview for incident notification">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Email preview showing what the user sees when the notification triggers.
-                                </p>
-                            </div>
-                        </section>
+    <div class="fade-up card-dark p-6 mb-10" style="transition-delay:.15s">
+      <p class="text-sm text-text-secondary leading-relaxed">
+        This lab covers the full ITSM maturity arc: build clean incident intake, automate routing so tickets
+        go to the right team without manual dispatch, surface patterns through problem records, and
+        put guardrails around change management so production stays stable.
+        The same approach applies whether you're onboarding ServiceNow for the first time or hardening an existing deployment.
+      </p>
+    </div>
 
-                        <!-- 2.5 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    2.5 — Survey Automation for Service Quality Measurement
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    CSAT surveys were triggered automatically after incident resolution to measure
-                                    service quality. This establishes a structured feedback loop that supports
-                                    continuous improvement and operational accountability.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Configured trigger conditions to fire on the correct lifecycle event</li>
-                                    <li>Reduced false sends by targeting only valid resolved outcomes</li>
-                                    <li>Established a measurable service desk feedback signal</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_trigger_condition_new_record_setup.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_trigger_condition_new_record_setup.png" class="rounded-md w-full" alt="Survey trigger condition configuration">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Trigger condition configuration for automatically sending CSAT surveys.
-                                </p>
-                            </div>
-                        </section>
+    <div class="fade-up">
+      <a href="../index.html#projects" class="inline-flex text-accent-action text-sm hover:text-accent-red transition font-mono">
+        ← Back to Portfolio
+      </a>
+    </div>
 
-                        <!-- 2.6 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    2.6 — UI Policy Actions for Dynamic Field Visibility and Control
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    UI Policy Actions were used to dynamically show, hide, or require fields based on
-                                    context. This keeps the form clean while still enforcing governance only when it
-                                    matters.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Reduced clutter by hiding fields until the appropriate context appears</li>
-                                    <li>Enforced required data only when the lifecycle stage demands it</li>
-                                    <li>Improved analyst efficiency without sacrificing data integrity</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_UI_Policy_Action_Config.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_UI_Policy_Action_Config.png" class="rounded-md w-full" alt="UI Policy Action configuration">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    UI policy action configuration for visibility and mandatory logic control.
-                                </p>
-                            </div>
-                        </section>
-                    </div>
-                </div>
+  </div>
+</section>
 
-                <!-- Tab 3: Problem -->
-                <div id="tab-problem" class="tab-content">
-                    <div class="phase-container space-y-16">
-                        <h3 class="text-xl font-semibold text-white">
-                            Phase 3 — Problem Management Control and Ownership
-                        </h3>
-                        <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-                            This phase establishes Problem Management as the mechanism for eliminating recurring incidents.
-                            The focus is on ownership, investigation discipline, and traceability between incidents, root cause,
-                            and permanent corrective actions.
-                        </p>
+<script>
+window.addEventListener("scroll", () => {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById("scroll-progress").style.width = (window.scrollY / total * 100) + "%";
+}, { passive: true });
 
-                        <!-- 3.1 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    3.1 — Problem Record Structure and Incident Linkage
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    Problem records were reviewed and validated to ensure they support investigation
-                                    rather than short-term resolution. Incidents can be linked to a single problem to
-                                    expose patterns, centralize ownership, and prevent repeated ticket firefighting.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Validated incident-to-problem linking and related lists</li>
-                                    <li>Ensured ownership fields support investigation accountability</li>
-                                    <li>Confirmed lifecycle states reflect investigation and remediation progress</li>
-                                    <li>Tested that linked incidents retain full context and visibility</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_problem_record_created_from_incident.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_problem_record_created_from_incident.png" class="rounded-md w-full" alt="Problem record created from incident">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Problem record created from an incident to preserve context and linkage.
-                                </p>
-                            </div>
-                        </section>
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add("show");
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
 
-                        <!-- 3.2 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    3.2 — Investigation Governance and Controlled Lifecycle Progression
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    Governance controls were applied to ensure problems cannot progress without
-                                    meaningful analysis. Investigation fields become mandatory at key lifecycle
-                                    stages, preventing premature closure and ensuring root cause information is
-                                    captured consistently.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Enforced investigation fields before lifecycle state transitions</li>
-                                    <li>Used UI policies for conditional enforcement without scripting</li>
-                                    <li>Aligned problem states to realistic root cause analysis workflows</li>
-                                    <li>Required resolution detail before problem closure</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_problem_root_cause_analysis_high_priority.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_problem_root_cause_analysis_high_priority.png" class="rounded-md w-full" alt="Root cause analysis fields enforced">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    High priority problem records enforce root cause analysis fields before progression.
-                                </p>
-                            </div>
-                        </section>
+document.querySelectorAll(".fade-up, .fade-soft").forEach(el => revealObs.observe(el));
 
-                        <!-- 3.3 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    3.3 — Module Properties Controlling Investigation Behavior
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    Problem Management module properties were reviewed and configured to support
-                                    governance expectations such as investigation discipline, analysis behavior,
-                                    and consistent lifecycle enforcement across the module.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Validated module-level configuration for consistent investigation behavior</li>
-                                    <li>Reduced reliance on individual user judgment through enforced properties</li>
-                                    <li>Improved consistency and predictability across problem records</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_problem_management_properties_configuration.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_problem_management_properties_configuration.png" class="rounded-md w-full" alt="Problem management properties configuration">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Problem Management properties configuration supporting governance and analysis rules.
-                                </p>
-                            </div>
-                        </section>
+const dotSections = ["hero","overview","phases","strategy","takeaways"];
+const dots = document.querySelectorAll(".nav-dot");
 
-                        <!-- 3.4 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    3.4 — Workflow Validation with State Transition Testing
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    Workflow testing was used to verify that state transitions and ownership behavior
-                                    occur exactly as designed. This prevents silent drift between documented process
-                                    and actual platform behavior.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Confirmed predictable state movement under controlled test conditions</li>
-                                    <li>Validated ownership and assignment behavior during lifecycle changes</li>
-                                    <li>Proved automation outcomes using visible, repeatable evidence</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_problem_record_new_state_auto_assignment_test.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_problem_record_new_state_auto_assignment_test.png" class="rounded-md w-full" alt="Problem workflow state auto assignment test">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Workflow test proving state transition logic and automatic assignment behavior.
-                                </p>
-                            </div>
-                        </section>
+const dotObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = dotSections.indexOf(e.target.id);
+      if (idx !== -1) {
+        dots.forEach(d => d.classList.remove("active"));
+        dots[idx]?.classList.add("active");
+      }
+    }
+  });
+}, { threshold: 0.4 });
 
-                        <!-- 3.5 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    3.5 — Default Problem Form Shows Investigative Layout Differences
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    The Problem form is intentionally designed to differ from the incident intake
-                                    experience. This supports investigation workflows and long-term corrective
-                                    actions rather than rapid triage.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Validated investigative fields are surfaced appropriately by default</li>
-                                    <li>Reinforced that different record types require distinct layouts</li>
-                                    <li>Improved analyst clarity and intent across modules</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_Problem_Form_Default.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_Problem_Form_Default.png" class="rounded-md w-full" alt="Default problem form view">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Default Problem form view illustrating investigative structure and field layout.
-                                </p>
-                            </div>
-                        </section>
-                    </div>
-                </div>
+dotSections.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) dotObs.observe(el);
+});
 
-                <!-- Tab 4: Change -->
-                <div id="tab-change" class="tab-content">
-                    <div class="phase-container space-y-16">
-                        <h3 class="text-xl font-semibold text-white">
-                            Phase 4 — Change Management Governance, Risk, and Scheduling Control
-                        </h3>
-                        <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-                            This phase establishes disciplined change governance by enforcing planning completeness,
-                            risk-driven approvals, and controlled scheduling. The objective is to prevent unplanned
-                            or unsafe production changes through platform-enforced guardrails.
-                        </p>
+function scrollToSection(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
 
-                        <!-- 4.1 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    4.1 — Change Form Structure and Planning Enforcement
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    Change request forms were redesigned to reflect real governance expectations.
-                                    Planning fields such as implementation steps, testing evidence, impact assessment,
-                                    and backout plans are structured so the change record itself demonstrates readiness
-                                    for execution and review.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Organized planning fields to support efficient CAB-style review</li>
-                                    <li>Required backout and test plans before change submission</li>
-                                    <li>Aligned form layout with real-world change execution workflows</li>
-                                    <li>Validated form behavior across platform UI states</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_change_request_planning_tab_fields.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_change_request_planning_tab_fields.png" class="rounded-md w-full" alt="Change planning fields">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Planning tab fields showing rollback and test plan governance requirements.
-                                </p>
-                            </div>
-                        </section>
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener("click", e => {
+    const target = document.querySelector(a.getAttribute("href"));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: "smooth" }); }
+  });
+});
 
-                        <!-- 4.2 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    4.2 — Risk Calculation and Approval Driven Governance
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    Risk logic was configured to translate change attributes into actionable
-                                    governance signals. Risk levels update dynamically based on impact, urgency,
-                                    CI context, and planning quality, guiding approval requirements without
-                                    manual interpretation.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Mapped change attributes to defined risk levels</li>
-                                    <li>Validated real-time risk recalculation as planning fields change</li>
-                                    <li>Surfaced high-risk changes clearly for reviewer and approver attention</li>
-                                    <li>Tested approval experience against multiple risk outcomes</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_risk_conditions_list_with_outage_risk.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_risk_conditions_list_with_outage_risk.png" class="rounded-md w-full" alt="Risk condition rules list">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Risk condition rules driving risk level based on outage potential and CI criticality.
-                                </p>
-                            </div>
-                        </section>
-
-                        <!-- 4.3 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    4.3 — Maintenance Windows and Blackout Scheduling Controls
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    Scheduling controls were implemented to enforce when changes may safely occur.
-                                    Maintenance windows define approved execution periods, while blackout schedules
-                                    prevent changes during high-risk or business-critical timeframes.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Defined maintenance windows for approved change execution</li>
-                                    <li>Configured blackout periods for sensitive operational timeframes</li>
-                                    <li>Validated enforcement during change planning and submission</li>
-                                    <li>Confirmed governance impact on scheduling behavior</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_blackout_schedules_list_view.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_blackout_schedules_list_view.png" class="rounded-md w-full" alt="Blackout schedules list view">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Blackout schedules defining restricted windows for change execution.
-                                </p>
-                            </div>
-                        </section>
-
-                        <!-- 4.4 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    4.4 — Risk Result Proven on the Change Form
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    This step confirms that risk calculation rules produce visible, reliable outcomes.
-                                    The risk field updates directly on the change record, supporting consistent
-                                    approval decisions and review behavior.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Verified risk impact updates dynamically as change attributes evolve</li>
-                                    <li>Confirmed governance logic is clearly observable on the record</li>
-                                    <li>Improved reviewer speed and consistency during approval</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_change_request_risk_impact_updated.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_change_request_risk_impact_updated.png" class="rounded-md w-full" alt="Change record showing updated risk">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Change record showing the risk field updating automatically as conditions change.
-                                </p>
-                            </div>
-                        </section>
-
-                        <!-- 4.5 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    4.5 — Conflict Calendar Supports Proactive Scheduling Decisions
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    A conflict calendar view was used to surface scheduling conflicts before changes
-                                    are executed. This reduces collisions between high-impact activities and supports
-                                    coordinated release planning.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Improved visibility into overlapping change schedules</li>
-                                    <li>Supported proactive mitigation instead of reactive outage response</li>
-                                    <li>Strengthened governance through visual planning and coordination</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_change_conflict_calendar_month_view.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_change_conflict_calendar_month_view.png" class="rounded-md w-full" alt="Change conflict calendar month view">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Monthly conflict calendar view supporting proactive change scheduling decisions.
-                                </p>
-                            </div>
-                        </section>
-
-                        <!-- 4.6 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    4.6 — Conflict Banner Provides Immediate User Feedback
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    When scheduling constraints are violated or conflicts are detected, users receive
-                                    immediate feedback directly on the change record. This reduces failed submissions
-                                    and reinforces governance through clear, actionable UI signals.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Validated conflict banners appear upon scheduling violations</li>
-                                    <li>Encouraged correction before approvals and execution</li>
-                                    <li>Improved user behavior through immediate, visible feedback</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_change_request_conflict_detected_banner.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_change_request_conflict_detected_banner.png" class="rounded-md w-full" alt="Conflict detected banner on change form">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Conflict detected banner displayed on the change record when scheduling constraints fail.
-                                </p>
-                            </div>
-                        </section>
-
-                        <!-- 4.7 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    4.7 — Engineering Specific Form View Supports Different Change Audiences
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    Different change types and audiences require different layouts. A dedicated
-                                    engineering view supports technical execution workflows while still preserving
-                                    the governance fields required for approval, audit, and risk assessment.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Validated view selection aligns with the intended engineering workflow</li>
-                                    <li>Improved usability while maintaining required governance controls</li>
-                                    <li>Reduced confusion between standard and engineering change records</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_change_request_form_itSM_engineering_initial_state.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_change_request_form_itSM_engineering_initial_state.png" class="rounded-md w-full" alt="Engineering change form view">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Engineering change view showing a tailored layout for that change type.
-                                </p>
-                            </div>
-                        </section>
-                    </div>
-                </div>
-
-                <!-- Tab 5: Emergency -->
-                <div id="tab-emergency" class="tab-content">
-                    <div class="phase-container space-y-16">
-                        <h3 class="text-xl font-semibold text-white">
-                            Phase 5 — Emergency Change Control and Priority Gating
-                        </h3>
-                        <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-                            This phase enforces strict control over emergency change usage. Emergency workflows are restricted
-                            so they are only available when operational impact truly justifies bypassing standard change
-                            governance, preventing misuse as a convenience shortcut.
-                        </p>
-
-                        <!-- 5.1 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    5.1 — Controlled UI Action for Emergency Change Creation
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    Emergency change creation was implemented as a controlled UI action rather than
-                                    an always-available option. The action only appears when record context meets
-                                    predefined criteria, ensuring emergency changes are created intentionally and
-                                    remain auditable.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Implemented a guided UI action for emergency change creation</li>
-                                    <li>Restricted visibility to eligible incident and problem record contexts</li>
-                                    <li>Ensured emergency changes inherit source record context automatically</li>
-                                    <li>Validated UI behavior across multiple qualifying scenarios</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_ui_action_create_emergency_change_configuration.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_ui_action_create_emergency_change_configuration.png" class="rounded-md w-full" alt="Create emergency change UI action configuration">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    UI action configuration for creating an emergency change from a qualifying record.
-                                </p>
-                            </div>
-                        </section>
-
-                        <!-- 5.2 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    5.2 — Priority and Record Type Gating (P1 / P2 Only)
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    Emergency change availability was further restricted by both priority and record
-                                    type. Only high-impact incidents are eligible to trigger emergency workflows,
-                                    ensuring emergency processes remain reserved for critical service restoration
-                                    scenarios.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Limited emergency change creation to P1 and P2 incidents</li>
-                                    <li>Restricted UI action visibility by record type to prevent misuse</li>
-                                    <li>Validated gating logic across classic and modern UI experiences</li>
-                                    <li>Tested multiple priority scenarios to confirm enforcement</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_ui_action_create_emergency_change_script_logic.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_ui_action_create_emergency_change_script_logic.png" class="rounded-md w-full" alt="UI action script logic for priority gating">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Script logic enforcing emergency change visibility only for high-priority incident contexts.
-                                </p>
-                            </div>
-                        </section>
-
-                        <!-- 5.3 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    5.3 — Context Menu Integration Improves Analyst Workflow Speed
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    Emergency change creation was also integrated into the incident context menu.
-                                    This supports rapid execution during true severity events while maintaining
-                                    the same gating, validation, and audit controls enforced elsewhere.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Added a secondary access point without weakening governance controls</li>
-                                    <li>Improved analyst efficiency during critical response workflows</li>
-                                    <li>Kept behavior fully consistent with priority and record gating rules</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_incident_context_menu_create_emergency_change.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_incident_context_menu_create_emergency_change.png" class="rounded-md w-full" alt="Incident context menu emergency change action">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Context menu option for emergency change creation directly within the incident UI.
-                                </p>
-                            </div>
-                        </section>
-
-                        <!-- 5.4 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    5.4 — Dictionary Override Enables Table Specific Behavior Changes
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    Dictionary Overrides were used to adjust field behavior only within the
-                                    change request context. This platform-level approach allows precise
-                                    governance control without introducing unintended side effects across
-                                    unrelated tables.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Modified field behavior without impacting unrelated tables</li>
-                                    <li>Improved governance consistency for emergency change records</li>
-                                    <li>Demonstrated advanced platform configuration discipline</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_dictionary_override_assignment_group_change_request.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_dictionary_override_assignment_group_change_request.png" class="rounded-md w-full" alt="Dictionary override on change request table">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Dictionary override showing table-specific adjustment for change request field behavior.
-                                </p>
-                            </div>
-                        </section>
-
-                        <!-- 5.5 -->
-                        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="space-y-4">
-                                <h4 class="text-lg font-semibold text-white">
-                                    5.5 — Emergency Change Record Created Successfully with Correct Type
-                                </h4>
-                                <p class="text-sm text-text-secondary leading-relaxed">
-                                    This final step validates that the complete emergency change flow functions as
-                                    designed. The Emergency Change record is created with the correct type and
-                                    reflects the intended governance, controls, and traceability.
-                                </p>
-                                <ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-                                    <li>Confirmed the record is created with the Emergency change type set correctly</li>
-                                    <li>Validated clear evidence of end-to-end implementation success</li>
-                                    <li>Ensured the record supports audit requirements and full traceability</li>
-                                </ul>
-                            </div>
-                            <div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/SN1_change_request_new_record_emergency_type.png')">
-                                <img src="/it-and-security-portfolio/assets/images/SN1_change_request_new_record_emergency_type.png" class="rounded-md w-full" alt="Emergency change record created">
-                                <p class="mt-3 text-xs italic text-text-secondary text-center">
-                                    Final Emergency Change record confirming correct type and successful workflow execution.
-                                </p>
-                            </div>
-                        </section>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Implementation and Governance Strategy -->
-        <section class="py-12 md:py-16">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center gap-6 mb-8">
-                    <div class="h-px bg-gray-700 flex-1"></div>
-                    <h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-                        Implementation and Governance Strategy
-                    </h2>
-                    <div class="h-px bg-gray-700 flex-1"></div>
-                </div>
-
-                <p class="text-sm text-text-secondary max-w-3xl mb-10 mx-auto text-center">
-                    This implementation treats ServiceNow as a control system rather than a ticketing tool.
-                    Each tier builds enforcement progressively, from clean intake to production safety.
-                </p>
-
-                <div class="grid md:grid-cols-3 gap-6">
-                    <!-- Tier 1 -->
-                    <div class="card-dark rounded-xl p-6">
-                        <h4 class="text-sm font-bold text-accent-red uppercase tracking-wider mb-2">
-                            Tier 1: Foundation & Integrity
-                        </h4>
-                        <p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
-                            Clean intake and lifecycle enforcement
-                        </p>
-                        <ul class="space-y-4 text-sm text-text-secondary">
-                            <li class="flex gap-3">
-                                <span class="text-accent-red font-bold">•</span>
-                                <span class="leading-relaxed">
-                                    <strong class="text-white block text-xs mb-0.5">Structured Categories</strong>
-                                    Defined taxonomies prevent classification ambiguity
-                                </span>
-                            </li>
-                            <li class="flex gap-3">
-                                <span class="text-accent-red font-bold">•</span>
-                                <span class="leading-relaxed">
-                                    <strong class="text-white block text-xs mb-0.5">Triage-Focused Forms</strong>
-                                    Above-the-fold design for analyst efficiency
-                                </span>
-                            </li>
-                            <li class="flex gap-3">
-                                <span class="text-accent-red font-bold">•</span>
-                                <span class="leading-relaxed">
-                                    <strong class="text-white block text-xs mb-0.5">State Transitions</strong>
-                                    Locked lifecycle paths and closure rules
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Tier 2 -->
-                    <div class="card-dark rounded-xl p-6">
-                        <h4 class="text-sm font-bold text-accent-action uppercase tracking-wider mb-2">
-                            Tier 2: Process Automation
-                        </h4>
-                        <p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
-                            Logic-driven routing and behavior
-                        </p>
-                        <ul class="space-y-4 text-sm text-text-secondary">
-                            <li class="flex gap-3">
-                                <span class="text-accent-action font-bold">•</span>
-                                <span class="leading-relaxed">
-                                    <strong class="text-white block text-xs mb-0.5">Assignment Rules</strong>
-                                    Deterministic routing via category and CI context
-                                </span>
-                            </li>
-                            <li class="flex gap-3">
-                                <span class="text-accent-action font-bold">•</span>
-                                <span class="leading-relaxed">
-                                    <strong class="text-white block text-xs mb-0.5">UI Policies</strong>
-                                    Conditional field behavior without custom code
-                                </span>
-                            </li>
-                            <li class="flex gap-3">
-                                <span class="text-accent-action font-bold">•</span>
-                                <span class="leading-relaxed">
-                                    <strong class="text-white block text-xs mb-0.5">Notifications & SLAs</strong>
-                                    Ownership-driven alerts and time tracking
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Tier 3 -->
-                    <div class="card-dark rounded-xl p-6">
-                        <h4 class="text-sm font-bold text-accent-success uppercase tracking-wider mb-2">
-                            Tier 3: Governance & Control
-                        </h4>
-                        <p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
-                            Production safety and risk enforcement
-                        </p>
-                        <ul class="space-y-4 text-sm text-text-secondary">
-                            <li class="flex gap-3">
-                                <span class="text-accent-success font-bold">•</span>
-                                <span class="leading-relaxed">
-                                    <strong class="text-white block text-xs mb-0.5">Risk Approvals</strong>
-                                    Dynamic risk scoring drives approval gating
-                                </span>
-                            </li>
-                            <li class="flex gap-3">
-                                <span class="text-accent-success font-bold">•</span>
-                                <span class="leading-relaxed">
-                                    <strong class="text-white block text-xs mb-0.5">Emergency Restrictions</strong>
-                                    P1/P2 priority gating prevents workflow abuse
-                                </span>
-                            </li>
-                            <li class="flex gap-3">
-                                <span class="text-accent-success font-bold">•</span>
-                                <span class="leading-relaxed">
-                                    <strong class="text-white block text-xs mb-0.5">Scheduling Controls</strong>
-                                    Maintenance windows and blackout enforcement
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Results Section -->
-        <section id="results" class="pt-12 md:pt-16 pb-12">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-                <!-- Key Insights -->
-                <div>
-                    <div class="flex items-center gap-6 mb-8">
-                        <div class="h-px bg-gray-700 flex-1"></div>
-                        <h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-                            Key insights
-                        </h2>
-                        <div class="h-px bg-gray-700 flex-1"></div>
-                    </div>
-                    <div class="p-6 md:p-7 rounded-xl card-dark">
-                        <ul class="list-disc list-outside pl-5 space-y-2 text-white text-sm sm:text-[0.95rem] leading-relaxed">
-                            <li>Out-of-the-box ServiceNow functionality requires refinement to support real enterprise governance.</li>
-                            <li>Strong intake design and classification directly determine the effectiveness of automation downstream.</li>
-                            <li>Emergency workflows must be tightly gated or they quickly become a process loophole.</li>
-                            <li>Risk logic and scheduling controls are critical for protecting production stability.</li>
-                            <li>Problem Management only adds value when ownership and investigation discipline are enforced.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Skills Demonstrated -->
-                <div>
-                    <div class="flex items-center gap-6 mb-8">
-                        <div class="h-px bg-gray-700 flex-1"></div>
-                        <h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-                            Skills demonstrated
-                        </h2>
-                        <div class="h-px bg-gray-700 flex-1"></div>
-                    </div>
-                    <div class="p-6 md:p-7 rounded-xl card-dark">
-                        <div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
-                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">ServiceNow Administration</span>
-                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Incident Management</span>
-                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Problem Management</span>
-                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Change Management</span>
-                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">ITIL Governance</span>
-                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">UI Policies & Dictionary Controls</span>
-                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Assignment Rules</span>
-                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Risk-Based Change Control</span>
-                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Operational Process Design</span>
-                            <span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">Audit Readiness</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Summary -->
-        <section class="pb-12 md:pb-16">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center gap-6 mb-8">
-                    <div class="h-px bg-gray-700 flex-1"></div>
-                    <h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-                        Summary
-                    </h2>
-                    <div class="h-px bg-gray-700 flex-1"></div>
-                </div>
-                
-                <div class="card-dark rounded-xl p-6">
-                    <p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
-                        This ServiceNow ITSM Implementation Lab demonstrates an end-to-end configuration of enterprise-grade
-                        Incident, Problem, and Change Management workflows. The lab emphasizes governance, accountability,
-                        and operational safety over superficial configuration. By enforcing structured intake, deterministic
-                        routing, risk-driven change control, and tightly gated emergency workflows, the implementation mirrors
-                        real-world ITSM maturity and shows how ServiceNow functions as a control system rather than just a
-                        ticketing tool.
-                    </p>
-                </div>
-
-                <div class="mt-10">
-                    <a href="../index.html#projects" class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition font-mono">
-                        ← Back to Portfolio
-                    </a>
-                </div>
-            </div>
-        </section>
-    </main>
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+</script>
 </body>
 </html>
