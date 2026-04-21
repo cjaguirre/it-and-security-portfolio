@@ -3,746 +3,776 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Enterprise IAM Lab — Microsoft Entra ID</title>
+<title>Enterprise Entra IAM Lab | Christian Aguirre</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script>tailwind.config={darkMode:"class"}</script>
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Inconsolata:wght@400;500;600&display=swap");
-:root{
-  --bg:#1e1e1e;
-  --surface:#171717;
-  --border:rgba(255,255,255,0.08);
-  --muted:#abb2bf;
---cyan:#ffffff;
-  --green:#98c379;
-  --red:#e06c75;
-  --yellow:#e5c07b;
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
+
+.dark {
+  --bg-default: #1e1e1e;
+  --bg-secondary: #30333a;
+  --text-base: #fff;
+  --text-secondary: #abb2bf;
+  --accent-structural: #d9d9d9;
+  --functional-action: #61afef;
+  --functional-success: #98c379;
+  --accent-red: #e06c75;
+  --container-bg: #171717;
+  background-color: var(--bg-default);
+  color: var(--text-base);
 }
-*{box-sizing:border-box;border-radius:0!important}
-body{font-family:"Inter",sans-serif;background-color:var(--bg);background-image:radial-gradient(circle,rgba(255,255,255,0.065) 1px,transparent 1px);background-size:20px 20px;background-attachment:fixed;color:#fff;min-height:100vh}
-.card{background:var(--surface);border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,0.4)}
-.tab-btn{padding:.75rem 1.25rem;background:transparent;border:0;border-bottom:3px solid transparent;color:var(--muted);font-family:"Inconsolata",monospace;font-size:.85rem;cursor:pointer;transition:all .25s;white-space:nowrap}
-.tab-btn:hover{color:var(--cyan)}
-.tab-btn.on{color:var(--cyan);border-bottom-color:var(--cyan)}
-.tab-pane{display:none;animation:fadeUp .35s ease}
-.tab-pane.on{display:block}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.img-click{cursor:pointer;transition:transform .25s,box-shadow .25s}
-.img-click:hover{transform:scale(1.015);box-shadow:0 8px 32px rgba(97,175,239,0.25)}
-.modal{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.92);align-items:center;justify-content:center}
-.modal.on{display:flex}
-.modal img{max-width:95vw;max-height:92vh;object-fit:contain}
-.close-modal{position:absolute;top:1.5rem;right:2rem;color:#fff;font-size:2.5rem;cursor:pointer;line-height:1}
-.pill{display:inline-block;padding:.2rem .65rem;border:1px solid rgba(171,178,191,0.5);font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
-.pill-w{border-color:rgba(217,217,217,0.8);color:#fff}
-.dot-nav{position:fixed;right:1.75rem;top:50%;transform:translateY(-50%);z-index:50;display:flex;flex-direction:column;gap:.65rem}
-.dot{width:9px;height:9px;border-radius:50%!important;background:var(--muted);cursor:pointer;transition:all .25s}
-.dot:hover,.dot.on{background:var(--cyan);transform:scale(1.4)}
-.expand-panel{max-height:0;overflow:hidden;transition:max-height .4s ease}
-.expand-panel.on{max-height:9999px}
-.step-num{font-family:"Inconsolata",monospace;font-size:.65rem;color:var(--cyan);text-transform:uppercase;letter-spacing:.15em;margin-bottom:.4rem}
-@media(max-width:768px){.dot-nav{display:none}}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--bg-default);
+  background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, rgba(0,0,0,0) 1px);
+  background-size: 20px 20px;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--functional-action);
+  z-index: 9999;
+  pointer-events: none;
+  transition: width 0.08s linear;
+}
+
+.nav-dots {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+}
+.nav-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+  margin: 0.75rem 0;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+.nav-dot:hover, .nav-dot.active {
+  background: var(--functional-action);
+  transform: scale(1.4);
+}
+@media (max-width: 768px) { .nav-dots { display: none; } }
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+.section-header::before, .section-header::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.18);
+}
+.section-header h2 {
+  font-family: "Inconsolata", monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  letter-spacing: .03em;
+}
+
+.card-dark {
+  background: var(--container-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.pill {
+  display: inline-block;
+  border-radius: 999px;
+  padding: .2rem .7rem;
+  border: 1px solid rgba(171,178,191,0.6);
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+.pill-muted  { color: var(--text-secondary); background: rgba(23,23,23,0.95); }
+.pill-accent { color: var(--accent-structural); background: rgba(23,23,23,0.95); border-color: rgba(217,217,217,0.9); }
+
+.tab-button {
+  padding: .75rem 1.25rem;
+  background: transparent;
+  border: 0;
+  color: var(--text-secondary);
+  font-family: "Inconsolata", monospace;
+  font-size: .85rem;
+  cursor: pointer;
+  transition: color 0.25s, border-color 0.25s;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.tab-button:hover  { color: var(--functional-action); }
+.tab-button.active { color: var(--functional-action); border-bottom-color: var(--functional-action); }
+
+.tab-content { display: none; }
+.tab-content.active {
+  display: block;
+  animation: fadeSlideIn .4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.image-zoom {
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+.image-zoom:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 40px rgba(97,175,239,0.2);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  align-items: center;
+  justify-content: center;
+}
+.modal.active { display: flex; }
+.modal-content { max-width: 95%; max-height: 95%; border-radius: 4px; }
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.fade-up.show { opacity: 1; transform: translateY(0); }
+
+.fade-soft {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.fade-soft.show { opacity: 1; transform: translateY(0); }
+
+.stat-stagger:nth-child(1) { transition-delay: 0.05s; }
+.stat-stagger:nth-child(2) { transition-delay: 0.10s; }
+.stat-stagger:nth-child(3) { transition-delay: 0.15s; }
+.stat-stagger:nth-child(4) { transition-delay: 0.20s; }
+.stat-stagger:nth-child(5) { transition-delay: 0.25s; }
+
+.phase-card {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.2s ease,
+              box-shadow 0.25s ease;
+}
+.phase-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(97,175,239,0.35);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+}
+
+* { border-radius: 0 !important; }
 </style>
+<script>
+tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+  "container-bg": "var(--container-bg)",
+  "text-secondary": "var(--text-secondary)",
+  "accent-cyan": "var(--accent-structural)",
+  "accent-action": "var(--functional-action)",
+  "accent-success": "var(--functional-success)",
+  "accent-red": "var(--accent-red)",
+}}}};
+
+function switchTab(id) {
+  document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+  const btn = [...document.querySelectorAll(".tab-button")].find(b => b.dataset.tab === id);
+  if (btn) btn.classList.add("active");
+  const tab = document.getElementById("tab-" + id);
+  if (tab) tab.classList.add("active");
+}
+
+function openModal(src) {
+  document.getElementById("modalImage").src = src;
+  document.getElementById("imageModal").classList.add("active");
+}
+function closeModal() {
+  document.getElementById("imageModal").classList.remove("active");
+  document.getElementById("modalImage").src = "";
+}
+</script>
 </head>
-<body>
+<body class="text-white">
 
-<!-- NAV DOTS -->
-<nav class="dot-nav">
-  <div class="dot on" onclick="go('hero')" title="Overview"></div>
-  <div class="dot" onclick="go('breakdown')" title="Lab Breakdown"></div>
-  <div class="dot" onclick="go('lifecycle')" title="Lifecycle Ops"></div>
-  <div class="dot" onclick="go('monitoring')" title="Monitoring"></div>
-  <div class="dot" onclick="go('posture')" title="Security Posture"></div>
-</nav>
+<div id="scroll-progress"></div>
 
-<!-- MODAL -->
-<div class="modal" id="modal" onclick="closeModal()">
-  <span class="close-modal">&times;</span>
-  <img id="modal-img" src="" alt="">
+<div class="modal" id="imageModal" onclick="closeModal()">
+  <span style="position:absolute;top:2rem;right:3rem;color:white;font-size:3rem;cursor:pointer">&times;</span>
+  <img class="modal-content" id="modalImage" alt="Enlarged view">
 </div>
 
-<main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="nav-dots">
+  <div class="nav-dot active" onclick="scrollToSection('hero')"></div>
+  <div class="nav-dot" onclick="scrollToSection('overview')"></div>
+  <div class="nav-dot" onclick="scrollToSection('phases')"></div>
+  <div class="nav-dot" onclick="scrollToSection('hardening')"></div>
+  <div class="nav-dot" onclick="scrollToSection('takeaways')"></div>
+</div>
 
-<!-- ══════════════════════════ HERO ══════════════════════════ -->
-<section id="hero" class="pt-16 pb-14 sm:pt-20 md:pt-24">
-<a href="../index.html#projects"
-   class="inline-block text-sm mb-8 font-mono text-white opacity-80 hover:opacity-100 transition">
-← Back to Portfolio
-</a>
-  <div class="flex flex-wrap justify-center gap-2 mb-6">
-    <span class="pill pill-w">Enterprise IAM Lab</span>
-    <span class="pill">Microsoft Entra ID</span>
-    <span class="pill">Identity Lifecycle</span>
-    <span class="pill">RBAC</span>
-    <span class="pill">Audit Logging</span>
+<!-- ══════════════ HERO ══════════════ -->
+<section id="hero" class="pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+  <div class="fade-up">
+    <a href="../index.html#projects" class="inline-flex text-accent-action text-sm hover:text-accent-red transition mb-8 font-mono">
+      ← Back to Portfolio
+    </a>
   </div>
 
-  <h1 class="text-center text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
-    Enterprise Identity &amp; Access Management
+  <div class="fade-up flex flex-wrap justify-center gap-2 mb-6" style="transition-delay:.05s">
+    <span class="pill pill-accent">Enterprise IAM Lab</span>
+    <span class="pill pill-muted">Microsoft Entra ID</span>
+    <span class="pill pill-muted">Identity Lifecycle</span>
+    <span class="pill pill-muted">RBAC</span>
+    <span class="pill pill-muted">Audit Logging</span>
+  </div>
+
+  <h1 class="fade-up text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-center" style="transition-delay:.1s">
+    Enterprise Entra IAM Lab
   </h1>
-  <p class="text-center max-w-2xl mx-auto text-sm leading-relaxed mb-12" style="color:var(--muted)">
-    Enterprise IAM implementation in Microsoft Entra ID simulating identity provisioning,
-    RBAC governance, external collaboration, authentication monitoring, and audit investigation.
+
+  <p class="fade-up max-w-2xl mx-auto text-base text-text-secondary leading-relaxed mb-10 text-center" style="transition-delay:.15s">
+    Built a full identity and access management environment in Microsoft Entra ID — provisioning users,
+    enforcing RBAC, onboarding external guests, running help desk operations, and investigating sign-in and audit logs.
   </p>
 
-  <div class="grid md:grid-cols-2 gap-5 mb-10">
-    <div class="card p-6">
-      <p class="step-num">What was built</p>
-      <p class="text-sm leading-relaxed" style="color:var(--muted)">
-        Configured a full Microsoft Entra ID tenant to simulate enterprise identity lifecycle
-        operations including user provisioning, RBAC enforcement, external collaboration,
-        identity lifecycle management, authentication monitoring, and audit investigation.
+  <!-- Stats -->
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">6</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Users Provisioned</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">IT, HR, Finance identities</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">3</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">RBAC Groups</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">IT, HR, Finance teams</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">1</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">B2B Guest</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">External contractor #EXT#</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">10</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Lab Phases</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Setup through posture review</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">54%</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Secure Score</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">5 open recommendations</div>
+    </div>
+  </div>
+
+  <!-- Summary cards -->
+  <div class="fade-up grid md:grid-cols-2 gap-5" style="transition-delay:.3s">
+    <div class="card-dark p-6">
+      <p class="text-[0.7rem] tracking-[0.2em] uppercase text-text-secondary font-mono mb-3">What I built</p>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        A full Entra ID tenant configured to simulate real enterprise IAM operations — provisioning internal users
+        with appropriate roles, onboarding a B2B guest contractor, assigning department-based security groups,
+        running common help desk tasks, and reviewing the logs those operations generate.
       </p>
     </div>
-    <div class="card p-6">
-      <p class="step-num">Deliverables</p>
-<ul class="list-disc list-outside pl-5 space-y-1.5 text-sm" style="color:var(--muted)">
-  <li>6 internal users — IT (admin + support), HR (manager + staff), Finance (analyst + staff)</li>
-  <li>3 RBAC security groups with assigned membership</li>
-  <li>B2B guest contractor identity — EXT designation, pending acceptance</li>
-  <li>Sign-in logs and audit logs reviewed with event-level investigation</li>
-  <li>Identity Secure Score assessed with actionable recommendations</li>
-  <li>IAM architecture diagram documenting the full identity flow</li>
-</ul>
-    </div>
-  </div>
-
-  <!-- Workflow strip -->
-  <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
-    <div class="card p-4"><p class="step-num">Phase 1–2</p><p class="text-xs font-semibold mb-1">Tenant Initialization</p><p class="text-xs" style="color:var(--muted)">Directory baseline validation and IAM surface readiness</p></div>
-    <div class="card p-4"><p class="step-num">Phase 3–4</p><p class="text-xs font-semibold mb-1">Identity Provisioning</p><p class="text-xs" style="color:var(--muted)">Internal user provisioning and B2B guest onboarding</p></div>
-    <div class="card p-4"><p class="step-num">Phase 5–6</p><p class="text-xs font-semibold mb-1">Access Governance and Lifecycle</p><p class="text-xs" style="color:var(--muted)">RBAC group architecture and identity lifecycle operations</p></div>
-    <div class="card p-4"><p class="step-num">Phase 7–8</p><p class="text-xs font-semibold mb-1">Authentication and Audit Monitoring</p><p class="text-xs" style="color:var(--muted)">Sign in telemetry and administrative audit investigation</p></div>
-    <div class="card p-4"><p class="step-num">Phase 9–10</p><p class="text-xs font-semibold mb-1">Security Posture and Architecture</p><p class="text-xs" style="color:var(--muted)">Secure Score assessment, conditional access review, and IAM architecture documentation</p></div>
-  </div>
-</section>
-
-<!-- ══════════════════════════ LAB BREAKDOWN ══════════════════════════ -->
-<section id="breakdown" class="py-14">
-  <div class="flex items-center gap-5 mb-8">
-    <div class="h-px flex-1" style="background:var(--border)"></div>
-    <h2 class="font-mono font-bold text-xl whitespace-nowrap">Lab Breakdown</h2>
-    <div class="h-px flex-1" style="background:var(--border)"></div>
-  </div>
-
-  <div class="flex overflow-x-auto border-b-2 mb-8" style="border-color:rgba(255,255,255,0.1)">
-    <button class="tab-btn on" onclick="tab(this,'t-setup')">01. Setup &  02. Validation</button>
-    <button class="tab-btn" onclick="tab(this,'t-users')">03. User Provisioning</button>
-    <button class="tab-btn" onclick="tab(this,'t-guest')">04. B2B Guest</button>
-    <button class="tab-btn" onclick="tab(this,'t-rbac')">05. RBAC Groups</button>
-  </div>
-
-  
-<!-- TAB: SETUP -->
-<div id="t-setup" class="tab-pane on">
-  <div class="card p-6 md:p-8 space-y-14">
-
-    <!-- Phase 1 -->
-    <div>
-      <h3 class="text-lg font-semibold mb-2">Phase 1 — Tenant Initialization</h3>
-      <p class="text-sm" style="color:var(--muted)">
-        The Microsoft Entra ID tenant was initialized and validated to establish a controlled identity baseline.
-        Core directory attributes including tenant identity, domain configuration, licensing state, and existing identity objects
-        were confirmed prior to provisioning users or enforcing access controls.
-      </p>
-    </div>
-
-    <div class="grid lg:grid-cols-2 gap-10 items-start">
-      <div>
-        <p class="step-num">1.1 — Tenant Overview</p>
-        <p class="text-sm leading-relaxed" style="color:var(--muted)">
-          The Default Directory overview confirms tenant identity, primary domain, license tier, and current identity object count.
-          This establishes the baseline state used to support identity provisioning, RBAC assignment, and lifecycle operations.
-        </p>
-      </div>
-
-      <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_EntraID_Overview.png')">
-        <img src="../assets/images/EIAMS1_Azure_EntraID_Overview.png" class="w-full" alt="Entra ID tenant overview">
-        <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">
-          Default Directory overview confirming tenant identity and baseline configuration.
-        </p>
-      </div>
-    </div>
-
-
-    <!-- Phase 2 -->
-    <div>
-      <h3 class="text-lg font-semibold mb-2">Phase 2 — IAM Surface Validation</h3>
-      <p class="text-sm max-w-3xl" style="color:var(--muted)">
-        Core identity governance components were reviewed to confirm operational readiness. This included Users, Groups,
-        Roles and administrators, Sign-in logs, Audit logs, and Conditional Access. Validating these surfaces ensures the
-        tenant supports identity provisioning, access governance, authentication monitoring, and audit traceability.
-      </p>
-    </div>
-
-    <div class="grid lg:grid-cols-2 gap-10 items-start">
-
-      <div>
-        <p class="step-num">2.1 — Identity Governance Surfaces</p>
-        <p class="text-sm leading-relaxed" style="color:var(--muted)">
-          Administrative surfaces were verified to confirm visibility and control over identities, group membership,
-          directory roles, authentication activity, and audit telemetry. This ensures full lifecycle management capability
-          before introducing production identities.
-        </p>
-      </div>
-
-      
-
-    </div>
-
-  </div>
-</div>
-
-
-  <!-- TAB: USERS -->
-  <div id="t-users" class="tab-pane">
-    <div class="card p-6 md:p-8 space-y-14">
-      <div>
-        <h3 class="text-lg font-semibold mb-2">Phase 3 — Internal User Provisioning</h3>
-        <p class="text-sm" style="color:var(--muted)">Six internal identities were provisioned to model a basic enterprise org chart across IT,
-          HR, and Finance. Admin privileges were assigned only to IT accounts, while HR and Finance access is governed primarily through group
-          based RBAC to reinforce least privilege.</p>
-      </div>
-
-      <!-- it.admin creation -->
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div>
-          <p class="step-num">3.1 — it.admin — Basics tab</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">Provisioned the primary IT administrator identity used to manage directory operations and support workflows.</p>
-        </div>
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_User_Basics.png')">
-          <img src="../assets/images/EIAMS1_Azure_Create_User_Basics.png" class="w-full" alt="it.admin basics tab">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">it.admin — Basics tab with UPN set and auto-generate password enabled.</p>
-        </div>
-      </div>
-
-      <!-- it.admin role assignments -->
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div>
-          <p class="step-num">3.2 — it.admin — Role Assignments</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">Assigned directory roles during provisioning to avoid a post creation access gap. Roles: Global Reader, Helpdesk Administrator, User Administrator.</p>
-        </div>
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_User_Role_Assignments.png')">
-          <img src="../assets/images/EIAMS1_Azure_User_Role_Assignments.png" class="w-full" alt="it.admin role assignments">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Assignments tab — Global Reader, Helpdesk Administrator, User Administrator applied to it.admin.</p>
-        </div>
-      </div>
-
-      <!-- it.admin review -->
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div>
-          <p class="step-num">3.3 — it.admin — Review + Create</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">Validated governance metadata and role scope before creation, including department, manager relationship, usage location, and assigned roles.</p>
-        </div>
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_ITAdmin_User.png')">
-          <img src="../assets/images/EIAMS1_Azure_Create_ITAdmin_User.png" class="w-full" alt="it.admin review">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">it.admin review — IT dept, manager, location, and three role assignments confirmed.</p>
-        </div>
-      </div>
-
-      <!-- it.support -->
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div>
-          <p class="step-num">3.4 — it.support — Review + Create</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">Provisioned a lower privilege IT support identity. Scoped to support responsibilities with Global Reader and Helpdesk Administrator only.</p>
-        </div>
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_ITSupport_User.png')">
-          <img src="../assets/images/EIAMS1_Azure_Create_ITSupport_User.png" class="w-full" alt="it.support review">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">it.support review — IT dept, it.admin as manager, Global Reader + Helpdesk Admin roles.</p>
-        </div>
-      </div>
-
-      <!-- hr.manager -->
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div>
-          <p class="step-num">3.5 — hr.manager — Review + Create</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">Provisioned HR manager identity with no directory roles. Access is intended to be controlled through HR Team group membership rather than direct admin privileges.</p>
-        </div>
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_HRManager_User.png')">
-          <img src="../assets/images/EIAMS1_Azure_Create_HRManager_User.png" class="w-full" alt="hr.manager review">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">hr.manager review — HR dept, manager assigned, no directory roles.</p>
-        </div>
-      </div>
-
-      <!-- hr.staff -->
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div>
-          <p class="step-num">3.6 — hr.staff — Review + Create</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">Provisioned HR staff identity and established the department reporting chain by assigning hr.manager as manager.</p>
-        </div>
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_HRStaff_User.png')">
-          <img src="../assets/images/EIAMS1_Azure_Create_HRStaff_User.png" class="w-full" alt="hr.staff review">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">hr.staff review — HR dept, hr.manager as manager, no directory roles.</p>
-        </div>
-      </div>
-
-      <!-- fin.analyst -->
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div>
-          <p class="step-num">3.7 — fin.analyst — Review + Create</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">Provisioned Finance analyst identity with limited directory visibility using Global Reader. This models a finance user who needs oversight context without admin control.</p>
-        </div>
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Azure_Create_FinAnalyst_User.png')">
-          <img src="../assets/images/EIAMS1_Azure_Create_FinAnalyst_User.png" class="w-full" alt="fin.analyst review">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">fin.analyst review — Finance dept, it.admin manager, Global Reader role.</p>
-        </div>
-      </div>
-
-      <!-- fin.staff -->
-
-            <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div>
-          <p class="step-num">3.8 — fin.staff — Review + Create</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">Provisioned Finance staff identity with no directory roles. Access is governed through Finance Team group membership to keep permissions centralized and auditable.</p>
-        </div>
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Create_New_User_Basics.png')">
-          <img src="../assets/images/EIAMS1_Create_New_User_Basics.png" class="w-full" alt="fin.analyst review">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">fin.staff review — Finance dept, it.admin manager, Global Reader role.</p>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-
-  <!-- TAB: GUEST -->
-  <div id="t-guest" class="tab-pane">
-    <div class="card p-6 md:p-8 space-y-14">
-      <div>
-        <h3 class="text-lg font-semibold mb-2">Phase 4 — B2B Guest Collaboration</h3>
-        <p class="text-sm" style="color:var(--muted)">An external contractor identity was onboarded using Microsoft Entra B2B collaboration. Guest identities allow external users to authenticate with their own credentials while remaining fully governed within the organization's identity and access management framework.</p>
-      </div>
-
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div>
-          <p class="step-num">4.1 — Invite External User</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">Initiated guest onboarding by submitting an external email address and defining the contractor identity. This creates a guest object in the directory and generates a secure invitation workflow for external authentication.</p>
-        </div>
-        <div class="space-y-4">
-          <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Invite_External_User_Basics.png')">
-            <img src="../assets/images/EIAMS1_Invite_External_User_Basics.png" class="w-full" alt="Guest invite basics">
-            <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Basics tab — external email and display name set before filling invitation message.</p>
-          </div>
-          <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_External_User_Invitation_Message.png')">
-            <img src="../assets/images/EIAMS1_External_User_Invitation_Message.png" class="w-full" alt="Guest invite with message">
-            <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Invitation message filled — "Please join our platform to begin onboarding."</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div>
-          <p class="step-num">4.2 — Review + Invite and Post-Invite State</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">Verified guest identity configuration and issued the invitation. The account appears in the directory with Guest user type and Pending acceptance status, confirming successful external identity provisioning.</p>
-        </div>
-        <div class="space-y-4">
-          <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Review_Create_External_User.png')">
-            <img src="../assets/images/EIAMS1_Review_Create_External_User.png" class="w-full" alt="Guest review + invite">
-            <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Review + invite — Guest user type, message confirmed, redirect URL set.</p>
-          </div>
-          <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Contractor_Test_Account_Profile.png')">
-            <img src="../assets/images/EIAMS1_Contractor_Test_Account_Profile.png" class="w-full" alt="Contractor guest account">
-            <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Contractor Test overview — Guest type, #EXT# UPN, B2B invitation pending acceptance.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div>
-          <p class="step-num">4.3 — Guest Properties and Attribute Enrichment</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">Validated identity metadata including department, job title, usage location, and manager assignment. Maintaining complete identity attributes ensures guest users can be governed, audited, and assigned access consistently with internal identities.</p>
-        </div>
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_User_Properties_Full_Attribute_List.png')">
-          <img src="../assets/images/EIAMS1_User_Properties_Full_Attribute_List.png" class="w-full" alt="Guest full properties">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Contractor Test Properties tab — job title, dept, UPN with #EXT#, creation type: Invitation.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TAB: RBAC -->
-  <div id="t-rbac" class="tab-pane">
-    <div class="card p-6 md:p-8 space-y-14">
-      <div>
-        <h3 class="text-lg font-semibold mb-2">Phase 5 — RBAC Security Groups</h3>
-        <p class="text-sm" style="color:var(--muted)">Department based security groups were implemented to enforce role based access control. Group centric access governance ensures permissions are assigned once at the group level and inherited by all members, reducing administrative overhead and maintaining consistent access boundaries.</p>
-      </div>
-
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div>
-          <p class="step-num">5.1 — All Groups</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">Three security groups were created to reflect organizational structure: IT Team, HR Team, and Finance Team. Each group serves as the access control boundary for its respective department.</p>
-        </div>
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Groups_List_All_Overview.png')">
-          <img src="../assets/images/EIAMS1_Groups_List_All_Overview.png" class="w-full" alt="All groups">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">All groups — Finance-Team, HR-Team, IT-Team created as Security type with Assigned membership.</p>
-        </div>
-      </div>
-
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div>
-          <p class="step-num">5.2 — IT-Team Members</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">The IT Team group contains administrative and support identities, including the external contractor guest. This demonstrates that both internal and external users can be governed within the same RBAC model while maintaining identity type distinction.</p>
-        </div>
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Group_Properties_General_Info.png')">
-          <img src="../assets/images/EIAMS1_Group_Properties_General_Info.png" class="w-full" alt="IT-Team members">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">IT-Team members — Contractor Test (Guest), it.admin, it.support. Guest user type clearly differentiated.</p>
-        </div>
-      </div>
-
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div>
-          <p class="step-num">5.3 — HR-Team Members</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">HR manager and HR staff identities were assigned to the HR Team group. Access for HR users is governed entirely through group membership, ensuring permissions remain centrally controlled and auditable.</p>
-        </div>
-        <div class="space-y-4">
-          <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Enterprise_Applications_User_Access.png')">
-            <img src="../assets/images/EIAMS1_Enterprise_Applications_User_Access.png" class="w-full" alt="HR-Team add members panel">
-            <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">HR-Team add members panel — selecting users from directory search during group assignment.</p>
-          </div>
-          <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Security_Group_Settings_Config.png')">
-            <img src="../assets/images/EIAMS1_Security_Group_Settings_Config.png" class="w-full" alt="HR-Team members">
-            <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">HR-Team members — hr.manager and hr.staff confirmed as direct members.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div>
-          <p class="step-num">5.4 — Finance-Team Members</p>
-          <p class="text-sm leading-relaxed" style="color:var(--muted)">Finance analyst and Finance staff identities were assigned to the Finance Team group, completing the RBAC structure. All users are now mapped to a defined access boundary aligned to departmental roles.</p>
-        </div>
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Group_Membership_Assignment_View.png')">
-          <img src="../assets/images/EIAMS1_Group_Membership_Assignment_View.png" class="w-full" alt="Finance-Team members">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Finance-Team members — fin.analyst and fin.staff confirmed as direct members.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════ LIFECYCLE OPS ══════════════════════════ -->
-<section id="lifecycle" class="py-14">
-  <div class="flex items-center gap-5 mb-8">
-    <div class="h-px flex-1" style="background:var(--border)"></div>
-    <h2 class="font-mono font-bold text-xl whitespace-nowrap">Help Desk &amp; Lifecycle Ops</h2>
-    <div class="h-px flex-1" style="background:var(--border)"></div>
-  </div>
-
-  <div class="card p-6 md:p-8 space-y-14">
-    <div>
-      <h3 class="text-lg font-semibold mb-2">Phase 6 — Help Desk Operations</h3>
-      <p class="text-sm max-w-3xl" style="color:var(--muted)">Three Tier 1 workflows were executed: password reset, account suspension, and user restore. These represent the most common help desk operations in any enterprise IAM environment and validate that the lifecycle management surface functions correctly end-to-end.</p>
-    </div>
-
-    <!-- Password reset -->
-    <div class="grid lg:grid-cols-2 gap-10 items-start">
-      <div>
-        <p class="step-num">6.1 — Password Reset</p>
-        <p class="text-sm leading-relaxed" style="color:var(--muted)">A password reset was initiated from the admin portal on fin.staff. The operation generated a temporary password displayed in the reset panel. The reset was then verified from the user side — hr.staff triggered the "Update your password" prompt on first sign-in, confirming the forced reset policy works end-to-end.</p>
-      </div>
-      <div class="space-y-4">
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Admin_Panel_User_Details_View.png')">
-          <img src="../assets/images/EIAMS1_Admin_Panel_User_Details_View.png" class="w-full" alt="Password reset confirmation">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Admin-side reset — "Password has been reset" with temporary password generated for fin.staff.</p>
-        </div>
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Microsoft_Account_Update_Password_Prompt.png')">
-          <img src="../assets/images/EIAMS1_Microsoft_Account_Update_Password_Prompt.png" class="w-full" alt="First sign-in password update prompt">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">End-user side — hr.staff prompted to update password on first sign-in, confirming forced reset policy.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Account deletion review -->
-<div class="grid lg:grid-cols-2 gap-10 items-start">
-  <div>
-    <p class="step-num">6.2 — Account Deletion Review</p>
-    <p class="text-sm leading-relaxed" style="color:var(--muted)">
-      The deletion workflow was initiated to validate identity removal controls. The delete confirmation panel displays associated roles and group membership prior to removal, ensuring administrators can verify identity scope and dependencies before executing permanent deletion.
-    </p>
-  </div>
-
-  <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Admin_MFA_Setup_Enforcement.png')">
-    <img src="../assets/images/EIAMS1_Admin_MFA_Setup_Enforcement.png" class="w-full" alt="Account deletion confirmation">
-    <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">
-      Delete user confirmation panel showing identity scope prior to removal.
-    </p>
-  </div>
-</div>
-
-
-<!-- Account suspension -->
-<div class="grid lg:grid-cols-2 gap-10 items-start">
-  <div>
-    <p class="step-num">6.3 — Account Suspension</p>
-    <p class="text-sm leading-relaxed" style="color:var(--muted)">
-      Account suspension was enforced by disabling the fin.staff identity. This immediately revokes authentication access while preserving the identity object, supporting offboarding, access freeze, and lifecycle control scenarios.
-    </p>
-  </div>
-
-  <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_User_Security_Summary_Profile.png')">
-    <img src="../assets/images/EIAMS1_User_Security_Summary_Profile.png" class="w-full" alt="Account disabled">
-    <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">
-      fin.staff overview showing Account status: Disabled.
-    </p>
-  </div>
-</div>
-
-
-    <!-- Restore -->
-    <div class="grid lg:grid-cols-2 gap-10 items-start">
-      <div>
-        <p class="step-num">6.4 — User Restore</p>
-        <p class="text-sm leading-relaxed" style="color:var(--muted)">After deletion, hr.staff was restored from the Deleted users panel before the 30-day permanent deletion window. The restore confirmation dialog shows the selected user, permanent deletion date, and confirms the account can be reinstated. Post-restore, fin.staff is confirmed back to Enabled status.</p>
-      </div>
-      <div class="space-y-4">
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Directory_Role_Assignment_List.png')">
-          <img src="../assets/images/EIAMS1_Directory_Role_Assignment_List.png" class="w-full" alt="Restore user panel">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Deleted users panel — Restore hr.staff confirmation with permanent deletion date shown.</p>
-        </div>
-        <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_User_Authentication_Methods_Status.png')">
-          <img src="../assets/images/EIAMS1_User_Authentication_Methods_Status.png" class="w-full" alt="fin.staff re-enabled">
-          <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">fin.staff overview — Account status: Enabled, 1 group membership, confirming successful restore.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- First sign-in after restore -->
-    <div class="grid lg:grid-cols-2 gap-10 items-start">
-      <div>
-        <p class="step-num">6.5 — End-User First Sign-in</p>
-        <p class="text-sm leading-relaxed" style="color:var(--muted)">After restoration, the end-user experience was validated by signing in as hr.staff, confirming the account lands on the Azure portal welcome screen with the correct identity — no residual access restrictions from the delete/restore cycle.</p>
-      </div>
-      <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Security_Info_Verification_Setup.png')">
-        <img src="../assets/images/EIAMS1_Security_Info_Verification_Setup.png" class="w-full" alt="hr.staff post-restore sign-in">
-        <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">hr.staff signed into Azure portal — confirming clean access state after restore.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════ MONITORING ══════════════════════════ -->
-<section id="monitoring" class="py-14">
-  <div class="flex items-center gap-5 mb-8">
-    <div class="h-px flex-1" style="background:var(--border)"></div>
-    <h2 class="font-mono font-bold text-xl whitespace-nowrap">Monitoring &amp; Audit Investigation</h2>
-    <div class="h-px flex-1" style="background:var(--border)"></div>
-  </div>
-
-  <div class="card p-6 md:p-8 space-y-14">
-    <div>
-      <h3 class="text-lg font-semibold mb-2">Phase 7–8 — Log Review and Event Investigation</h3>
-      <p class="text-sm max-w-3xl" style="color:var(--muted)">Sign-in logs were reviewed to confirm both successful and failed authentication events. Audit logs were analyzed to trace the full chain of administrative actions — group management, user management, password resets, account enable/disable — with timestamps and initiating actor visible for each event.</p>
-    </div>
-
-    <!-- Sign-in logs -->
-    <div class="grid lg:grid-cols-2 gap-10 items-start">
-      <div>
-        <p class="step-num">7.1 — Sign-in Log Review</p>
-        <p class="text-sm leading-relaxed" style="color:var(--muted)">Sign-in logs show a mix of failures and successes across hr.staff and the admin account — generated intentionally by signing in with the temporary password and then completing the reset cycle. Both failure and success events are captured with IP, application, and location metadata.</p>
-      </div>
-      <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Audit_Log_User_Activity_Report.png')">
-        <img src="../assets/images/EIAMS1_Audit_Log_User_Activity_Report.png" class="w-full" alt="Sign-in logs">
-        <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Sign-in logs — hr.staff failures followed by successful admin logins, with IP and location captured.</p>
-      </div>
-    </div>
-
-    <!-- Audit logs — group events -->
-    <div class="grid lg:grid-cols-2 gap-10 items-start">
-      <div>
-        <p class="step-num">7.2 — Audit Log — Group Management Events</p>
-        <p class="text-sm leading-relaxed" style="color:var(--muted)">The audit log captures every group management event from Phase 5 — Add group, Add member to group — timestamped and attributed to the initiating actor. This is the exact evidence trail required during a compliance audit or access review.</p>
-      </div>
-      <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_System_Activity_Log_Preview.png')">
-        <img src="../assets/images/EIAMS1_System_Activity_Log_Preview.png" class="w-full" alt="Audit logs group events">
-        <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Audit log — Add group, Add member to group events from Phase 5 with full timestamps.</p>
-      </div>
-    </div>
-
-    <!-- Audit logs — user management events -->
-    <div class="grid lg:grid-cols-2 gap-10 items-start">
-      <div>
-        <p class="step-num">7.3 — Audit Log — User Management Events</p>
-        <p class="text-sm leading-relaxed" style="color:var(--muted)">A second audit log view shows user management events — password reset, disable account, enable account, restore user, and delete user — all logged with service, category, activity, status, and status reason. This full event chain confirms every Phase 6 help desk action is fully traceable.</p>
-      </div>
-      <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_Role_Assignment_Details_Admin.png')">
-        <img src="../assets/images/EIAMS1_Role_Assignment_Details_Admin.png" class="w-full" alt="Audit logs user events">
-        <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Audit log — password reset, disable/enable account, delete user, restore user all captured.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════ SECURITY POSTURE ══════════════════════════ -->
-<section id="posture" class="py-14">
-  <div class="flex items-center gap-5 mb-8">
-    <div class="h-px flex-1" style="background:var(--border)"></div>
-    <h2 class="font-mono font-bold text-xl whitespace-nowrap">Security Posture &amp; Architecture</h2>
-    <div class="h-px flex-1" style="background:var(--border)"></div>
-  </div>
-
-  <div class="card p-6 md:p-8 space-y-14 mb-8">
-    <div>
-      <h3 class="text-lg font-semibold mb-2">Phase 9 — Security Review</h3>
-      <p class="text-sm max-w-3xl" style="color:var(--muted)">With the lab environment fully built, a security posture review was conducted — assessing the Identity Secure Score, reviewing active recommendations, and examining the Conditional Access policy surface.</p>
-    </div>
-
-    <!-- Secure score -->
-    <div class="grid lg:grid-cols-2 gap-10 items-start">
-      <div>
-        <p class="step-num">9.1 — Identity Secure Score</p>
-        <p class="text-sm leading-relaxed" style="color:var(--muted)">The Identity Secure Score reports 54.17% with five active recommendations. High-priority item: "Do not expire passwords" (8/8 points) is already completed. Open items include using least privileged administrative roles, designating more than one global admin, and restricting user consent to applications.</p>
-      </div>
-      <div class="card img-click p-3" onclick="zoom('../assets/images/EIAMS1_User_Access_Permissions_Grid.png')">
-        <img src="../assets/images/EIAMS1_User_Access_Permissions_Grid.png" class="w-full" alt="Identity Secure Score">
-        <p class="mt-2 text-xs italic text-center" style="color:var(--muted)">Identity Secure Score — 54.17%, 5 recommendations, score history since Nov 2025.</p>
-      </div>
-    </div>
-
-    <!-- Conditional access -->
-    <div>
-      <p class="step-num">9.2 — Conditional Access Overview</p>
-      <p class="text-sm max-w-3xl" style="color:var(--muted)">The Conditional Access surface was reviewed — no policies are currently active. This is the primary gap identified from the security review. The Conditional Access overview documents example policy conditions: requiring MFA for users outside the corporate network and requiring compliant/domain-joined devices for manager sign-ins. Creating these policies is the highest-priority hardening action from this lab.</p>
-    </div>
-  </div>
-
-  <!-- Phase 10: Architecture diagram -->
-  <div class="card p-6 md:p-8">
-    <p class="step-num mb-3">Phase 10 — IAM Architecture Diagram</p>
-    <p class="text-sm mb-6 max-w-3xl" style="color:var(--muted)">The final deliverable documents the complete identity flow built across all ten phases — from user provisioning through security groups, authentication, and monitoring.</p>
-    <div class="card img-click p-4" onclick="zoom('../assets/images/EIAMS1_IAM_Diagram_Chart.png')">
-      <img src="../assets/images/EIAMS1_IAM_Diagram_Chart.png" class="mx-auto max-h-96 w-auto object-contain" alt="IAM Architecture Diagram">
-    </div>
-    <p class="mt-3 text-xs italic text-center" style="color:var(--muted)">Users → Entra ID → Security Groups → Authentication Layer → Monitoring &amp; Logs</p>
-  </div>
-</section>
-
-<!-- ══════════════════════════ HARDENING STRATEGY ══════════════════════════ -->
-<section class="py-14">
-  <div class="flex items-center gap-5 mb-8">
-    <div class="h-px flex-1" style="background:var(--border)"></div>
-    <h2 class="font-mono font-bold text-xl whitespace-nowrap">Hardening Strategy</h2>
-    <div class="h-px flex-1" style="background:var(--border)"></div>
-  </div>
-  <p class="text-sm mb-8" style="color:var(--muted)">Findings from the lab — particularly the secure score gaps and the absence of conditional access policies — translate directly into the following hardening actions.</p>
-
-  <div class="grid md:grid-cols-3 gap-5">
-    <div class="card p-6">
-      <h4 class="text-xs font-bold uppercase tracking-wider mb-4" style="color:var(--red)">Identity Control</h4>
-      <ul class="space-y-3 text-sm" style="color:var(--muted)">
-        <li><strong class="block text-white text-xs mb-0.5">MFA for all users</strong>Secure Score flags this as an open item. Extend MFA beyond admin accounts to all member identities.</li>
-        <li><strong class="block text-white text-xs mb-0.5">Reduce global admin count</strong>Only one global admin exists — Secure Score recommends at least two to prevent lockout.</li>
-        <li><strong class="block text-white text-xs mb-0.5">Least privilege roles</strong>it.admin holds User Administrator — review whether this is necessary vs. scoped admin roles.</li>
-      </ul>
-    </div>
-    <div class="card p-6">
-      <h4 class="text-xs font-bold uppercase tracking-wider mb-4" style="color:var(--cyan)">Access Hardening</h4>
-      <ul class="space-y-3 text-sm" style="color:var(--muted)">
-        <li><strong class="block text-white text-xs mb-0.5">Create Conditional Access policies</strong>No policies are currently active. Priority: require MFA outside corporate network, block legacy auth.</li>
-        <li><strong class="block text-white text-xs mb-0.5">Restrict guest access scope</strong>Contractor Test is in IT-Team with no access restrictions — scope guest access to explicitly approved resources only.</li>
-        <li><strong class="block text-white text-xs mb-0.5">Block user consent to apps</strong>Secure Score recommends restricting users from consenting to unverified applications.</li>
-      </ul>
-    </div>
-    <div class="card p-6">
-      <h4 class="text-xs font-bold uppercase tracking-wider mb-4" style="color:var(--green)">Continuous Visibility</h4>
-      <ul class="space-y-3 text-sm" style="color:var(--muted)">
-        <li><strong class="block text-white text-xs mb-0.5">Export logs to SIEM</strong>Audit and sign-in logs should be exported and retained — not just reviewed in portal. Configure diagnostic settings.</li>
-        <li><strong class="block text-white text-xs mb-0.5">Alert on risky sign-ins</strong>Sign-in failures were generated without triggering any alert. Enable Identity Protection risky sign-in alerts.</li>
-        <li><strong class="block text-white text-xs mb-0.5">Track secure score over time</strong>Score history shows activity since Nov 2025. Set a recurring review cadence to measure improvement.</li>
+    <div class="card-dark p-6">
+      <p class="text-[0.7rem] tracking-[0.2em] uppercase text-text-secondary font-mono mb-3">Key outcomes</p>
+      <ul class="text-sm text-text-secondary space-y-1.5">
+        <li>• 6 users provisioned across IT, HR, Finance with scoped roles</li>
+        <li>• External contractor onboarded via B2B guest invitation</li>
+        <li>• 3 RBAC security groups controlling access by department</li>
+        <li>• Password reset, suspension, and restore workflows validated</li>
+        <li>• Sign-in and audit logs reviewed with full event traceability</li>
+        <li>• Identity Secure Score assessed with hardening recommendations</li>
       </ul>
     </div>
   </div>
+
 </section>
 
-<!-- ══════════════════════════ SKILLS ══════════════════════════ -->
-<section class="pb-16">
-  <div class="flex items-center gap-5 mb-6">
-    <div class="h-px flex-1" style="background:var(--border)"></div>
-    <h2 class="font-mono font-bold text-xl whitespace-nowrap">Skills Demonstrated</h2>
-    <div class="h-px flex-1" style="background:var(--border)"></div>
-  </div>
-  <div class="card p-6">
-    <div class="flex flex-wrap gap-2">
-      <span class="pill pill-w">Microsoft Entra ID</span>
-      <span class="pill pill-w">Identity Lifecycle Management</span>
-      <span class="pill pill-w">RBAC Group Design</span>
-      <span class="pill pill-w">B2B Guest Collaboration</span>
-      <span class="pill pill-w">Help Desk Operations (Tier 1)</span>
-      <span class="pill pill-w">Audit Log Investigation</span>
-      <span class="pill pill-w">Sign-in Log Analysis</span>
-      <span class="pill pill-w">Identity Secure Score</span>
-      <span class="pill pill-w">Conditional Access Awareness</span>
-      <span class="pill pill-w">Account Lifecycle — Suspend / Restore</span>
-      <span class="pill pill-w">IAM Architecture Documentation</span>
+<!-- ══════════════ OVERVIEW ══════════════ -->
+<section id="overview" class="fade-soft py-16 md:py-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+  <div class="section-header"><h2>How It Works</h2></div>
+
+  <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 1–2</p>
+      <p class="text-sm font-semibold mb-1">Tenant Setup</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Validated the Entra ID tenant baseline — domain, licenses, identity surfaces — before provisioning anyone.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 3–4</p>
+      <p class="text-sm font-semibold mb-1">Identity Provisioning</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Created 6 internal users across departments with appropriate roles, then onboarded an external contractor via B2B guest invite.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 5–6</p>
+      <p class="text-sm font-semibold mb-1">Access & Lifecycle</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Built RBAC security groups by department, then ran real help desk tasks — password reset, suspension, restore.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 7–8</p>
+      <p class="text-sm font-semibold mb-1">Monitoring & Audit</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Reviewed sign-in logs for successes and failures, then traced every admin action through the audit log.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 9–10</p>
+      <p class="text-sm font-semibold mb-1">Security Posture</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Assessed the Identity Secure Score, reviewed the Conditional Access surface, and documented the full IAM architecture.</p>
     </div>
   </div>
- 
+
 </section>
 
-<!-- ══════════════════════════ SUMMARY ══════════════════════════ -->
-<section class="pb-16 md:pb-20">
+<!-- ══════════════ PHASES ══════════════ -->
+<section id="phases" class="fade-soft py-16 md:py-20">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-    <div class="flex items-center gap-6 mb-8">
-      <div class="h-px bg-gray-700 flex-1"></div>
-      <h2 class="font-mono font-bold text-xl whitespace-nowrap text-center">
-        Summary
-      </h2>
-      <div class="h-px bg-gray-700 flex-1"></div>
+    <div class="section-header"><h2>Lab Walkthrough</h2></div>
+
+    <div class="flex flex-wrap gap-0 border-b border-gray-700 mb-8 overflow-x-auto">
+      <button class="tab-button active" data-tab="provisioning" onclick="switchTab('provisioning')">Provisioning</button>
+      <button class="tab-button"        data-tab="guest"        onclick="switchTab('guest')">B2B Guest</button>
+      <button class="tab-button"        data-tab="rbac"         onclick="switchTab('rbac')">RBAC Groups</button>
+      <button class="tab-button"        data-tab="helpdesk"     onclick="switchTab('helpdesk')">Help Desk</button>
+      <button class="tab-button"        data-tab="monitoring"   onclick="switchTab('monitoring')">Monitoring</button>
     </div>
 
-<div class="card rounded-xl p-6 md:p-8">
-      <p class="text-sm sm:text-[0.95rem] leading-relaxed text-white" style="color:var(--muted)">
-        This lab demonstrates end to end enterprise identity and access management in Microsoft Entra ID, including tenant initialization, identity provisioning, RBAC governance, external guest onboarding, lifecycle operations, authentication monitoring, and audit investigation. Identity controls were validated across provisioning, access assignment, suspension, restoration, and monitoring workflows, reflecting real world IAM administration, security governance, and operational support practices.
-      </p>
+    <!-- ── Provisioning ── -->
+    <div id="tab-provisioning" class="tab-content active">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Phases 1–3 — Tenant Validation & User Provisioning</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            Before provisioning anyone, the tenant baseline was confirmed — domain, license tier, and existing identity objects.
+            Then 6 internal users were created across IT, HR, and Finance, each with roles scoped to their actual responsibilities.
+            Admin privileges go to IT only; everyone else is governed through group membership.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">Tenant baseline</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• Confirmed primary domain, license tier, and object counts</li>
+              <li>• Verified Users, Groups, Roles, Logs, and Conditional Access surfaces</li>
+              <li>• Established a clean baseline before any provisioning</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('../assets/images/EIAMS1_Azure_EntraID_Overview.png')">
+            <img src="../assets/images/EIAMS1_Azure_EntraID_Overview.png" class="w-full" alt="Entra ID tenant overview">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Default Directory overview confirming tenant identity and baseline config</p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">IT users — scoped admin roles</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• <strong class="text-white">it.admin</strong> — Global Reader, Helpdesk Admin, User Admin</li>
+              <li>• <strong class="text-white">it.support</strong> — Global Reader, Helpdesk Admin only</li>
+              <li>• Roles assigned at creation to avoid post-provisioning access gaps</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('../assets/images/EIAMS1_Azure_User_Role_Assignments.png')">
+            <img src="../assets/images/EIAMS1_Azure_User_Role_Assignments.png" class="w-full" alt="it.admin role assignments">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">it.admin role assignments — three scoped directory roles applied at creation</p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">HR & Finance users — group-governed access</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• hr.manager and hr.staff — no directory roles, access via HR Team group</li>
+              <li>• fin.analyst — Global Reader only for oversight context</li>
+              <li>• fin.staff — no directory roles, access via Finance Team group</li>
+              <li>• Manager relationships set to model the org reporting chain</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('../assets/images/EIAMS1_Azure_Create_HRManager_User.png')">
+            <img src="../assets/images/EIAMS1_Azure_Create_HRManager_User.png" class="w-full" alt="hr.manager provisioning">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">hr.manager — HR dept, manager assigned, no directory roles assigned directly</p>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="mt-10 text-center">
- <a href="../index.html#projects"
-   class="inline-flex text-sm font-mono text-white opacity-80 hover:opacity-100 transition">
-← Back to Portfolio
-</a>
+    <!-- ── B2B Guest ── -->
+    <div id="tab-guest" class="tab-content">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Phase 4 — B2B Guest Onboarding</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            An external contractor was onboarded using Entra B2B collaboration. Guest identities let external
+            users authenticate with their own credentials while still being fully governed — group membership,
+            attribute enrichment, and audit logging all apply the same as internal users.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">How the invite works</h4>
+            <ol class="text-sm text-text-secondary space-y-2 list-decimal list-inside">
+              <li>Submit external email and display name in the invite form</li>
+              <li>Add a custom invitation message for onboarding context</li>
+              <li>Review and send — a guest object is created in the directory</li>
+              <li>Account shows as Guest type with #EXT# UPN and Pending acceptance</li>
+            </ol>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('../assets/images/EIAMS1_External_User_Invitation_Message.png')">
+            <img src="../assets/images/EIAMS1_External_User_Invitation_Message.png" class="w-full" alt="Guest invitation message">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Invite form with custom onboarding message before submission</p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('../assets/images/EIAMS1_Contractor_Test_Account_Profile.png')">
+            <img src="../assets/images/EIAMS1_Contractor_Test_Account_Profile.png" class="w-full" alt="Contractor guest account profile">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Contractor Test — Guest user type, #EXT# UPN, B2B invitation pending</p>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('../assets/images/EIAMS1_User_Properties_Full_Attribute_List.png')">
+            <img src="../assets/images/EIAMS1_User_Properties_Full_Attribute_List.png" class="w-full" alt="Guest full attribute list">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Guest Properties — job title, dept, creation type: Invitation all visible for governance</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── RBAC ── -->
+    <div id="tab-rbac" class="tab-content">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Phase 5 — RBAC Security Groups</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            Three department-based security groups give every user a defined access boundary.
+            Assigning permissions at the group level — not per user — keeps the model auditable
+            and easy to maintain as the org changes. The external guest sits in IT-Team alongside
+            internal IT accounts, demonstrating that B2B users can be governed within the same RBAC model.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">Three groups, three boundaries</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• <strong class="text-white">IT-Team</strong> — it.admin, it.support, Contractor (Guest)</li>
+              <li>• <strong class="text-white">HR-Team</strong> — hr.manager, hr.staff</li>
+              <li>• <strong class="text-white">Finance-Team</strong> — fin.analyst, fin.staff</li>
+              <li>• All groups use Assigned membership — no dynamic rules</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('../assets/images/EIAMS1_Groups_List_All_Overview.png')">
+            <img src="../assets/images/EIAMS1_Groups_List_All_Overview.png" class="w-full" alt="All groups list">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">All three security groups — Finance-Team, HR-Team, IT-Team with Assigned membership</p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('../assets/images/EIAMS1_Group_Properties_General_Info.png')">
+            <img src="../assets/images/EIAMS1_Group_Properties_General_Info.png" class="w-full" alt="IT-Team members">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">IT-Team — Guest contractor and internal IT users in the same group, identity type clearly differentiated</p>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('../assets/images/EIAMS1_Group_Membership_Assignment_View.png')">
+            <img src="../assets/images/EIAMS1_Group_Membership_Assignment_View.png" class="w-full" alt="Finance-Team members">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Finance-Team — fin.analyst and fin.staff confirmed as direct members</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Help Desk ── -->
+    <div id="tab-helpdesk" class="tab-content">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Phase 6 — Help Desk Operations</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            Three common Tier 1 tasks were executed end-to-end: password reset, account suspension, and user restore.
+            Each was validated on both the admin side and the user side to confirm the controls actually work in practice.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">Password reset</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• Admin resets fin.staff password from the portal — temporary password generated</li>
+              <li>• hr.staff signs in and is immediately prompted to update their password</li>
+              <li>• Confirms the forced reset policy works end-to-end</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('../assets/images/EIAMS1_Microsoft_Account_Update_Password_Prompt.png')">
+            <img src="../assets/images/EIAMS1_Microsoft_Account_Update_Password_Prompt.png" class="w-full" alt="Password update prompt on first sign-in">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">hr.staff prompted to update password on first sign-in — forced reset confirmed</p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">Account suspension & restore</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• fin.staff disabled — authentication blocked immediately, identity object preserved</li>
+              <li>• hr.staff restored from Deleted users panel within the 30-day window</li>
+              <li>• Post-restore sign-in confirmed — no residual access restrictions</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('../assets/images/EIAMS1_User_Security_Summary_Profile.png')">
+            <img src="../assets/images/EIAMS1_User_Security_Summary_Profile.png" class="w-full" alt="Account disabled status">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">fin.staff — Account status: Disabled, identity preserved for restore or audit</p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('../assets/images/EIAMS1_Admin_Panel_User_Details_View.png')">
+            <img src="../assets/images/EIAMS1_Admin_Panel_User_Details_View.png" class="w-full" alt="Password reset admin panel">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Admin-side reset panel — temporary password generated for fin.staff</p>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('../assets/images/EIAMS1_Security_Info_Verification_Setup.png')">
+            <img src="../assets/images/EIAMS1_Security_Info_Verification_Setup.png" class="w-full" alt="hr.staff post-restore sign-in">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">hr.staff signed into Azure portal — clean access state confirmed after restore</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Monitoring ── -->
+    <div id="tab-monitoring" class="tab-content">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Phases 7–8 — Sign-in Logs & Audit Investigation</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            Authentication events were generated intentionally — sign-in failures from temporary passwords
+            followed by successful logins after reset. The audit log then captured every admin action
+            from the lab, giving a complete, timestamped chain of events.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">Sign-in logs</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• Failures from hr.staff using temporary password before reset</li>
+              <li>• Successes from admin account after password update</li>
+              <li>• Each event includes IP, application, and location metadata</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('../assets/images/EIAMS1_Audit_Log_User_Activity_Report.png')">
+            <img src="../assets/images/EIAMS1_Audit_Log_User_Activity_Report.png" class="w-full" alt="Sign-in logs">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Sign-in log — hr.staff failures followed by admin successes, with IP and location captured</p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">Audit log — full event chain</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• Group management: Add group, Add member to group</li>
+              <li>• User management: password reset, disable/enable account, delete, restore</li>
+              <li>• Every event shows service, category, activity, status, and initiating actor</li>
+              <li>• This is what a compliance audit or access review would pull</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('../assets/images/EIAMS1_System_Activity_Log_Preview.png')">
+            <img src="../assets/images/EIAMS1_System_Activity_Log_Preview.png" class="w-full" alt="Audit log group events">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Audit log — group creation and member assignment events from Phase 5, fully timestamped</p>
+          </div>
+        </div>
+
+        <!-- Architecture diagram -->
+        <div class="space-y-4">
+          <h4 class="text-sm font-semibold">IAM Architecture Diagram</h4>
+          <p class="text-sm text-text-secondary">The final deliverable maps the complete identity flow built across all ten phases.</p>
+          <div class="image-zoom border border-gray-700 p-4" onclick="openModal('../assets/images/EIAMS1_IAM_Diagram_Chart.png')">
+            <img src="../assets/images/EIAMS1_IAM_Diagram_Chart.png" class="mx-auto max-h-80 w-auto object-contain" alt="IAM Architecture Diagram">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Users → Entra ID → Security Groups → Authentication → Monitoring & Logs</p>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
 </section>
 
+<!-- ══════════════ HARDENING ══════════════ -->
+<section id="hardening" class="fade-soft py-16 md:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-  
-</main>
+    <div class="section-header"><h2>Security Posture & Hardening</h2></div>
+
+    <div class="fade-up card-dark p-6 mb-8">
+      <p class="text-sm text-text-secondary leading-relaxed">
+        The Identity Secure Score came in at <strong class="text-white">54.17%</strong> with 5 open recommendations.
+        The biggest gap: <strong class="text-white">no Conditional Access policies are active</strong>.
+        That's the highest-priority fix — without it, anyone with valid credentials can sign in from anywhere with no additional verification.
+        The hardening plan below addresses the score gaps in order of impact.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-5">
+      <div class="fade-up card-dark border border-red-900/30 p-6 phase-card" style="transition-delay:.05s">
+        <h4 class="text-sm font-bold text-accent-red uppercase tracking-wider mb-3">Identity Control</h4>
+        <p class="text-xs text-text-secondary mb-4 leading-relaxed">Strengthen the identity layer itself.</p>
+        <ul class="text-sm text-text-secondary space-y-3">
+          <li><strong class="text-white block text-xs mb-0.5">Extend MFA to all users</strong>Secure Score flags this open — admin MFA isn't enough, member identities need it too.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Add a second global admin</strong>Only one exists — creates a lockout risk if that account is compromised.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Tighten it.admin roles</strong>User Administrator is broad — review whether a scoped role is more appropriate.</li>
+        </ul>
+      </div>
+      <div class="fade-up card-dark border border-blue-900/30 p-6 phase-card" style="transition-delay:.1s">
+        <h4 class="text-sm font-bold text-accent-action uppercase tracking-wider mb-3">Access Hardening</h4>
+        <p class="text-xs text-text-secondary mb-4 leading-relaxed">Control how and where access is granted.</p>
+        <ul class="text-sm text-text-secondary space-y-3">
+          <li><strong class="text-white block text-xs mb-0.5">Create Conditional Access policies</strong>Priority one: require MFA outside the corporate network, block legacy auth protocols.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Scope guest access</strong>Contractor Test is in IT-Team with no resource restrictions — limit to explicitly approved apps.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Restrict user app consent</strong>Secure Score recommends blocking users from consenting to unverified third-party apps.</li>
+        </ul>
+      </div>
+      <div class="fade-up card-dark border border-green-900/30 p-6 phase-card" style="transition-delay:.15s">
+        <h4 class="text-sm font-bold text-accent-success uppercase tracking-wider mb-3">Continuous Visibility</h4>
+        <p class="text-xs text-text-secondary mb-4 leading-relaxed">Keep monitoring sharp over time.</p>
+        <ul class="text-sm text-text-secondary space-y-3">
+          <li><strong class="text-white block text-xs mb-0.5">Export logs to a SIEM</strong>Portal review isn't enough — configure diagnostic settings to retain logs externally.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Alert on risky sign-ins</strong>Sign-in failures happened with no alert triggered — enable Identity Protection alerting.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Track score over time</strong>Score history goes back to Nov 2025 — set a recurring review to measure improvement.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="fade-up mt-8" style="transition-delay:.2s">
+      <div class="image-zoom border border-gray-700 p-3" onclick="openModal('../assets/images/EIAMS1_User_Access_Permissions_Grid.png')">
+        <img src="../assets/images/EIAMS1_User_Access_Permissions_Grid.png" class="w-full max-w-xl mx-auto" alt="Identity Secure Score">
+        <p class="mt-2 text-xs italic text-text-secondary text-center">Identity Secure Score — 54.17%, 5 open recommendations, score history since Nov 2025</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════ TAKEAWAYS ══════════════ -->
+<section id="takeaways" class="fade-soft py-16 md:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="section-header"><h2>What I Learned</h2></div>
+
+    <div class="grid md:grid-cols-2 gap-8 mb-10">
+      <div class="fade-up card-dark p-6">
+        <h4 class="text-sm font-semibold mb-3">Key takeaways</h4>
+        <ul class="text-sm text-text-secondary space-y-2">
+          <li>• Every provisioning decision creates an audit trail — roles and groups should be intentional from day one</li>
+          <li>• B2B guests can be governed the same as internal users, but their scope needs to be explicitly defined</li>
+          <li>• A Secure Score in the 50s usually means Conditional Access isn't set up — that's the first thing to fix</li>
+          <li>• Audit logs are only useful if someone is actually looking at them — log export and alerting matter</li>
+          <li>• Help desk operations like suspend and restore work cleanly, but they need to be tested, not assumed</li>
+        </ul>
+      </div>
+      <div class="fade-up card-dark p-6" style="transition-delay:.1s">
+        <h4 class="text-sm font-semibold mb-3">Skills demonstrated</h4>
+        <div class="flex flex-wrap gap-2">
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Microsoft Entra ID</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Identity Lifecycle</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">RBAC Group Design</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">B2B Guest Collaboration</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Help Desk (Tier 1)</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Audit Log Investigation</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Sign-in Log Analysis</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Identity Secure Score</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Conditional Access</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">IAM Architecture</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="fade-up card-dark p-6 mb-10" style="transition-delay:.15s">
+      <p class="text-sm text-text-secondary leading-relaxed">
+        This lab covers the full IAM operations cycle: stand up the tenant, provision identities with appropriate roles,
+        enforce access through groups, run the help desk tasks that come up every day, and verify that everything
+        is logged and traceable. The security posture review at the end ties it together — showing where the gaps are
+        and what the hardening roadmap looks like.
+      </p>
+    </div>
+
+    <div class="fade-up">
+      <a href="../index.html#projects" class="inline-flex text-accent-action text-sm hover:text-accent-red transition font-mono">
+        ← Back to Portfolio
+      </a>
+    </div>
+
+  </div>
+</section>
 
 <script>
-function tab(btn, id){
-  btn.closest('section').querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('on'));
-  btn.closest('section').querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('on'));
-  btn.classList.add('on');
-  document.getElementById(id).classList.add('on');
-}
-function zoom(src){
-  document.getElementById('modal-img').src=src;
-  document.getElementById('modal').classList.add('on');
-}
-function closeModal(){
-  document.getElementById('modal').classList.remove('on');
-  document.getElementById('modal-img').src='';
-}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
-function go(id){
-  document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});
-  const ids=['hero','breakdown','lifecycle','monitoring','posture'];
-  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',ids[i]===id));
-}
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      const ids=['hero','breakdown','lifecycle','monitoring','posture'];
-      document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',ids[i]===e.target.id));
+window.addEventListener("scroll", () => {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById("scroll-progress").style.width = (window.scrollY / total * 100) + "%";
+}, { passive: true });
+
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add("show");
+      revealObs.unobserve(e.target);
     }
   });
-},{threshold:0.3});
-['hero','breakdown','lifecycle','monitoring','posture'].forEach(id=>{
-  const el=document.getElementById(id);
-  if(el)obs.observe(el);
+}, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
+
+document.querySelectorAll(".fade-up, .fade-soft").forEach(el => revealObs.observe(el));
+
+const dotSections = ["hero","overview","phases","hardening","takeaways"];
+const dots = document.querySelectorAll(".nav-dot");
+
+const dotObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = dotSections.indexOf(e.target.id);
+      if (idx !== -1) {
+        dots.forEach(d => d.classList.remove("active"));
+        dots[idx]?.classList.add("active");
+      }
+    }
+  });
+}, { threshold: 0.4 });
+
+dotSections.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) dotObs.observe(el);
 });
+
+function scrollToSection(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener("click", e => {
+    const target = document.querySelector(a.getAttribute("href"));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: "smooth" }); }
+  });
+});
+
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
 </script>
 </body>
 </html>
