@@ -6,115 +6,89 @@
 <title>Christian Aguirre | IT Support Portfolio</title>
 <script src=https://cdn.tailwindcss.com></script>
 <style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;--functional-action:#61afef;--functional-success:#98c379;--accent-primary:var(--accent-structural);--accent-red:#e06c75;--container-bg:#171717;background-color:var(--bg-default);color:var(--text-base)}body{font-family:"Inter",sans-serif;transition:background-color .5s,color .5s}.section-title-wrapper{display:inline-flex;align-items:center;margin-bottom:2rem;font-family:"Inconsolata",monospace;width:100%}.section-title-wrapper h2{font-size:1.875rem;font-weight:700;color:var(--accent-structural);flex-shrink:0}.section-title-wrapper span{content:'';display:block;height:2px;background-color:var(--text-secondary);margin-left:.75rem;flex-grow:1;opacity:.5;min-width:150px}.progress-bar-container{height:4px;background-color:var(--bg-secondary);border-radius:9999px;overflow:hidden}.progress-bar{height:100%;background-color:var(--functional-success);transition:width .8s ease-out}.hero-grid-bg{background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center}.hero-video-bg{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.35}.hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom,rgba(0,0,0,0.6),rgba(0,0,0,0.85));z-index:1}.hero-content{position:relative;z-index:2}.section-header{display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-bottom:2.5rem}.section-header::before,.section-header::after{content:"";flex:1;height:1px;background:rgba(255,255,255,0.18)}.section-header h2{font-family:"Inconsolata",monospace;font-size:1.5rem;font-weight:700;color:#fff;white-space:nowrap;letter-spacing:.03em}
-  
-/* ===== Lift Animation (Skills + Certifications ONLY) ===== */
 
+/* ===== Lift Animation ===== */
 #skills .skill-box,
 #certifications .project-box,
 #projects .project-box {
-  transition: 
-    transform 0.13s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.13s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.1s linear;
-
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.2s ease;
   will-change: transform;
   transform: translateZ(0);
   backface-visibility: hidden;
 }
 
-  #projects .project-box {
-  contain: layout paint;
-}
-
-
-  #projects .project-box {
-  backface-visibility: hidden;
-}
-
-
-
 #skills .skill-box:hover,
 #certifications .project-box:hover,
 #projects .project-box:hover {
-  transform: translateY(-10px) scale(1.02);
-  
-box-shadow: 
-  0 16px 40px rgba(0,0,0,0.45),
-  0 0 0 1px rgba(255,255,255,0.06);
+  transform: translateY(-8px) translateZ(0);
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.5),
+    0 0 0 1px rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.22);
+}
 
-  border-color: rgba(255,255,255,0.25);
-}
-  
-  
-  #projects .project-box {
-  backface-visibility: hidden;
-}
-  
-/* ===== Smooth Scroll Animations ===== */
-  
+/* ===== Scroll Reveal ===== */
 .fade-up {
   opacity: 0;
-  transform: translateY(40px);
+  transform: translateY(28px);
   transition:
-    opacity 0.6s ease,
-    transform 0.6s ease;
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
 }
 
 .fade-up.show {
   opacity: 1;
   transform: translateY(0) translateZ(0);
-  transition: none;
 }
 
-
-  /* stagger animation for project cards */
-#projects .project-card {
-  transition-delay: 0s;
-}
-
-#projects .project-card:nth-child(1) { transition-delay: 0.05s; }
-#projects .project-card:nth-child(2) { transition-delay: 0.1s; }
-#projects .project-card:nth-child(3) { transition-delay: 0.15s; }
-#projects .project-card:nth-child(4) { transition-delay: 0.2s; }
-#projects .project-card:nth-child(5) { transition-delay: 0.25s; }
-#projects .project-card:nth-child(6) { transition-delay: 0.3s; }
-#projects .project-card:nth-child(7) { transition-delay: 0.35s; }
-#projects .project-card:nth-child(8) { transition-delay: 0.4s; }
-#projects .project-card:nth-child(9) { transition-delay: 0.45s; }
-#projects .project-card:nth-child(10) { transition-delay: 0.5s; }
-
-/* Optional: softer entrance for big sections */
 .fade-soft {
   opacity: 0;
-  transform: translateY(30px);
-  transition: all 1.8s ease;
+  transform: translateY(20px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
 }
 
-.fade-up.show {
-  transition-delay: 0s;
-}
-  
 .fade-soft.show {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) translateZ(0);
 }
 
+/* project card stagger */
+#projects .project-card:nth-child(1)  { transition-delay: 0.04s; }
+#projects .project-card:nth-child(2)  { transition-delay: 0.08s; }
+#projects .project-card:nth-child(3)  { transition-delay: 0.12s; }
+#projects .project-card:nth-child(4)  { transition-delay: 0.16s; }
+#projects .project-card:nth-child(5)  { transition-delay: 0.20s; }
+#projects .project-card:nth-child(6)  { transition-delay: 0.24s; }
+#projects .project-card:nth-child(7)  { transition-delay: 0.28s; }
+#projects .project-card:nth-child(8)  { transition-delay: 0.32s; }
+#projects .project-card:nth-child(9)  { transition-delay: 0.36s; }
+#projects .project-card:nth-child(10) { transition-delay: 0.40s; }
+#projects .project-card:nth-child(11) { transition-delay: 0.44s; }
+#projects .project-card:nth-child(12) { transition-delay: 0.48s; }
+#projects .project-card:nth-child(13) { transition-delay: 0.52s; }
+
+/* typing cursor */
 .typing-active::after {
   content: "|";
   margin-left: 4px;
-  animation: blink 1s infinite;
+  animation: blink 0.9s step-end infinite;
   opacity: 0.8;
+  color: var(--functional-action);
 }
 
 @keyframes blink {
-  0%, 50%, 100% { opacity: 1; }
-  25%, 75% { opacity: 0; }
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
 }
 
-
-
 /* ===== SIDE SCROLL DOTS ===== */
-
 .nav-dots {
   position: fixed;
   right: 2rem;
@@ -130,7 +104,7 @@ box-shadow:
   background: var(--text-secondary);
   margin: 0.75rem 0;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.25s ease, transform 0.25s ease;
 }
 
 .nav-dot:hover,
@@ -140,12 +114,26 @@ box-shadow:
 }
 
 @media (max-width: 768px) {
-  .nav-dots {
-    display: none;
-  }
+  .nav-dots { display: none; }
 }
 
-  
+/* scroll progress bar */
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--functional-action);
+  z-index: 9999;
+  pointer-events: none;
+  transition: width 0.08s linear;
+}
+
+#projects .project-box {
+  contain: layout paint;
+  backface-visibility: hidden;
+}
+
 </style>
 <script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)",}}}};function initSmoothScroll(){document.querySelectorAll('a[href^="#"]').forEach((anchor)=>{anchor.addEventListener("click",function(e){const target=document.querySelector(this.getAttribute("href"));if(!target)return;e.preventDefault();target.scrollIntoView({behavior:"smooth"});});});}
 function animateProgressBars(){document.querySelectorAll(".progress-bar").forEach((bar)=>{const percentage=bar.dataset.percentage;bar.style.width=percentage;});}
@@ -153,6 +141,8 @@ function initProjectFilters(){const filterButtons=document.querySelectorAll(".fi
 projectCards.forEach((card)=>card.classList.remove("hidden"));filterButtons.forEach((button)=>{button.addEventListener("click",()=>{const filter=button.dataset.filter;filterButtons.forEach((btn)=>{btn.classList.remove("bg-accent-red","text-white");btn.style.borderColor="rgba(217,217,217,0.18)";btn.style.color="var(--text-secondary)";});button.style.borderColor="var(--functional-action)";button.style.color="white";button.classList.remove("bg-secondary-bg","text-text-secondary");projectCards.forEach((card)=>{const tags=card.dataset.tags||"";if(filter==="all"||tags.includes(filter)){card.classList.remove("hidden");}else{card.classList.add("hidden");}});});});}</script>
 </head>
 <body class="transition-colors duration-500">
+
+<div id="scroll-progress"></div>
 
 <div class="nav-dots">
   <div class="nav-dot active" onclick="scrollToSection('hero')"></div>
@@ -164,7 +154,6 @@ projectCards.forEach((card)=>card.classList.remove("hidden"));filterButtons.forE
   <div class="nav-dot" onclick="scrollToSection('contact')"></div>
 </div>
 
-  
 <nav class="sticky top-0 z-50 bg-container-bg shadow-md transition-colors duration-500">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex justify-between h-16">
@@ -202,762 +191,331 @@ GitHub Repo
 <a href=#experience>Experience</a>
 <a href=#education>Education</a>
 <a href=#contact>Contact</a>
-<a href=https://github.com/cjaguirre/it-support-portfolio target=_blank>
-GitHub Repo
-</a>
+<a href=https://github.com/cjaguirre/it-support-portfolio target=_blank>GitHub Repo</a>
 </div>
 </div>
+
 <section id=hero class="hero-grid-bg relative pt-20 pb-12 sm:pt-24 md:pt-32 md:pb-24 min-h-screen flex items-center transition-colors duration-500 text-center overflow-hidden">
 <video id=heroVideo autoplay muted playsinline class=hero-video-bg></video>
 <div class=hero-overlay></div>
 <div class="hero-content max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-  
 <p id="type-intro" class="hero-text-secondary font-mono text-lg mx-auto"></p>
-
-<h1 id="type-name"
-class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-3 text-text-base">
-</h1>
-
-<h2 id="type-role"
-class="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-semibold mb-6 text-text-secondary">
-</h2>
-
-<p id="type-desc"
-class="text-lg max-w-3xl mx-auto mb-10 text-text-secondary leading-relaxed">
-</p>
-  
+<h1 id="type-name" class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-3 text-text-base"></h1>
+<h2 id="type-role" class="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-semibold mb-6 text-text-secondary"></h2>
+<p id="type-desc" class="text-lg max-w-3xl mx-auto mb-10 text-text-secondary leading-relaxed"></p>
 <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-<a href="#contact" class="inline-block border-2 font-semibold py-3 px-8 transition duration-300 transform hover:scale-[1.02]" style="border-radius:0;background-color:var(--functional-action);border-color:var(--functional-action);color:var(--bg-default);" onmouseover="this.style.backgroundColor='#4f96e4'" onmouseout="this.style.backgroundColor='var(--functional-action)'">
-Get in touch
-</a>
-<a href=https://www.linkedin.com/in/christianaguirre/ target=_blank class="inline-flex items-center border-2 border-accent-cyan text-accent-cyan font-semibold py-3 px-8 hover:bg-accent-cyan hover:text-primary-bg transition duration-300 transform hover:scale-[1.02]" style=border-radius:0>
-LinkedIn
-</a>
-<a href=https://github.com/cjaguirre target=_blank class="inline-flex items-center border-2 border-accent-cyan text-accent-cyan font-semibold py-3 px-8 hover:bg-accent-cyan hover:text-primary-bg transition duration-300 transform hover:scale-[1.02]" style=border-radius:0>
-GitHub
-</a>
+<a href="#contact" class="inline-block border-2 font-semibold py-3 px-8 transition duration-300 transform hover:scale-[1.02]" style="border-radius:0;background-color:var(--functional-action);border-color:var(--functional-action);color:var(--bg-default);" onmouseover="this.style.backgroundColor='#4f96e4'" onmouseout="this.style.backgroundColor='var(--functional-action)'">Get in touch</a>
+<a href=https://www.linkedin.com/in/christianaguirre/ target=_blank class="inline-flex items-center border-2 border-accent-cyan text-accent-cyan font-semibold py-3 px-8 hover:bg-accent-cyan hover:text-primary-bg transition duration-300 transform hover:scale-[1.02]" style=border-radius:0>LinkedIn</a>
+<a href=https://github.com/cjaguirre target=_blank class="inline-flex items-center border-2 border-accent-cyan text-accent-cyan font-semibold py-3 px-8 hover:bg-accent-cyan hover:text-primary-bg transition duration-300 transform hover:scale-[1.02]" style=border-radius:0>GitHub</a>
 </div>
 </div>
 </section>
+
 <section id=about class="fade-soft hero-grid-bg py-16 sm:py-20 md:py-24 bg-primary-bg transition-colors duration-500">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class=section-header>
-<h2>01. About Me</h2>
-</div>
+<div class=section-header><h2>01. About Me</h2></div>
 <div class="fade-up bg-container-bg border p-10 md:p-12" style=border-color:rgba(217,217,217,0.18);border-radius:0>
 <div class="grid lg:grid-cols-3 gap-12 items-center">
 <div class="lg:col-span-2 space-y-4 pr-8 lg:border-r" style=border-color:rgba(217,217,217,0.12)>
-<p class="text-text-secondary text-base leading-relaxed">
-I am an IT support focused professional with hands on experience in troubleshooting, system operations, and log analysis.
-I’ve built labs using tools like Microsoft Sentinel, Sysmon, Active Directory, and Azure to better understand system activity and basic security monitoring.
-</p>
-<p class="text-text-secondary text-base leading-relaxed">
-In my current role supporting a federal facility, I coordinate technical issues, support users,
-and work with vendors and infrastructure teams to keep systems running smoothly. This has strengthened my ability to troubleshoot,
-communicate clearly, and work in structured environments.
-</p>
+<p class="text-text-secondary text-base leading-relaxed">I am an IT support focused professional with hands on experience in troubleshooting, system operations, and log analysis. I've built labs using tools like Microsoft Sentinel, Sysmon, Active Directory, and Azure to better understand system activity and basic security monitoring.</p>
+<p class="text-text-secondary text-base leading-relaxed">In my current role supporting a federal facility, I coordinate technical issues, support users, and work with vendors and infrastructure teams to keep systems running smoothly. This has strengthened my ability to troubleshoot, communicate clearly, and work in structured environments.</p>
 <div class="flex flex-wrap gap-3 pt-4">
-<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>
-Active Directory
-</span>
-<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>
-Microsoft 365
-</span>
-<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>
-ServiceNow
-</span>
-<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>
-Windows Troubleshooting
-</span>
-<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>
-Microsoft Sentinel
-</span>
-<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>
-Log Analysis
-</span>
-<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>
-SQL
-</span>
-<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>
-Security+
-</span>
+<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>Active Directory</span>
+<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>Microsoft 365</span>
+<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>ServiceNow</span>
+<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>Windows Troubleshooting</span>
+<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>Microsoft Sentinel</span>
+<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>Log Analysis</span>
+<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>SQL</span>
+<span class="text-xs font-mono text-accent-cyan border px-3 py-1" style=border-color:rgba(217,217,217,0.25)>Security+</span>
 </div>
 </div>
 <div class="flex justify-center lg:justify-end">
-<img src="assets/images/professional photo of myself.jpg" 
-alt="Christian Aguirre"
-onerror="this.onerror=null;this.src='https://placehold.co/420x550/30333a/D9D9D9?text=Image+Placeholder'"
-class="shadow-lg object-cover border hover:border-accent-action transition duration-300 w-full max-w-[320px]"
-style="border-color:rgba(217,217,217,0.18);border-radius:0;">
-
+<img src="assets/images/professional photo of myself.jpg" alt="Christian Aguirre" onerror="this.onerror=null;this.src='https://placehold.co/420x550/30333a/D9D9D9?text=Image+Placeholder'" class="shadow-lg object-cover border hover:border-accent-action transition duration-300 w-full max-w-[320px]" style="border-color:rgba(217,217,217,0.18);border-radius:0;">
 </div>
 </div>
 </div>
 </div>
 </section>
+
 <section id=skills class="fade-soft hero-grid-bg py-16 sm:py-20 md:py-24 transition-colors duration-500">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class=section-header>
-<h2>02. Skills</h2>
-</div>
+<div class=section-header><h2>02. Skills</h2></div>
 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
-<div class="fade-up bg-container-bg border p-8 transition-none hover:border-accent-action skill-box" style=border-color:rgba(217,217,217,0.18);border-radius:0>
+<div class="fade-up bg-container-bg border p-8 hover:border-accent-action skill-box" style=border-color:rgba(217,217,217,0.18);border-radius:0>
 <h3 class="text-lg font-bold text-text-base flex items-center gap-2">
-<svg class="h-6 w-6 opacity-80 stroke-current" fill=none stroke-width=1.8 viewBox="0 0 24 24" stroke-linecap=round stroke-linejoin=round>
-<path d="M12 3l7 4v5c0 5-3.5 9-7 9s-7-4-7-9V7l7-4z"/>
-</svg>
-Security & Operations
-</h3>
+<svg class="h-6 w-6 opacity-80 stroke-current" fill=none stroke-width=1.8 viewBox="0 0 24 24" stroke-linecap=round stroke-linejoin=round><path d="M12 3l7 4v5c0 5-3.5 9-7 9s-7-4-7-9V7l7-4z"/></svg>
+Security & Operations</h3>
 <ul class="text-sm text-text-secondary space-y-2 pt-4">
-<li>• Security monitoring & triage</li>
-<li>• Azure & Microsoft Sentinel</li>
-<li>• KQL log investigation</li>
-<li>• Windows event analysis</li>
+<li>• Security monitoring & triage</li><li>• Azure & Microsoft Sentinel</li><li>• KQL log investigation</li><li>• Windows event analysis</li>
 </ul>
 </div>
-<div class="fade-up bg-container-bg border p-8 transition-none hover:border-accent-action skill-box" style=border-color:rgba(217,217,217,0.18);border-radius:0>
+<div class="fade-up bg-container-bg border p-8 hover:border-accent-action skill-box" style=border-color:rgba(217,217,217,0.18);border-radius:0>
 <h3 class="text-lg font-bold text-text-base flex items-center gap-2">
-<svg class="h-6 w-6 opacity-80 stroke-current" fill=none stroke-width=1.8 viewBox="0 0 24 24" stroke-linecap=round stroke-linejoin=round>
-<rect x=4 y=10 width=3 height=8 rx="0.8"/>
-<rect x=9 y=6 width=3 height=12 rx="0.8"/>
-<rect x=14 y=8 width=3 height=10 rx="0.8"/>
-<rect x=19 y=4 width=3 height=14 rx="0.8"/>
-</svg>
-Data & Analytics
-</h3>
+<svg class="h-6 w-6 opacity-80 stroke-current" fill=none stroke-width=1.8 viewBox="0 0 24 24" stroke-linecap=round stroke-linejoin=round><rect x=4 y=10 width=3 height=8 rx="0.8"/><rect x=9 y=6 width=3 height=12 rx="0.8"/><rect x=14 y=8 width=3 height=10 rx="0.8"/><rect x=19 y=4 width=3 height=14 rx="0.8"/></svg>
+Data & Analytics</h3>
 <ul class="text-sm text-text-secondary space-y-2 pt-4">
-<li>• SQL (joins, CTEs, cleaning)</li>
-<li>• Python (pandas, analysis)</li>
-<li>• Tableau dashboards</li>
-<li>• Excel modeling & KPI design</li>
+<li>• SQL (joins, CTEs, cleaning)</li><li>• Python (pandas, analysis)</li><li>• Tableau dashboards</li><li>• Excel modeling & KPI design</li>
 </ul>
 </div>
-<div class="fade-up bg-container-bg border p-8 transition-none hover:border-accent-action skill-box" style=border-color:rgba(217,217,217,0.18);border-radius:0>
+<div class="fade-up bg-container-bg border p-8 hover:border-accent-action skill-box" style=border-color:rgba(217,217,217,0.18);border-radius:0>
 <h3 class="text-lg font-bold text-text-base flex items-center gap-2">
-<svg class="h-6 w-6 opacity-80 stroke-current" fill=none stroke-width=1.8 viewBox="0 0 24 24" stroke-linecap=round stroke-linejoin=round>
-<rect x=3 y=4 width=18 height=16 rx="2"/>
-<path d="M8 10l2 2-2 2"/>
-<path d="M13 14h3"/>
-</svg>
-Tools & Languages
-</h3>
+<svg class="h-6 w-6 opacity-80 stroke-current" fill=none stroke-width=1.8 viewBox="0 0 24 24" stroke-linecap=round stroke-linejoin=round><rect x=3 y=4 width=18 height=16 rx="2"/><path d="M8 10l2 2-2 2"/><path d="M13 14h3"/></svg>
+Tools & Languages</h3>
 <ul class="text-sm text-text-secondary space-y-2 pt-4">
-<li>• PowerShell scripting</li>
-<li>• GitHub version control</li>
-<li>• SIEM pipelines</li>
-<li>• Documentation & SOP writing</li>
+<li>• PowerShell scripting</li><li>• GitHub version control</li><li>• SIEM pipelines</li><li>• Documentation & SOP writing</li>
 </ul>
 </div>
-<div class="fade-up bg-container-bg border p-8 transition-none hover:border-accent-action skill-box" style=border-color:rgba(217,217,217,0.18);border-radius:0>
+<div class="fade-up bg-container-bg border p-8 hover:border-accent-action skill-box" style=border-color:rgba(217,217,217,0.18);border-radius:0>
 <h3 class="text-lg font-bold text-text-base flex items-center gap-2">
-<svg class="h-6 w-6 opacity-80 stroke-current" fill=none stroke-width=1.8 viewBox="0 0 24 24" stroke-linecap=round stroke-linejoin=round>
-<circle cx=12 cy=8 r="4"/>
-<path d="M10 12l-2 8 4-2 4 2-2-8"/>
-</svg>
-Certifications
-</h3>
+<svg class="h-6 w-6 opacity-80 stroke-current" fill=none stroke-width=1.8 viewBox="0 0 24 24" stroke-linecap=round stroke-linejoin=round><circle cx=12 cy=8 r="4"/><path d="M10 12l-2 8 4-2 4 2-2-8"/></svg>
+Certifications</h3>
 <ul class="text-sm text-text-secondary space-y-2 pt-4">
-<li>• CompTIA Security+ (SYO-701)</li>
-<li>• Google Advanced Data Analytics</li>
-<li>• Google Data Analytics</li>
+<li>• CompTIA Security+ (SYO-701)</li><li>• Google Advanced Data Analytics</li><li>• Google Data Analytics</li>
 </ul>
 </div>
 </div>
 </div>
 </section>
 
-  <section id=certifications class="fade-soft hero-grid-bg py-16 sm:py-20 md:py-24 bg-primary-bg transition-colors duration-500">
+<section id=certifications class="fade-soft hero-grid-bg py-16 sm:py-20 md:py-24 bg-primary-bg transition-colors duration-500">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-<div class=section-header>
-<h2>03. Certifications</h2>
-</div>
-
+<div class=section-header><h2>03. Certifications</h2></div>
 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-
-<div class="fade-up bg-container-bg border p-8 transition-none hover:border-accent-action project-box"
-style=border-color:rgba(217,217,217,0.18);border-radius:0>
-
-<h3 class="text-lg font-semibold text-text-base">
-CompTIA Security+
-</h3>
-
-<p class="text-xs font-mono text-accent-cyan mt-1">
-SY0-701 · Active
-</p>
-
-<p class="text-sm text-text-secondary mt-3">
-Industry standard certification validating skills in threat detection,
-SIEM operations, incident response, identity management, and security monitoring.
-</p>
-
+<div class="fade-up bg-container-bg border p-8 hover:border-accent-action project-box" style=border-color:rgba(217,217,217,0.18);border-radius:0>
+<h3 class="text-lg font-semibold text-text-base">CompTIA Security+</h3>
+<p class="text-xs font-mono text-accent-cyan mt-1">SY0-701 · Active</p>
+<p class="text-sm text-text-secondary mt-3">Industry standard certification validating skills in threat detection, SIEM operations, incident response, identity management, and security monitoring.</p>
 </div>
-
-
-<div class="fade-up bg-container-bg border p-8 transition-none hover:border-accent-action project-box"
-style=border-color:rgba(217,217,217,0.18);border-radius:0>
-
-<h3 class="text-lg font-semibold text-text-base">
-Google Advanced Data Analytics
-</h3>
-
-<p class="text-xs font-mono text-accent-cyan mt-1">
-Google · Professional Certificate
-</p>
-
-<p class="text-sm text-text-secondary mt-3">
-Focused on predictive modeling, machine learning, Python analysis,
-and data driven decision making.
-</p>
-
+<div class="fade-up bg-container-bg border p-8 hover:border-accent-action project-box" style=border-color:rgba(217,217,217,0.18);border-radius:0>
+<h3 class="text-lg font-semibold text-text-base">Google Advanced Data Analytics</h3>
+<p class="text-xs font-mono text-accent-cyan mt-1">Google · Professional Certificate</p>
+<p class="text-sm text-text-secondary mt-3">Focused on predictive modeling, machine learning, Python analysis, and data driven decision making.</p>
 </div>
-
-
-<div class="fade-up bg-container-bg border p-8 transition-none hover:border-accent-action project-box"
-style=border-color:rgba(217,217,217,0.18);border-radius:0>
-
-<h3 class="text-lg font-semibold text-text-base">
-Google Data Analytics
-</h3>
-
-<p class="text-xs font-mono text-accent-cyan mt-1">
-Google · Professional Certificate
-</p>
-
-<p class="text-sm text-text-secondary mt-3">
-Covers SQL, Tableau, data cleaning, dashboards, and analytics workflows
-used in business environments.
-</p>
-
+<div class="fade-up bg-container-bg border p-8 hover:border-accent-action project-box" style=border-color:rgba(217,217,217,0.18);border-radius:0>
+<h3 class="text-lg font-semibold text-text-base">Google Data Analytics</h3>
+<p class="text-xs font-mono text-accent-cyan mt-1">Google · Professional Certificate</p>
+<p class="text-sm text-text-secondary mt-3">Covers SQL, Tableau, data cleaning, dashboards, and analytics workflows used in business environments.</p>
 </div>
-
 </div>
 </div>
 </section>
-  
+
 <section id=projects class="fade-soft hero-grid-bg py-16 sm:py-20 md:py-24 bg-primary-bg transition-colors duration-500">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class=section-header>
-<h2>04. Projects</h2>
-</div>
+<div class=section-header><h2>04. Projects</h2></div>
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 mb-8 text-xs sm:text-sm">
-<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-filter=all>
-All
-</button>
-  
-<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition flex items-center gap-2"
-data-filter="itsupport">
-
-<svg class="h-4 w-4 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.8">
-<rect x="3" y="4" width="18" height="16" rx="2"/>
-<path d="M8 10l2 2-2 2"/>
-<path d="M13 14h3"/>
-</svg>
-
-IT Support & Systems
-</button>
-  
-<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition flex items-center gap-2"
-data-filter="soc">
-
-<svg class="h-4 w-4 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.8">
-<path d="M12 3l7 4v5c0 5-3.5 9-7 9s-7-4-7-9V7l7-4z"/>
-<path d="M9 12l2 2 4-4"/>
-</svg>
-
-Security & SOC
-</button>
-  
-<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition flex items-center gap-2"
-data-filter="sql">
-
-<svg class="h-4 w-4 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.8">
-<ellipse cx="12" cy="5" rx="6" ry="2.5"/>
-<path d="M6 5v5c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5V5"/>
-<path d="M6 10v5c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-5"/>
-</svg>
-
-SQL & Databases
-</button>
-  
-<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition flex items-center gap-2"
-data-filter="analytics">
-
-<svg class="h-4 w-4 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.8">
-<path d="M4 18V6" />
-<path d="M4 18h16" />
-<path d="M7 14l3-4 4 3 4-6" />
-</svg>
-
-Data Projects
-</button>
-  
+<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition" style=border-color:rgba(217,217,217,0.18);border-radius:0 data-filter=all>All</button>
+<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition flex items-center gap-2" data-filter="itsupport">
+<svg class="h-4 w-4 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 10l2 2-2 2"/><path d="M13 14h3"/></svg>IT Support & Systems</button>
+<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition flex items-center gap-2" data-filter="soc">
+<svg class="h-4 w-4 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.8"><path d="M12 3l7 4v5c0 5-3.5 9-7 9s-7-4-7-9V7l7-4z"/><path d="M9 12l2 2 4-4"/></svg>Security & SOC</button>
+<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition flex items-center gap-2" data-filter="sql">
+<svg class="h-4 w-4 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.8"><ellipse cx="12" cy="5" rx="6" ry="2.5"/><path d="M6 5v5c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5V5"/><path d="M6 10v5c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-5"/></svg>SQL & Databases</button>
+<button class="filter-btn border px-4 py-2 bg-container-bg text-text-secondary hover:border-accent-action transition flex items-center gap-2" data-filter="analytics">
+<svg class="h-4 w-4 opacity-80 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.8"><path d="M4 18V6"/><path d="M4 18h16"/><path d="M7 14l3-4 4 3 4-6"/></svg>Data Projects</button>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-  <article class="fade-up project-card project-box w-full overflow-hidden cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="soc" data-link="./projects/nessus-vulnerability-scanning-lab.html">
+
+<article class="fade-up project-card project-box w-full overflow-hidden cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="soc" data-link="./projects/nessus-vulnerability-scanning-lab.html">
 <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
-
-  <div class="w-full md:w-[55%]">
-    <div class="flex justify-between items-center mb-1">
-      <h3 class="text-xl font-semibold">Nessus Vulnerability Scanning Lab</h3>
-    </div>
-
-    <p class="text-xs font-mono text-accent-cyan mb-3">
-      Vulnerability Scanning · Risk Analysis · Remediation
-    </p>
-
-    <p class="text-sm text-text-secondary mb-3">
-      Built and ran authenticated Nessus scans on Metasploitable within a controlled lab environment.
-      Analyzed discovered vulnerabilities, prioritized risk levels, and documented findings with recommended remediation steps.
-    </p>
-
-    <a href="./projects/nessus-vulnerability-scanning-lab.html"
-       onclick="event.stopPropagation();"
-       class="text-sm font-mono text-green-400">
-      ➜ Learn more
-    </a>
-  </div>
-
-  <img src="assets/images/NV1_MS2_FullScan_AllVulnOverview.png"
-class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border"
-style="transform: translateZ(0); will-change: transform;" />
-
+<div class="w-full md:w-[55%]">
+<div class="flex justify-between items-center mb-1"><h3 class="text-xl font-semibold">Nessus Vulnerability Scanning Lab</h3></div>
+<p class="text-xs font-mono text-accent-cyan mb-3">Vulnerability Scanning · Risk Analysis · Remediation</p>
+<p class="text-sm text-text-secondary mb-3">Built and ran authenticated Nessus scans on Metasploitable within a controlled lab environment. Analyzed discovered vulnerabilities, prioritized risk levels, and documented findings with recommended remediation steps.</p>
+<a href="./projects/nessus-vulnerability-scanning-lab.html" onclick="event.stopPropagation();" class="text-sm font-mono text-green-400">➜ Learn more</a>
 </div>
-  
+<img src="assets/images/NV1_MS2_FullScan_AllVulnOverview.png" class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border" style="transform:translateZ(0);will-change:transform;"/>
+</div>
 </article>
+
 <article class="fade-up project-card project-box w-full overflow-hidden cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="itsupport" data-link="./projects/servicenow-itsm.html">
-
-  <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
-
-    <div class="w-full md:w-[55%]">
-      <h3 class="text-xl font-semibold">ServiceNow ITSM Implementation Lab</h3>
-
-      <p class="text-xs font-mono text-accent-cyan mb-3">
-       ServiceNow ITSM · Incident Management · Change Management 
-      </p>
-
-      <p class="text-sm text-text-secondary mb-3">
-        Configured a full ITSM environment including incident, problem, and change workflows.
-        Designed assignment rules, routing logic, and governance controls to simulate real-world service desk operations.
-
-      </p>
-
-      <a href="./projects/servicenow-itsm.html"
-         onclick="event.stopPropagation();"
-         class="text-sm font-mono text-green-400">
-        ➜ Learn more
-      </a>
-    </div>
-
-    <img src="assets/images/SN1_assignment_rules_execution_order.png"
-         alt="ServiceNow Thumbnail"
-class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border"
-style="transform: translateZ(0); will-change: transform;" />
-
-  </div>
-
+<div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
+<div class="w-full md:w-[55%]">
+<h3 class="text-xl font-semibold">ServiceNow ITSM Implementation Lab</h3>
+<p class="text-xs font-mono text-accent-cyan mb-3">ServiceNow ITSM · Incident Management · Change Management</p>
+<p class="text-sm text-text-secondary mb-3">Configured a full ITSM environment including incident, problem, and change workflows. Designed assignment rules, routing logic, and governance controls to simulate real-world service desk operations.</p>
+<a href="./projects/servicenow-itsm.html" onclick="event.stopPropagation();" class="text-sm font-mono text-green-400">➜ Learn more</a>
+</div>
+<img src="assets/images/SN1_assignment_rules_execution_order.png" alt="ServiceNow Thumbnail" class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border" style="transform:translateZ(0);will-change:transform;"/>
+</div>
 </article>
-  
+
 <article class="fade-up project-card project-box w-full overflow-hidden cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="itsupport" data-link="./projects/enterprise-iam-azure.html">
-  <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
-
-  <div class="w-full md:w-[55%]">
-    <h3 class="text-xl font-semibold">Enterprise Entra IAM Lab</h3>
-
-    <p class="text-xs font-mono text-accent-cyan mb-3">
-      Entra ID · RBAC · Identity Management
-    </p>
-
-    <p class="text-sm text-text-secondary mb-3">
-     Simulated identity lifecycle management within Entra ID, including user provisioning, role-based access control, and audit logging.
-     Practiced common helpdesk tasks and reviewed sign-in activity to track changes.
-
-    </p>
-
-    <a href="./projects/enterprise-iam-azure.html"
-       onclick="event.stopPropagation();"
-       class="text-sm font-mono text-green-400">
-      ➜ Learn more
-    </a>
-  </div>
-
-  <img src="assets/images/EIAMS1_IAM_Diagram_Chart.png"
-class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border"
-style="transform: translateZ(0); will-change: transform;" />
-
+<div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
+<div class="w-full md:w-[55%]">
+<h3 class="text-xl font-semibold">Enterprise Entra IAM Lab</h3>
+<p class="text-xs font-mono text-accent-cyan mb-3">Entra ID · RBAC · Identity Management</p>
+<p class="text-sm text-text-secondary mb-3">Simulated identity lifecycle management within Entra ID, including user provisioning, role-based access control, and audit logging. Practiced common helpdesk tasks and reviewed sign-in activity to track changes.</p>
+<a href="./projects/enterprise-iam-azure.html" onclick="event.stopPropagation();" class="text-sm font-mono text-green-400">➜ Learn more</a>
 </div>
-  
+<img src="assets/images/EIAMS1_IAM_Diagram_Chart.png" class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border" style="transform:translateZ(0);will-change:transform;"/>
+</div>
 </article>
-  
+
 <article class="fade-up project-card project-box w-full overflow-hidden cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="soc" data-link="./projects/azure-soc-honeypot.html">
- <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
-
-  <div class="w-full md:w-[55%]">
-    <h3 class="text-xl font-semibold">Azure Sentinel Threat Analysis</h3>
-
-    <p class="text-xs font-mono text-accent-cyan mb-3">
-      Microsoft Sentinel · KQL · Threat Analysis
-    </p>
-
-    <p class="text-sm text-text-secondary mb-3">
-      Deployed a honeypot VM in Azure to capture real-world attack attempts.
-      Ingested logs into Microsoft Sentinel and used KQL to analyze failed logins, attacker patterns, and geographic activity.
-
-    </p>
-
-    <a href="./projects/azure-soc-honeypot.html"
-       onclick="event.stopPropagation();"
-       class="text-sm font-mono text-green-400">
-      ➜ Learn more
-    </a>
-  </div>
-
-  <img src="assets/images/SOC1_SOCArc_Diagram.png"
-class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border"
-style="transform: translateZ(0); will-change: transform;" />
-
+<div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
+<div class="w-full md:w-[55%]">
+<h3 class="text-xl font-semibold">Azure Sentinel Threat Analysis</h3>
+<p class="text-xs font-mono text-accent-cyan mb-3">Microsoft Sentinel · KQL · Threat Analysis</p>
+<p class="text-sm text-text-secondary mb-3">Deployed a honeypot VM in Azure to capture real-world attack attempts. Ingested logs into Microsoft Sentinel and used KQL to analyze failed logins, attacker patterns, and geographic activity.</p>
+<a href="./projects/azure-soc-honeypot.html" onclick="event.stopPropagation();" class="text-sm font-mono text-green-400">➜ Learn more</a>
+</div>
+<img src="assets/images/SOC1_SOCArc_Diagram.png" class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border" style="transform:translateZ(0);will-change:transform;"/>
 </div>
 </article>
-  
+
 <article class="fade-up project-card project-box w-full overflow-hidden cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="itsupport" data-link="./projects/active-directory-iam-project.html">
-  <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
-
-  <div class="w-full md:w-[55%]">
-    <h3 class="text-xl font-semibold">Active Directory Beginner Lab</h3>
-
-    <p class="text-xs font-mono text-accent-cyan mb-3">
-      Active Directory · User Management · Group Policy
-    </p>
-
-    <p class="text-sm text-text-secondary mb-3">
-      Built a Windows Server domain environment and configured users, groups, and policies.
-      Performed core helpdesk tasks such as password resets, account unlocks, and permission management.
-
-    </p>
-
-    <a href="./projects/active-directory-iam-project.html"
-       onclick="event.stopPropagation();"
-       class="text-sm font-mono text-green-400">
-      ➜ Learn more
-    </a>
-  </div>
-
-  <img src="assets/images/ADUC1_DC01_Initial_View.png"
-class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border"
-style="transform: translateZ(0); will-change: transform;" />
-
+<div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
+<div class="w-full md:w-[55%]">
+<h3 class="text-xl font-semibold">Active Directory Beginner Lab</h3>
+<p class="text-xs font-mono text-accent-cyan mb-3">Active Directory · User Management · Group Policy</p>
+<p class="text-sm text-text-secondary mb-3">Built a Windows Server domain environment and configured users, groups, and policies. Performed core helpdesk tasks such as password resets, account unlocks, and permission management.</p>
+<a href="./projects/active-directory-iam-project.html" onclick="event.stopPropagation();" class="text-sm font-mono text-green-400">➜ Learn more</a>
 </div>
-  
+<img src="assets/images/ADUC1_DC01_Initial_View.png" class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border" style="transform:translateZ(0);will-change:transform;"/>
+</div>
 </article>
-  
+
 <article class="fade-up project-card project-box w-full overflow-hidden cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="analytics" data-link="projects/telco-churn.html">
-  <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
-    <div class="w-full md:w-[55%]">
-      <h3 class="text-xl font-semibold">Telco Customer Churn Analysis</h3>
-
-      <p class="text-xs font-mono text-accent-cyan mb-3">
-        Python · Machine Learning · SHAP
-      </p>
-
-      <p class="text-sm text-text-secondary mb-3">
-        Developed machine learning models to predict customer churn using Python.
-        Performed feature analysis and applied SHAP to explain key drivers influencing customer retention.
-
-      </p>
-
-      <a href="projects/telco-churn.html"
-         onclick="event.stopPropagation();"
-         class="text-sm font-mono text-green-400">
-        ➜ Learn more
-      </a>
-    </div>
-
-    <img src="assets/images/TC1_Correlation Heatmap.png"
-         alt="Telco Thumbnail"
-class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border"
-style="transform: translateZ(0); will-change: transform;" />
-  </div>
+<div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
+<div class="w-full md:w-[55%]">
+<h3 class="text-xl font-semibold">Telco Customer Churn Analysis</h3>
+<p class="text-xs font-mono text-accent-cyan mb-3">Python · Machine Learning · SHAP</p>
+<p class="text-sm text-text-secondary mb-3">Developed machine learning models to predict customer churn using Python. Performed feature analysis and applied SHAP to explain key drivers influencing customer retention.</p>
+<a href="projects/telco-churn.html" onclick="event.stopPropagation();" class="text-sm font-mono text-green-400">➜ Learn more</a>
+</div>
+<img src="assets/images/TC1_Correlation Heatmap.png" alt="Telco Thumbnail" class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border" style="transform:translateZ(0);will-change:transform;"/>
+</div>
 </article>
 
-  
 <article class="fade-up project-card project-box w-full overflow-hidden cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="soc" data-link="projects/sysmon-lab.html">
-  <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
-    <div class="w-full md:w-[55%]">
-      <h3 class="text-xl font-semibold">Windows Sysmon Threat Detection Lab</h3>
-
-      <p class="text-xs font-mono text-accent-cyan mb-3">
-        Sysmon · Event Analysis · Threat Detection 
-      </p>
-
-      <p class="text-sm text-text-secondary mb-3">
-        Simulated attacker behavior on a Windows system and monitored activity using Sysmon logs. 
-        Analyzed event data to identify suspicious processes, persistence techniques, and system changes.
-
-      </p>
-
-      <a href="projects/sysmon-lab.html"
-         onclick="event.stopPropagation();"
-         class="text-sm font-mono text-green-400">
-        ➜ Learn more
-      </a>
-    </div>
-
-    <img src="assets/images/WS1_PostExploitation_SystemInfo.png"
-         alt="Sysmon Thumbnail"
-class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border"
-style="transform: translateZ(0); will-change: transform;" />
-  </div>
+<div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
+<div class="w-full md:w-[55%]">
+<h3 class="text-xl font-semibold">Windows Sysmon Threat Detection Lab</h3>
+<p class="text-xs font-mono text-accent-cyan mb-3">Sysmon · Event Analysis · Threat Detection</p>
+<p class="text-sm text-text-secondary mb-3">Simulated attacker behavior on a Windows system and monitored activity using Sysmon logs. Analyzed event data to identify suspicious processes, persistence techniques, and system changes.</p>
+<a href="projects/sysmon-lab.html" onclick="event.stopPropagation();" class="text-sm font-mono text-green-400">➜ Learn more</a>
+</div>
+<img src="assets/images/WS1_PostExploitation_SystemInfo.png" alt="Sysmon Thumbnail" class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border" style="transform:translateZ(0);will-change:transform;"/>
+</div>
 </article>
-  
+
 <article class="fade-up project-card project-box w-full overflow-hidden cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="analytics" data-link="./projects/opm-analysis.html">
-  <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
-    <div class="w-full md:w-[55%]">
-      <h3 class="text-xl font-semibold">Operations Management Analysis</h3>
-
-      <p class="text-xs font-mono text-accent-cyan mb-3">
-        Excel · Data Analysis · Statistics 
-      </p>
-
-      <p class="text-sm text-text-secondary mb-3">
-        Built Excel dashboards to analyze cost and performance metrics across operational scenarios.
-        Applied statistical methods to evaluate efficiency and support data-driven decision making.
-
-      </p>
-
-      <a href="./projects/opm-analysis.html"
-         onclick="event.stopPropagation();"
-         class="text-sm font-mono text-green-400">
-        ➜ Learn more
-      </a>
-    </div>
-
-    <img src="assets/images/OMO1_TransmissionCost_ANOVA.png"
-         alt="Operations Thumbnail"
-class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border"
-style="transform: translateZ(0); will-change: transform;" />
-  </div>
+<div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
+<div class="w-full md:w-[55%]">
+<h3 class="text-xl font-semibold">Operations Management Analysis</h3>
+<p class="text-xs font-mono text-accent-cyan mb-3">Excel · Data Analysis · Statistics</p>
+<p class="text-sm text-text-secondary mb-3">Built Excel dashboards to analyze cost and performance metrics across operational scenarios. Applied statistical methods to evaluate efficiency and support data-driven decision making.</p>
+<a href="./projects/opm-analysis.html" onclick="event.stopPropagation();" class="text-sm font-mono text-green-400">➜ Learn more</a>
+</div>
+<img src="assets/images/OMO1_TransmissionCost_ANOVA.png" alt="Operations Thumbnail" class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border" style="transform:translateZ(0);will-change:transform;"/>
+</div>
 </article>
-  
+
 <article class="fade-up project-card project-box w-full overflow-hidden cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="analytics" data-link="./projects/cyclist-analysis.html">
-  <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
-    <div class="w-full md:w-[55%]">
-      <h3 class="text-xl font-semibold">Cyclistic Rider Behavior Analysis</h3>
-
-      <p class="text-xs font-mono text-accent-cyan mb-3">
-        R · Tableau · Data Visualization
-      </p>
-
-      <p class="text-sm text-text-secondary mb-3">
-        Analyzed rider usage patterns using R and Tableau to identify behavioral trends.
-        Created dashboards to compare casual vs. member riders and highlight key business insights.
-
-      </p>
-
-      <a href="./projects/cyclist-analysis.html"
-         onclick="event.stopPropagation();"
-         class="text-sm font-mono text-green-400">
-        ➜ Learn more
-      </a>
-    </div>
-
-    <img src="assets/images/CY1_Tableau_Dashboard.png"
-         alt="Cyclistic Thumbnail"
-class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border"
-style="transform: translateZ(0); will-change: transform;" />
-  </div>
+<div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
+<div class="w-full md:w-[55%]">
+<h3 class="text-xl font-semibold">Cyclistic Rider Behavior Analysis</h3>
+<p class="text-xs font-mono text-accent-cyan mb-3">R · Tableau · Data Visualization</p>
+<p class="text-sm text-text-secondary mb-3">Analyzed rider usage patterns using R and Tableau to identify behavioral trends. Created dashboards to compare casual vs. member riders and highlight key business insights.</p>
+<a href="./projects/cyclist-analysis.html" onclick="event.stopPropagation();" class="text-sm font-mono text-green-400">➜ Learn more</a>
+</div>
+<img src="assets/images/CY1_Tableau_Dashboard.png" alt="Cyclistic Thumbnail" class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border" style="transform:translateZ(0);will-change:transform;"/>
+</div>
 </article>
-  
+
 <article class="fade-up project-card project-box w-full overflow-hidden cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="analytics" data-link="./projects/bellabeat-device-analysis.html">
-  <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
-    <div class="w-full md:w-[55%]">
-      <h3 class="text-xl font-semibold">Bellabeat Smart Device Usage Analysis</h3>
-
-      <p class="text-xs font-mono text-accent-cyan mb-3">
-       Data Analysis · Visualization · Trend Analysis
-      </p>
-
-      <p class="text-sm text-text-secondary mb-3">
-       Explored smart device usage data to uncover activity and engagement trends.
-       Transformed raw datasets into visual dashboards to support product and marketing insights.
-
-      </p>
-
-      <a href="./projects/bellabeat-device-analysis.html"
-         onclick="event.stopPropagation();"
-         class="text-sm font-mono text-green-400">
-        ➜ Learn more
-      </a>
-    </div>
-
-    <img src="assets/images/BB1_Dashboard_Composite.png"
-         alt="Bellabeat Thumbnail"
-class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border"
-style="transform: translateZ(0); will-change: transform;" />
-  </div>
+<div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
+<div class="w-full md:w-[55%]">
+<h3 class="text-xl font-semibold">Bellabeat Smart Device Usage Analysis</h3>
+<p class="text-xs font-mono text-accent-cyan mb-3">Data Analysis · Visualization · Trend Analysis</p>
+<p class="text-sm text-text-secondary mb-3">Explored smart device usage data to uncover activity and engagement trends. Transformed raw datasets into visual dashboards to support product and marketing insights.</p>
+<a href="./projects/bellabeat-device-analysis.html" onclick="event.stopPropagation();" class="text-sm font-mono text-green-400">➜ Learn more</a>
+</div>
+<img src="assets/images/BB1_Dashboard_Composite.png" alt="Bellabeat Thumbnail" class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border" style="transform:translateZ(0);will-change:transform;"/>
+</div>
 </article>
-  
+
 <article class="fade-up project-card project-box w-full overflow-hidden cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="sql" data-link="./projects/landscape-database-revitalization.html">
-  <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
-    <div class="w-full md:w-[55%]">
-      <h3 class="text-xl font-semibold">Landscape Database Revitalization</h3>
-
-      <p class="text-xs font-mono text-accent-cyan mb-3">
-        SQL Server · Database Design · ETL
-      </p>
-
-      <p class="text-sm text-text-secondary mb-3">
-       Redesigned a disorganized database into a structured SQL Server schema.
-       Improved data integrity, built relationships, and optimized queries for reporting and analysis.
-
-      </p>
-
-      <a href="./projects/landscape-database-revitalization.html"
-         onclick="event.stopPropagation();"
-         class="text-sm font-mono text-green-400">
-        ➜ Learn more
-      </a>
-    </div>
-
-    <img src="assets/images/LS1_ERD.png"
-         alt="Landscape Thumbnail"
-class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border"
-style="transform: translateZ(0); will-change: transform;" />
-  </div>
+<div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
+<div class="w-full md:w-[55%]">
+<h3 class="text-xl font-semibold">Landscape Database Revitalization</h3>
+<p class="text-xs font-mono text-accent-cyan mb-3">SQL Server · Database Design · ETL</p>
+<p class="text-sm text-text-secondary mb-3">Redesigned a disorganized database into a structured SQL Server schema. Improved data integrity, built relationships, and optimized queries for reporting and analysis.</p>
+<a href="./projects/landscape-database-revitalization.html" onclick="event.stopPropagation();" class="text-sm font-mono text-green-400">➜ Learn more</a>
+</div>
+<img src="assets/images/LS1_ERD.png" alt="Landscape Thumbnail" class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border" style="transform:translateZ(0);will-change:transform;"/>
+</div>
 </article>
-  
+
 <article class="fade-up project-card project-box w-full overflow-hidden cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="sql" data-link="./projects/world-layoffs-sql-cleaning.html">
-  <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
-    <div class="w-full md:w-[55%]">
-      <h3 class="text-xl font-semibold">World Layoffs SQL Data Cleaning</h3>
-
-      <p class="text-xs font-mono text-accent-cyan mb-3">
-        SQL · Data Cleaning · Data Quality
-      </p>
-
-      <p class="text-sm text-text-secondary mb-3">
-        Cleaned and standardized large-scale layoff datasets using SQL. 
-        Removed duplicates, handled missing values, and prepared the data for reliable analysis and reporting.
-
-      </p>
-
-      <a href="./projects/world-layoffs-sql-cleaning.html"
-         onclick="event.stopPropagation();"
-         class="text-sm font-mono text-green-400">
-        ➜ Learn more
-      </a>
-    </div>
-
-    <img src="assets/images/WL1_StagingTable.png"
-         alt="World Layoffs Thumbnail"
-class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border"
-style="transform: translateZ(0); will-change: transform;" />
-  </div>
+<div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
+<div class="w-full md:w-[55%]">
+<h3 class="text-xl font-semibold">World Layoffs SQL Data Cleaning</h3>
+<p class="text-xs font-mono text-accent-cyan mb-3">SQL · Data Cleaning · Data Quality</p>
+<p class="text-sm text-text-secondary mb-3">Cleaned and standardized large-scale layoff datasets using SQL. Removed duplicates, handled missing values, and prepared the data for reliable analysis and reporting.</p>
+<a href="./projects/world-layoffs-sql-cleaning.html" onclick="event.stopPropagation();" class="text-sm font-mono text-green-400">➜ Learn more</a>
+</div>
+<img src="assets/images/WL1_StagingTable.png" alt="World Layoffs Thumbnail" class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border" style="transform:translateZ(0);will-change:transform;"/>
+</div>
 </article>
-  
+
 <article class="fade-up project-card project-box w-full overflow-hidden cursor-pointer bg-container-bg border p-8 hover:border-accent-action" style="border-color:rgba(217,217,217,0.18);border-radius:0" data-tags="analytics" data-link="./projects/qd-models.html">
-  <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
-    <div class="w-full md:w-[55%]">
-      <h3 class="text-xl font-semibold">Quantitative Decision Modeling</h3>
-
-      <p class="text-xs font-mono text-accent-cyan mb-3">
-        Excel · Simulation · Optimization
-      </p>
-
-      <p class="text-sm text-text-secondary mb-3">
-        Built Excel-based models using simulation and optimization techniques.
-        Evaluated different scenarios to support decision making and recommend optimal outcomes.
-      </p>
-
-      <a href="./projects/qd-models.html"
-         onclick="event.stopPropagation();"
-         class="text-sm font-mono text-green-400">
-        ➜ Learn more
-      </a>
-    </div>
-
-    <img src="assets/images/QDM1_MonteCarlo_Part24.png"
-         alt="QDM Thumbnail"
-class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border"
-style="transform: translateZ(0); will-change: transform;" />
-  </div>
+<div class="flex flex-col md:flex-row gap-6 md:gap-8 items-stretch">
+<div class="w-full md:w-[55%]">
+<h3 class="text-xl font-semibold">Quantitative Decision Modeling</h3>
+<p class="text-xs font-mono text-accent-cyan mb-3">Excel · Simulation · Optimization</p>
+<p class="text-sm text-text-secondary mb-3">Built Excel-based models using simulation and optimization techniques. Evaluated different scenarios to support decision making and recommend optimal outcomes.</p>
+<a href="./projects/qd-models.html" onclick="event.stopPropagation();" class="text-sm font-mono text-green-400">➜ Learn more</a>
+</div>
+<img src="assets/images/QDM1_MonteCarlo_Part24.png" alt="QDM Thumbnail" class="w-full md:w-[45%] h-[200px] md:h-[220px] object-cover border" style="transform:translateZ(0);will-change:transform;"/>
+</div>
 </article>
-  
+
 </div>
 </div>
 </section>
+
 <section id=experience class="fade-soft hero-grid-bg py-20 transition-colors duration-500">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class=section-header>
-<h2>05. Experience</h2>
-</div>
+<div class=section-header><h2>05. Experience</h2></div>
 <div class="fade-up bg-container-bg border p-12 relative" style=border-color:rgba(217,217,217,0.18);border-radius:0>
 <div class="hidden md:block absolute left-1/2 w-px" style=top:32px;bottom:32px;transform:translateX(-50%);background-color:rgba(217,217,217,0.18)></div>
 <div class=space-y-16>
 <div class="relative grid md:grid-cols-2 gap-10 items-center">
 <div class="md:text-right md:pr-12">
-<h3 class="text-xl font-semibold text-white">
-Facility Support Manager
-</h3>
-<p class="text-accent-cyan text-sm mb-2">
-GBA Associates LP · Defense Health Headquarters
-</p>
-<p class="text-text-secondary text-sm leading-relaxed">
-Oversee daily facility operations, coordinate vendors and contractors, manage work orders,
-and support building maintenance and infrastructure projects across a federal campus.
-</p>
+<h3 class="text-xl font-semibold text-white">Facility Support Manager</h3>
+<p class="text-accent-cyan text-sm mb-2">GBA Associates LP · Defense Health Headquarters</p>
+<p class="text-text-secondary text-sm leading-relaxed">Oversee daily facility operations, coordinate vendors and contractors, manage work orders, and support building maintenance and infrastructure projects across a federal campus.</p>
 </div>
 <div class=md:pl-12>
-<p class="text-sm font-mono text-text-secondary">
-March 2025 — Present
-</p>
-<p class="text-sm text-text-secondary">
-Falls Church, Virginia · on site
-</p>
+<p class="text-sm font-mono text-text-secondary">March 2025 — Present</p>
+<p class="text-sm text-text-secondary">Falls Church, Virginia · on site</p>
 </div>
 <div class="hidden md:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 border" style=background-color:rgba(217,217,217,0.55);border-color:rgba(217,217,217,0.25);border-radius:0></div>
 </div>
 <div class="relative grid md:grid-cols-2 gap-10 items-center">
 <div class="md:text-right md:pr-12">
-<h3 class="text-xl font-semibold text-white">
-Pro Sales Associate
-</h3>
-<p class="text-accent-cyan text-sm mb-2">
-Lowe’s Companies, Inc.
-</p>
-<p class="text-text-secondary text-sm leading-relaxed">
-Supported contractors and business customers with quotes, orders, and material coordination.
-Helped plan deliveries and resolve issues on tight timelines.
-</p>
+<h3 class="text-xl font-semibold text-white">Pro Sales Associate</h3>
+<p class="text-accent-cyan text-sm mb-2">Lowe's Companies, Inc.</p>
+<p class="text-text-secondary text-sm leading-relaxed">Supported contractors and business customers with quotes, orders, and material coordination. Helped plan deliveries and resolve issues on tight timelines.</p>
 </div>
 <div class=md:pl-12>
-<p class="text-sm font-mono text-text-secondary">
-January 2022 — March 2025
-</p>
-<p class="text-sm text-text-secondary">
-Fairfax, Virginia
-</p>
+<p class="text-sm font-mono text-text-secondary">January 2022 — March 2025</p>
+<p class="text-sm text-text-secondary">Fairfax, Virginia</p>
 </div>
 <div class="hidden md:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 border" style=background-color:rgba(217,217,217,0.55);border-color:rgba(217,217,217,0.25);border-radius:0></div>
 </div>
 <div class="relative grid md:grid-cols-2 gap-10 items-center">
 <div class="md:text-right md:pr-12">
-<h3 class="text-xl font-semibold text-white">
-Building Materials and Lumber Associate
-</h3>
-<p class="text-accent-cyan text-sm mb-2">
-Lowe’s Companies, Inc.
-</p>
-<p class="text-text-secondary text-sm leading-relaxed">
-Assisted customers with product selection, maintained inventory, and ensured a safe and organized sales floor.
-</p>
+<h3 class="text-xl font-semibold text-white">Building Materials and Lumber Associate</h3>
+<p class="text-accent-cyan text-sm mb-2">Lowe's Companies, Inc.</p>
+<p class="text-text-secondary text-sm leading-relaxed">Assisted customers with product selection, maintained inventory, and ensured a safe and organized sales floor.</p>
 </div>
 <div class=md:pl-12>
-<p class="text-sm font-mono text-text-secondary">
-January 2021 — December 2022
-</p>
-<p class="text-sm text-text-secondary">
-Fairfax, Virginia
-</p>
+<p class="text-sm font-mono text-text-secondary">January 2021 — December 2022</p>
+<p class="text-sm text-text-secondary">Fairfax, Virginia</p>
 </div>
 <div class="hidden md:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 border" style=background-color:rgba(217,217,217,0.55);border-color:rgba(217,217,217,0.25);border-radius:0></div>
 </div>
@@ -965,140 +523,158 @@ Fairfax, Virginia
 </div>
 </div>
 </section>
+
 <section id=contact class="fade-soft hero-grid-bg py-20 transition-colors duration-500">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class=section-header>
-<h2>06. Contact</h2>
-</div>
+<div class=section-header><h2>06. Contact</h2></div>
 <div class="fade-up bg-container-bg border p-12 relative" style=border-color:rgba(217,217,217,0.18);border-radius:0>
 <div class="grid lg:grid-cols-2 gap-16 items-start">
 <div>
-<h3 class="text-2xl font-mono text-white mb-3">Let’s connect</h3>
-<p class="text-text-secondary mb-10 leading-relaxed max-w-md">
-For roles in security operations, IT systems analysis, or data analytics.
-I’m happy to discuss opportunities, projects, or hands on lab work.
-</p>
+<h3 class="text-2xl font-mono text-white mb-3">Let's connect</h3>
+<p class="text-text-secondary mb-10 leading-relaxed max-w-md">For roles in security operations, IT systems analysis, or data analytics. I'm happy to discuss opportunities, projects, or hands on lab work.</p>
 <form name=contact method=POST data-netlify=true netlify-honeypot=bot-field class=space-y-6>
 <input type=hidden name=form-name value=contact />
 <input type=hidden name=bot-field />
 <div>
-<label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
-Full Name
-</label>
+<label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">Full Name</label>
 <input type="text" name="name" placeholder="Your name" required class="w-full p-4 bg-primary-bg border text-white focus:outline-none focus:border-accent-action transition" style="border-color:rgba(217,217,217,0.18);border-radius:0;" />
 </div>
 <div>
-<label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
-Email
-</label>
+<label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">Email</label>
 <input type="email" name="email" placeholder="name@email.com" required class="w-full p-4 bg-primary-bg border text-white focus:outline-none focus:border-accent-action transition" style="border-color:rgba(217,217,217,0.18);border-radius:0;" />
 </div>
 <div>
-<label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">
-Message
-</label>
+<label class="block text-xs font-mono uppercase tracking-wider text-text-secondary mb-2">Message</label>
 <textarea name="message" rows="6" placeholder="Write your message" required class="w-full p-4 bg-primary-bg border text-white resize-none focus:outline-none focus:border-accent-action transition" style="border-color:rgba(217,217,217,0.18);border-radius:0;"></textarea>
 </div>
-<button type="submit" class="w-full py-4 font-mono uppercase tracking-wider transition" style="background-color:var(--functional-action);color:var(--bg-default);border-radius:0;" onmouseover="this.style.backgroundColor='#4f96e4'" onmouseout="this.style.backgroundColor='var(--functional-action)'">
-Send Message
-</button>
+<button type="submit" class="w-full py-4 font-mono uppercase tracking-wider transition" style="background-color:var(--functional-action);color:var(--bg-default);border-radius:0;" onmouseover="this.style.backgroundColor='#4f96e4'" onmouseout="this.style.backgroundColor='var(--functional-action)'">Send Message</button>
 </form>
 </div>
 <div class=space-y-8>
-<h4 class="text-xs font-mono uppercase tracking-wider text-text-secondary border-b pb-3" style="border-color:rgba(217,217,217,0.18);">
-Contact Information
-</h4>
+<h4 class="text-xs font-mono uppercase tracking-wider text-text-secondary border-b pb-3" style="border-color:rgba(217,217,217,0.18);">Contact Information</h4>
 <div class="space-y-5 text-sm">
-<div>
-<p class="text-xs uppercase tracking-wider text-text-secondary mb-1">Location</p>
-<p class=text-white>Fairfax, Virginia, United States</p>
-</div>
-<div>
-<p class="text-xs uppercase tracking-wider text-text-secondary mb-1">Email</p>
-<p class=text-white>cj.aguirr3@gmail.com</p>
-</div>
-<div>
-<p class="text-xs uppercase tracking-wider text-text-secondary mb-1">LinkedIn</p>
-<a href=https://www.linkedin.com/in/christianaguirre/ target=_blank class="text-white hover:text-accent-action transition">
-linkedin.com/in/christianaguirre
-</a>
-</div>
-<div>
-<p class="text-xs uppercase tracking-wider text-text-secondary mb-1">GitHub</p>
-<a href=https://github.com/cjaguirre target=_blank class="text-white hover:text-accent-action transition">
-github.com/cjaguirre
-</a>
-</div>
+<div><p class="text-xs uppercase tracking-wider text-text-secondary mb-1">Location</p><p class=text-white>Fairfax, Virginia, United States</p></div>
+<div><p class="text-xs uppercase tracking-wider text-text-secondary mb-1">Email</p><p class=text-white>cj.aguirr3@gmail.com</p></div>
+<div><p class="text-xs uppercase tracking-wider text-text-secondary mb-1">LinkedIn</p><a href=https://www.linkedin.com/in/christianaguirre/ target=_blank class="text-white hover:text-accent-action transition">linkedin.com/in/christianaguirre</a></div>
+<div><p class="text-xs uppercase tracking-wider text-text-secondary mb-1">GitHub</p><a href=https://github.com/cjaguirre target=_blank class="text-white hover:text-accent-action transition">github.com/cjaguirre</a></div>
 </div>
 <div class="overflow-hidden border" style=border-color:rgba(217,217,217,0.18);border-radius:0>
 <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-77.35%2C38.80%2C-77.25%2C38.88&layer=mapnik&marker=38.8462%2C-77.3064" class="w-full h-56" loading=lazy></iframe>
 </div>
-<p class="text-xs text-text-secondary text-center">
-Map reference for Fairfax, Virginia
-</p>
+<p class="text-xs text-text-secondary text-center">Map reference for Fairfax, Virginia</p>
 </div>
 </div>
 </div>
 </div>
 </section>
+
 <footer class="bg-container-bg text-gray-500 py-6 text-sm transition-colors duration-500">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
 <div class=text-left>
 <p class="text-xl font-mono text-accent-cyan mb-1">&lt;Christian Aguirre /&gt;</p>
-<p class="text-xs text-text-secondary">
-Building secure and efficient environments by combining facility operations, data analytics, and
-cybersecurity.
-</p>
+<p class="text-xs text-text-secondary">Building secure and efficient environments by combining facility operations, data analytics, and cybersecurity.</p>
 <p class="mt-2 text-xs">&copy; 2025 Christian Aguirre. All rights reserved.</p>
 </div>
 <div class="flex items-center space-x-4 text-xs">
-<a href="#hero" class="font-mono text-xs border px-4 py-2 flex items-center gap-2 transition" style="border-color:rgba(217,217,217,0.18);color:var(--text-secondary);border-radius:0;" onmouseover="this.style.borderColor='var(--functional-action)';this.style.color='white'" onmouseout="this.style.borderColor='rgba(217,217,217,0.18)';this.style.color='var(--text-secondary)'">
-↑ Back to top
-</a>
+<a href="#hero" class="font-mono text-xs border px-4 py-2 flex items-center gap-2 transition" style="border-color:rgba(217,217,217,0.18);color:var(--text-secondary);border-radius:0;" onmouseover="this.style.borderColor='var(--functional-action)';this.style.color='white'" onmouseout="this.style.borderColor='rgba(217,217,217,0.18)';this.style.color='var(--text-secondary)'">↑ Back to top</a>
 </div>
 </div>
 </footer>
-<script>const heroVideos=["assets/videos/CYP1_techstack.mp4","assets/videos/CYP1_bluecable.mp4","assets/videos/CYP1_ports.mp4","assets/videos/CYP1_script1.mp4","assets/videos/CYP1_script2.mp4","assets/videos/CYP1_script3.mp4"];const videoElement=document.getElementById("heroVideo");let currentVideoIndex=0;function playNextVideo(){currentVideoIndex++;if(currentVideoIndex>=heroVideos.length){currentVideoIndex=0;}
-videoElement.src=heroVideos[currentVideoIndex];videoElement.play();}
+
+<script>
+// ─── VIDEO ROTATION ───
+const heroVideos = ["assets/videos/CYP1_techstack.mp4","assets/videos/CYP1_bluecable.mp4","assets/videos/CYP1_ports.mp4","assets/videos/CYP1_script1.mp4","assets/videos/CYP1_script2.mp4","assets/videos/CYP1_script3.mp4"];
+const videoElement = document.getElementById("heroVideo");
+let currentVideoIndex = 0;
 videoElement.src = heroVideos[0];
 videoElement.play();
-
-// change video every 10 seconds
 setInterval(() => {
-  playNextVideo();
+  currentVideoIndex = (currentVideoIndex + 1) % heroVideos.length;
+  videoElement.src = heroVideos[currentVideoIndex];
+  videoElement.play();
 }, 10000);
-  
-document.addEventListener("DOMContentLoaded",()=>{initProjectFilters();initSmoothScroll();animateProgressBars();});
 
-
+// ─── MOBILE MENU ───
 document.getElementById("mobileMenuButton").addEventListener("click", function() {
   document.getElementById("mobileMenu").classList.toggle("hidden");
 });
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry, index) => {
+// ─── INIT ───
+document.addEventListener("DOMContentLoaded", () => {
+  initProjectFilters();
+  initSmoothScroll();
+  animateProgressBars();
+});
+
+// ─── SCROLL PROGRESS BAR ───
+window.addEventListener("scroll", () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById("scroll-progress").style.width = (scrollTop / docHeight * 100) + "%";
+}, { passive: true });
+
+// ─── SCROLL REVEAL — single shared IntersectionObserver ───
+// threshold 0.12 = fires when 12% of the element is visible
+// rootMargin bottom offset prevents late-firing on tall sections
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
     if (entry.isIntersecting) {
-
-      setTimeout(() => {
-        entry.target.classList.add("show");
-      }, index * 80); // 👈 adds stagger + fixes instant trigger
-
-      observer.unobserve(entry.target);
+      entry.target.classList.add("show");
+      revealObserver.unobserve(entry.target); // fire once only
     }
   });
-}, { threshold: 0.2 });
+}, {
+  threshold: 0.12,
+  rootMargin: "0px 0px -40px 0px"
+});
 
 document.querySelectorAll(".fade-up, .fade-soft").forEach(el => {
-  observer.observe(el);
+  revealObserver.observe(el);
 });
-  
+
+// ─── NAV DOTS — IntersectionObserver for active state ───
+const sectionIds = ["hero","about","skills","certifications","projects","experience","contact"];
+const navDots = document.querySelectorAll(".nav-dot");
+
+const dotObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      const idx = sectionIds.indexOf(entry.target.id);
+      if (idx !== -1) {
+        navDots.forEach(d => d.classList.remove("active"));
+        navDots[idx].classList.add("active");
+      }
+    }
+  });
+}, { threshold: 0.4 });
+
+sectionIds.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) dotObserver.observe(el);
+});
+
+function scrollToSection(id) {
+  const target = document.getElementById(id);
+  if (!target) return;
+  target.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// ─── PROJECT CARD CLICK ───
+document.querySelectorAll("#projects .project-card").forEach(card => {
+  card.addEventListener("click", function() {
+    const link = this.getAttribute("data-link");
+    if (link) window.location.href = link;
+  });
+});
+
+// ─── TYPING ANIMATION ───
 function typeText(element, text, speed = 30, delay = 0) {
   return new Promise(resolve => {
     setTimeout(() => {
       let i = 0;
       function typing() {
         if (i < text.length) {
-          element.innerHTML += text.charAt(i);
+          element.textContent += text.charAt(i);
           i++;
           setTimeout(typing, speed);
         } else {
@@ -1111,93 +687,41 @@ function typeText(element, text, speed = 30, delay = 0) {
 }
 
 async function runTypingAnimation() {
-
   const intro = document.getElementById("type-intro");
-  const name = document.getElementById("type-name");
-  const role = document.getElementById("type-role");
-  const desc = document.getElementById("type-desc");
+  const name  = document.getElementById("type-name");
+  const role  = document.getElementById("type-role");
+  const desc  = document.getElementById("type-desc");
 
-  // Step 1
   intro.classList.add("typing-active");
   await typeText(intro, "Hello, my name is", 45);
   intro.classList.remove("typing-active");
 
-await new Promise(r => setTimeout(r, 150));
-  
-  // Step 2
+  await new Promise(r => setTimeout(r, 120));
+
   name.classList.add("typing-active");
   await typeText(name, "Christian Aguirre", 65);
   name.classList.remove("typing-active");
 
-  await new Promise(r => setTimeout(r, 300));
+  await new Promise(r => setTimeout(r, 250));
 
-  // Step 3
   role.classList.add("typing-active");
   await typeText(role, "IT Support & Security Operations Analyst", 40);
   role.classList.remove("typing-active");
 
-  await new Promise(r => setTimeout(r, 300));
+  await new Promise(r => setTimeout(r, 250));
 
-  // Step 4 (final stays blinking)
   desc.classList.add("typing-active");
   await typeText(
     desc,
     "Security+ certified IT professional focused on IT support and troubleshooting. I support users, resolve technical issues, and work with tools like Active Directory and Microsoft 365. I also build hands on labs using Microsoft Sentinel and Sysmon to strengthen my security and monitoring skills.",
     22
   );
-
-  // keep cursor blinking on the last paragraph
+  // cursor stays blinking on final paragraph
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   runTypingAnimation();
 });
-
-document.querySelectorAll("#projects .project-card").forEach(card => {
-  card.addEventListener("click", function() {
-    const link = this.getAttribute("data-link");
-    if (link) {
-      window.location.href = link;
-    }
-  });
-});
-  
-  function scrollToSection(id) {
-  const target = document.getElementById(id);
-  if (!target) return;
-
-  target.scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
-
-  const sections = ["hero","about","skills","certifications","projects","experience","contact"];
-  const dots = document.querySelectorAll(".nav-dot");
-
-  dots.forEach((dot, index) => {
-    dot.classList.toggle("active", sections[index] === id);
-  });
-}
-
-
-  window.addEventListener("scroll", () => {
-  const sections = ["hero","about","skills","certifications","projects","experience","contact"];
-  const scrollPos = window.scrollY + 200;
-
-  sections.forEach((id, index) => {
-    const section = document.getElementById(id);
-    if (!section) return;
-
-    if (
-      scrollPos >= section.offsetTop &&
-      scrollPos < section.offsetTop + section.offsetHeight
-    ) {
-      document.querySelectorAll(".nav-dot").forEach(dot => dot.classList.remove("active"));
-      document.querySelectorAll(".nav-dot")[index].classList.add("active");
-    }
-  });
-});
-  
 </script>
 </body>
 </html>
