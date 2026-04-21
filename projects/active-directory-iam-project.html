@@ -1,484 +1,574 @@
 <!DOCTYPE html>
-<html lang=en data-theme=dark class=dark>
+<html lang="en" class="dark">
 <head>
-<meta charset=UTF-8 />
-<meta name=viewport content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Active Directory Beginner Lab | Christian Aguirre</title>
-<script>function switchTab(tabId){document.querySelectorAll('.tab-button').forEach(btn=>{btn.classList.remove('active');});document.querySelectorAll('.tab-content').forEach(content=>{content.classList.remove('active');});const activeButton=[...document.querySelectorAll('.tab-button')].find(btn=>btn.getAttribute('onclick')&&btn.getAttribute('onclick').includes(tabId));if(activeButton)activeButton.classList.add('active');const target=document.getElementById(`tab-${tabId}`);if(target)target.classList.add('active');}</script>
-<script src=https://cdn.tailwindcss.com></script>
-<script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)",}}}};</script>
-<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;
---functional-action:#ffffff;
---functional-success:#98c379;--accent-red:#e06c75;--container-bg:#171717;background-color:var(--bg-default);color:var(--text-base)}body{font-family:"Inter",sans-serif;background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center;background-attachment:fixed;min-height:100vh}.pill{border-radius:999px;padding:.2rem .7rem;border:1px solid rgba(171,178,191,0.6);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em}.pill-muted{color:var(--text-secondary);background-color:rgba(23,23,23,0.95)}.pill-accent{color:var(--accent-structural);background-color:rgba(23,23,23,0.95);border-color:rgba(217,217,217,0.9)}.tab-button{padding:1rem 1.5rem;background:transparent;border:0;color:var(--text-secondary);font-family:"Inconsolata",monospace;cursor:pointer;transition:all .3s ease;border-bottom:3px solid transparent;white-space:nowrap}.tab-button:hover{color:var(--functional-action);background:rgba(97,175,239,0.05)}.tab-button.active{color:var(--functional-action);border-bottom-color:var(--functional-action)}.tab-content{display:none;animation:fadeSlideIn .4s ease-out}.tab-content.active{display:block}@keyframes fadeSlideIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}.stat-card{position:relative;overflow:hidden}.stat-number{font-size:2.5rem;font-weight:800;font-family:"Inconsolata",monospace}.image-zoom{cursor:pointer;transition:all .3s ease}.image-zoom:hover{transform:scale(1.02);box-shadow:0 10px 40px rgba(97,175,239,0.3)}.modal{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.95)}.modal.active{display:flex;align-items:center;justify-content:center}.modal-content{max-width:95%;max-height:95%;border-radius:8px}.severity-critical,.severity-high,.severity-medium,.severity-low,.severity-info{padding:.25rem .75rem;border-radius:999px;font-size:.7rem;text-transform:uppercase}.severity-critical{background:rgba(185,28,28,0.15);border:1px solid #b91c1c;color:#b91c1c}.severity-high{background:rgba(194,65,12,0.15);border:1px solid #c2410c;color:#c2410c}.severity-medium{background:rgba(249,115,22,0.15);border:1px solid #f97316;color:#f97316}.severity-low{background:rgba(234,179,8,0.15);border:1px solid #eab308;color:#eab308}.severity-info{background:rgba(59,130,246,0.15);border:1px solid #3b82f6;color:#3b82f6}.collapsible-content{max-height:0;overflow:hidden;transition:max-height .4s ease-out,margin .2s ease;margin:0!important}.collapsible-content.open{max-height:10000px;margin:1.75rem 0 2rem 0}.nav-dots{position:fixed;right:2rem;top:50%;transform:translateY(-50%);z-index:100}.nav-dot{width:10px;height:10px;border-radius:50%;background:var(--text-secondary);margin:.75rem 0;cursor:pointer;transition:all .3s ease}.nav-dot:hover,.nav-dot.active{background:var(--functional-action);transform:scale(1.4)}@media(max-width:768px){.nav-dots{display:none}}.ring-anim{animation:fadeInRing 1.2s ease-out forwards;opacity:0}@keyframes fadeInRing{to{opacity:1}}.phase-container{background:var(--container-bg);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;padding:2.5rem;box-shadow:0 12px 40px rgba(0,0,0,0.35)}.card-dark{background:var(--container-bg);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;box-shadow:0 12px 40px rgba(0,0,0,0.35)}pre code{font-family:"Inconsolata",monospace;font-size:.8rem}
-*{
-border-radius:0 !important;
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
+
+.dark {
+  --bg-default: #1e1e1e;
+  --bg-secondary: #30333a;
+  --text-base: #fff;
+  --text-secondary: #abb2bf;
+  --accent-structural: #d9d9d9;
+  --functional-action: #61afef;
+  --functional-success: #98c379;
+  --accent-red: #e06c75;
+  --container-bg: #171717;
+  background-color: var(--bg-default);
+  color: var(--text-base);
 }
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--bg-default);
+  background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, rgba(0,0,0,0) 1px);
+  background-size: 20px 20px;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--functional-action);
+  z-index: 9999;
+  pointer-events: none;
+  transition: width 0.08s linear;
+}
+
+.nav-dots {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+}
+.nav-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+  margin: 0.75rem 0;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+.nav-dot:hover, .nav-dot.active {
+  background: var(--functional-action);
+  transform: scale(1.4);
+}
+@media (max-width: 768px) { .nav-dots { display: none; } }
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+.section-header::before, .section-header::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.18);
+}
+.section-header h2 {
+  font-family: "Inconsolata", monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  letter-spacing: .03em;
+}
+
+.card-dark {
+  background: var(--container-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.pill {
+  display: inline-block;
+  border-radius: 999px;
+  padding: .2rem .7rem;
+  border: 1px solid rgba(171,178,191,0.6);
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+.pill-muted  { color: var(--text-secondary); background: rgba(23,23,23,0.95); }
+.pill-accent { color: var(--accent-structural); background: rgba(23,23,23,0.95); border-color: rgba(217,217,217,0.9); }
+
+.tab-button {
+  padding: .75rem 1.25rem;
+  background: transparent;
+  border: 0;
+  color: var(--text-secondary);
+  font-family: "Inconsolata", monospace;
+  font-size: .85rem;
+  cursor: pointer;
+  transition: color 0.25s, border-color 0.25s;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.tab-button:hover  { color: var(--functional-action); }
+.tab-button.active { color: var(--functional-action); border-bottom-color: var(--functional-action); }
+
+.tab-content { display: none; }
+.tab-content.active {
+  display: block;
+  animation: fadeSlideIn .4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.image-zoom {
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+.image-zoom:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 40px rgba(97,175,239,0.2);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  align-items: center;
+  justify-content: center;
+}
+.modal.active { display: flex; }
+.modal-content { max-width: 95%; max-height: 95%; border-radius: 4px; }
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.fade-up.show { opacity: 1; transform: translateY(0); }
+
+.fade-soft {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.fade-soft.show { opacity: 1; transform: translateY(0); }
+
+.stat-stagger:nth-child(1) { transition-delay: 0.05s; }
+.stat-stagger:nth-child(2) { transition-delay: 0.10s; }
+.stat-stagger:nth-child(3) { transition-delay: 0.15s; }
+.stat-stagger:nth-child(4) { transition-delay: 0.20s; }
+.stat-stagger:nth-child(5) { transition-delay: 0.25s; }
+
+.phase-card {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.2s ease,
+              box-shadow 0.25s ease;
+}
+.phase-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(97,175,239,0.35);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+}
+
+pre code {
+  font-family: "Inconsolata", monospace;
+  font-size: .8rem;
+}
+
+* { border-radius: 0 !important; }
 </style>
+<script>
+tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+  "container-bg": "var(--container-bg)",
+  "text-secondary": "var(--text-secondary)",
+  "accent-cyan": "var(--accent-structural)",
+  "accent-action": "var(--functional-action)",
+  "accent-success": "var(--functional-success)",
+  "accent-red": "var(--accent-red)",
+}}}};
+
+function switchTab(id) {
+  document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+  const btn = [...document.querySelectorAll(".tab-button")].find(b => b.dataset.tab === id);
+  if (btn) btn.classList.add("active");
+  const tab = document.getElementById("tab-" + id);
+  if (tab) tab.classList.add("active");
+}
+
+function openModal(src) {
+  document.getElementById("modalImage").src = src;
+  document.getElementById("imageModal").classList.add("active");
+}
+function closeModal() {
+  document.getElementById("imageModal").classList.remove("active");
+  document.getElementById("modalImage").src = "";
+}
+</script>
 </head>
-<body class=text-text-base>
-<div class=nav-dots>
-<div class="nav-dot active" onclick="scrollToSection('hero')"></div>
-<div class=nav-dot onclick="scrollToSection('workflow')"></div>
-<div class=nav-dot onclick="scrollToSection('lab')"></div>
-<div class=nav-dot onclick="scrollToSection('vuln-overview')"></div>
+<body class="text-white">
+
+<div id="scroll-progress"></div>
+
+<div class="modal" id="imageModal" onclick="closeModal()">
+  <span style="position:absolute;top:2rem;right:3rem;color:white;font-size:3rem;cursor:pointer">&times;</span>
+  <img class="modal-content" id="modalImage" alt="Enlarged view">
 </div>
-<div class=modal id=imageModal onclick=closeModal()>
-<span style=position:absolute;top:2rem;right:3rem;color:white;font-size:3rem;cursor:pointer>&times;</span>
-<img class=modal-content id=modalImage alt="Enlarged view">
+
+<div class="nav-dots">
+  <div class="nav-dot active" onclick="scrollToSection('hero')"></div>
+  <div class="nav-dot" onclick="scrollToSection('overview')"></div>
+  <div class="nav-dot" onclick="scrollToSection('phases')"></div>
+  <div class="nav-dot" onclick="scrollToSection('operations')"></div>
+  <div class="nav-dot" onclick="scrollToSection('takeaways')"></div>
 </div>
-<main>
-<section id=hero class="pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<a href=../index.html#projects class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition mb-6">
-← Back to Portfolio
-</a>
-<div class="flex flex-wrap justify-center gap-2 mb-6 text-center">
-<span class="pill pill-accent">Active Directory Lab</span>
-<span class="pill pill-muted">Windows Server 2022</span>
-<span class="pill pill-muted">Azure VM</span>
-<span class="pill pill-muted">AD DS &amp; DNS</span>
-<span class="pill pill-muted">Helpdesk / IAM Workflow</span>
-</div>
-<h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-center">
-Active Directory Beginner Lab (Azure-hosted)
-</h1>
-<p class="max-w-3xl mx-auto text-sm sm:text-base text-text-secondary leading-relaxed mb-8 text-center">
-Deployed a Windows Server 2022 VM in Azure, promoted it to a domain controller for
-<strong>adlab.local</strong>, and walked through the full identity lifecycle:
-creating users and groups, organizing OUs, configuring a shared folder, and practicing
-common helpdesk tasks like password resets and group membership changes.
-</p>
-<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-<div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-white mb-1">1</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Domain Controller</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Windows Server 2022 in Azure</div>
-</div>
-<div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-white mb-1">1</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">AD Domain</div>
-<div class="text-[0.65rem] text-text-secondary mt-1"><code>adlab.local</code> forest created</div>
-</div>
-<div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-white mb-1">12</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Users &amp; Accounts</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Lab users and service identities</div>
-</div>
-<div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-white mb-1">4</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">OUs &amp; Groups</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Custom OU and security group design</div>
-</div>
-<div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-white mb-1">5</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Helpdesk Tasks</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Resets, unlocks, group changes &amp; more</div>
-</div>
-</div>
-<div class="flex flex-wrap justify-center items-center gap-3 text-[0.7rem] sm:text-xs text-text-secondary mb-10 max-w-3xl mx-auto">
-<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
-<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Azure-hosted AD DS lab
-</span>
-<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
-<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Identity &amp; access lifecycle in practice
-</span>
-<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
-<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Helpdesk-style workflows and troubleshooting
-</span>
-</div>
-<div class="grid md:grid-cols-2 gap-6">
-<article class="p-6 md:p-7 rounded-xl card-dark">
-<p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">
-Project overview
-</p>
-<p class="text-sm leading-relaxed text-text-base mb-3">
-Provisioned a Windows Server 2022 VM in Azure, connected via RDP, and configured it
-as <strong>DC01</strong>, the first domain controller for <code>adlab.local</code>.
-After installing AD DS and DNS, the server was promoted to a domain controller and
-verified using Active Directory Users and Computers (ADUC).
-</p>
-<p class="text-sm leading-relaxed text-text-base">
-From there, the focus shifted to the identity lifecycle: creating a test user, designing a clean
-OU and group structure, and wiring up a shared folder that relies on group-based
-permissions — mirroring the daily tasks handled by entry-level IT and IAM teams.
-</p>
-</article>
-<article class="p-6 md:p-7 rounded-xl card-dark">
-<p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">
-Key deliverables
-</p>
-<ul class="list-disc list-outside pl-5 space-y-1.5 text-sm text-text-base">
-<li>Azure-hosted Windows Server 2022 VM configured as domain controller (<strong>DC01</strong>)</li>
-<li>New forest and domain <code>adlab.local</code> with DNS integrated</li>
-<li>Clean OU layout and security groups for role-based access control</li>
-<li>Test user and group workflows for password resets and unlocks</li>
-<li>Shared folder <code>corp_shared</code> with group-based NTFS and share permissions</li>
-<li>Sample PowerShell for scripted user and group administration</li>
-</ul>
-</article>
-</div>
-</div>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section id="hero" class="pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+  <div class="fade-up">
+    <a href="../index.html#projects" class="inline-flex text-accent-action text-sm hover:text-accent-red transition mb-8 font-mono">
+      ← Back to Portfolio
+    </a>
+  </div>
+
+  <div class="fade-up flex flex-wrap justify-center gap-2 mb-6" style="transition-delay:.05s">
+    <span class="pill pill-accent">Active Directory Lab</span>
+    <span class="pill pill-muted">Windows Server 2022</span>
+    <span class="pill pill-muted">Azure VM</span>
+    <span class="pill pill-muted">AD DS & DNS</span>
+    <span class="pill pill-muted">Helpdesk Workflow</span>
+  </div>
+
+  <h1 class="fade-up text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-center" style="transition-delay:.1s">
+    Active Directory Beginner Lab
+  </h1>
+
+  <p class="fade-up max-w-2xl mx-auto text-base text-text-secondary leading-relaxed mb-10 text-center" style="transition-delay:.15s">
+    Deployed a Windows Server 2022 VM in Azure, promoted it to a domain controller for
+    <code class="text-accent-success">adlab.local</code>, and walked through the full identity lifecycle —
+    creating users and groups, organizing OUs, setting up a shared folder, and practicing common helpdesk tasks.
+  </p>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">1</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Domain Controller</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Windows Server 2022 in Azure</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">1</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">AD Domain</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1"><code class="text-accent-success">adlab.local</code> forest</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">12</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Users & Accounts</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Lab users and service identities</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">4</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">OUs & Groups</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Custom OU and security group layout</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">5</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Helpdesk Tasks</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Resets, unlocks, group changes</div>
+    </div>
+  </div>
+
+  <!-- Summary cards -->
+  <div class="fade-up grid md:grid-cols-2 gap-5" style="transition-delay:.3s">
+    <div class="card-dark p-6">
+      <p class="text-[0.7rem] tracking-[0.2em] uppercase text-text-secondary font-mono mb-3">What I built</p>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        A Windows Server 2022 VM in Azure configured as <strong class="text-white">DC01</strong> — the domain controller
+        for <code class="text-accent-success">adlab.local</code>. After promoting the server and verifying the domain,
+        the focus moved to what actually happens day-to-day: creating users, organizing objects into OUs, building
+        security groups, and wiring up shared folder permissions.
+      </p>
+    </div>
+    <div class="card-dark p-6">
+      <p class="text-[0.7rem] tracking-[0.2em] uppercase text-text-secondary font-mono mb-3">Key outcomes</p>
+      <ul class="text-sm text-text-secondary space-y-1.5">
+        <li>• Azure VM promoted to domain controller for <code class="text-accent-success">adlab.local</code></li>
+        <li>• AD DS and DNS roles installed and verified</li>
+        <li>• Custom OU structure and security groups created</li>
+        <li>• <code class="text-accent-success">corp_shared</code> folder with group-based NTFS permissions</li>
+        <li>• Helpdesk tasks — password resets, unlocks, group membership changes</li>
+        <li>• PowerShell snippets for scripted user and group admin</li>
+      </ul>
+    </div>
+  </div>
+
 </section>
-<section id=workflow class="py-12 md:py-14">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center gap-6 mb-8">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Workflow Overview
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
-<div class="p-4 rounded-xl card-dark">
-<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 1</p>
-<p class="text-sm font-semibold mb-1">Azure VM setup</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Deployed a Windows Server 2022 VM in Azure, connected via RDP, and prepared the host as
-DC01 with baseline networking and server configuration.
-</p>
-</div>
-<div class="p-4 rounded-xl card-dark">
-<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 2</p>
-<p class="text-sm font-semibold mb-1">AD DS &amp; DNS roles</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Installed Active Directory Domain Services and DNS using Server Manager to enable identity,
-authentication, and name resolution.
-</p>
-</div>
-<div class="p-4 rounded-xl card-dark">
-<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 3</p>
-<p class="text-sm font-semibold mb-1">Domain promotion</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Promoted DC01 to a domain controller and created the <code>adlab.local</code> forest,
-verifying domain health with ADUC.
-</p>
-</div>
-<div class="p-4 rounded-xl card-dark">
-<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 4</p>
-<p class="text-sm font-semibold mb-1">Users, groups &amp; OUs</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Created a test user, domain admin, and security group, then organized objects into a clean OU structure.
-</p>
-</div>
-<div class="p-4 rounded-xl card-dark">
-<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 5</p>
-<p class="text-sm font-semibold mb-1">Access &amp; helpdesk workflow</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Linked a shared folder to groups, tested access, and practiced typical helpdesk tasks like
-password resets and membership updates.
-</p>
-</div>
-</div>
-</div>
+
+<!-- ══════════════ OVERVIEW ══════════════ -->
+<section id="overview" class="fade-soft py-16 md:py-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+  <div class="section-header"><h2>How It Works</h2></div>
+
+  <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 1</p>
+      <p class="text-sm font-semibold mb-1">Azure VM Setup</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Deployed a Windows Server 2022 VM in Azure, connected via RDP, and named it DC01.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 2</p>
+      <p class="text-sm font-semibold mb-1">AD DS & DNS Roles</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Installed Active Directory Domain Services and DNS via Server Manager to enable identity and name resolution.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 3</p>
+      <p class="text-sm font-semibold mb-1">Domain Promotion</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Promoted DC01 to a domain controller and created the <code class="text-accent-success">adlab.local</code> forest, then verified in ADUC.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 4</p>
+      <p class="text-sm font-semibold mb-1">Users, Groups & OUs</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Created test users, a domain admin, and a security group, then organized everything into a clean OU structure.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 5</p>
+      <p class="text-sm font-semibold mb-1">Access & Helpdesk</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Linked a shared folder to groups, tested access, and ran typical helpdesk tasks like password resets and unlocks.</p>
+    </div>
+  </div>
+
 </section>
-<section id=lab class=py-14>
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center gap-6 mb-10">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Lab Breakdown
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<div class="flex flex-wrap gap-0 border-b-2 border-gray-700 mb-10 overflow-x-auto">
-<button class="tab-button active" onclick="switchTab('vmsetup')">01. Azure VM &amp; Server Setup</button>
-<button class=tab-button onclick="switchTab('roles')">02. AD DS &amp; DNS Roles</button>
-<button class=tab-button onclick="switchTab('promotion')">03. Domain Promotion</button>
-<button class=tab-button onclick="switchTab('identity')">04. Users, Groups &amp; OUs</button>
-<button class=tab-button onclick="switchTab('access')">05. Shared Access &amp; PowerShell</button>
-</div>
-<div id=tab-vmsetup class="tab-content active">
-<div class="phase-container space-y-16">
-<h3 class="text-xl font-semibold text-white">
-Phase 1 — Azure VM deployment and baseline server configuration
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-The lab begins in Azure, provisioning a Windows Server 2022 VM that will become the first
-domain controller. Once deployed, the connection was established via RDP, the host was renamed to <strong>DC01</strong>,
-and networking was validated so the server was ready for directory services.
-</p>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-1.1 — Creating the Windows Server 2022 VM in Azure
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-Using the Azure portal, a new Windows Server 2022 VM was created in a lab subscription.
-Region, size, and OS image were selected, RDP access was enabled, and an initial local admin
-account was set to support the first login.
-</p>
-<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-<li>Chose an Azure region and VM size suitable for a small AD lab</li>
-<li>Configured RDP access and admin credentials for the initial connection</li>
-<li>Named the host <strong>DC01</strong> to reflect its future role as a domain controller</li>
-</ul>
-</div>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_Azure_VM_Creation_Parameters_DC01.png')">
-<img src=/it-and-security-portfolio/assets/images/ADUC1_Azure_VM_Creation_Parameters_DC01.png class="rounded-md w-full" alt="Azure VM Creation Parameters DC01">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Azure VM creation settings for the Windows Server 2022 host, including region, size,
-OS image, and base configuration for DC01.
-</p>
-</div>
-</section>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-1.2 — First RDP login and server readiness
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-After deployment, the VM was connected to using RDP. From <strong>Server Manager</strong>
-and <strong>SCONFIG</strong>, networking was confirmed, the computer name was adjusted, and
-the server was restarted to apply changes. This created a clean base image for AD DS.
-</p>
-<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-<li>Verified network connectivity and basic Windows updates</li>
-<li>Renamed the server to <strong>DC01</strong> and joined the appropriate workgroup</li>
-<li>Confirmed the system was ready for role installation via Server Manager</li>
-</ul>
-</div>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_ServerManager_Dashboard_Fresh_Install.png')">
-<img src=/it-and-security-portfolio/assets/images/ADUC1_ServerManager_Dashboard_Fresh_Install.png class="rounded-md w-full" alt="Windows Server Manager Dashboard Fresh Install">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Server Manager dashboard after first RDP login, showing the server ready for AD DS and DNS.
-</p>
-</div>
-</section>
-</div>
-</div>
-<div id=tab-roles class=tab-content>
-<div class="phase-container space-y-16">
-<h3 class="text-xl font-semibold text-white">
-Phase 2 — Installing Active Directory Domain Services and DNS
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-With the base server configuration complete, the next step was to install
-<strong>Active Directory Domain Services (AD DS)</strong> and <strong>DNS</strong>.
-These roles provide the core identity and name resolution services required for a Windows domain.
-</p>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-2.1 — Using the Add Roles and Features wizard
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-From Server Manager, the Add Roles and Features wizard was launched and
-<strong>AD DS</strong> and <strong>DNS Server</strong> were selected. The wizard walked through
-prerequisites, confirming that DC01 met the requirements for a domain controller.
-</p>
-<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-<li>Chose role-based installation for the DC01 server</li>
-<li>Selected AD DS and DNS roles in one pass to keep the deployment consistent</li>
-<li>Reviewed and confirmed prerequisites before the installation began</li>
-</ul>
-</div>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_AddRoles_Wizard_Before_You_Begin.png')">
-<img src=/it-and-security-portfolio/assets/images/ADUC1_AddRoles_Wizard_Before_You_Begin.png class="rounded-md w-full" alt="Add Roles Wizard Before You Begin">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Add Roles and Features wizard in Server Manager, preparing AD DS and DNS installation.
-</p>
-</div>
-</section>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-2.2 — Completing installation and preparing for promotion
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-Once the roles were installed, Server Manager surfaced a notification to
-<strong>promote this server to a domain controller</strong>. This is the bridge
-between simply having the bits installed and actually turning DC01 into the
-identity authority for the lab.
-</p>
-<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-<li>Confirmed AD DS and DNS installation completed successfully</li>
-<li>Captured the "Promote this server to a domain controller" handoff step</li>
-<li>Prepared to create a new forest for the <code>adlab.local</code> environment</li>
-</ul>
-</div>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_AddRoles_Results_Promote_To_DC_Prompt.png')">
-<img src=/it-and-security-portfolio/assets/images/ADUC1_AddRoles_Results_Promote_To_DC_Prompt.png class="rounded-md w-full" alt="Add Roles Results Promote to DC Prompt">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Installation results showing AD DS role installed and prompting to promote DC01 to a domain controller.
-</p>
-</div>
-</section>
-</div>
-</div>
-<div id=tab-promotion class=tab-content>
-<div class="phase-container space-y-16">
-<h3 class="text-xl font-semibold text-white">
-Phase 3 — Promoting DC01 and creating the <code>adlab.local</code> forest
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-After the roles were in place, the Active Directory Domain Services Configuration Wizard
-was used to create a new forest and promote DC01 to a domain controller for <strong>adlab.local</strong>.
-This step officially turned the Azure VM into the core identity provider for the lab.
-</p>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-3.1 — Forest and domain configuration
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-The wizard was configured to create a <strong>new forest</strong> with root domain
-<code>adlab.local</code>. Domain controller capabilities, DSRM password,
-and DNS integration settings were specified to ensure proper functionality post-promotion.
-</p>
-<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-<li>Created a new forest with <code>adlab.local</code> as the root domain</li>
-<li>Enabled DNS integration and set domain/forest functional levels</li>
-<li>Configured the DSRM password for recovery scenarios</li>
-</ul>
-</div>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_ADDS_Deployment_Config_New_Forest.png')">
-<img src=/it-and-security-portfolio/assets/images/ADUC1_ADDS_Deployment_Config_New_Forest.png class="rounded-md w-full" alt="AD DS Deployment Configuration New Forest">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-AD DS configuration wizard creating a new forest and defining the <code>adlab.local</code> domain.
-</p>
-</div>
-</section>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-3.2 — Prerequisite checks and domain controller promotion
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-Before promotion, Windows ran a set of prerequisite checks against DNS, networking,
-and security settings. Once everything passed, the wizard promoted DC01 and the server
-rebooted as a full domain controller.
-</p>
-<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-<li>Reviewed and resolved any warnings surfaced by the prerequisites check</li>
-<li>Completed the promotion and allowed DC01 to restart into its new role</li>
-<li>Verified domain health and services post-reboot</li>
-</ul>
-</div>
-<div class=space-y-6>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_ADDS_Wizard_Prerequisites_Check_Passed.png')">
-<img src=/it-and-security-portfolio/assets/images/ADUC1_ADDS_Wizard_Prerequisites_Check_Passed.png class="rounded-md w-full" alt="AD DS Prerequisites Check Passed">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-AD DS prerequisites check passing, confirming readiness for DC promotion.
-</p>
-</div>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_DC01_Initial_View.png')">
-<img src=/it-and-security-portfolio/assets/images/ADUC1_DC01_Initial_View.png class="rounded-md w-full" alt="DC01 ADUC Initial View">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-ADUC view of the new <code>adlab.local</code> domain after DC01 promotion.
-</p>
-</div>
-</div>
-</section>
-</div>
-</div>
-<div id=tab-identity class=tab-content>
-<div class="phase-container space-y-16">
-<h3 class="text-xl font-semibold text-white">
-Phase 4 — User lifecycle and group management in ADUC
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-With the domain online, the focus shifted to everyday identity operations: creating users,
-configuring passwords, and establishing security groups that reflect real-world roles.
-These are the tasks most commonly handled by helpdesk and IAM analysts.
-</p>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-4.1 — Creating a test user with enforced password change
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-In Active Directory Users and Computers, a <strong>Test User</strong> was created and
-required a password change at next logon. This mirrors standard onboarding practices
-where default credentials are temporary and must be replaced by the user.
-</p>
-<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-<li>Created a lab user object with unique logon name and display name</li>
-<li>Configured password and enabled "User must change password at next logon"</li>
-<li>Captured the typical create → configure → enable flow used in onboarding</li>
-</ul>
-</div>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_New_User_Password_Configuration.png')">
-<img src=/it-and-security-portfolio/assets/images/ADUC1_New_User_Password_Configuration.png class="rounded-md w-full" alt="ADUC New User Password Configuration">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-ADUC user creation dialog showing password configuration and first-logon reset.
-</p>
-</div>
-</section>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-4.2 — Building security groups and organizing domain objects
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-To keep access manageable, a security group named <strong>All</strong> was created and
-treated as a team or role representation. Together with the test user, this formed
-the basis for group-based access controls and troubleshooting scenarios.
-</p>
-<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-<li>Created a security group representing a logical team in the organization</li>
-<li>Added the test user to the group to drive later access testing</li>
-<li>Prepared objects for clean OU design and shared folder mapping</li>
-</ul>
-</div>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_Domain_Objects_User_Group_Created.png')">
-<img src=/it-and-security-portfolio/assets/images/ADUC1_Domain_Objects_User_Group_Created.png class="rounded-md w-full" alt="ADUC Domain Objects User Group Created">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-ADUC view showing the Test User and All security group used for access testing.
-</p>
-</div>
-</section>
-</div>
-</div>
-<div id=tab-access class=tab-content>
-<div class="phase-container space-y-16">
-<h3 class="text-xl font-semibold text-white">
-Phase 5 — OUs, shared folder access, and PowerShell administration
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-The final phase combines directory design with practical access control. A
-<strong>Custom Groups</strong> OU was created, groups were organized inside it, and a shared
-folder was configured whose permissions are driven by group membership. The same workflow was
-then mirrored in PowerShell to demonstrate scriptable administration.
-</p>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-5.1 — Group-based access to a shared folder
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-On DC01, a folder named <code>corp_shared</code> was created, shared, and assigned
-permissions to the <strong>All</strong> security group. Adding or removing users from
-the group immediately changed their access — a core pattern for scalable RBAC.
-</p>
-<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-<li>Created a Custom Groups OU and moved the All group into it</li>
-<li>Configured NTFS and share permissions on <code>corp_shared</code> for the group</li>
-<li>Verified that membership changes immediately affected access</li>
-</ul>
-</div>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_FileShare_Select_AD_Object_Permissions.png')">
-<img src=/it-and-security-portfolio/assets/images/ADUC1_FileShare_Select_AD_Object_Permissions.png class="rounded-md w-full" alt="FileShare Select AD Object Permissions">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Shared folder permissions assigned via the All security group, demonstrating group-based access control.
-</p>
-</div>
-</section>
-<section class="bg-secondary-bg border border-gray-700 rounded-xl p-6 md:p-7">
-<h4 class="text-sm font-bold text-accent-cyan uppercase tracking-wider mb-4">
-Sample PowerShell — scripting user and group administration
-</h4>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed mb-6">
-While the lab uses the GUI for clarity, the same identity lifecycle can be automated
-using PowerShell once the domain is in place. These sample commands show how to create
-a user, add them to a group, and perform a password reset in <code>adlab.local</code>.
-</p>
-<div class="grid md:grid-cols-2 gap-10 items-start">
-<div class=space-y-3>
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em]">
-Create and enable a new user
-</p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.8rem] whitespace-pre">
-<code>New-ADUser -Name "Test User" `
+
+<!-- ══════════════ PHASES ══════════════ -->
+<section id="phases" class="fade-soft py-16 md:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="section-header"><h2>Lab Walkthrough</h2></div>
+
+    <div class="flex flex-wrap gap-0 border-b border-gray-700 mb-8 overflow-x-auto">
+      <button class="tab-button active" data-tab="setup"     onclick="switchTab('setup')">VM & Server Setup</button>
+      <button class="tab-button"        data-tab="roles"     onclick="switchTab('roles')">AD DS & DNS</button>
+      <button class="tab-button"        data-tab="promotion" onclick="switchTab('promotion')">Domain Promotion</button>
+      <button class="tab-button"        data-tab="identity"  onclick="switchTab('identity')">Users, Groups & OUs</button>
+      <button class="tab-button"        data-tab="access"    onclick="switchTab('access')">Shared Access & PowerShell</button>
+    </div>
+
+    <!-- ── VM Setup ── -->
+    <div id="tab-setup" class="tab-content active">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Phase 1 — Azure VM Deployment</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            Everything starts with a clean Windows Server 2022 VM in Azure. The VM was named <strong class="text-white">DC01</strong>
+            before anything else — naming it correctly from the start avoids headaches once Active Directory is installed
+            and the name gets baked into the domain.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">Getting DC01 ready</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• Azure region, VM size, and Windows Server 2022 image selected</li>
+              <li>• RDP enabled and admin credentials set for first login</li>
+              <li>• Host renamed to DC01 and networking confirmed</li>
+              <li>• Server restarted to apply name change before role installation</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_Azure_VM_Creation_Parameters_DC01.png')">
+            <img src="/it-and-security-portfolio/assets/images/ADUC1_Azure_VM_Creation_Parameters_DC01.png" class="w-full" alt="Azure VM creation parameters">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Azure VM creation settings for DC01 — region, size, OS, and base config</p>
+          </div>
+        </div>
+
+        <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_ServerManager_Dashboard_Fresh_Install.png')">
+          <img src="/it-and-security-portfolio/assets/images/ADUC1_ServerManager_Dashboard_Fresh_Install.png" class="w-full max-w-xl mx-auto" alt="Server Manager fresh install">
+          <p class="mt-2 text-xs italic text-text-secondary text-center">Server Manager after first RDP login — clean baseline ready for AD DS and DNS</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── AD DS & DNS ── -->
+    <div id="tab-roles" class="tab-content">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Phase 2 — Installing AD DS & DNS</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            AD DS and DNS are installed together in one pass using the Add Roles and Features wizard.
+            DNS is required for Active Directory to function — it handles name resolution for domain
+            authentication and service discovery. Once installation completes, Server Manager prompts
+            you to promote the server, which is the actual step that makes it a domain controller.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">What was installed</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• AD DS and DNS Server roles selected in one pass</li>
+              <li>• Prerequisites reviewed and confirmed before installation began</li>
+              <li>• Installation completed successfully — Server Manager shows both roles</li>
+              <li>• Promotion prompt appeared — ready to create the domain</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_AddRoles_Wizard_Before_You_Begin.png')">
+            <img src="/it-and-security-portfolio/assets/images/ADUC1_AddRoles_Wizard_Before_You_Begin.png" class="w-full" alt="Add Roles wizard">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Add Roles and Features wizard — AD DS and DNS selected before installation</p>
+          </div>
+        </div>
+
+        <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_AddRoles_Results_Promote_To_DC_Prompt.png')">
+          <img src="/it-and-security-portfolio/assets/images/ADUC1_AddRoles_Results_Promote_To_DC_Prompt.png" class="w-full max-w-xl mx-auto" alt="Promote to DC prompt">
+          <p class="mt-2 text-xs italic text-text-secondary text-center">Installation complete — prompt to promote DC01 to a domain controller</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Domain Promotion ── -->
+    <div id="tab-promotion" class="tab-content">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Phase 3 — Promoting DC01 & Creating the Domain</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            The AD DS Configuration Wizard creates the forest and promotes DC01 to the domain controller for
+            <code class="text-accent-success">adlab.local</code>. This is the step that officially turns
+            the server from a regular Windows host into the identity authority for the domain.
+            After the server restarts, ADUC confirms the domain is live.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">Promotion settings</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• New forest created with <code class="text-accent-success">adlab.local</code> as the root domain</li>
+              <li>• DNS integration enabled automatically</li>
+              <li>• DSRM password set for recovery scenarios</li>
+              <li>• Prerequisites check passed — DC01 restarted into its new role</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_ADDS_Deployment_Config_New_Forest.png')">
+            <img src="/it-and-security-portfolio/assets/images/ADUC1_ADDS_Deployment_Config_New_Forest.png" class="w-full" alt="AD DS new forest config">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">AD DS Configuration Wizard — new forest with <code>adlab.local</code> as root domain</p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_ADDS_Wizard_Prerequisites_Check_Passed.png')">
+            <img src="/it-and-security-portfolio/assets/images/ADUC1_ADDS_Wizard_Prerequisites_Check_Passed.png" class="w-full" alt="Prerequisites check passed">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Prerequisites check passed — ready to promote</p>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_DC01_Initial_View.png')">
+            <img src="/it-and-security-portfolio/assets/images/ADUC1_DC01_Initial_View.png" class="w-full" alt="ADUC initial domain view">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">ADUC showing <code>adlab.local</code> after DC01 promotion — domain is live</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Users, Groups & OUs ── -->
+    <div id="tab-identity" class="tab-content">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Phase 4 — Users, Groups & OUs</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            With the domain running, the next step is populating it with the objects that actually need managing.
+            A test user was created with a forced password reset on first login, a security group was set up
+            to drive access control, and a custom OU was created to keep everything organized — the foundation
+            for group policy and lifecycle management down the road.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">User & group creation</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• Test User created with "must change password at next logon" enabled</li>
+              <li>• Domain admin account provisioned separately for elevated tasks</li>
+              <li>• <strong class="text-white">All</strong> security group created to represent a department team</li>
+              <li>• Test user added to the All group for access control testing</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_New_User_Password_Configuration.png')">
+            <img src="/it-and-security-portfolio/assets/images/ADUC1_New_User_Password_Configuration.png" class="w-full" alt="ADUC user password config">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">User creation — password set and first-logon reset enforced</p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">OU structure</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• Custom Groups OU created to separate lab objects from defaults</li>
+              <li>• All group moved into the OU for clean organization</li>
+              <li>• OU layout sets up future group policy and access management</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_Domain_Objects_User_Group_Created.png')">
+            <img src="/it-and-security-portfolio/assets/images/ADUC1_Domain_Objects_User_Group_Created.png" class="w-full" alt="Domain objects in ADUC">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">ADUC showing Test User and All security group ready for access testing</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Shared Access & PowerShell ── -->
+    <div id="tab-access" class="tab-content">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Phase 5 — Shared Access & PowerShell</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            The shared folder is where group-based permissions get proven in practice. A folder named
+            <code class="text-accent-success">corp_shared</code> was created on DC01, shared on the network,
+            and its NTFS permissions were assigned to the All security group — not individual users.
+            Adding or removing someone from the group immediately changes what they can access.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">Group-based folder access</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• <code class="text-accent-success">corp_shared</code> folder created and shared on the network</li>
+              <li>• NTFS and share permissions assigned to the All security group</li>
+              <li>• Verified that membership changes immediately affect access</li>
+              <li>• Demonstrates scalable RBAC — manage the group, not individual ACEs</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_FileShare_Select_AD_Object_Permissions.png')">
+            <img src="/it-and-security-portfolio/assets/images/ADUC1_FileShare_Select_AD_Object_Permissions.png" class="w-full" alt="File share permissions via AD group">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Shared folder permissions assigned via the All security group — group membership drives access</p>
+          </div>
+        </div>
+
+        <!-- PowerShell -->
+        <div class="border border-gray-700 p-6">
+          <h4 class="text-sm font-bold text-accent-action uppercase tracking-wider mb-3">PowerShell — scripted admin</h4>
+          <p class="text-sm text-text-secondary mb-6 max-w-2xl leading-relaxed">
+            The same identity operations done in the GUI can be automated with PowerShell.
+            These sample commands cover creating a user, adding them to a group, and resetting their password —
+            the three most common helpdesk tasks in any AD environment.
+          </p>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <p class="text-xs font-mono text-accent-action uppercase tracking-widest mb-3">Create & enable a new user</p>
+              <pre class="bg-container-bg border border-gray-800 p-4 overflow-x-auto text-[0.78rem]"><code>New-ADUser -Name "Test User" `
            -GivenName "Test" `
            -Surname "User" `
            -SamAccountName "test.user" `
@@ -486,333 +576,178 @@ Create and enable a new user
            -AccountPassword (Read-Host -AsSecureString "Password") `
            -ChangePasswordAtLogon $true `
            -Enabled $true</code></pre>
-</div>
-<div class=space-y-3>
-<p class="text-xs font-mono text-accent-cyan uppercase tracking-[0.18em]">
-Group membership and password reset
-</p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-5 text-left overflow-x-auto text-[0.8rem] whitespace-pre">
-<code># Add user to group
-Add-ADGroupMember -Identity "All" -Members "test.user"
+            </div>
+            <div>
+              <p class="text-xs font-mono text-accent-action uppercase tracking-widest mb-3">Group membership & password reset</p>
+              <pre class="bg-container-bg border border-gray-800 p-4 overflow-x-auto text-[0.78rem]"><code># Add user to group
+Add-ADGroupMember -Identity "All" `
+                 -Members "test.user"
 
-# Reset password and require change at next sign in
+# Reset password, force change on next login
 Set-ADAccountPassword -Identity "test.user" `
                       -Reset `
-                      -NewPassword (Read-Host -AsSecureString "NewPassword")
-Set-ADUser -Identity "test.user" -ChangePasswordAtLogon $true</code></pre>
-</div>
-</div>
+                      -NewPassword (Read-Host -AsSecureString)
+Set-ADUser -Identity "test.user" `
+           -ChangePasswordAtLogon $true</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </section>
-</div>
-</div>
-</div>
+
+<!-- ══════════════ OPERATIONS ══════════════ -->
+<section id="operations" class="fade-soft py-16 md:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="section-header"><h2>Directory Overview & Best Practices</h2></div>
+
+    <!-- ADUC screenshot -->
+    <div class="fade-up card-dark p-5 mb-8">
+      <div class="image-zoom" onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_DC01_Initial_View.png')">
+        <img src="/it-and-security-portfolio/assets/images/ADUC1_DC01_Initial_View.png" class="w-full" alt="ADUC domain overview">
+      </div>
+      <p class="mt-3 text-xs italic text-text-secondary text-center">
+        <code>adlab.local</code> domain in ADUC — domain tree, default containers, and lab objects on DC01
+      </p>
+    </div>
+
+    <!-- Hardening tiers -->
+    <div class="grid md:grid-cols-3 gap-5">
+      <div class="fade-up card-dark border border-red-900/30 p-6 phase-card" style="transition-delay:.05s">
+        <h4 class="text-sm font-bold text-accent-red uppercase tracking-wider mb-3">Tier 1 — Identity Hygiene</h4>
+        <p class="text-xs text-text-secondary mb-4 leading-relaxed">Keep accounts, passwords, and groups clean from day one.</p>
+        <ul class="text-sm text-text-secondary space-y-3">
+          <li><strong class="text-white block text-xs mb-0.5">Strong credential policy</strong>Enforce password complexity and rotation, especially for privileged accounts.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Least privilege groups</strong>Assign permissions through role-based groups — not per individual user.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Account lifecycle</strong>Disable or remove accounts immediately when users leave or change roles.</li>
+        </ul>
+      </div>
+      <div class="fade-up card-dark border border-blue-900/30 p-6 phase-card" style="transition-delay:.1s">
+        <h4 class="text-sm font-bold text-accent-action uppercase tracking-wider mb-3">Tier 2 — Access Governance</h4>
+        <p class="text-xs text-text-secondary mb-4 leading-relaxed">Keep permissions auditable and easy to troubleshoot.</p>
+        <ul class="text-sm text-text-secondary space-y-3">
+          <li><strong class="text-white block text-xs mb-0.5">Group-based folder access</strong>Map shared resources to security groups — adding/removing members is faster and cleaner than editing ACLs.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Consistent naming conventions</strong>Clear names for users, groups, and OUs make audits and troubleshooting far quicker.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Periodic access reviews</strong>Review group membership and folder ACLs regularly to match actual usage.</li>
+        </ul>
+      </div>
+      <div class="fade-up card-dark border border-green-900/30 p-6 phase-card" style="transition-delay:.15s">
+        <h4 class="text-sm font-bold text-accent-success uppercase tracking-wider mb-3">Tier 3 — Operational Resilience</h4>
+        <p class="text-xs text-text-secondary mb-4 leading-relaxed">Build repeatable habits that scale.</p>
+        <ul class="text-sm text-text-secondary space-y-3">
+          <li><strong class="text-white block text-xs mb-0.5">DC backups & snapshots</strong>Snapshot the domain controller before any major change — AD restores are painful without one.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Monitor logon failures</strong>Track failed logons, lockouts, and admin actions as early warning signals.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Scripted operations</strong>PowerShell standardizes onboarding and offboarding — reduces errors and speeds up response.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
 </section>
-<section id=vuln-overview class="py-14">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center gap-6 mb-6">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Directory &amp; Access Overview
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<p class="text-text-secondary text-sm max-w-3xl mb-8 mx-auto text-center">
-The finished lab produced a working <strong>Active Directory domain</strong> with a clean
-OU structure, security groups, and group-based access to a shared folder. The stats and charts
-below summarize how identities, groups, and access paths fit together in the
-<strong>adlab.local</strong> environment.
-</p>
-<div class="card-dark rounded-xl p-5 mb-10">
-<div class=image-zoom onclick="openModal('/it-and-security-portfolio/assets/images/ADUC1_DC01_Initial_View.png')">
-<img src=/it-and-security-portfolio/assets/images/ADUC1_DC01_Initial_View.png class="rounded-lg w-full object-contain" alt="Active Directory domain and OU view">
-</div>
-<p class="mt-4 text-xs italic text-text-secondary text-center">
-Visual overview of the <code>adlab.local</code> domain in ADUC, including domain tree,
-default containers, and lab objects on DC01.
-</p>
-</div>
-<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
-<div class="card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-[#E06C75] mb-1">1</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Domain Controller</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">DC01 hosting AD DS and DNS</div>
-</div>
-<div class="card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-[#E5A36F] mb-1">1</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">AD Domain</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Single lab forest <code>adlab.local</code></div>
-</div>
-<div class="card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-[#E5C07B] mb-1">12</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Identities</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Mix of lab users, admin, and service accounts</div>
-</div>
-<div class="card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-[#E5D487] mb-1">4</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">OUs / Groups</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Custom OU, All group, and built-in containers</div>
-</div>
-<div class="card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-[#61AFEF] mb-1">1</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Shared Resource</div>
-<div class="text-[0.65rem] text-text-secondary mt-1"><code>corp_shared</code> folder protected by group access</div>
-</div>
-</div>
-<div class="card-dark rounded-xl p-8 mb-10">
-<div class="flex items-center justify-between mb-8 border-b border-gray-800 pb-4">
-<h3 class="text-sm font-bold text-white uppercase tracking-widest">
-Identity &amp; Access Highlights
-</h3>
-<span class="text-xs text-text-secondary font-mono">6 KEY TAKEAWAYS</span>
-</div>
-<div class="grid md:grid-cols-2 gap-x-12 gap-y-8">
-<div class=space-y-6>
-<div>
-<span class="text-red-400 font-mono text-xs mb-1 block tracking-wider">CENTRALIZED IDENTITY</span>
-<p class="text-white leading-relaxed text-sm">
-Active Directory consolidates authentication, authorization, and policy into one
-platform that Windows environments depend on.
-</p>
-</div>
-<div>
-<span class="text-red-400 font-mono text-xs mb-1 block tracking-wider">GROUP-BASED ACCESS</span>
-<p class="text-white leading-relaxed text-sm">
-Using security groups instead of per-user permissions keeps access cleaner and easier
-to audit as environments scale.
-</p>
-</div>
-<div>
-<span class="text-orange-400 font-mono text-xs mb-1 block tracking-wider">OU DESIGN MATTERS</span>
-<p class="text-white leading-relaxed text-sm">
-Even small labs benefit from structured OUs to separate users, groups, and
-administrative objects for future GPO and lifecycle management.
-</p>
-</div>
-</div>
-<div class=space-y-6>
-<div>
-<span class="text-orange-500 font-mono text-xs mb-1 block tracking-wider">HELPDESK REALISM</span>
-<p class="text-white leading-relaxed text-sm">
-Password resets, unlocks, and group membership changes mirror the tickets that
-entry-level IT and IAM roles handle daily.
-</p>
-</div>
-<div>
-<span class="text-yellow-500 font-mono text-xs mb-1 block tracking-wider">SCRIPTING ADVANTAGE</span>
-<p class="text-white leading-relaxed text-sm">
-PowerShell turns routine identity tasks into repeatable, auditable workflows,
-reducing manual error and speeding up response.
-</p>
-</div>
-<div>
-<span class="text-green-400 font-mono text-xs mb-1 block tracking-wider">SAFE LAB ENVIRONMENT</span>
-<p class="text-white leading-relaxed text-sm">
-Running AD in Azure isolates experimentation from production, making it safe to
-practice misconfigurations and fixes.
-</p>
-</div>
-</div>
-</div>
-</div>
-<div class="flex items-center gap-6 mb-6">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Hardening and Operations Strategy
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<div class="grid md:grid-cols-3 gap-6">
-<div class="card-dark rounded-xl p-6">
-<h4 class="text-sm font-bold text-accent-red uppercase tracking-wider mb-2">
-Tier 1: Identity Hygiene
-</h4>
-<p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
-Objective: Ensure accounts, passwords, and groups follow basic security best practices.
-</p>
-<ul class="space-y-4 text-sm text-text-secondary">
-<li class="flex gap-3">
-<span class="text-accent-red font-bold">•</span>
-<span class=leading-relaxed>
-<strong class="text-white block text-xs mb-0.5">Strong Credential Policy</strong>
-Enforce strong passwords and periodic rotation, especially for privileged accounts.
-</span>
-</li>
-<li class="flex gap-3">
-<span class="text-accent-red font-bold">•</span>
-<span class=leading-relaxed>
-<strong class="text-white block text-xs mb-0.5">Least Privilege Groups</strong>
-Use security groups aligned to roles, not individuals, to avoid privilege creep.
-</span>
-</li>
-<li class="flex gap-3">
-<span class="text-accent-red font-bold">•</span>
-<span class=leading-relaxed>
-<strong class="text-white block text-xs mb-0.5">Account Lifecycle Controls</strong>
-Disable or remove accounts promptly when users leave or roles change.
-</span>
-</li>
-</ul>
-</div>
-<div class="card-dark rounded-xl p-6">
-<h4 class="text-sm font-bold text-accent-action uppercase tracking-wider mb-2">
-Tier 2: Access Governance
-</h4>
-<p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
-Objective: Keep permissions understandable, auditable, and easy to troubleshoot.
-</p>
-<ul class="space-y-4 text-sm text-text-secondary">
-<li class="flex gap-3">
-<span class="text-accent-action font-bold">•</span>
-<span class=leading-relaxed>
-<strong class="text-white block text-xs mb-0.5">Group-based Folder Access</strong>
-Map shared resources like <code>corp_shared</code> to groups, not individual users.
-</span>
-</li>
-<li class="flex gap-3">
-<span class="text-accent-action font-bold">•</span>
-<span class=leading-relaxed>
-<strong class="text-white block text-xs mb-0.5">Standardized Naming</strong>
-Use clear, consistent naming conventions for users, groups, and OUs to aid audits.
-</span>
-</li>
-<li class="flex gap-3">
-<span class="text-accent-action font-bold">•</span>
-<span class=leading-relaxed>
-<strong class="text-white block text-xs mb-0.5">Regular Reviews</strong>
-Periodically review group membership and folder ACLs to align with real usage.
-</span>
-</li>
-</ul>
-</div>
-<div class="card-dark rounded-xl p-6">
-<h4 class="text-sm font-bold text-accent-success uppercase tracking-wider mb-2">
-Tier 3: Operational Resilience
-</h4>
-<p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
-Objective: Build repeatable procedures for monitoring, backup, and recovery.
-</p>
-<ul class="space-y-4 text-sm text-text-secondary">
-<li class="flex gap-3">
-<span class="text-accent-success font-bold">•</span>
-<span class=leading-relaxed>
-<strong class="text-white block text-xs mb-0.5">Backups &amp; Snapshots</strong>
-Protect the domain controller with snapshots or backups before major changes.
-</span>
-</li>
-<li class="flex gap-3">
-<span class="text-accent-success font-bold">•</span>
-<span class=leading-relaxed>
-<strong class="text-white block text-xs mb-0.5">Monitoring &amp; Logs</strong>
-Track logon failures, account lockouts, and admin activity for early warning signs.
-</span>
-</li>
-<li class="flex gap-3">
-<span class="text-accent-success font-bold">•</span>
-<span class=leading-relaxed>
-<strong class="text-white block text-xs mb-0.5">Scripted Operations</strong>
-Use PowerShell to standardize user onboarding, offboarding, and group changes.
-</span>
-</li>
-</ul>
-</div>
-</div>
-</div>
+
+<!-- ══════════════ TAKEAWAYS ══════════════ -->
+<section id="takeaways" class="fade-soft py-16 md:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="section-header"><h2>What I Learned</h2></div>
+
+    <div class="grid md:grid-cols-2 gap-8 mb-10">
+      <div class="fade-up card-dark p-6">
+        <h4 class="text-sm font-semibold mb-3">Key takeaways</h4>
+        <ul class="text-sm text-text-secondary space-y-2">
+          <li>• Active Directory is the central identity platform for Windows environments — almost everything ties back to it</li>
+          <li>• Most day-to-day work is password resets, account unlocks, and group membership changes</li>
+          <li>• Group-based permissions on shared resources keep access clean and auditable as teams grow</li>
+          <li>• Clean OU design early on makes future group policy and troubleshooting much easier</li>
+          <li>• Running AD in Azure makes it safe to practice misconfigurations and fixes without touching production</li>
+        </ul>
+      </div>
+      <div class="fade-up card-dark p-6" style="transition-delay:.1s">
+        <h4 class="text-sm font-semibold mb-3">Skills demonstrated</h4>
+        <div class="flex flex-wrap gap-2">
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Azure VMs</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Windows Server Admin</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Active Directory DS</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">DNS Configuration</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">User Lifecycle Management</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Group & OU Design</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Identity & Access Management</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Helpdesk Workflows</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">PowerShell for AD</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="fade-up card-dark p-6 mb-10" style="transition-delay:.15s">
+      <p class="text-sm text-text-secondary leading-relaxed">
+        This lab covers the core of what IT and helpdesk roles interact with every day — creating identities,
+        organizing them into groups and OUs, wiring those groups to shared resources, and handling the common
+        break-fix tasks that fill a ticket queue. The PowerShell section shows how the same operations
+        scale into repeatable, auditable workflows once the basics are solid.
+      </p>
+    </div>
+
+    <div class="fade-up">
+      <a href="../index.html#projects" class="inline-flex text-accent-action text-sm hover:text-accent-red transition font-mono">
+        ← Back to Portfolio
+      </a>
+    </div>
+
+  </div>
 </section>
-<section class="pt-12 md:pt-16 pb-12">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-<div>
-<div class="flex items-center gap-6 mb-8">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Key insights
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<div class="p-6 md:p-7 rounded-xl card-dark">
-<ul class="list-disc list-outside pl-5 space-y-2 text-white text-sm sm:text-[0.95rem] leading-relaxed">
-<li>Active Directory is the central nervous system for identity and access in Windows environments.</li>
-<li>Most day-to-day work involves user onboarding, password resets, unlocks, and group membership fixes.</li>
-<li>Clean OU and group design early on makes future group policy, auditing, and troubleshooting far easier.</li>
-<li>Group-based permissions on shared resources keep environments scalable and reduce configuration drift.</li>
-<li>Running AD in Azure provides a safe, isolated environment to practice real identity workflows without production risk.</li>
-</ul>
-</div>
-</div>
-<div>
-<div class="flex items-center gap-6 mb-8">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Skills demonstrated
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<div class="p-6 md:p-7 rounded-xl card-dark">
-<div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-Azure Virtual Machines
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-Windows Server Administration
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-Active Directory Domain Services
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-DNS Configuration
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-User Lifecycle Management
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-Group and OU Design
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-Identity and Access Management
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-Helpdesk Workflow Simulation
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-PowerShell for AD Administration
-</span>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section class="pb-12 md:pb-16">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center gap-6 mb-8">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Summary
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="card-dark rounded-xl p-6">
-<p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
-This lab walks through how identity is created, managed, and secured inside a Windows domain.
-Using a Windows Server 2022 VM in Azure, the server was promoted to a domain controller,
-a domain admin was created, a test user was onboarded, objects were organized into OUs, and
-group-based permissions were applied to a shared folder. Together, these steps demonstrate how 
-authentication, authorization, and directory structure work in practice — mirroring the daily 
-responsibilities of entry-level IT, helpdesk, and identity analysts, including password resets, 
-account management, and access control through AD group membership and PowerShell automation.
-</p>
-</div>
-<div class=mt-10>
-<a href=../index.html#projects class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition font-mono">
-← Back to Portfolio
-</a>
-</div>
-</div>
-</section>
-<script>function scrollToSection(id){const target=document.getElementById(id);if(!target)return;target.scrollIntoView({behavior:'smooth',block:'start'});const dots=document.querySelectorAll('.nav-dot');const sections=['hero','workflow','lab','vuln-overview'];dots.forEach((dot,idx)=>{dot.classList.toggle('active',sections[idx]===id);});}
-function openModal(src){const modal=document.getElementById('imageModal');const img=document.getElementById('modalImage');img.src=src;modal.classList.add('active');}
-function closeModal(){const modal=document.getElementById('imageModal');modal.classList.remove('active');const img=document.getElementById('modalImage');img.src='';}
-function toggleSeverity(level){const panel=document.getElementById(`panel-${level}`);if(!panel)return;panel.classList.toggle('open');}
-document.addEventListener('DOMContentLoaded',()=>{const chart=document.getElementById('severity-donut');if(chart){const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){chart.classList.remove('opacity-0');obs.disconnect();}});});obs.observe(chart);}});</script>
-</main>
+
+<script>
+window.addEventListener("scroll", () => {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById("scroll-progress").style.width = (window.scrollY / total * 100) + "%";
+}, { passive: true });
+
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add("show");
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
+
+document.querySelectorAll(".fade-up, .fade-soft").forEach(el => revealObs.observe(el));
+
+const dotSections = ["hero","overview","phases","operations","takeaways"];
+const dots = document.querySelectorAll(".nav-dot");
+
+const dotObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = dotSections.indexOf(e.target.id);
+      if (idx !== -1) {
+        dots.forEach(d => d.classList.remove("active"));
+        dots[idx]?.classList.add("active");
+      }
+    }
+  });
+}, { threshold: 0.4 });
+
+dotSections.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) dotObs.observe(el);
+});
+
+function scrollToSection(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener("click", e => {
+    const target = document.querySelector(a.getAttribute("href"));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: "smooth" }); }
+  });
+});
+
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+</script>
 </body>
 </html>
