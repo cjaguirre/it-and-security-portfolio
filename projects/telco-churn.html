@@ -1,650 +1,700 @@
 <!DOCTYPE html>
-<html lang=en data-theme=dark class=dark>
+<html lang="en" class="dark">
 <head>
-<meta charset=UTF-8 />
-<meta name=viewport content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Telco Customer Churn Analysis | Christian Aguirre</title>
-<script>function switchTab(tabId){document.querySelectorAll('.tab-button').forEach(btn=>{btn.classList.remove('active');});document.querySelectorAll('.tab-content').forEach(content=>{content.classList.remove('active');});const activeButton=[...document.querySelectorAll('.tab-button')].find(btn=>btn.getAttribute('onclick')&&btn.getAttribute('onclick').includes(tabId));if(activeButton)activeButton.classList.add('active');const target=document.getElementById(`tab-${tabId}`);if(target)target.classList.add('active');}</script>
-<script src=https://cdn.tailwindcss.com></script>
-<script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)",}}}};</script>
-<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;
---functional-action:#ffffff;                                                                                                                                       --functional-success:#98c379;--accent-red:#e06c75;--container-bg:#171717;background-color:var(--bg-default);color:var(--text-base)}body{font-family:"Inter",sans-serif;background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center;background-attachment:fixed;min-height:100vh}.pill{border-radius:999px;padding:.2rem .7rem;border:1px solid rgba(171,178,191,0.6);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em}.pill-muted{color:var(--text-secondary);background-color:rgba(23,23,23,0.95)}.pill-accent{color:var(--accent-structural);background-color:rgba(23,23,23,0.95);border-color:rgba(217,217,217,0.9)}.tab-button{padding:1rem 1.5rem;background:transparent;border:0;color:var(--text-secondary);font-family:"Inconsolata",monospace;cursor:pointer;transition:all .3s ease;border-bottom:3px solid transparent;white-space:nowrap}.tab-button:hover{color:var(--functional-action);background:rgba(97,175,239,0.05)}.tab-button.active{color:var(--functional-action);border-bottom-color:var(--functional-action)}.tab-content{display:none;animation:fadeSlideIn .4s ease-out}.tab-content.active{display:block}@keyframes fadeSlideIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}.stat-card{position:relative;overflow:hidden}.stat-number{font-size:2.5rem;font-weight:800;font-family:"Inconsolata",monospace}.image-zoom{cursor:pointer;transition:all .3s ease}.image-zoom:hover{transform:scale(1.02);box-shadow:0 10px 40px rgba(97,175,239,0.3)}.modal{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.95)}.modal.active{display:flex;align-items:center;justify-content:center}.modal-content{max-width:95%;max-height:95%;border-radius:8px}.severity-critical,.severity-high,.severity-medium,.severity-low,.severity-info{padding:.25rem .75rem;border-radius:999px;font-size:.7rem;text-transform:uppercase}.severity-critical{background:rgba(185,28,28,0.15);border:1px solid #b91c1c;color:#b91c1c}.severity-high{background:rgba(194,65,12,0.15);border:1px solid #c2410c;color:#c2410c}.severity-medium{background:rgba(249,115,22,0.15);border:1px solid #f97316;color:#f97316}.severity-low{background:rgba(234,179,8,0.15);border:1px solid #eab308;color:#eab308}.severity-info{background:rgba(59,130,246,0.15);border:1px solid #3b82f6;color:#3b82f6}.collapsible-content{max-height:0;overflow:hidden;transition:max-height .4s ease-out,margin .2s ease;margin:0!important}.collapsible-content.open{max-height:10000px;margin:1.75rem 0 2rem 0}.nav-dots{position:fixed;right:2rem;top:50%;transform:translateY(-50%);z-index:100}.nav-dot{width:10px;height:10px;border-radius:50%;background:var(--text-secondary);margin:.75rem 0;cursor:pointer;transition:all .3s ease}.nav-dot:hover,.nav-dot.active{background:var(--functional-action);transform:scale(1.4)}@media(max-width:768px){.nav-dots{display:none}}.ring-anim{animation:fadeInRing 1.2s ease-out forwards;opacity:0}@keyframes fadeInRing{to{opacity:1}}.phase-container{background:var(--container-bg);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;padding:2.5rem;box-shadow:0 12px 40px rgba(0,0,0,0.35)}.card-dark{background:var(--container-bg);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;box-shadow:0 12px 40px rgba(0,0,0,0.35)}
-*{
-border-radius:0 !important;
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
+
+.dark {
+  --bg-default: #1e1e1e;
+  --bg-secondary: #30333a;
+  --text-base: #fff;
+  --text-secondary: #abb2bf;
+  --accent-structural: #d9d9d9;
+  --functional-action: #61afef;
+  --functional-success: #98c379;
+  --accent-red: #e06c75;
+  --container-bg: #171717;
+  background-color: var(--bg-default);
+  color: var(--text-base);
 }
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--bg-default);
+  background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, rgba(0,0,0,0) 1px);
+  background-size: 20px 20px;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--functional-action);
+  z-index: 9999;
+  pointer-events: none;
+  transition: width 0.08s linear;
+}
+
+.nav-dots {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+}
+.nav-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+  margin: 0.75rem 0;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+.nav-dot:hover, .nav-dot.active {
+  background: var(--functional-action);
+  transform: scale(1.4);
+}
+@media (max-width: 768px) { .nav-dots { display: none; } }
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+.section-header::before, .section-header::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.18);
+}
+.section-header h2 {
+  font-family: "Inconsolata", monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  letter-spacing: .03em;
+}
+
+.card-dark {
+  background: var(--container-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.pill {
+  display: inline-block;
+  border-radius: 999px;
+  padding: .2rem .7rem;
+  border: 1px solid rgba(171,178,191,0.6);
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+.pill-muted  { color: var(--text-secondary); background: rgba(23,23,23,0.95); }
+.pill-accent { color: var(--accent-structural); background: rgba(23,23,23,0.95); border-color: rgba(217,217,217,0.9); }
+
+.tab-button {
+  padding: .75rem 1.25rem;
+  background: transparent;
+  border: 0;
+  color: var(--text-secondary);
+  font-family: "Inconsolata", monospace;
+  font-size: .85rem;
+  cursor: pointer;
+  transition: color 0.25s, border-color 0.25s;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.tab-button:hover  { color: var(--functional-action); }
+.tab-button.active { color: var(--functional-action); border-bottom-color: var(--functional-action); }
+
+.tab-content { display: none; }
+.tab-content.active {
+  display: block;
+  animation: fadeSlideIn .4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.image-zoom {
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+.image-zoom:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 40px rgba(97,175,239,0.2);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  align-items: center;
+  justify-content: center;
+}
+.modal.active { display: flex; }
+.modal-content { max-width: 95%; max-height: 95%; border-radius: 4px; }
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.fade-up.show { opacity: 1; transform: translateY(0); }
+
+.fade-soft {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.fade-soft.show { opacity: 1; transform: translateY(0); }
+
+.stat-stagger:nth-child(1) { transition-delay: 0.05s; }
+.stat-stagger:nth-child(2) { transition-delay: 0.10s; }
+.stat-stagger:nth-child(3) { transition-delay: 0.15s; }
+.stat-stagger:nth-child(4) { transition-delay: 0.20s; }
+.stat-stagger:nth-child(5) { transition-delay: 0.25s; }
+
+.phase-card {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.2s ease,
+              box-shadow 0.25s ease;
+}
+.phase-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(97,175,239,0.35);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+}
+
+pre code { font-family: "Inconsolata", monospace; font-size: .8rem; }
+
+* { border-radius: 0 !important; }
 </style>
+<script>
+tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+  "container-bg": "var(--container-bg)",
+  "text-secondary": "var(--text-secondary)",
+  "accent-cyan": "var(--accent-structural)",
+  "accent-action": "var(--functional-action)",
+  "accent-success": "var(--functional-success)",
+  "accent-red": "var(--accent-red)",
+}}}};
+
+function switchTab(id) {
+  document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+  const btn = [...document.querySelectorAll(".tab-button")].find(b => b.dataset.tab === id);
+  if (btn) btn.classList.add("active");
+  const tab = document.getElementById("tab-" + id);
+  if (tab) tab.classList.add("active");
+}
+
+function openModal(src) {
+  document.getElementById("modalImage").src = src;
+  document.getElementById("imageModal").classList.add("active");
+}
+function closeModal() {
+  document.getElementById("imageModal").classList.remove("active");
+  document.getElementById("modalImage").src = "";
+}
+</script>
 </head>
-<body class=text-text-base>
-<div class=nav-dots>
-<div class="nav-dot active" onclick="scrollToSection('hero')"></div>
-<div class=nav-dot onclick="scrollToSection('workflow')"></div>
-<div class=nav-dot onclick="scrollToSection('lab')"></div>
-<div class=nav-dot onclick="scrollToSection('model-overview')"></div>
+<body class="text-white">
+
+<div id="scroll-progress"></div>
+
+<div class="modal" id="imageModal" onclick="closeModal()">
+  <span style="position:absolute;top:2rem;right:3rem;color:white;font-size:3rem;cursor:pointer">&times;</span>
+  <img class="modal-content" id="modalImage" alt="Enlarged view">
 </div>
-<div class=modal id=imageModal onclick=closeModal()>
-<span style=position:absolute;top:2rem;right:3rem;color:white;font-size:3rem;cursor:pointer>&times;</span>
-<img class=modal-content id=modalImage alt="Enlarged view">
+
+<div class="nav-dots">
+  <div class="nav-dot active" onclick="scrollToSection('hero')"></div>
+  <div class="nav-dot" onclick="scrollToSection('overview')"></div>
+  <div class="nav-dot" onclick="scrollToSection('phases')"></div>
+  <div class="nav-dot" onclick="scrollToSection('results')"></div>
+  <div class="nav-dot" onclick="scrollToSection('takeaways')"></div>
 </div>
-<main>
-<section id=hero class="pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<a href=../index.html#projects class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition mb-6">
-← Back to Portfolio
-</a>
-<div class="flex flex-wrap justify-center gap-2 mb-6 text-center">
-<span class="pill pill-accent">Machine Learning Lab</span>
-<span class="pill pill-muted">Python</span>
-<span class="pill pill-muted">Scikit Learn</span>
-<span class="pill pill-muted">Pandas</span>
-<span class="pill pill-muted">SHAP</span>
-<span class="pill pill-muted">Customer Analytics</span>
-</div>
-<h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-center">
-Telco Customer Churn Analysis
-</h1>
-<p class="max-w-3xl mx-auto text-sm sm:text-base text-text-secondary leading-relaxed mb-8 text-center">
-Used a public telecom dataset to model which subscribers are likely to cancel service,
-then explained the drivers behind that risk so a retention team can step in before customers leave.
-</p>
-<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-<div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-accent-action mb-1">79.8%</div>   <!-- accuracy -->
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Accuracy</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Correct predictions</div>
-</div>
-<div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-accent-success mb-1">91%</div>    <!-- strong performance -->
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Recall (Stay)</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Non-churners correctly identified</div>
-</div>
-<div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-orange-400 mb-1">49%</div>        <!-- weaker recall -->
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Recall (Churn)</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Churners detected</div>
-</div>
-<div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-yellow-400 mb-1">66%</div>        <!-- moderate precision -->
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Precision (Churn)</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Accuracy of churn predictions</div>
-</div>
-<div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-text-base mb-1">26.5%</div>       <!-- baseline -->
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Churn Rate</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Portion of churners</div>
-</div>
-</div>
-<div class="flex flex-wrap justify-center items-center gap-3 text-[0.7rem] sm:text-xs text-text-secondary mb-10 max-w-3xl mx-auto">
-<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
-<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>End to end churn modeling in Jupyter
-</span>
-<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
-<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Random Forest with SHAP explainability
-</span>
-<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
-<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Business ready retention insights
-</span>
-</div>
-<div class="grid md:grid-cols-2 gap-6">
-<article class="p-6 md:p-7 rounded-xl card-dark">
-<p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">
-Project overview
-</p>
-<p class="text-sm leading-relaxed text-text-base mb-3">
-The lab uses a real telecom customer file where each row represents one account with service
-history, product bundle, billing behavior and a churn label. This raw table was transformed into a
-supervised learning pipeline that predicts churn and explains why some customers are at higher risk.
-</p>
-<p class="text-sm leading-relaxed text-text-base">
-After cleaning billing fields and encoding plan details into numeric features, a
-Random Forest classifier was trained and its performance was compared to a logistic baseline. SHAP values
-then translated model output into a ranked list of churn drivers that can feed marketing
-and service playbooks.
-</p>
-</article>
-<article class="p-6 md:p-7 rounded-xl card-dark">
-<p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">
-Key deliverables
-</p>
-<ul class="list-disc list-outside pl-5 space-y-1.5 text-sm text-text-base">
-<li>Notebook based workflow from raw CSV to trained model</li>
-<li>Data cleaning steps that fix billing fields and remove incomplete records</li>
-<li>One hot encoded feature set that preserves plan and service information</li>
-<li>Random Forest classifier tuned and evaluated on a separate test split</li>
-<li>Confusion matrix and classification report for both churn and non churn classes</li>
-<li>SHAP summary plots that rank the strongest churn drivers for the business</li>
-</ul>
-</article>
-</div>
-</div>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section id="hero" class="pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+  <div class="fade-up">
+    <a href="../index.html#projects" class="inline-flex text-accent-action text-sm hover:text-accent-red transition mb-8 font-mono">
+      ← Back to Portfolio
+    </a>
+  </div>
+
+  <div class="fade-up flex flex-wrap justify-center gap-2 mb-6" style="transition-delay:.05s">
+    <span class="pill pill-accent">Machine Learning Lab</span>
+    <span class="pill pill-muted">Python</span>
+    <span class="pill pill-muted">Scikit-learn</span>
+    <span class="pill pill-muted">Pandas</span>
+    <span class="pill pill-muted">SHAP</span>
+    <span class="pill pill-muted">Customer Analytics</span>
+  </div>
+
+  <h1 class="fade-up text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-center" style="transition-delay:.1s">
+    Telco Customer Churn Analysis
+  </h1>
+
+  <p class="fade-up max-w-2xl mx-auto text-base text-text-secondary leading-relaxed mb-10 text-center" style="transition-delay:.15s">
+    Used a public telecom dataset to build a machine learning model that predicts which customers are likely
+    to cancel, then used SHAP to explain the drivers behind that risk so a retention team knows exactly
+    who to reach out to and why.
+  </p>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-accent-action mb-1">79.8%</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Accuracy</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Correct predictions on test set</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-accent-success mb-1">91%</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Recall (Stay)</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Non-churners correctly identified</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-orange-400 mb-1">49%</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Recall (Churn)</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">At-risk customers caught</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-yellow-400 mb-1">66%</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Precision (Churn)</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Churn prediction accuracy</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">26.5%</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Churn Rate</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Baseline churn in dataset</div>
+    </div>
+  </div>
+
+  <!-- Summary cards -->
+  <div class="fade-up grid md:grid-cols-2 gap-5" style="transition-delay:.3s">
+    <div class="card-dark p-6">
+      <p class="text-[0.7rem] tracking-[0.2em] uppercase text-text-secondary font-mono mb-3">What I built</p>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        A full machine learning pipeline in Python — from raw customer CSV to trained Random Forest classifier.
+        The model predicts which subscribers are likely to cancel, and SHAP values translate the model's
+        reasoning into plain-language drivers that a retention team can actually act on.
+      </p>
+    </div>
+    <div class="card-dark p-6">
+      <p class="text-[0.7rem] tracking-[0.2em] uppercase text-text-secondary font-mono mb-3">Key outcomes</p>
+      <ul class="text-sm text-text-secondary space-y-1.5">
+        <li>• Raw CSV cleaned, encoded, and split into train/test sets</li>
+        <li>• Random Forest classifier trained and evaluated vs. logistic baseline</li>
+        <li>• Confusion matrix and classification report for both classes</li>
+        <li>• SHAP summary plots ranking the strongest churn drivers</li>
+        <li>• Business-ready insights: tenure, pricing, and contract design</li>
+      </ul>
+    </div>
+  </div>
+
 </section>
-<section id=workflow class="py-12 md:py-14">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center gap-6 mb-8">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Workflow Overview
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
-<div class="p-4 rounded-xl card-dark">
-<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Step 1</p>
-<p class="text-sm font-semibold mb-1">Data intake</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Loaded the customer file into pandas, checked schema, row count and basic distributions.
-</p>
-</div>
-<div class="p-4 rounded-xl card-dark">
-<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Step 2</p>
-<p class="text-sm font-semibold mb-1">Cleaning</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Fixed the TotalCharges field, handled missing entries and removed unreliable records.
-</p>
-</div>
-<div class="p-4 rounded-xl card-dark">
-<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Step 3</p>
-<p class="text-sm font-semibold mb-1">Feature prep</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Encoded categorical columns, separated the churn label and built the final feature matrix.
-</p>
-</div>
-<div class="p-4 rounded-xl card-dark">
-<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Step 4</p>
-<p class="text-sm font-semibold mb-1">Modeling</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Trained a Random Forest classifier and compared results with a logistic baseline.
-</p>
-</div>
-<div class="p-4 rounded-xl card-dark">
-<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Step 5</p>
-<p class="text-sm font-semibold mb-1">Explainability</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Used SHAP to see which features push churn risk higher or lower for each customer.
-</p>
-</div>
-</div>
-</div>
+
+<!-- ══════════════ OVERVIEW ══════════════ -->
+<section id="overview" class="fade-soft py-16 md:py-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+  <div class="section-header"><h2>The Pipeline</h2></div>
+
+  <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Step 1</p>
+      <p class="text-sm font-semibold mb-1">Data Intake</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Loaded the customer file, checked schema, row count, and distributions. Confirmed the churn label and key features.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Step 2</p>
+      <p class="text-sm font-semibold mb-1">Cleaning</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Fixed TotalCharges (stored as text), dropped rows with missing values, removed the customer ID column.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Step 3</p>
+      <p class="text-sm font-semibold mb-1">Feature Prep</p>
+      <p class="text-xs text-text-secondary leading-relaxed">One-hot encoded categorical columns, separated the churn label, built a stratified 80/20 train/test split.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Step 4</p>
+      <p class="text-sm font-semibold mb-1">Modeling</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Trained a Random Forest classifier and compared performance against a logistic regression baseline.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Step 5</p>
+      <p class="text-sm font-semibold mb-1">Explainability</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Used SHAP's TreeExplainer to rank which features push churn risk up or down for each customer.</p>
+    </div>
+  </div>
+
 </section>
-<section id=lab class=py-14>
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center gap-6 mb-10">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Lab Breakdown
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<div class="flex flex-wrap gap-0 border-b-2 border-gray-700 mb-10 overflow-x-auto">
-<button class="tab-button active" onclick="switchTab('dataset')">01. Data Intake & Understanding</button>
-<button class=tab-button onclick="switchTab('cleaning')">02. Cleaning & Transformation</button>
-<button class=tab-button onclick="switchTab('features')">03. Feature Engineering & Split</button>
-<button class=tab-button onclick="switchTab('modeling')">04. Modeling & Evaluation</button>
-<button class=tab-button onclick="switchTab('shap')">05. SHAP Explainability & Insights</button>
-</div>
-<div id=tab-dataset class="tab-content active">
-<div class="phase-container space-y-16">
-<h3 class="text-xl font-semibold text-white">
-Phase 1 — Exploring the raw customer file
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-The notebook begins with a simple question: what does each row represent and which fields might help
-predict churn. It was confirmed that every record maps to a single customer and that the file includes
-service portfolio, contract style, billing amounts and a churn outcome.
-</p>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-1.1 — Inspecting the table in Jupyter
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-A quick head view in Jupyter shows the structure of the dataset: customer identifier,
-demographic attributes, service flags for internet and phone products, contract terms
-and the churn flag. This check confirms that the import ran correctly and that the
-data lines up with the documentation from the provider.
-</p>
-<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-<li>Verified column order, dtypes and row count</li>
-<li>Confirmed that each customer has one record</li>
-<li>Identified target column <code>Churn</code> for modeling</li>
-</ul>
-</div>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/TC1_Dataset Preview.png')">
-<img src=/it-and-security-portfolio/assets/images/TC1_Dataset%20Preview.png class="rounded-md w-full" alt="Telco dataset preview">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Preview of the raw telco churn dataset inside Jupyter before any cleaning.
-</p>
-</div>
-</section>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-1.2 — Correlation heatmap of numeric fields
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-To get an early feel for signal strength, a correlation matrix was created across numeric features
-and the churn flag. Tenure shows a clear negative relationship with churn, while higher monthly
-charges and certain contract patterns lean toward higher risk.
-</p>
-<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-<li>Converted the frame to numeric only for the heatmap</li>
-<li>Used seaborn to plot correlations and spot strong links</li>
-<li>Flagged tenure and billing features as promising signals</li>
-</ul>
-</div>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/TC1_Correlation Heatmap.png')">
-<img src=/it-and-security-portfolio/assets/images/TC1_Correlation%20Heatmap.png class="rounded-md w-full" alt="Correlation heatmap">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Correlation heatmap of numeric variables, including the churn label.
-</p>
-</div>
-</section>
-</div>
-</div>
-<div id=tab-cleaning class=tab-content>
-<div class="phase-container space-y-16">
-<h3 class="text-xl font-semibold text-white">
-Phase 2 — Cleaning and fixing billing fields
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-Before any modeling, the file needed a small amount of repair. The main issue sits in the
-TotalCharges column, which arrives as text and includes blank entries for new customers.
-</p>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-2.1 — Converting TotalCharges and dropping incomplete records
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-TotalCharges was cast to a numeric type and invalid strings were turned into missing values.
-Those rows were then removed so the model only trains on customers with a consistent
-billing history. The customer identifier column was also dropped since it carries no
-predictive value.
-</p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 text-[0.8rem] overflow-x-auto text-white">
-<code>df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
+
+<!-- ══════════════ PHASES ══════════════ -->
+<section id="phases" class="fade-soft py-16 md:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="section-header"><h2>Lab Walkthrough</h2></div>
+
+    <div class="flex flex-wrap gap-0 border-b border-gray-700 mb-8 overflow-x-auto">
+      <button class="tab-button active" data-tab="data"     onclick="switchTab('data')">Data & Cleaning</button>
+      <button class="tab-button"        data-tab="features" onclick="switchTab('features')">Feature Engineering</button>
+      <button class="tab-button"        data-tab="modeling" onclick="switchTab('modeling')">Modeling</button>
+      <button class="tab-button"        data-tab="shap"     onclick="switchTab('shap')">SHAP Explainability</button>
+    </div>
+
+    <!-- ── Data & Cleaning ── -->
+    <div id="tab-data" class="tab-content active">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Steps 1–2 — Data Intake & Cleaning</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            The dataset is one row per customer — service history, billing amounts, contract type, and a churn label.
+            The main cleaning issue is <code class="text-accent-success">TotalCharges</code>, which arrives as text
+            and has blank values for brand-new customers. Those get coerced to numeric, blanks become nulls, and those rows get dropped.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-4">
+            <h4 class="text-sm font-semibold">What the data looks like</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• 7,043 records, one row per customer, 26.5% churned</li>
+              <li>• Service flags, billing amounts, contract type, and churn label</li>
+              <li>• Tenure and monthly charges flagged early as strong signals</li>
+              <li>• Customer ID dropped — no predictive value</li>
+            </ul>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/TC1_Dataset Preview.png')">
+            <img src="/it-and-security-portfolio/assets/images/TC1_Dataset Preview.png" class="w-full" alt="Dataset preview">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Raw dataset in Jupyter before any cleaning</p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <h4 class="text-sm font-semibold mb-3">Cleaning code</h4>
+            <pre class="bg-container-bg border border-gray-800 p-4 overflow-x-auto text-[0.8rem]"><code>df["TotalCharges"] = pd.to_numeric(
+    df["TotalCharges"], errors="coerce"
+)
 df = df.dropna()
 df = df.drop(columns=["customerID"])</code></pre>
-<p class="text-sm text-text-secondary leading-relaxed">
-A quick null count after this step confirms that all remaining fields are complete and
-ready for feature engineering.
-</p>
-</div>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/TC1_Data Cleaning & Transformation.png')">
-<img src=/it-and-security-portfolio/assets/images/TC1_Data%20Cleaning%20&%20Transformation.png class="rounded-md w-full" alt="Data cleaning steps">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Notebook cell that converts TotalCharges, drops missing rows and removes identifiers.
-</p>
-</div>
-</section>
-</div>
-</div>
-<div id=tab-features class=tab-content>
-<div class="phase-container space-y-16">
-<h3 class="text-xl font-semibold text-white">
-Phase 3 — Feature engineering and train test split
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-Most columns in the telco file are categories such as Yes or No, internet plan types or contract names.
-These need to become numeric while keeping their original meaning intact.
-</p>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-3.1 — One hot encoding churn features
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-Pandas <code>get_dummies</code> was used to apply one hot encoding to every categorical column,
-dropping the first level to avoid redundant dummy variables. The churn flag becomes
-<code>Churn_Yes</code>, which serves as the target label for modeling.
-</p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 text-[0.8rem] overflow-x-auto text-white">
-<code>df_encoded = pd.get_dummies(df, drop_first=True)
+            <p class="text-xs text-text-secondary mt-3">A quick null check after confirms all fields are complete and ready for encoding.</p>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/TC1_Correlation Heatmap.png')">
+            <img src="/it-and-security-portfolio/assets/images/TC1_Correlation Heatmap.png" class="w-full" alt="Correlation heatmap">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Correlation heatmap — tenure shows negative relationship with churn, monthly charges positive</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Feature Engineering ── -->
+    <div id="tab-features" class="tab-content">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Step 3 — Feature Engineering & Split</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            Most columns are categorical — Yes/No flags, internet plan types, contract names. These get
+            one-hot encoded so the model can work with them numerically. The churn column becomes
+            <code class="text-accent-success">Churn_Yes</code> and is separated as the prediction target.
+            The split is stratified so both sets see the same 26.5% churn rate.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <h4 class="text-sm font-semibold mb-3">Encoding & splitting</h4>
+            <pre class="bg-container-bg border border-gray-800 p-4 overflow-x-auto text-[0.8rem]"><code># One-hot encode, drop first level to avoid
+# dummy variable trap
+df_encoded = pd.get_dummies(df, drop_first=True)
 
 X = df_encoded.drop("Churn_Yes", axis=1)
-y = df_encoded["Churn_Yes"]</code></pre>
-</div>
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-3.2 — Building a balanced train test split
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-To keep the churn rate consistent between training and evaluation, <code>train_test_split</code> 
-was used with stratification on the target. This prevents the model from seeing a very different 
-churn mix at training time than it will see at scoring time.
-</p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 text-[0.8rem] overflow-x-auto text-white">
-<code>X_train, X_test, y_train, y_test = train_test_split(
+y = df_encoded["Churn_Yes"]
+
+# Stratified split keeps churn ratio consistent
+X_train, X_test, y_train, y_test = train_test_split(
     X, y,
     test_size=0.2,
     random_state=42,
     stratify=y
 )</code></pre>
-</div>
-</section>
-</div>
-</div>
-<div id=tab-modeling class=tab-content>
-<div class="phase-container space-y-16">
-<h3 class="text-xl font-semibold text-white">
-Phase 4 — Random Forest modeling and evaluation
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-With features in place, modeling moved forward using a Random Forest classifier.
-This ensemble balances flexibility and interpretability and usually performs well
-on structured customer data.
-</p>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-4.1 — Training the Random Forest classifier
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-The model trains on the full feature set with a modest depth and tree count so that the
-pattern remains general rather than memorizing the training customers.
-</p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 text-[0.8rem] overflow-x-auto text-white">
-<code>rf_model = RandomForestClassifier(
+          </div>
+          <div class="card-dark border border-gray-700 p-5 flex flex-col justify-center space-y-4">
+            <h4 class="text-sm font-semibold">Why these choices matter</h4>
+            <ul class="text-sm text-text-secondary space-y-3">
+              <li><strong class="text-white block text-xs mb-0.5">drop_first=True</strong>Removes one redundant column per category — avoids the dummy variable trap without losing information.</li>
+              <li><strong class="text-white block text-xs mb-0.5">stratify=y</strong>Keeps the same churn ratio in both splits — the model doesn't see a different distribution at eval time.</li>
+              <li><strong class="text-white block text-xs mb-0.5">random_state=42</strong>Reproducible results on every run — essential for comparing models fairly.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Modeling ── -->
+    <div id="tab-modeling" class="tab-content">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Step 4 — Random Forest Modeling & Evaluation</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            A Random Forest was chosen for its balance of flexibility and interpretability on structured customer data.
+            The model reaches 79.8% accuracy — strong recall on customers who stay (91%), moderate recall on churners (49%),
+            with 66% precision on churn predictions. Roughly 2 in 3 flagged customers are genuinely at risk.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <h4 class="text-sm font-semibold mb-3">Training & evaluation code</h4>
+            <pre class="bg-container-bg border border-gray-800 p-4 overflow-x-auto text-[0.8rem]"><code>rf_model = RandomForestClassifier(
     n_estimators=300,
     max_depth=12,
     random_state=42
 )
 
 rf_model.fit(X_train, y_train)
-y_rf_pred = rf_model.predict(X_test)</code></pre>
-<p class="text-sm text-text-secondary leading-relaxed">
-Accuracy on the test set lands just under eighty percent, with stronger recall for
-customers who stay and moderate recall for customers who churn.
-</p>
-</div>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/TC1_Modeling & Performance Evaluation.png')">
-<img src=/it-and-security-portfolio/assets/images/TC1_Modeling%20&%20Performance%20Evaluation.png class="rounded-md w-full" alt="Random Forest evaluation output">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-Random Forest accuracy, confusion matrix and classification report from the notebook.
-</p>
-</div>
-</section>
-<section class="bg-secondary-bg border border-gray-700 rounded-xl p-6 md:p-7">
-<h4 class="text-sm font-bold text-accent-cyan uppercase tracking-wider mb-4">
-Evaluation code
-</h4>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 text-[0.8rem] overflow-x-auto text-white">
-<code>print("Random Forest Accuracy:", accuracy_score(y_test, y_rf_pred))
-print("\nConfusion Matrix:\n", confusion_matrix(y_test, y_rf_pred))
-print("\nClassification Report:\n", classification_report(y_test, y_rf_pred))</code></pre>
-<p class="mt-4 text-sm text-text-secondary leading-relaxed">
-The confusion matrix shows 944 true retainers and 181 true churners correctly identified.
-Precision for the churn class is around sixty six percent, with recall near forty nine percent,
-which means the model favors catching many churners while keeping false alarms at a manageable level.
-</p>
-</section>
-</div>
-</div>
-<div id=tab-shap class=tab-content>
-<div class="phase-container space-y-16">
-<h3 class="text-xl font-semibold text-white">
-Phase 5 — SHAP driven explainability and business insight
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-Accuracy is useful, but a business team also needs to know why the model flags a customer as high risk.
-SHAP values provide that missing piece by attributing each prediction to individual features.
-</p>
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<div class=space-y-4>
-<h4 class="text-lg font-semibold text-white">
-5.1 — Computing SHAP values for the Random Forest
-</h4>
-<p class="text-sm text-text-secondary leading-relaxed">
-The tree based SHAP explainer was used, which handles ensemble models efficiently.
-For every customer in the test set it returns a contribution score per feature,
-showing how that feature moves churn probability up or down.
-</p>
-<pre class="bg-container-bg border border-gray-800 rounded-lg p-4 text-[0.8rem] overflow-x-auto text-white">
-<code>explainer   = shap.TreeExplainer(rf_model)
+y_rf_pred = rf_model.predict(X_test)
+
+print(accuracy_score(y_test, y_rf_pred))
+print(confusion_matrix(y_test, y_rf_pred))
+print(classification_report(y_test, y_rf_pred))</code></pre>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/TC1_Modeling & Performance Evaluation.png')">
+            <img src="/it-and-security-portfolio/assets/images/TC1_Modeling & Performance Evaluation.png" class="w-full" alt="Model evaluation output">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Confusion matrix and classification report — 944 true retainers, 181 true churners correctly identified</p>
+          </div>
+        </div>
+
+        <div class="border border-gray-700 p-5">
+          <h4 class="text-sm font-semibold mb-3">Reading the numbers</h4>
+          <div class="grid md:grid-cols-3 gap-5 text-sm text-text-secondary">
+            <div><strong class="text-white block text-xs mb-1">79.8% accuracy</strong>Gets the call right about 4 in 5 times across both classes.</div>
+            <div><strong class="text-white block text-xs mb-1">91% recall (stay)</strong>Very good at identifying customers who aren't leaving — low false alarm rate for the retention team.</div>
+            <div><strong class="text-white block text-xs mb-1">49% recall (churn)</strong>Catches roughly half of actual churners — still meaningful for targeted outreach, especially with SHAP insights added.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SHAP ── -->
+    <div id="tab-shap" class="tab-content">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Step 5 — SHAP Explainability</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            Accuracy alone doesn't tell a retention team what to do. SHAP values assign each feature a contribution
+            score for every prediction — showing how much a specific attribute pushes churn probability up or down
+            for a given customer. The summary plot ranks these globally across the entire test set.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <h4 class="text-sm font-semibold mb-3">Computing SHAP values</h4>
+            <pre class="bg-container-bg border border-gray-800 p-4 overflow-x-auto text-[0.8rem]"><code>explainer = shap.TreeExplainer(rf_model)
 shap_values = explainer.shap_values(X_test)
 
+# Dot plot — direction and magnitude per feature
 shap.summary_plot(shap_values[1], X_test)
-shap.summary_plot(shap_values[1], X_test, plot_type="bar")</code></pre>
-<p class="text-sm text-text-secondary leading-relaxed">
-The bar style summary ranks global feature importance, while the main plot shows how low or high
-values of each feature influence churn risk.
-</p>
-</div>
-<div class="image-zoom bg-container-bg border border-gray-700 rounded-xl p-4" onclick="openModal('/it-and-security-portfolio/assets/images/TC1_SHAP Summary Plot.png')">
-<img src=/it-and-security-portfolio/assets/images/TC1_SHAP%20Summary%20Plot.png class="rounded-md w-full" alt="SHAP summary plot">
-<p class="mt-3 text-xs italic text-text-secondary text-center">
-SHAP summary plot where tenure, monthly charges and contract style emerge as leading churn drivers.
-</p>
-</div>
+
+# Bar chart — global feature importance ranking
+shap.summary_plot(
+    shap_values[1], X_test,
+    plot_type="bar"
+)</code></pre>
+          </div>
+          <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/TC1_SHAP Summary Plot.png')">
+            <img src="/it-and-security-portfolio/assets/images/TC1_SHAP Summary Plot.png" class="w-full" alt="SHAP summary plot">
+            <p class="mt-2 text-xs italic text-text-secondary text-center">SHAP summary — tenure, monthly charges, and contract type are the strongest churn drivers</p>
+          </div>
+        </div>
+
+        <div class="border border-gray-700 p-5">
+          <h4 class="text-sm font-semibold mb-4">What the SHAP plot tells the business</h4>
+          <div class="grid md:grid-cols-3 gap-5 text-sm text-text-secondary">
+            <div>
+              <span class="text-accent-success font-mono text-xs block mb-1">TENURE</span>
+              Short tenure pushes churn risk up sharply. New customers haven't built loyalty yet — they're the highest priority for early outreach.
+            </div>
+            <div>
+              <span class="text-accent-success font-mono text-xs block mb-1">MONTHLY CHARGES</span>
+              Higher bills increase risk, especially on simple contracts. Targeted discounts or plan reviews for expensive month-to-month accounts protect revenue.
+            </div>
+            <div>
+              <span class="text-accent-success font-mono text-xs block mb-1">CONTRACT & SUPPORT</span>
+              Month-to-month contracts trend toward higher risk. Long-term contracts with security and tech support bundles are consistently associated with staying.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </section>
-<section class="bg-secondary-bg border border-gray-700 rounded-xl p-6 md:p-7">
-<h4 class="text-sm font-bold text-accent-cyan uppercase tracking-wider mb-4">
-Interpreting the top churn drivers
-</h4>
-<div class="grid md:grid-cols-3 gap-6 text-sm text-text-secondary">
-<div>
-<p class="font-mono text-xs text-accent-success mb-1">Tenure</p>
-<p>
-Shorter tenure pushes churn risk higher which reflects new customers who have not built
-loyalty yet. Long term customers rarely appear in the high risk group.
-</p>
-</div>
-<div>
-<p class="font-mono text-xs text-accent-success mb-1">Monthly charges</p>
-<p>
-Expensive plans raise churn risk, especially when combined with simple contract terms.
-Targeted discounts toward these customers can protect revenue.
-</p>
-</div>
-<div>
-<p class="font-mono text-xs text-accent-success mb-1">Contract and support features</p>
-<p>
-Month to month contracts and lack of support services trend toward higher risk, while
-long term contracts with security and technical support keep customers more stable.
-</p>
-</div>
-</div>
+
+<!-- ══════════════ RESULTS ══════════════ -->
+<section id="results" class="fade-soft py-16 md:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="section-header"><h2>Results & Retention Strategy</h2></div>
+
+    <div class="fade-up card-dark p-5 mb-8">
+      <div class="image-zoom" onclick="openModal('/it-and-security-portfolio/assets/images/TC1_Modeling & Performance Evaluation.png')">
+        <img src="/it-and-security-portfolio/assets/images/TC1_Modeling & Performance Evaluation.png" class="w-full" alt="Full model evaluation">
+      </div>
+      <p class="mt-3 text-xs italic text-text-secondary text-center">Full evaluation on the held-out test set — confusion matrix and classification report</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-5">
+      <div class="fade-up card-dark border border-red-900/30 p-6 phase-card" style="transition-delay:.05s">
+        <h4 class="text-sm font-bold text-accent-red uppercase tracking-wider mb-3">Early Tenure Outreach</h4>
+        <p class="text-xs text-text-secondary mb-4 leading-relaxed">New customers are the highest-risk segment.</p>
+        <ul class="text-sm text-text-secondary space-y-2">
+          <li><strong class="text-white block text-xs mb-0.5">Target short-tenure accounts</strong>SHAP confirms new subscribers carry the highest modeled churn risk — prioritize them for proactive contact.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Reinforce value early</strong>Welcome touchpoints that highlight plan value reduce the likelihood of early cancellation.</li>
+        </ul>
+      </div>
+      <div class="fade-up card-dark border border-blue-900/30 p-6 phase-card" style="transition-delay:.1s">
+        <h4 class="text-sm font-bold text-accent-action uppercase tracking-wider mb-3">Pricing & Contract Design</h4>
+        <p class="text-xs text-text-secondary mb-4 leading-relaxed">High bills and loose contracts drive churn.</p>
+        <ul class="text-sm text-text-secondary space-y-2">
+          <li><strong class="text-white block text-xs mb-0.5">Discount high-cost month-to-month plans</strong>High charges plus no commitment is the clearest churn signal in the data.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Incentivize longer contracts</strong>Moving customers from month-to-month to 1–2 year terms stabilizes revenue and lowers churn risk.</li>
+        </ul>
+      </div>
+      <div class="fade-up card-dark border border-green-900/30 p-6 phase-card" style="transition-delay:.15s">
+        <h4 class="text-sm font-bold text-accent-success uppercase tracking-wider mb-3">Support Bundles & Feedback</h4>
+        <p class="text-xs text-text-secondary mb-4 leading-relaxed">Services and continuous improvement protect retention.</p>
+        <ul class="text-sm text-text-secondary space-y-2">
+          <li><strong class="text-white block text-xs mb-0.5">Cross-sell security & tech support</strong>These services appear protective in SHAP — good candidates for targeted offers to at-risk customers.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Retrain on new outcomes</strong>New churn data can retrain the model, sharpening targeting over time.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
 </section>
-</div>
-</div>
-</div>
+
+<!-- ══════════════ TAKEAWAYS ══════════════ -->
+<section id="takeaways" class="fade-soft py-16 md:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="section-header"><h2>What I Learned</h2></div>
+
+    <div class="grid md:grid-cols-2 gap-8 mb-10">
+      <div class="fade-up card-dark p-6">
+        <h4 class="text-sm font-semibold mb-3">Key takeaways</h4>
+        <ul class="text-sm text-text-secondary space-y-2">
+          <li>• Tenure, monthly charges, and contract type are the strongest predictors — SHAP quantifies exactly how much each one matters</li>
+          <li>• A clean, stratified split matters more than model complexity for honest evaluation</li>
+          <li>• 49% churn recall still generates actionable outreach lists — it doesn't need to be perfect to be useful</li>
+          <li>• SHAP makes a black-box model explainable to people who don't care about feature importances</li>
+          <li>• The real value is the pipeline — it can be retrained as new churn data comes in</li>
+        </ul>
+      </div>
+      <div class="fade-up card-dark p-6" style="transition-delay:.1s">
+        <h4 class="text-sm font-semibold mb-3">Skills demonstrated</h4>
+        <div class="flex flex-wrap gap-2">
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Python Data Analysis</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Pandas Cleaning</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Feature Engineering</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Scikit-learn Classification</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Confusion Matrix Evaluation</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">SHAP Explainability</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Customer Churn Analytics</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Jupyter Notebooks</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="fade-up card-dark p-6 mb-10" style="transition-delay:.15s">
+      <p class="text-sm text-text-secondary leading-relaxed">
+        This project covers the full churn modeling loop: get the data clean, encode it properly, train
+        and evaluate honestly, then use SHAP to turn the model's output into something a retention team can
+        actually use. The pipeline is reproducible and retrainable — feed in new outcome data and it improves.
+      </p>
+    </div>
+
+    <div class="fade-up">
+      <a href="../index.html#projects" class="inline-flex text-accent-action text-sm hover:text-accent-red transition font-mono">
+        ← Back to Portfolio
+      </a>
+    </div>
+
+  </div>
 </section>
-<section id=model-overview class="py-14">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center gap-6 mb-6">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Model Performance Overview
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<p class="text-text-secondary text-sm max-w-3xl mb-8 mx-auto text-center">
-The trained Random Forest reaches roughly eighty percent accuracy on the test set and balances
-performance between churn and non churn classes. The model recognizes most customers who stay,
-while still catching nearly half of customers who leave which is enough to support focused outreach.
-</p>
-<div class="card-dark rounded-xl p-5 mb-10">
-<div class=image-zoom onclick="openModal('/it-and-security-portfolio/assets/images/TC1_Modeling & Performance Evaluation.png')">
-<img src=/it-and-security-portfolio/assets/images/TC1_Modeling%20&%20Performance%20Evaluation.png class="rounded-lg w-full object-contain" alt="Model evaluation output">
-</div>
-<p class="mt-4 text-xs italic text-text-secondary text-center">
-Confusion matrix and classification report summarizing how well the model distinguishes churn and non churn customers.
-</p>
-</div>
-<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
-<div class="card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-[#61AFEF] mb-1">79.8%</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Accuracy</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Share of correct predictions</div>
-</div>
-<div class="card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-[#A3E635] mb-1">91%</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Recall (Stay)</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Non churn customers identified</div>
-</div>
-<div class="card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-[#F97316] mb-1">49%</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Recall (Churn)</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Churners caught by model</div>
-</div>
-<div class="card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-[#FBBF24] mb-1">66%</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Precision (Churn)</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Accuracy of churn predictions</div>
-</div>
-<div class="card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-[#E5C07B] mb-1">26.5%</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Churn Rate</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Observed churn share</div>
-</div>
-</div>
-<div class="card-dark rounded-xl p-8 mb-10">
-<div class="flex items-center justify-between mb-8 border-b border-gray-800 pb-4">
-<h3 class="text-sm font-bold text-white uppercase tracking-widest">
-Retention Strategy Highlights
-</h3>
-<span class="text-xs text-text-secondary font-mono">6 KEY IDEAS</span>
-</div>
-<div class="grid md:grid-cols-2 gap-x-12 gap-y-8">
-<div class=space-y-6>
-<div>
-<span class="text-red-400 font-mono text-xs mb-1 block tracking-wider">EARLY TENURE OUTREACH</span>
-<p class="text-white leading-relaxed text-sm">
-Focus retention campaigns on customers with short tenure who carry higher modeled risk.
-</p>
-</div>
-<div>
-<span class="text-red-400 font-mono text-xs mb-1 block tracking-wider">PRICING SENSITIVITY</span>
-<p class="text-white leading-relaxed text-sm">
-High monthly charges are a strong driver of churn so discounts or plan reviews for that
-segment can reduce loss.
-</p>
-</div>
-<div>
-<span class="text-orange-400 font-mono text-xs mb-1 block tracking-wider">CONTRACT DESIGN</span>
-<p class="text-white leading-relaxed text-sm">
-Moving customers from month to month to longer contracts with valuable add ons can make
-the relationship more stable.
-</p>
-</div>
-</div>
-<div class=space-y-6>
-<div>
-<span class="text-orange-500 font-mono text-xs mb-1 block tracking-wider">SUPPORT BUNDLES</span>
-<p class="text-white leading-relaxed text-sm">
-Security and technical support services appear protective so they are good candidates
-for targeted cross sell.
-</p>
-</div>
-<div>
-<span class="text-yellow-500 font-mono text-xs mb-1 block tracking-wider">PLAYBOOK TEMPLATES</span>
-<p class="text-white leading-relaxed text-sm">
-High risk customers can follow a standard outreach play that blends proactive service
-checks and tailored offers.
-</p>
-</div>
-<div>
-<span class="text-green-400 font-mono text-xs mb-1 block tracking-wider">CYCLE OF IMPROVEMENT</span>
-<p class="text-white leading-relaxed text-sm">
-New outcomes can feed back into the model, sharpening feature importance and improving
-the targeting strategy over time.
-</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section class="pt-12 md:pt-16 pb-12">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-<div>
-<div class="flex items-center gap-6 mb-8">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Key insights
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<div class="p-6 md:p-7 rounded-xl card-dark">
-<ul class="list-disc list-outside pl-5 space-y-2 text-white text-sm sm:text-[0.95rem] leading-relaxed">
-<li>Tenure, monthly charges and contract style are the strongest global indicators of churn risk.</li>
-<li>Even a simple tree ensemble can deliver almost eighty percent accuracy with clear business signal.</li>
-<li>Targeting short tenure, high price customers yields the greatest opportunity for retention wins.</li>
-<li>SHAP based explanations make a complex model understandable for non technical stakeholders.</li>
-<li>Clean feature engineering and stratified splits are crucial for honest evaluation in churn work.</li>
-</ul>
-</div>
-</div>
-<div>
-<div class="flex items-center gap-6 mb-8">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Skills demonstrated
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<div class="p-6 md:p-7 rounded-xl card-dark">
-<div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-Python Data Analysis
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-Pandas Data Cleaning
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-Feature Engineering
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-Scikit Learn Classification
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-Confusion Matrix Evaluation
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-SHAP Model Explainability
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-Customer Churn Analytics
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-Storytelling With Notebooks
-</span>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section class="pb-12 md:pb-16">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center gap-6 mb-8">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Summary
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="card-dark rounded-xl p-6">
-<p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
-This telco churn lab walks from raw customer records to a production style modeling pipeline
-that flags at risk subscribers and explains why they might leave. Along the way it shows how
-careful cleaning, solid feature engineering, stratified splits and honest evaluation combine
-into a reliable classifier. SHAP based insights bridge the gap between data science and
-decision making so marketing and service teams can act with confidence on the model's signals.
-</p>
-</div>
-<div class=mt-10>
-<a href=../index.html#projects class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition font-mono">
-← Back to Portfolio
-</a>
-</div>
-</div>
-</section>
-<script src=https://cdn.jsdelivr.net/npm/chart.js></script>
-<script>function scrollToSection(id){const target=document.getElementById(id);if(!target)return;target.scrollIntoView({behavior:'smooth',block:'start'});const dots=document.querySelectorAll('.nav-dot');const sections=['hero','workflow','lab','model-overview'];dots.forEach((dot,idx)=>{dot.classList.toggle('active',sections[idx]===id);});}
-function openModal(src){const modal=document.getElementById('imageModal');const img=document.getElementById('modalImage');img.src=src;modal.classList.add('active');}
-function closeModal(){const modal=document.getElementById('imageModal');modal.classList.remove('active');const img=document.getElementById('modalImage');img.src='';}
-function toggleSeverity(level){const panel=document.getElementById(`panel-${level}`);if(!panel)return;panel.classList.toggle('open');}
-document.addEventListener('DOMContentLoaded',()=>{const chart=document.getElementById('severity-donut');if(chart){const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){chart.classList.remove('opacity-0');obs.disconnect();}});});obs.observe(chart);}});</script>
-</main>
+
+<script>
+window.addEventListener("scroll", () => {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById("scroll-progress").style.width = (window.scrollY / total * 100) + "%";
+}, { passive: true });
+
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add("show");
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
+
+document.querySelectorAll(".fade-up, .fade-soft").forEach(el => revealObs.observe(el));
+
+const dotSections = ["hero","overview","phases","results","takeaways"];
+const dots = document.querySelectorAll(".nav-dot");
+
+const dotObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = dotSections.indexOf(e.target.id);
+      if (idx !== -1) {
+        dots.forEach(d => d.classList.remove("active"));
+        dots[idx]?.classList.add("active");
+      }
+    }
+  });
+}, { threshold: 0.4 });
+
+dotSections.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) dotObs.observe(el);
+});
+
+function scrollToSection(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener("click", e => {
+    const target = document.querySelector(a.getAttribute("href"));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: "smooth" }); }
+  });
+});
+
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+</script>
 </body>
 </html>
