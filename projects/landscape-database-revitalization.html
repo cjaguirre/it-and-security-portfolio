@@ -1,625 +1,642 @@
 <!DOCTYPE html>
-<html lang=en data-theme=dark class=dark>
+<html lang="en" class="dark">
 <head>
-<meta charset=UTF-8 />
-<meta name=viewport content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Landscape Database Revitalization | Christian Aguirre</title>
-<script>function switchTab(tabId){document.querySelectorAll('.tab-button').forEach(btn=>{btn.classList.remove('active');});document.querySelectorAll('.tab-content').forEach(content=>{content.classList.remove('active');});const activeButton=[...document.querySelectorAll('.tab-button')].find(btn=>btn.getAttribute('onclick')&&btn.getAttribute('onclick').includes(tabId));if(activeButton)activeButton.classList.add('active');const target=document.getElementById(`tab-${tabId}`);if(target)target.classList.add('active');}</script>
-<script src=https://cdn.tailwindcss.com></script>
-<script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-bg":"var(--bg-default)","secondary-bg":"var(--bg-secondary)","container-bg":"var(--container-bg)","text-base":"var(--text-base)","text-secondary":"var(--text-secondary)","accent-cyan":"var(--accent-structural)","accent-red":"var(--accent-red)","accent-action":"var(--functional-action)","accent-success":"var(--functional-success)",}}}};</script>
-<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");.dark{--bg-default:#1e1e1e;--bg-secondary:#30333a;--text-base:#fff;--text-secondary:#abb2bf;--accent-structural:#d9d9d9;
-                                                                                                                                       --functional-action:#ffffff;
-                                                                                                                                       --functional-success:#98c379;--accent-red:#e06c75;--container-bg:#171717;background-color:var(--bg-default);color:var(--text-base)}body{font-family:"Inter",sans-serif;background-color:var(--bg-default);background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,rgba(0,0,0,0) 1px);background-size:20px 20px;background-position:center;background-attachment:fixed;min-height:100vh}.pill{border-radius:999px;padding:.2rem .7rem;border:1px solid rgba(171,178,191,0.6);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em}.pill-muted{color:var(--text-secondary);background-color:rgba(23,23,23,0.95)}.pill-accent{color:var(--accent-structural);background-color:rgba(23,23,23,0.95);border-color:rgba(217,217,217,0.9)}.tab-button{padding:1rem 1.5rem;background:transparent;border:0;color:var(--text-secondary);font-family:"Inconsolata",monospace;cursor:pointer;transition:all .3s ease;border-bottom:3px solid transparent;white-space:nowrap}.tab-button:hover{color:var(--functional-action);background:rgba(97,175,239,0.05)}.tab-button.active{color:var(--functional-action);border-bottom-color:var(--functional-action)}.tab-content{display:none;animation:fadeSlideIn .4s ease-out}.tab-content.active{display:block}@keyframes fadeSlideIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}.stat-card{position:relative;overflow:hidden}.stat-number{font-size:2.5rem;font-weight:800;font-family:"Inconsolata",monospace}.image-zoom{cursor:pointer;transition:all .3s ease}.image-zoom:hover{transform:scale(1.02);box-shadow:0 10px 40px rgba(97,175,239,0.3)}.modal{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.95)}.modal.active{display:flex;align-items:center;justify-content:center}.modal-content{max-width:95%;max-height:95%;border-radius:8px}.collapsible-content{max-height:0;overflow:hidden;transition:max-height .4s ease-out,margin .2s ease;margin:0!important}.collapsible-content.open{max-height:10000px;margin:1.75rem 0 2rem 0}.nav-dots{position:fixed;right:2rem;top:50%;transform:translateY(-50%);z-index:100}.nav-dot{width:10px;height:10px;border-radius:50%;background:var(--text-secondary);margin:.75rem 0;cursor:pointer;transition:all .3s ease}.nav-dot:hover,.nav-dot.active{background:var(--functional-action);transform:scale(1.4)}@media(max-width:768px){.nav-dots{display:none}}.ring-anim{animation:fadeInRing 1.2s ease-out forwards;opacity:0}@keyframes fadeInRing{to{opacity:1}}.phase-container{background:var(--container-bg);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;padding:2.5rem;box-shadow:0 12px 40px rgba(0,0,0,0.35)}.card-dark{background:var(--container-bg);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;box-shadow:0 12px 40px rgba(0,0,0,0.35)}
-*{
-border-radius:0 !important;
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
+
+.dark {
+  --bg-default: #1e1e1e;
+  --bg-secondary: #30333a;
+  --text-base: #fff;
+  --text-secondary: #abb2bf;
+  --accent-structural: #d9d9d9;
+  --functional-action: #61afef;
+  --functional-success: #98c379;
+  --accent-red: #e06c75;
+  --container-bg: #171717;
+  background-color: var(--bg-default);
+  color: var(--text-base);
 }
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--bg-default);
+  background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, rgba(0,0,0,0) 1px);
+  background-size: 20px 20px;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--functional-action);
+  z-index: 9999;
+  pointer-events: none;
+  transition: width 0.08s linear;
+}
+
+.nav-dots {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+}
+.nav-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+  margin: 0.75rem 0;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+.nav-dot:hover, .nav-dot.active {
+  background: var(--functional-action);
+  transform: scale(1.4);
+}
+@media (max-width: 768px) { .nav-dots { display: none; } }
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+.section-header::before, .section-header::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.18);
+}
+.section-header h2 {
+  font-family: "Inconsolata", monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  letter-spacing: .03em;
+}
+
+.card-dark {
+  background: var(--container-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.pill {
+  display: inline-block;
+  border-radius: 999px;
+  padding: .2rem .7rem;
+  border: 1px solid rgba(171,178,191,0.6);
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+.pill-muted  { color: var(--text-secondary); background: rgba(23,23,23,0.95); }
+.pill-accent { color: var(--accent-structural); background: rgba(23,23,23,0.95); border-color: rgba(217,217,217,0.9); }
+
+.tab-button {
+  padding: .75rem 1.25rem;
+  background: transparent;
+  border: 0;
+  color: var(--text-secondary);
+  font-family: "Inconsolata", monospace;
+  font-size: .85rem;
+  cursor: pointer;
+  transition: color 0.25s, border-color 0.25s;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.tab-button:hover  { color: var(--functional-action); }
+.tab-button.active { color: var(--functional-action); border-bottom-color: var(--functional-action); }
+
+.tab-content { display: none; }
+.tab-content.active {
+  display: block;
+  animation: fadeSlideIn .4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.image-zoom {
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+.image-zoom:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 40px rgba(97,175,239,0.2);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  align-items: center;
+  justify-content: center;
+}
+.modal.active { display: flex; }
+.modal-content { max-width: 95%; max-height: 95%; border-radius: 4px; }
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.fade-up.show { opacity: 1; transform: translateY(0); }
+
+.fade-soft {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.fade-soft.show { opacity: 1; transform: translateY(0); }
+
+.stat-stagger:nth-child(1) { transition-delay: 0.05s; }
+.stat-stagger:nth-child(2) { transition-delay: 0.10s; }
+.stat-stagger:nth-child(3) { transition-delay: 0.15s; }
+.stat-stagger:nth-child(4) { transition-delay: 0.20s; }
+.stat-stagger:nth-child(5) { transition-delay: 0.25s; }
+
+.phase-card {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.2s ease,
+              box-shadow 0.25s ease;
+}
+.phase-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(97,175,239,0.35);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+}
+
+* { border-radius: 0 !important; }
 </style>
+<script>
+tailwind.config = { darkMode: "class", theme: { extend: { colors: {
+  "container-bg": "var(--container-bg)",
+  "text-secondary": "var(--text-secondary)",
+  "accent-cyan": "var(--accent-structural)",
+  "accent-action": "var(--functional-action)",
+  "accent-success": "var(--functional-success)",
+  "accent-red": "var(--accent-red)",
+}}}};
+
+function switchTab(id) {
+  document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+  const btn = [...document.querySelectorAll(".tab-button")].find(b => b.dataset.tab === id);
+  if (btn) btn.classList.add("active");
+  const tab = document.getElementById("tab-" + id);
+  if (tab) tab.classList.add("active");
+}
+
+function openModal(src) {
+  document.getElementById("modalImage").src = src;
+  document.getElementById("imageModal").classList.add("active");
+}
+function closeModal() {
+  document.getElementById("imageModal").classList.remove("active");
+  document.getElementById("modalImage").src = "";
+}
+</script>
 </head>
-<body class=text-text-base>
-<div class=nav-dots>
-<div class="nav-dot active" onclick="scrollToSection('hero')"></div>
-<div class=nav-dot onclick="scrollToSection('workflow')"></div>
-<div class=nav-dot onclick="scrollToSection('lab')"></div>
-<div class=nav-dot onclick="scrollToSection('insights')"></div>
+<body class="text-white">
+
+<div id="scroll-progress"></div>
+
+<div class="modal" id="imageModal" onclick="closeModal()">
+  <span style="position:absolute;top:2rem;right:3rem;color:white;font-size:3rem;cursor:pointer">&times;</span>
+  <img class="modal-content" id="modalImage" alt="Enlarged view">
 </div>
-<div class=modal id=imageModal onclick=closeModal()>
-<span style=position:absolute;top:2rem;right:3rem;color:white;font-size:3rem;cursor:pointer>&times;</span>
-<img class=modal-content id=modalImage alt="Enlarged view">
+
+<div class="nav-dots">
+  <div class="nav-dot active" onclick="scrollToSection('hero')"></div>
+  <div class="nav-dot" onclick="scrollToSection('overview')"></div>
+  <div class="nav-dot" onclick="scrollToSection('phases')"></div>
+  <div class="nav-dot" onclick="scrollToSection('bi')"></div>
+  <div class="nav-dot" onclick="scrollToSection('takeaways')"></div>
 </div>
-<main>
-<section id=hero class="pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<a href=../index.html#projects class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition mb-6">
-← Back to Portfolio
-</a>
-<div class="flex flex-wrap justify-center gap-2 mb-6 text-center">
-<span class="pill pill-accent">Database Revitalization</span>
-<span class="pill pill-muted">SQL Server</span>
-<span class="pill pill-muted">Normalization</span>
-<span class="pill pill-muted">ERD Modeling</span>
-<span class="pill pill-muted">Business Intelligence</span>
-</div>
-<h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3 text-center">
-Landscape Database Revitalization
-</h1>
-<p class="max-w-3xl mx-auto text-sm sm:text-base text-text-secondary leading-relaxed mb-8 text-center">
-Rebuilt a fragmented landscaping company data environment into a clean, normalized
-SQL Server system. Standardized entities, enforced relational integrity, and built a
-full query library to uncover client trends, service patterns, and project profitability.
-</p>
-<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-<div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-white mb-1">12</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Entities</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Modeled across the core ERD</div>
-</div>
-<div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-white mb-1">30+</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">SQL queries</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Reusable business insight library</div>
-</div>
-<div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-white mb-1">3NF</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Normalization</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Schema standardized to third normal form</div>
-</div>
-<div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-white mb-1">100%</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Integrity</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">All relationships enforced by constraints</div>
-</div>
-<div class="stat-card card-dark rounded-lg p-5 text-center">
-<div class="stat-number text-white mb-1">0</div>
-<div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Redundancy</div>
-<div class="text-[0.65rem] text-text-secondary mt-1">Duplicate fields eliminated through design</div>
-</div>
-</div>
-<div class="flex flex-wrap justify-center items-center gap-3 text-[0.7rem] sm:text-xs text-text-secondary mb-10 max-w-3xl mx-auto">
-<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
-<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Advanced Database Management
-</span>
-<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
-<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>SQL Server, SSMS, ERDPlus
-</span>
-<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-dark">
-<span class="w-1.5 h-1.5 rounded-full bg-accent-success"></span>Spring 2023
-</span>
-</div>
-<div class="grid md:grid-cols-2 gap-6">
-<article class="p-6 md:p-7 rounded-xl card-dark">
-<p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">
-Project overview
-</p>
-<p class="text-sm leading-relaxed text-text-base mb-3">
-The original data environment mixed spreadsheets, ad hoc tables, and partially designed schemas.
-Client records appeared in several places, bid amounts did not tie cleanly to labor and material
-costs, and basic questions about profitability required manual reconciliation.
-</p>
-</article>
-<article class="p-6 md:p-7 rounded-xl card-dark">
-<p class="text-[0.7rem] tracking-[0.22em] uppercase text-text-secondary mb-3 font-mono">
-Key deliverables
-</p>
-<ul class="list-disc list-outside pl-5 space-y-1.5 text-sm text-text-base">
-<li>Normalized SQL Server schema with primary and foreign keys plus business constraints</li>
-<li>ERD modeling for clients, projects, bids, labor, materials, tools, and production planning</li>
-<li>Standardized legacy operational data into clean relational tables</li>
-<li>More than thirty analytical SQL queries for revenue, demand, and margin analysis</li>
-<li>Deployment and usage documentation for technical and non-technical stakeholders</li>
-</ul>
-</article>
-</div>
-</div>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section id="hero" class="pt-16 pb-12 sm:pt-20 md:pt-24 md:pb-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+  <div class="fade-up">
+    <a href="../index.html#projects" class="inline-flex text-accent-action text-sm hover:text-accent-red transition mb-8 font-mono">
+      ← Back to Portfolio
+    </a>
+  </div>
+
+  <div class="fade-up flex flex-wrap justify-center gap-2 mb-6" style="transition-delay:.05s">
+    <span class="pill pill-accent">Database Revitalization</span>
+    <span class="pill pill-muted">SQL Server</span>
+    <span class="pill pill-muted">Normalization</span>
+    <span class="pill pill-muted">ERD Modeling</span>
+    <span class="pill pill-muted">Business Intelligence</span>
+  </div>
+
+  <h1 class="fade-up text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-center" style="transition-delay:.1s">
+    Landscape Database Revitalization
+  </h1>
+
+  <p class="fade-up max-w-2xl mx-auto text-base text-text-secondary leading-relaxed mb-10 text-center" style="transition-delay:.15s">
+    Rebuilt a fragmented landscaping company data environment into a clean, normalized SQL Server system —
+    then built a query library on top of it to surface client trends, service demand, and project profitability.
+  </p>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">12</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Entities</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Modeled across the core ERD</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">30+</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">SQL Queries</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Reusable business insight library</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">3NF</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Normalization</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Schema standardized to third normal form</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">100%</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Integrity</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">All relationships enforced by constraints</div>
+    </div>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">0</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Redundancy</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Duplicate fields eliminated by design</div>
+    </div>
+  </div>
+
+  <!-- Summary cards -->
+  <div class="fade-up grid md:grid-cols-2 gap-5" style="transition-delay:.3s">
+    <div class="card-dark p-6">
+      <p class="text-[0.7rem] tracking-[0.2em] uppercase text-text-secondary font-mono mb-3">The problem</p>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        The original data environment mixed spreadsheets, ad hoc tables, and partially designed schemas.
+        Client records appeared in several places, bid amounts didn't tie to labor and material costs,
+        and basic profitability questions required manual reconciliation every time.
+      </p>
+    </div>
+    <div class="card-dark p-6">
+      <p class="text-[0.7rem] tracking-[0.2em] uppercase text-text-secondary font-mono mb-3">What I built</p>
+      <ul class="text-sm text-text-secondary space-y-1.5">
+        <li>• Normalized SQL Server schema with primary keys, foreign keys, and business constraints</li>
+        <li>• ERD covering clients, projects, bids, labor, materials, tools, and production planning</li>
+        <li>• Scripted deployment so the database can be rebuilt from source control</li>
+        <li>• 30+ analytical queries for revenue, demand, margin, and client analysis</li>
+        <li>• Testing and validation confirming constraints block invalid states</li>
+      </ul>
+    </div>
+  </div>
+
 </section>
-<section id=workflow class="py-12 md:py-14">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center gap-6 mb-8">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Workflow Overview
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
-<div class="p-4 rounded-xl card-dark">
-<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 1</p>
-<p class="text-sm font-semibold mb-1">Requirements & audit</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Reviewed legacy spreadsheets and tables, identified duplicated data, and documented core
-business questions.
-</p>
-</div>
-<div class="p-4 rounded-xl card-dark">
-<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 2</p>
-<p class="text-sm font-semibold mb-1">Conceptual modeling</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Designed an ERD capturing clients, projects, bids, labor, materials, and suppliers with
-correct cardinalities.
-</p>
-</div>
-<div class="p-4 rounded-xl card-dark">
-<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 3</p>
-<p class="text-sm font-semibold mb-1">Schema build</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Implemented the logical model in SQL Server with tables, keys, indexes, and constraints.
-</p>
-</div>
-<div class="p-4 rounded-xl card-dark">
-<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 4</p>
-<p class="text-sm font-semibold mb-1">Data load & validation</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Migrated sample data, reconciled totals across modules, and verified referential integrity.
-</p>
-</div>
-<div class="p-4 rounded-xl card-dark">
-<p class="font-mono text-accent-cyan uppercase text-xs mb-1">Phase 5</p>
-<p class="text-sm font-semibold mb-1">Analytics & reporting</p>
-<p class="text-xs text-text-secondary leading-relaxed">
-Developed a library of insight queries and outlined how they feed BI dashboards.
-</p>
-</div>
-</div>
-</div>
+
+<!-- ══════════════ OVERVIEW ══════════════ -->
+<section id="overview" class="fade-soft py-16 md:py-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+  <div class="section-header"><h2>How It Works</h2></div>
+
+  <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 1</p>
+      <p class="text-sm font-semibold mb-1">Audit & Requirements</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Reviewed legacy spreadsheets and tables, identified duplicate data, and documented the business questions the database needs to answer.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 2</p>
+      <p class="text-sm font-semibold mb-1">ERD Modeling</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Designed the full entity-relationship diagram in ERDPlus — clients, projects, bids, labor, materials, suppliers, and production planning with correct cardinalities.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 3</p>
+      <p class="text-sm font-semibold mb-1">Schema Build</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Implemented the model in SQL Server with scripted CREATE TABLE statements, keys, indexes, and constraints — fully version-controllable.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 4</p>
+      <p class="text-sm font-semibold mb-1">Data Load & Validation</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Migrated sample data, reconciled totals across modules, and verified referential integrity held under inserts, updates, and deletes.</p>
+    </div>
+    <div class="fade-up stat-stagger card-dark phase-card p-5">
+      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 5</p>
+      <p class="text-sm font-semibold mb-1">Analytics & Reporting</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Built a 30+ query library covering revenue, margins, client value, and service demand — ready for SSMS or a BI dashboard connection.</p>
+    </div>
+  </div>
+
 </section>
-<section id=lab class=py-14>
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center gap-6 mb-10">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Database Breakdown
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<div class="flex flex-wrap gap-0 border-b-2 border-gray-700 mb-10 overflow-x-auto">
-<button class="tab-button active" onclick="switchTab('standardization')">01. Data Standardization</button>
-<button class=tab-button onclick="switchTab('erd')">02. ER Modeling</button>
-<button class=tab-button onclick="switchTab('schema')">03. Schema Implementation</button>
-<button class=tab-button onclick="switchTab('analytics')">04. Analytical Queries</button>
-<button class=tab-button onclick="switchTab('quality')">05. Testing & Future Work</button>
-</div>
-<div id=tab-standardization class="tab-content active">
-<div class="phase-container space-y-16">
-<h3 class="text-xl font-semibold text-white">
-Phase 1 — Data standardization and module design
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-The first step was to convert scattered operational data into a single consistent model. This
-included cleaning naming conventions, aligning data types, and deciding which entities belonged
-in which tables.
-</p>
-<section class="grid md:grid-cols-3 gap-6">
-<div class="card-dark rounded-xl p-6 text-sm text-text-secondary leading-relaxed">
-<h4 class="text-text-base font-semibold mb-1">1. Data standardization module</h4>
-<p class="text-xs uppercase tracking-[0.16em] mb-2 text-accent-cyan">Consistency and normalization</p>
-<p>
-Consolidated legacy client, project, and service data into a canonical model. Applied clear
-naming standards and enforced data types so every field has one meaning and one home.
-</p>
-</div>
-<div class="card-dark rounded-xl p-6 text-sm text-text-secondary leading-relaxed">
-<h4 class="text-text-base font-semibold mb-1">2. Redundancy elimination module</h4>
-<p class="text-xs uppercase tracking-[0.16em] mb-2 text-accent-cyan">Keys and constraints</p>
-<p>
-Replaced duplicated records and repeated columns with relational joins. Implemented primary
-keys, foreign keys, and unique constraints to maintain integrity and improve performance.
-</p>
-</div>
-<div class="card-dark rounded-xl p-6 text-sm text-text-secondary leading-relaxed">
-<h4 class="text-text-base font-semibold mb-1">3. Business insights module</h4>
-<p class="text-xs uppercase tracking-[0.16em] mb-2 text-accent-cyan">SQL analytics</p>
-<p>
-Designed a set of tables and relationships specifically to support revenue, cost, and
-workload analysis so the database doubles as a reporting asset.
-</p>
-</div>
-</section>
-</div>
-</div>
-<div id=tab-erd class=tab-content>
-<div class="phase-container space-y-16">
-<h3 class="text-xl font-semibold text-white">
-Phase 2 — ER modeling and database design
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-Using ERDPlus, the full lifecycle of a landscaping project was modeled, from first contact and bid
-through labor, materials, and production planning. The ERD became the contract between business
-rules and technical implementation.
-</p>
-<section class="space-y-6">
-<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-<li><span class="text-text-base font-semibold">Entities:</span> Client, Project, DesignBid,
-Material, Labor, Tools, ProductionPlan, ProjectTasks, Suppliers, and supporting bridge tables</li>
-<li><span class="text-text-base font-semibold">Attributes:</span> bid amounts, labor rates,
-material units and costs, task hours, approval dates, and schedule details</li>
-<li><span class="text-text-base font-semibold">Relationships:</span> client to project (one to many),
-project to bid (one to many), project to labor and materials (many to many via bridges),
-and production planning tied to the approved bid</li>
-<li>Cardinalities were refined to match real workflows, such as multiple bid iterations per project
-with only one final approved version</li>
-</ul>
-<div class="bg-container-bg rounded-lg border border-gray-700 p-4 text-center">
-<div class=image-zoom onclick="openModal('/it-and-security-portfolio/assets/images/LS1_ERD.png')">
-<img src=/it-and-security-portfolio/assets/images/LS1_ERD.png alt="Normalized ERD diagram" class="mx-auto rounded-md border border-gray-800 shadow-lg max-w-full object-contain" />
-</div>
-<p class="mt-4 text-xs italic text-text-secondary">
-Normalized ERD for the landscape services database, showing clients, bids, labor, materials,
-tools, suppliers, and production planning.
-</p>
-</div>
-</section>
-</div>
-</div>
-<div id=tab-schema class=tab-content>
-<div class="phase-container space-y-16">
-<h3 class="text-xl font-semibold text-white">
-Phase 3 — SQL schema implementation
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-The conceptual model was implemented in SQL Server Management Studio as a scripted deployment.
-This ensures the database can be rebuilt from source control at any time.
-</p>
-<section class="space-y-6">
-<p class="text-text-secondary text-sm leading-relaxed">
-The script initializes the database, builds core tables, and wires up keys and constraints.
-From there, sample or production data can be loaded for analytics and reporting.
-</p>
-<div class="card-dark rounded-lg p-4">
-<code class="text-xs text-accent-success font-mono block leading-relaxed">
--- Create database<br>
-IF DB_ID('NBDDB_CTF') IS NOT NULL<br>
-&nbsp;&nbsp;&nbsp;&nbsp;DROP DATABASE NBDDB_CTF;<br>
-GO<br><br>
-CREATE DATABASE NBDDB_CTF;<br>
-GO<br><br>
-USE NBDDB_CTF;<br>
-GO<br><br>
--- Client table<br>
-CREATE TABLE Client (<br>
-&nbsp;&nbsp;&nbsp;&nbsp;ClientID&nbsp;&nbsp;&nbsp;INT IDENTITY(1,1) PRIMARY KEY,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;ClientName VARCHAR(100) NOT NULL,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Phone&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VARCHAR(20),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VARCHAR(100),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;City&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VARCHAR(50),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;StateCode&nbsp;&nbsp;CHAR(2)<br>
-);<br><br>
--- Project table<br>
-CREATE TABLE Project (<br>
-&nbsp;&nbsp;&nbsp;&nbsp;ProjectID&nbsp;&nbsp;&nbsp;INT IDENTITY(1,1) PRIMARY KEY,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;ClientID&nbsp;&nbsp;&nbsp;&nbsp;INT NOT NULL,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;ProjectName VARCHAR(120) NOT NULL,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;StartDate&nbsp;&nbsp;&nbsp;DATE,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;EndDate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DATE,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VARCHAR(30),<br>
-&nbsp;&nbsp;&nbsp;&nbsp;CONSTRAINT FK_Project_Client<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FOREIGN KEY (ClientID) REFERENCES Client(ClientID)<br>
+
+<!-- ══════════════ PHASES ══════════════ -->
+<section id="phases" class="fade-soft py-16 md:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="section-header"><h2>Database Breakdown</h2></div>
+
+    <div class="flex flex-wrap gap-0 border-b border-gray-700 mb-8 overflow-x-auto">
+      <button class="tab-button active" data-tab="erd"       onclick="switchTab('erd')">ERD & Schema</button>
+      <button class="tab-button"        data-tab="analytics" onclick="switchTab('analytics')">Analytical Queries</button>
+      <button class="tab-button"        data-tab="testing"   onclick="switchTab('testing')">Testing & Roadmap</button>
+    </div>
+
+    <!-- ── ERD & Schema ── -->
+    <div id="tab-erd" class="tab-content active">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">ERD & Schema Implementation</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            The ERD was the contract between business rules and technical implementation.
+            It captures the full lifecycle of a landscaping project — from first client contact and bid
+            through labor assignments, material sourcing, and production scheduling.
+            The schema was then scripted in SQL Server so it can be deployed and rebuilt from source control.
+          </p>
+        </div>
+
+        <!-- ERD -->
+        <div class="image-zoom border border-gray-700 p-3" onclick="openModal('/it-and-security-portfolio/assets/images/LS1_ERD.png')">
+          <img src="/it-and-security-portfolio/assets/images/LS1_ERD.png" class="w-full" alt="Normalized ERD">
+          <p class="mt-2 text-xs italic text-text-secondary text-center">Normalized ERD — clients, bids, labor, materials, tools, suppliers, and production planning</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">Key design decisions</h4>
+            <ul class="text-sm text-text-secondary space-y-1">
+              <li>• Client → Project (one-to-many) — one client can have many projects</li>
+              <li>• Project → Bid (one-to-many) — multiple bid iterations, one approved version</li>
+              <li>• Labor and materials linked via bridge tables (many-to-many)</li>
+              <li>• Production planning tied to the approved bid only</li>
+              <li>• Supplier linked to materials, not directly to projects</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold mb-3">Schema script (excerpt)</h4>
+            <pre class="bg-container-bg border border-gray-800 p-4 overflow-x-auto text-[0.78rem]"><code class="text-accent-success">CREATE TABLE Client (
+  ClientID   INT IDENTITY(1,1) PRIMARY KEY,
+  ClientName VARCHAR(100) NOT NULL,
+  Phone      VARCHAR(20),
+  Email      VARCHAR(100),
+  City       VARCHAR(50),
+  StateCode  CHAR(2)
 );
-</code>
-</div>
-<p class="text-xs italic text-center text-text-secondary">
-Schema scripts enforce referential integrity and provide a clean baseline for loading data.
-</p>
+
+CREATE TABLE Project (
+  ProjectID   INT IDENTITY(1,1) PRIMARY KEY,
+  ClientID    INT NOT NULL,
+  ProjectName VARCHAR(120) NOT NULL,
+  StartDate   DATE,
+  EndDate     DATE,
+  Status      VARCHAR(30),
+  CONSTRAINT FK_Project_Client
+    FOREIGN KEY (ClientID)
+    REFERENCES Client(ClientID)
+);</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Analytical Queries ── -->
+    <div id="tab-analytics" class="tab-content">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Analytical Query Library</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            The normalized schema enables a library of 30+ queries that answer real business questions
+            without manual reconciliation. These can run directly in SSMS or feed a BI dashboard.
+            The two patterns below cover the most common use cases: service demand and project profitability.
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="text-sm font-semibold">What the queries cover</h4>
+          <ul class="text-sm text-text-secondary space-y-1">
+            <li>• Which services drive the most revenue and how demand shifts by season</li>
+            <li>• High-value clients ranked by repeat work, total revenue, and profit contribution</li>
+            <li>• Estimated vs realized margins by combining bids with actual labor and material costs</li>
+            <li>• Supplier and material cost trends that may be eroding profitability</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-semibold mb-3">Service demand & client profitability</h4>
+          <pre class="bg-container-bg border border-gray-800 p-4 overflow-x-auto text-[0.78rem]"><code class="text-accent-success">-- Popular services by volume
+SELECT     s.ServiceName,
+           COUNT(*) AS ProjectCount
+FROM       Project p
+JOIN       ProjectService ps ON p.ProjectID = ps.ProjectID
+JOIN       Service s         ON ps.ServiceID = s.ServiceID
+GROUP BY   s.ServiceName
+ORDER BY   ProjectCount DESC;
+
+-- Client profitability summary
+SELECT     c.ClientName,
+           p.ProjectName,
+           SUM(jm.Quantity * m.UnitCost)      AS MaterialCost,
+           SUM(l.HoursWorked * l.HourlyRate)  AS LaborCost,
+           p.BidAmount - (
+             SUM(jm.Quantity * m.UnitCost) +
+             SUM(l.HoursWorked * l.HourlyRate)
+           )                                   AS EstimatedProfit
+FROM       Project p
+JOIN       Client c           ON p.ClientID = c.ClientID
+JOIN       JobMaterials jm    ON p.ProjectID = jm.ProjectID
+JOIN       Material m         ON jm.MaterialID = m.MaterialID
+JOIN       LaborAssignment l  ON p.ProjectID = l.ProjectID
+GROUP BY   c.ClientName, p.ProjectName, p.BidAmount
+ORDER BY   EstimatedProfit DESC;</code></pre>
+          <p class="mt-3 text-xs italic text-text-secondary">These patterns can power dashboards that guide pricing, staffing, and which services to grow or phase out.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Testing & Roadmap ── -->
+    <div id="tab-testing" class="tab-content">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Testing & Roadmap</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            Validation focused on proving that the schema behaves correctly under real-world conditions —
+            not just that it stores data, but that it blocks invalid states and that query results
+            reconcile back to source numbers.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">Testing approach</h4>
+            <ul class="text-sm text-text-secondary space-y-2">
+              <li><strong class="text-white block text-xs mb-0.5">Parameter variation</strong>Queries tested across multiple time windows, regions, and service filters to confirm consistent behavior.</li>
+              <li><strong class="text-white block text-xs mb-0.5">Data consistency checks</strong>Totals reconciled between bids, labor, and materials — every dollar traces back to a project and client.</li>
+              <li><strong class="text-white block text-xs mb-0.5">Constraint testing</strong>Inserts, updates, and deletes exercised to confirm foreign keys and unique constraints block invalid states.</li>
+              <li><strong class="text-white block text-xs mb-0.5">Query performance</strong>Execution plans reviewed and indexes added where analytics felt slow.</li>
+            </ul>
+          </div>
+          <div class="space-y-3">
+            <h4 class="text-sm font-semibold">Future enhancements</h4>
+            <ul class="text-sm text-text-secondary space-y-2">
+              <li><strong class="text-white block text-xs mb-0.5">Real-time integration</strong>Connect the schema to operational systems via ETL or change data capture for live reporting.</li>
+              <li><strong class="text-white block text-xs mb-0.5">Automated reporting</strong>Schedule weekly margin and workload snapshots for owners and project managers.</li>
+              <li><strong class="text-white block text-xs mb-0.5">Expanded metrics</strong>Incorporate satisfaction scores, rework rates, and seasonal patterns for deeper analysis.</li>
+              <li><strong class="text-white block text-xs mb-0.5">Multi-developer support</strong>Extend contribution guidelines and naming conventions for team collaboration.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </section>
-</div>
-</div>
-<div id=tab-analytics class=tab-content>
-<div class="phase-container space-y-16">
-<h3 class="text-xl font-semibold text-white">
-Phase 4 — Analytical insight queries
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-On top of the normalized schema, more than thirty queries were developed that support estimators,
-managers, and operations. These can be used in SSMS or wired into BI dashboards.
-</p>
-<section class="space-y-6">
-<ul class="list-disc list-outside pl-5 space-y-2 text-sm text-text-secondary marker:text-white">
-<li>Identify which services drive the most revenue and how demand shifts by season</li>
-<li>Track high-value clients based on repeat work, total revenue, and profit contribution</li>
-<li>Compare estimated versus realized margins by combining bids with labor and material costs</li>
-<li>Highlight suppliers or materials where cost changes are eroding profitability</li>
-</ul>
-<div class="card-dark rounded-lg p-4">
-<code class="text-xs text-accent-success font-mono block leading-relaxed">
--- Popular services by volume<br>
-SELECT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s.ServiceName,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COUNT(*) AS ProjectCount<br>
-FROM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Project p<br>
-JOIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ProjectService ps ON p.ProjectID = ps.ProjectID<br>
-JOIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Service s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ON ps.ServiceID = s.ServiceID<br>
-GROUP BY&nbsp;&nbsp;&nbsp;&nbsp;s.ServiceName<br>
-ORDER BY&nbsp;&nbsp;&nbsp;&nbsp;ProjectCount DESC;<br><br>
--- Client profitability summary<br>
-SELECT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c.ClientName,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p.ProjectName,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUM(jm.Quantity * m.UnitCost)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AS MaterialCost,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUM(l.HoursWorked * l.HourlyRate) AS LaborCost,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p.BidAmount - (<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUM(jm.Quantity * m.UnitCost) +<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUM(l.HoursWorked * l.HourlyRate)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;) AS EstimatedProfit<br>
-FROM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Project p<br>
-JOIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Client c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ON p.ClientID = c.ClientID<br>
-JOIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JobMaterials jm&nbsp;&nbsp;&nbsp;&nbsp;ON p.ProjectID = jm.ProjectID<br>
-JOIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Material m&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ON jm.MaterialID = m.MaterialID<br>
-JOIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LaborAssignment l&nbsp;&nbsp;ON p.ProjectID = l.ProjectID<br>
-GROUP BY&nbsp;&nbsp;&nbsp;&nbsp;c.ClientName, p.ProjectName, p.BidAmount<br>
-ORDER BY&nbsp;&nbsp;&nbsp;&nbsp;EstimatedProfit DESC;
-</code>
-</div>
-<p class="text-xs italic text-center text-text-secondary mt-4">
-These patterns can power dashboards that guide pricing, staffing, and which services to promote.
-</p>
+
+<!-- ══════════════ BI STRATEGY ══════════════ -->
+<section id="bi" class="fade-soft py-16 md:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="section-header"><h2>Business Intelligence Strategy</h2></div>
+
+    <div class="grid md:grid-cols-3 gap-5">
+      <div class="fade-up card-dark border border-red-900/30 p-6 phase-card" style="transition-delay:.05s">
+        <h4 class="text-sm font-bold text-accent-red uppercase tracking-wider mb-3">Tier 1 — Operational Reporting</h4>
+        <p class="text-xs text-text-secondary mb-4 leading-relaxed">Daily insights for project managers and estimators.</p>
+        <ul class="text-sm text-text-secondary space-y-3">
+          <li><strong class="text-white block text-xs mb-0.5">Service demand tracking</strong>Which services drive revenue and how demand shifts by season — feeds staffing and pricing decisions.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Real-time project status</strong>Active projects, resource allocation, and delivery timelines in one view.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Material cost monitoring</strong>Supplier pricing changes and material cost trends tracked automatically.</li>
+        </ul>
+      </div>
+      <div class="fade-up card-dark border border-blue-900/30 p-6 phase-card" style="transition-delay:.1s">
+        <h4 class="text-sm font-bold text-accent-action uppercase tracking-wider mb-3">Tier 2 — Client Analytics</h4>
+        <p class="text-xs text-text-secondary mb-4 leading-relaxed">Understand client value and optimize relationships.</p>
+        <ul class="text-sm text-text-secondary space-y-3">
+          <li><strong class="text-white block text-xs mb-0.5">High-value client ranking</strong>Clients ranked by repeat work, total revenue, and profit contribution — not just project count.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Regional analysis</strong>Performance compared across geographic markets and service areas.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Retention monitoring</strong>Client retention rates tracked to surface at-risk relationships before they lapse.</li>
+        </ul>
+      </div>
+      <div class="fade-up card-dark border border-green-900/30 p-6 phase-card" style="transition-delay:.15s">
+        <h4 class="text-sm font-bold text-accent-success uppercase tracking-wider mb-3">Tier 3 — Strategic Planning</h4>
+        <p class="text-xs text-text-secondary mb-4 leading-relaxed">Long-term decisions backed by profitability data.</p>
+        <ul class="text-sm text-text-secondary space-y-3">
+          <li><strong class="text-white block text-xs mb-0.5">Margin analysis</strong>Estimated vs realized margins compared across project types — reveals where bids are undershooting.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Capacity planning</strong>Labor and equipment needs forecast from the project pipeline.</li>
+          <li><strong class="text-white block text-xs mb-0.5">Service optimization</strong>Data-backed decisions on which service lines to expand, maintain, or phase out.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
 </section>
-</div>
-</div>
-<div id=tab-quality class=tab-content>
-<div class="phase-container space-y-16">
-<h3 class="text-xl font-semibold text-white">
-Phase 5 — Testing, quality checks, and roadmap
-</h3>
-<p class="text-sm text-text-secondary max-w-3xl leading-relaxed">
-The final phase focused on validating the new schema, proving that constraints behave correctly,
-and outlining how the system can grow into a full production analytics platform.
-</p>
-<section class="grid md:grid-cols-2 gap-8 items-start">
-<div class="card-dark rounded-xl p-6 text-sm text-text-secondary leading-relaxed">
-<h4 class="text-text-base font-semibold mb-3">Testing and debugging approach</h4>
-<ul class="list-disc list-outside pl-5 space-y-2 marker:text-white">
-<li><span class="text-text-base font-semibold">Parameter variation:</span>
-validated queries across multiple time windows, regions, and service filters to confirm
-they behaved correctly under different scenarios</li>
-<li><span class="text-text-base font-semibold">Data consistency checks:</span>
-reconciled totals between bids, labor, and materials to ensure every dollar traces back
-to a project and client</li>
-<li><span class="text-text-base font-semibold">Constraint testing:</span>
-exercised inserts, updates, and deletes to confirm that foreign keys and unique
-constraints blocked invalid states</li>
-<li>Reviewed execution plans and introduced indexes where needed to keep analytics responsive</li>
-</ul>
-</div>
-<div class="card-dark rounded-xl p-6 text-sm text-text-secondary leading-relaxed">
-<h4 class="text-text-base font-semibold mb-3">Future enhancements</h4>
-<ul class="list-disc list-outside pl-5 space-y-2 marker:text-white">
-<li><span class="text-text-base font-semibold">Real-time integration:</span>
-connect the schema to operational systems via ETL or change data capture</li>
-<li><span class="text-text-base font-semibold">Automated reporting:</span>
-schedule weekly margin and workload snapshots for owners and project managers</li>
-<li><span class="text-text-base font-semibold">Expanded metrics:</span>
-incorporate satisfaction scores, rework rates, and seasonal patterns for deeper insight</li>
-<li>Extend style conventions and contribution guidelines for multi-developer collaboration</li>
-</ul>
-</div>
+
+<!-- ══════════════ TAKEAWAYS ══════════════ -->
+<section id="takeaways" class="fade-soft py-16 md:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="section-header"><h2>What I Learned</h2></div>
+
+    <div class="grid md:grid-cols-2 gap-8 mb-10">
+      <div class="fade-up card-dark p-6">
+        <h4 class="text-sm font-semibold mb-3">Key takeaways</h4>
+        <ul class="text-sm text-text-secondary space-y-2">
+          <li>• Normalization to 3NF eliminates redundancy and creates a single source of truth — the queries become trivial once the data model is right</li>
+          <li>• Modeling costs at the material and labor level (not just bid totals) is what unlocks accurate profitability analysis</li>
+          <li>• ERD relationships that mirror real workflows make it far easier to extend the database later without breaking existing queries</li>
+          <li>• Scripted deployment turns the database into a versioned asset — not just a file that lives on one machine</li>
+          <li>• Constraint testing is as important as query testing — if invalid data can be inserted, the analytics will silently mislead</li>
+        </ul>
+      </div>
+      <div class="fade-up card-dark p-6" style="transition-delay:.1s">
+        <h4 class="text-sm font-semibold mb-3">Skills demonstrated</h4>
+        <div class="flex flex-wrap gap-2">
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">SQL Server</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Normalization (1NF–3NF)</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">ER Modeling</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Data Integrity & Constraints</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Query Optimization</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Business Intelligence</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="fade-up card-dark p-6 mb-10" style="transition-delay:.15s">
+      <p class="text-sm text-text-secondary leading-relaxed">
+        This project transformed fragmented landscaping data into a clean SQL Server system with enforced
+        integrity and a full analytics layer on top. The ERD defines the business rules, the schema enforces
+        them, and the query library turns them into answers — giving the business a scalable foundation for
+        dashboards, automation, and decision support that didn't exist before.
+      </p>
+    </div>
+
+    <div class="fade-up">
+      <a href="../index.html#projects" class="inline-flex text-accent-action text-sm hover:text-accent-red transition font-mono">
+        ← Back to Portfolio
+      </a>
+    </div>
+
+  </div>
 </section>
-</div>
-</div>
-</div>
-</section>
-<section id=insights class="pt-14 md:pt-16 pb-6">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center gap-6 mb-6">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Implementation Impact
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<p class="text-text-secondary text-sm max-w-3xl mb-8 mx-auto text-center">
-Database revitalization transformed fragmented operational data into a strategic asset supporting
-data-driven decision making across the organization.
-</p>
-<div class="card-dark rounded-xl p-8 mb-10">
-<div class="flex items-center justify-between mb-8 border-b border-gray-800 pb-4">
-<h3 class="text-sm font-bold text-white uppercase tracking-widest">
-Database Design Principles
-</h3>
-<span class="text-xs text-text-secondary font-mono">4 KEY OUTCOMES</span>
-</div>
-<div class="grid md:grid-cols-2 gap-x-12 gap-y-8">
-<div class=space-y-6>
-<div>
-<span class="text-red-400 font-mono text-xs mb-1 block tracking-wider">REDUNDANCY ELIMINATION</span>
-<p class="text-white leading-relaxed text-sm">
-A normalized schema dramatically reduces redundancy and confusion in operational reporting.
-</p>
-</div>
-<div>
-<span class="text-orange-400 font-mono text-xs mb-1 block tracking-wider">GRANULAR COSTING</span>
-<p class="text-white leading-relaxed text-sm">
-Modeling costs at the material and labor level unlocks accurate project profitability analysis.
-</p>
-</div>
-</div>
-<div class=space-y-6>
-<div>
-<span class="text-orange-500 font-mono text-xs mb-1 block tracking-wider">WORKFLOW ALIGNMENT</span>
-<p class="text-white leading-relaxed text-sm">
-Entity relationships that mirror real workflows make it easier to extend the database later.
-</p>
-</div>
-<div>
-<span class="text-green-400 font-mono text-xs mb-1 block tracking-wider">VERSION CONTROL</span>
-<p class="text-white leading-relaxed text-sm">
-Scripted deployments turn the database into an asset that can be versioned and reused.
-</p>
-</div>
-</div>
-</div>
-</div>
-<div class="flex items-center gap-6 mb-6">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Business Intelligence Strategy
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<div class="grid md:grid-cols-3 gap-6">
-<div class="card-dark rounded-xl p-6">
-<h4 class="text-sm font-bold text-accent-red uppercase tracking-wider mb-2">
-Tier 1: Operational Reporting
-</h4>
-<p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
-Objective: Enable daily operational insights for project managers and estimators.
-</p>
-<ul class="space-y-4 text-sm text-text-secondary">
-<li class="flex gap-3">
-<span class="text-accent-red font-bold">•</span>
-<span class=leading-relaxed>
-<strong class="text-white block text-xs mb-0.5">Service demand tracking</strong>
-Identify which services drive revenue and how demand shifts seasonally.</span>
-</li>
-<li class="flex gap-3">
-<span class="text-accent-red font-bold">•</span>
-<span class=leading-relaxed>
-<strong class="text-white block text-xs mb-0.5">Real-time project status</strong>
-Monitor active projects, resource allocation, and delivery timelines.</span>
-</li>
-<li class="flex gap-3">
-<span class="text-accent-red font-bold">•</span>
-<span class=leading-relaxed>
-<strong class="text-white block text-xs mb-0.5">Material cost monitoring</strong>
-Track supplier pricing changes and material cost trends.</span>
-</li>
-</ul>
-</div>
-<div class="card-dark rounded-xl p-6">
-<h4 class="text-sm font-bold text-accent-action uppercase tracking-wider mb-2">
-Tier 2: Client Analytics
-</h4>
-<p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
-Objective: Understand client value and optimize relationship management.
-</p>
-<ul class="space-y-4 text-sm text-text-secondary">
-<li class="flex gap-3">
-<span class="text-accent-action font-bold">•</span>
-<span class=leading-relaxed>
-<strong class="text-white block text-xs mb-0.5">High-value client identification</strong>
-Track clients based on repeat work, total revenue, and profit contribution.</span>
-</li>
-<li class="flex gap-3">
-<span class="text-accent-action font-bold">•</span>
-<span class=leading-relaxed>
-<strong class="text-white block text-xs mb-0.5">Regional analysis</strong>
-Compare performance across geographic markets and service areas.</span>
-</li>
-<li class="flex gap-3">
-<span class="text-accent-action font-bold">•</span>
-<span class=leading-relaxed>
-<strong class="text-white block text-xs mb-0.5">Retention metrics</strong>
-Monitor client retention rates and identify at-risk relationships.</span>
-</li>
-</ul>
-</div>
-<div class="card-dark rounded-xl p-6">
-<h4 class="text-sm font-bold text-accent-success uppercase tracking-wider mb-2">
-Tier 3: Strategic Planning
-</h4>
-<p class="text-xs text-white opacity-70 mb-5 leading-relaxed">
-Objective: Support long-term strategic decisions with profitability insights.
-</p>
-<ul class="space-y-4 text-sm text-text-secondary">
-<li class="flex gap-3">
-<span class="text-accent-success font-bold">•</span>
-<span class=leading-relaxed>
-<strong class="text-white block text-xs mb-0.5">Margin analysis</strong>
-Compare estimated versus realized margins across project types.</span>
-</li>
-<li class="flex gap-3">
-<span class="text-accent-success font-bold">•</span>
-<span class=leading-relaxed>
-<strong class="text-white block text-xs mb-0.5">Capacity planning</strong>
-Forecast labor and equipment needs based on pipeline projections.</span>
-</li>
-<li class="flex gap-3">
-<span class="text-accent-success font-bold">•</span>
-<span class=leading-relaxed>
-<strong class="text-white block text-xs mb-0.5">Service optimization</strong>
-Identify which service lines to expand, maintain, or phase out.</span>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</section>
-<section class="pt-12 md:pt-16 pb-12">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-<div>
-<div class="flex items-center gap-6 mb-8">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Key insights
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<div class="p-6 md:p-7 rounded-xl card-dark">
-<ul class="list-disc list-outside pl-5 space-y-2 text-white text-sm sm:text-[0.95rem] leading-relaxed">
-<li>Normalized design eliminates data redundancy and ensures single source of truth.</li>
-<li>Granular cost modeling enables accurate project profitability and margin analysis.</li>
-<li>Entity relationships aligned with business workflows support natural system extension.</li>
-<li>Scripted deployment approach enables version control and reproducible builds.</li>
-<li>Comprehensive query library accelerates insight generation and decision support.</li>
-</ul>
-</div>
-</div>
-<div>
-<div class="flex items-center gap-6 mb-8">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Skills demonstrated
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<div class="p-6 md:p-7 rounded-xl card-dark">
-<div class="flex flex-wrap gap-2 text-[0.7rem] sm:text-xs">
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-SQL Server
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-Normalization (1NF–3NF)
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-ER Modeling
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-Data Integrity
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-Query Optimization
-</span>
-<span class="px-3 py-1 rounded-full border border-accent-cyan text-white font-mono">
-Business Intelligence
-</span>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section class="pb-12 md:pb-16">
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center gap-6 mb-8">
-<div class="h-px bg-gray-700 flex-1"></div>
-<h2 class="text-2xl font-bold font-mono text-white whitespace-nowrap text-center">
-Summary
-</h2>
-<div class="h-px bg-gray-700 flex-1"></div>
-</div>
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="card-dark rounded-xl p-6">
-<p class="text-sm sm:text-[0.95rem] text-white leading-relaxed">
-This project transformed a fragmented landscaping database into a clean, normalized SQL Server
-implementation. Grounded in a comprehensive ERD and backed by constraints and analytics, the
-system now produces trustworthy insight into customers, services, and profitability. The
-revitalized schema gives the business a scalable foundation for future dashboards, automation,
-and decision support tools.
-</p>
-</div>
-<div class=mt-10>
-<a href=../index.html#projects class="inline-flex text-accent-cyan text-sm hover:text-accent-red transition font-mono">
-← Back to Portfolio
-</a>
-</div>
-</div>
-</section>
-<script>function scrollToSection(id){const target=document.getElementById(id);if(!target)return;target.scrollIntoView({behavior:'smooth',block:'start'});const dots=document.querySelectorAll('.nav-dot');const sections=['hero','workflow','lab','insights'];dots.forEach((dot,idx)=>{dot.classList.toggle('active',sections[idx]===id);});}
-function openModal(src){const modal=document.getElementById('imageModal');const img=document.getElementById('modalImage');img.src=src;modal.classList.add('active');}
-function closeModal(){const modal=document.getElementById('imageModal');modal.classList.remove('active');const img=document.getElementById('modalImage');img.src='';}</script>
+
+<script>
+window.addEventListener("scroll", () => {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById("scroll-progress").style.width = (window.scrollY / total * 100) + "%";
+}, { passive: true });
+
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add("show");
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
+
+document.querySelectorAll(".fade-up, .fade-soft").forEach(el => revealObs.observe(el));
+
+const dotSections = ["hero","overview","phases","bi","takeaways"];
+const dots = document.querySelectorAll(".nav-dot");
+
+const dotObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = dotSections.indexOf(e.target.id);
+      if (idx !== -1) {
+        dots.forEach(d => d.classList.remove("active"));
+        dots[idx]?.classList.add("active");
+      }
+    }
+  });
+}, { threshold: 0.4 });
+
+dotSections.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) dotObs.observe(el);
+});
+
+function scrollToSection(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+</script>
 </body>
 </html>
