@@ -339,7 +339,7 @@ function closeLightbox() {
   <!-- Hero screenshot banner -->
   <div class="fade-up mb-10" style="transition-delay:.2s">
     <div class="screenshot-frame" style="height:280px;" onclick="openLightbox(this.querySelector('img').src,'DC1 — AD DS installation complete, promotion ready')">
-      <img src="images/VMAD1_DC1_ADDS_Installation_Completed_Promotion_Ready.png"
+      <img src="assets/images/VMAD1_DC1_ADDS_Installation_Completed_Promotion_Ready.png"
            alt="DC1 AD DS installation complete and promotion ready" />
       <div class="screenshot-label label-success">DC1 — AD DS role installed · promotion ready · landonhotel.local pending</div>
     </div>
@@ -398,7 +398,7 @@ function closeLightbox() {
     <!-- Lab environment screenshot -->
     <div class="screenshot-frame" style="min-height:200px;"
          onclick="openLightbox(this.querySelector('img').src,'VMware Workstation Pro — all 3 VMs in the lab environment')">
-      <img src="images/VMAD1_VMware_Workstation_Pro_Home_Screen_With_Existing_VMs.png"
+      <img src="assets/images/VMAD1_VMware_Workstation_Pro_Home_Screen_With_Existing_VMs.png"
            alt="VMware Workstation Pro showing all 3 VMs" style="object-position: center;" />
       <div class="screenshot-label label-action">VMware Workstation Pro — DC1 · DC2 · DC3 ready</div>
     </div>
@@ -481,7 +481,7 @@ function closeLightbox() {
           </div>
           <div class="screenshot-frame" style="height:180px;"
                onclick="openLightbox(this.querySelector('img').src,'Add Roles and Features wizard — AD DS role selection on DC1')">
-            <img src="images/VMAD1_DC1_Add_Roles_and_Features_Wizard_Launch.png" alt="Add Roles and Features wizard launch" />
+            <img src="assets/images/VMAD1_DC1_Add_Roles_and_Features_Wizard_Launch.png" alt="Add Roles and Features wizard launch" />
             <div class="screenshot-label label-action">Add Roles and Features — AD DS selected</div>
           </div>
         </div>
@@ -501,7 +501,7 @@ function closeLightbox() {
           </div>
           <div class="screenshot-frame" style="height:180px;"
                onclick="openLightbox(this.querySelector('img').src,'DC1 new forest creation wizard — landonhotel.local')">
-            <img src="images/VMAD1_DC1_New_Forest_Creation_Landonhotel_Local.png" alt="New forest creation wizard" />
+            <img src="assets/images/VMAD1_DC1_New_Forest_Creation_Landonhotel_Local.png" alt="New forest creation wizard" />
             <div class="screenshot-label label-success">Forest root wizard — landonhotel.local</div>
           </div>
         </div>
@@ -548,12 +548,12 @@ function closeLightbox() {
           <div class="grid md:grid-cols-2 gap-4">
             <div class="screenshot-frame" style="height:180px;"
                  onclick="openLightbox(this.querySelector('img').src,'DC1 — AD DS and DNS roles confirmed installed in Server Manager')">
-              <img src="images/VMAD1_DC1_ADDS_and_DNS_Roles_Installed.png" alt="DC1 AD DS and DNS roles installed" />
+              <img src="assets/images/VMAD1_DC1_ADDS_and_DNS_Roles_Installed.png" alt="DC1 AD DS and DNS roles installed" />
               <div class="screenshot-label label-success">Server Manager — AD DS + DNS confirmed</div>
             </div>
             <div class="screenshot-frame" style="height:180px;"
                  onclick="openLightbox(this.querySelector('img').src,'DC1 local server properties — system configuration post-promotion')">
-              <img src="images/VMAD1_DC1_Local_Server_Properties_And_System_Configuration.png" alt="DC1 local server properties" />
+              <img src="assets/images/VMAD1_DC1_Local_Server_Properties_And_System_Configuration.png" alt="DC1 local server properties" />
               <div class="screenshot-label label-action">Local Server — static IP + domain membership confirmed</div>
             </div>
           </div>
@@ -600,7 +600,7 @@ function closeLightbox() {
           <div class="space-y-3">
             <div class="screenshot-frame" style="height:220px;"
                  onclick="openLightbox(this.querySelector('img').src,'DC2 promotion connectivity error — DNS not pointing to DC1')">
-              <img src="images/VMAD1_DC2_Domain_Controller_Promotion_Connectivity_Error.png" alt="DC2 promotion connectivity error" />
+              <img src="assets/images/VMAD1_DC2_Domain_Controller_Promotion_Connectivity_Error.png" alt="DC2 promotion connectivity error" />
               <div class="screenshot-label label-red">⚠ Real failure — DNS not pointed at DC1 before promotion</div>
             </div>
             <p class="text-xs text-text-secondary leading-relaxed italic">This is the most common promotion failure. The wizard cannot locate <code class="text-accent-success">landonhotel.local</code> because DC2's DNS wasn't set to DC1's IP before starting — exactly the scenario the notes warn about.</p>
@@ -630,7 +630,7 @@ function closeLightbox() {
           <p class="text-xs font-mono text-accent-action uppercase tracking-widest mb-3">DC2 Post-Deployment</p>
           <div class="screenshot-frame" style="height:200px;"
                onclick="openLightbox(this.querySelector('img').src,'DC2 Server Manager dashboard post-deployment — AD DS role confirmed')">
-            <img src="images/VMAD1_DC2_Server_Manager_Dashboard_Post_Deployment.png" alt="DC2 Server Manager post deployment" />
+            <img src="assets/images/VMAD1_DC2_Server_Manager_Dashboard_Post_Deployment.png" alt="DC2 Server Manager post deployment" />
             <div class="screenshot-label label-success">DC2 — Server Manager dashboard · AD DS role active · full writable DC confirmed</div>
           </div>
         </div>
@@ -667,12 +667,12 @@ function closeLightbox() {
           <div class="grid md:grid-cols-2 gap-4">
             <div class="screenshot-frame" style="height:180px;"
                  onclick="openLightbox(this.querySelector('img').src,'DC3 Server Manager — standalone server before domain join')">
-              <img src="images/VMAD1_DC3_Server_Manager_Local_Server_Before_Domain_Join.png" alt="DC3 before domain join" />
+              <img src="assets/images/VMAD1_DC3_Server_Manager_Local_Server_Before_Domain_Join.png" alt="DC3 before domain join" />
               <div class="screenshot-label">DC3 — standalone, pre-join state</div>
             </div>
             <div class="screenshot-frame" style="height:180px;"
                  onclick="openLightbox(this.querySelector('img').src,'DC3 — successful domain join to landonhotel.local as RODC')">
-              <img src="images/VMAD1_DC3_Successful_Domain_Join_Landonhotel_Local.png" alt="DC3 domain join confirmed" />
+              <img src="assets/images/VMAD1_DC3_Successful_Domain_Join_Landonhotel_Local.png" alt="DC3 domain join confirmed" />
               <div class="screenshot-label label-success">DC3 — RODC joined to landonhotel.local</div>
             </div>
           </div>
@@ -705,7 +705,7 @@ function closeLightbox() {
           <p class="text-xs font-mono text-accent-action uppercase tracking-widest mb-3">RODC Promotion — The Critical Screen</p>
           <div class="screenshot-frame" style="height:220px;"
                onclick="openLightbox(this.querySelector('img').src,'DC3 RODC promotion — Read Only Domain Controller checkbox and password replication policy')">
-            <img src="images/VMAD1_DC3_Read_Only_Domain_Controller_Configuration.png" alt="RODC configuration screen" />
+            <img src="assets/images/VMAD1_DC3_Read_Only_Domain_Controller_Configuration.png" alt="RODC configuration screen" />
             <div class="screenshot-label label-action">RODC promotion wizard — Read Only DC checkbox + password replication policy</div>
           </div>
         </div>
@@ -754,7 +754,7 @@ function closeLightbox() {
           <div class="border border-gray-700 p-0 overflow-hidden">
             <div class="screenshot-frame" style="height:160px;"
                  onclick="openLightbox(this.querySelector('img').src,'ADUC — Customer Service OU user accounts view')">
-              <img src="images/VMAD1_ADUC_Customer_Service_OU_User_Accounts.png" alt="ADUC user accounts view" />
+              <img src="assets/images/VMAD1_ADUC_Customer_Service_OU_User_Accounts.png" alt="ADUC user accounts view" />
               <div class="screenshot-label label-action">ADUC — OU tree · user accounts · right-click management</div>
             </div>
             <div class="p-5">
@@ -769,7 +769,7 @@ function closeLightbox() {
           <div class="border border-gray-700 p-0 overflow-hidden">
             <div class="screenshot-frame" style="height:160px;"
                  onclick="openLightbox(this.querySelector('img').src,'ADAC — Domain Controller inventory view showing all three DCs')">
-              <img src="images/VMAD1_Active_Directory_Administrative_Center_Domain_Controller_Inventory.png" alt="ADAC domain controller inventory" />
+              <img src="assets/images/VMAD1_Active_Directory_Administrative_Center_Domain_Controller_Inventory.png" alt="ADAC domain controller inventory" />
               <div class="screenshot-label label-action">ADAC — DC inventory showing DC1 · DC2 · DC3 (RODC)</div>
             </div>
             <div class="p-5">
@@ -784,7 +784,7 @@ function closeLightbox() {
           <div class="border border-gray-700 p-0 overflow-hidden">
             <div class="screenshot-frame" style="height:160px;"
                  onclick="openLightbox(this.querySelector('img').src,'AD Sites and Services — new DemoSite creation dialog')">
-              <img src="images/VMAD1_Active_Directory_Sites_And_Services_New_DemoSite_Creation.png" alt="AD Sites and Services new site creation" />
+              <img src="assets/images/VMAD1_Active_Directory_Sites_And_Services_New_DemoSite_Creation.png" alt="AD Sites and Services new site creation" />
               <div class="screenshot-label label-action">Sites &amp; Services — DemoSite creation · site link assignment</div>
             </div>
             <div class="p-5">
@@ -806,12 +806,12 @@ function closeLightbox() {
             <div class="grid md:grid-cols-2 gap-0">
               <div class="screenshot-frame" style="height:160px;"
                    onclick="openLightbox(this.querySelector('img').src,'AD Schema snap-in — Classes container view showing all object types')">
-                <img src="images/VMAD1_Active_Directory_Schema_Classes_Container_View.png" alt="AD Schema classes container" />
+                <img src="assets/images/VMAD1_Active_Directory_Schema_Classes_Container_View.png" alt="AD Schema classes container" />
                 <div class="screenshot-label label-red">Schema MMC — Classes container · object types defined in the forest</div>
               </div>
               <div class="screenshot-frame" style="height:160px;"
                    onclick="openLightbox(this.querySelector('img').src,'Saving the custom MMC with AD Schema snap-in to Administrative Tools')">
-                <img src="images/VMAD1_Save_Custom_MMC_Administrative_Tool.png" alt="Save custom MMC administrative tool" />
+                <img src="assets/images/VMAD1_Save_Custom_MMC_Administrative_Tool.png" alt="Save custom MMC administrative tool" />
                 <div class="screenshot-label label-action">Custom MMC saved — persistent access to Schema snap-in</div>
               </div>
             </div>
@@ -904,7 +904,7 @@ mmc
           <p class="text-xs font-mono text-accent-action uppercase tracking-widest mb-3">Locating FSMO Roles</p>
           <div class="screenshot-frame" style="height:200px;"
                onclick="openLightbox(this.querySelector('img').src,'RID Master FSMO role verification on DC1 — Operations Masters dialog in ADUC')">
-            <img src="images/VMAD1_RID_Master_FSMO_Role_Verification_On_DC1.png" alt="RID Master FSMO verification on DC1" />
+            <img src="assets/images/VMAD1_RID_Master_FSMO_Role_Verification_On_DC1.png" alt="RID Master FSMO verification on DC1" />
             <div class="screenshot-label label-action">ADUC → Operations Masters → RID tab — DC1 confirmed as RID Master</div>
           </div>
         </div>
@@ -927,17 +927,17 @@ mmc
           <div class="grid md:grid-cols-3 gap-3">
             <div class="screenshot-frame" style="height:150px;"
                  onclick="openLightbox(this.querySelector('img').src,'DC2 FSMO role transfer preparation — initiating transfer from DC1')">
-              <img src="images/VMAD1_DC2_FSMO_Role_Transfer_Preparation.png" alt="FSMO role transfer preparation" />
+              <img src="assets/images/VMAD1_DC2_FSMO_Role_Transfer_Preparation.png" alt="FSMO role transfer preparation" />
               <div class="screenshot-label">Transfer initiated from DC1</div>
             </div>
             <div class="screenshot-frame" style="height:150px;"
                  onclick="openLightbox(this.querySelector('img').src,'RID Master FSMO role successfully transferred to DC2 — confirmation dialog')">
-              <img src="images/VMAD1_RID_Master_FSMO_Role_Successfully_Transferred_To_DC2.png" alt="RID Master transferred to DC2" />
+              <img src="assets/images/VMAD1_RID_Master_FSMO_Role_Successfully_Transferred_To_DC2.png" alt="RID Master transferred to DC2" />
               <div class="screenshot-label label-success">RID Master → DC2 confirmed</div>
             </div>
             <div class="screenshot-frame" style="height:150px;"
                  onclick="openLightbox(this.querySelector('img').src,'PDC Emulator access error after FSMO transfer — expected behavior when old role holder is queried')">
-              <img src="images/VMAD1_PDC_Emulator_Role_Access_Error_After_FSMO_Transfer.png" alt="PDC Emulator access error post transfer" />
+              <img src="assets/images/VMAD1_PDC_Emulator_Role_Access_Error_After_FSMO_Transfer.png" alt="PDC Emulator access error post transfer" />
               <div class="screenshot-label label-red">PDC Emulator error — expected post-transfer</div>
             </div>
           </div>
@@ -950,12 +950,12 @@ mmc
           <div class="grid md:grid-cols-2 gap-4">
             <div class="screenshot-frame" style="height:180px;"
                  onclick="openLightbox(this.querySelector('img').src,'DC2 NTDSUTIL FSMO role management console — maintenance menu')">
-              <img src="images/VMAD1_DC2_NTDSUTIL_FSMO_Role_Management_Console.png" alt="NTDSUTIL FSMO role management console" />
+              <img src="assets/images/VMAD1_DC2_NTDSUTIL_FSMO_Role_Management_Console.png" alt="NTDSUTIL FSMO role management console" />
               <div class="screenshot-label label-action">NTDSUTIL → FSMO maintenance menu</div>
             </div>
             <div class="screenshot-frame" style="height:180px;"
                  onclick="openLightbox(this.querySelector('img').src,'Domain Naming Master seizure confirmation on DC2 via NTDSUTIL')">
-              <img src="images/VMAD1_DC2_Domain_Naming_Master_Seizure_Confirmation.png" alt="Domain Naming Master seizure confirmation" />
+              <img src="assets/images/VMAD1_DC2_Domain_Naming_Master_Seizure_Confirmation.png" alt="Domain Naming Master seizure confirmation" />
               <div class="screenshot-label label-red">Domain Naming Master seized — DC2 · emergency takeover</div>
             </div>
           </div>
@@ -973,7 +973,7 @@ mmc
           <!-- DSadd screenshot above the code blocks -->
           <div class="screenshot-frame mb-5" style="height:160px;"
                onclick="openLightbox(this.querySelector('img').src,'DSADD command line help — Active Directory object management syntax reference')">
-            <img src="images/VMAD1_DSADD_Command_Line_Help_For_Active_Directory_Object_Management.png" alt="DSADD command line help" />
+            <img src="assets/images/VMAD1_DSADD_Command_Line_Help_For_Active_Directory_Object_Management.png" alt="DSADD command line help" />
             <div class="screenshot-label label-action">DSadd /? — command-line syntax for creating AD objects</div>
           </div>
 
@@ -1135,7 +1135,7 @@ DSRM "CN=Jane Smith,OU=Staff,DC=landonhotel,DC=local"</code></pre>
       <div class="grid md:grid-cols-2 gap-5 items-start">
         <div class="screenshot-frame" style="height:180px;"
              onclick="openLightbox(this.querySelector('img').src,'Computers container in ADUC — Client1 joined to landonhotel.local domain')">
-          <img src="images/VMAD1_Computers_Container_Client1_Joined.png" alt="Computers container Client1 joined" />
+          <img src="assets/images/VMAD1_Computers_Container_Client1_Joined.png" alt="Computers container Client1 joined" />
           <div class="screenshot-label label-success">ADUC → Computers container — Client1 joined to landonhotel.local</div>
         </div>
         <p class="text-sm text-text-secondary leading-relaxed self-center">
