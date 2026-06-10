@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AD DS Full Deployment Lab | Christian Aguirre</title>
+<title>Active Directory Domain Services Lab | Christian Aguirre</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Inconsolata:wght@200..900&display=swap");
@@ -17,6 +17,7 @@
   --functional-action: #61afef;
   --functional-success: #98c379;
   --accent-red: #e06c75;
+  --accent-yellow: #e5c07b;
   --container-bg: #171717;
   background-color: var(--bg-default);
   color: var(--text-base);
@@ -127,6 +128,37 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+.image-placeholder {
+  background: rgba(97,175,239,0.04);
+  border: 1px dashed rgba(97,175,239,0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  padding: 2rem;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.image-placeholder:hover {
+  background: rgba(97,175,239,0.07);
+  border-color: rgba(97,175,239,0.45);
+}
+.image-placeholder .ph-icon {
+  font-size: 1.5rem;
+  margin-bottom: .5rem;
+  opacity: 0.35;
+}
+.image-placeholder .ph-label {
+  font-family: "Inconsolata", monospace;
+  font-size: .7rem;
+  color: var(--text-secondary);
+  text-align: center;
+  opacity: 0.6;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
 .image-zoom {
   cursor: pointer;
   transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
@@ -173,6 +205,7 @@ body {
 .stat-stagger:nth-child(3) { transition-delay: 0.15s; }
 .stat-stagger:nth-child(4) { transition-delay: 0.20s; }
 .stat-stagger:nth-child(5) { transition-delay: 0.25s; }
+.stat-stagger:nth-child(6) { transition-delay: 0.30s; }
 
 .phase-card {
   transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
@@ -185,6 +218,61 @@ body {
   box-shadow: 0 16px 40px rgba(0,0,0,0.4);
 }
 
+.fsmo-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.fsmo-row:last-child { border-bottom: none; }
+.fsmo-cell {
+  padding: .75rem 1rem;
+  font-size: .8rem;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.fsmo-cell:last-child { border-right: none; }
+
+.tool-row {
+  display: grid;
+  grid-template-columns: 1.2fr 2fr;
+  gap: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.tool-row:last-child { border-bottom: none; }
+.tool-cell {
+  padding: .75rem 1rem;
+  font-size: .8rem;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.tool-cell:last-child { border-right: none; }
+
+pre code {
+  font-family: "Inconsolata", monospace;
+  font-size: .8rem;
+}
+
+.note-block {
+  background: rgba(229,192,123,0.06);
+  border-left: 3px solid var(--accent-yellow);
+  padding: .75rem 1rem;
+  font-size: .8rem;
+  color: var(--text-secondary);
+}
+.warn-block {
+  background: rgba(224,108,117,0.06);
+  border-left: 3px solid var(--accent-red);
+  padding: .75rem 1rem;
+  font-size: .8rem;
+  color: var(--text-secondary);
+}
+.tip-block {
+  background: rgba(97,175,239,0.06);
+  border-left: 3px solid var(--functional-action);
+  padding: .75rem 1rem;
+  font-size: .8rem;
+  color: var(--text-secondary);
+}
+
 * { border-radius: 0 !important; }
 </style>
 <script>
@@ -195,15 +283,18 @@ tailwind.config = { darkMode: "class", theme: { extend: { colors: {
   "accent-action": "var(--functional-action)",
   "accent-success": "var(--functional-success)",
   "accent-red": "var(--accent-red)",
+  "accent-yellow": "var(--accent-yellow)",
 }}}};
 
-function switchTab(id) {
-  document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
-  document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
-  const btn = [...document.querySelectorAll(".tab-button")].find(b => b.dataset.tab === id);
-  if (btn) btn.classList.add("active");
-  const tab = document.getElementById("tab-" + id);
-  if (tab) tab.classList.add("active");
+function switchTab(groupId, tabId) {
+  const group = document.querySelectorAll(`[data-tab-group="${groupId}"]`);
+  group.forEach(el => el.classList.remove("active"));
+  document.querySelectorAll(`[data-tab-group="${groupId}"].tab-button`).forEach(b => b.classList.remove("active"));
+
+  const targetContent = document.getElementById(`tab-${groupId}-${tabId}`);
+  if (targetContent) targetContent.classList.add("active");
+  const targetBtn = document.querySelector(`[data-tab-group="${groupId}"][data-tab="${tabId}"]`);
+  if (targetBtn) targetBtn.classList.add("active");
 }
 
 function openModal(src) {
@@ -228,8 +319,9 @@ function closeModal() {
 <div class="nav-dots">
   <div class="nav-dot active" onclick="scrollToSection('hero')"></div>
   <div class="nav-dot" onclick="scrollToSection('overview')"></div>
-  <div class="nav-dot" onclick="scrollToSection('phases')"></div>
-  <div class="nav-dot" onclick="scrollToSection('admin')"></div>
+  <div class="nav-dot" onclick="scrollToSection('deployment')"></div>
+  <div class="nav-dot" onclick="scrollToSection('tools')"></div>
+  <div class="nav-dot" onclick="scrollToSection('fsmo')"></div>
   <div class="nav-dot" onclick="scrollToSection('takeaways')"></div>
 </div>
 
@@ -243,59 +335,57 @@ function closeModal() {
   </div>
 
   <div class="fade-up flex flex-wrap justify-center gap-2 mb-6" style="transition-delay:.05s">
-    <span class="pill pill-accent">AD DS Full Deployment Lab</span>
+    <span class="pill pill-accent">Active Directory DS</span>
     <span class="pill pill-muted">Windows Server 2022</span>
-    <span class="pill pill-muted">3-DC Environment</span>
+    <span class="pill pill-muted">DNS</span>
     <span class="pill pill-muted">FSMO Roles</span>
     <span class="pill pill-muted">RODC</span>
+    <span class="pill pill-muted">Group Policy</span>
     <span class="pill pill-muted">PowerShell</span>
   </div>
 
   <h1 class="fade-up text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-center" style="transition-delay:.1s">
-    Active Directory Full Deployment Lab
+    Active Directory Domain Services Lab
   </h1>
 
   <p class="fade-up max-w-2xl mx-auto text-base text-text-secondary leading-relaxed mb-10 text-center" style="transition-delay:.15s">
-    Built a complete three-DC Windows Server 2022 environment from bare VMs — forest root, additional DC, and RODC —
-    including a real DNS misconfiguration failure and recovery, full OU and user management, permission delegation,
-    and FSMO role management through both planned transfer and emergency seizure via NTDSUTIL.
+    Deployed a full multi-DC Active Directory environment across three Windows Server 2022 VMs —
+    promoting a forest root, an additional writable DC, and a Read-Only Domain Controller for a remote office scenario.
+    Covered every AD management tool, FSMO role location, command-line administration, and DC-to-DC replication.
   </p>
 
   <!-- Stats -->
-  <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+  <div class="grid grid-cols-2 md:grid-cols-6 gap-4 mb-10">
     <div class="fade-up stat-stagger card-dark p-5 text-center">
       <div class="text-4xl font-extrabold font-mono text-white mb-1">3</div>
       <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Domain Controllers</div>
-      <div class="text-[0.65rem] text-text-secondary mt-1">DC1 · DC2 · DC3 (RODC)</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">DC1, DC2, DC3 (RODC)</div>
     </div>
     <div class="fade-up stat-stagger card-dark p-5 text-center">
-      <div class="text-4xl font-extrabold font-mono text-[#98c379] mb-1">1</div>
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">1</div>
       <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">AD Forest</div>
-      <div class="text-[0.65rem] text-text-secondary mt-1">landonhotel.local</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1"><code class="text-accent-success">landonhotel.local</code></div>
     </div>
     <div class="fade-up stat-stagger card-dark p-5 text-center">
-      <div class="text-4xl font-extrabold font-mono text-[#61afef] mb-1">5</div>
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">5</div>
       <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">FSMO Roles</div>
-      <div class="text-[0.65rem] text-text-secondary mt-1">Transferred + seized</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Located across 3 tools</div>
     </div>
     <div class="fade-up stat-stagger card-dark p-5 text-center">
-      <div class="text-4xl font-extrabold font-mono text-[#e5c07b] mb-1">7</div>
-      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Admin Tools</div>
-      <div class="text-[0.65rem] text-text-secondary mt-1">Full coverage</div>
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">7</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">AD Admin Tools</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">ADUC, ADAC, Schema + more</div>
     </div>
     <div class="fade-up stat-stagger card-dark p-5 text-center">
-      <div class="text-4xl font-extrabold font-mono text-[#e06c75] mb-1">8</div>
-      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Lab Sections</div>
-      <div class="text-[0.65rem] text-text-secondary mt-1">End-to-end</div>
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">6</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">DS CLI Tools</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">DSadd, DSmod, DSquery…</div>
     </div>
-  </div>
-
-  <!-- Hero image -->
-  <div class="fade-up image-zoom border border-gray-700 p-3 mb-10" style="transition-delay:.2s"
-       onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_VMware_Workstation_Pro_Home_Screen_With_Existing_VMs.png')">
-    <img src="/it-and-security-portfolio/assets/images/VMAD1_VMware_Workstation_Pro_Home_Screen_With_Existing_VMs.png"
-         class="w-full" alt="VMware Workstation Pro — all 3 VMs provisioned">
-    <p class="mt-2 text-xs italic text-text-secondary text-center">VMware Workstation Pro — DC1, DC2, DC3 all provisioned and ready before any roles are installed</p>
+    <div class="fade-up stat-stagger card-dark p-5 text-center">
+      <div class="text-4xl font-extrabold font-mono text-white mb-1">WS2016</div>
+      <div class="text-xs text-text-secondary uppercase tracking-wider font-mono">Functional Level</div>
+      <div class="text-[0.65rem] text-text-secondary mt-1">Forest & domain</div>
+    </div>
   </div>
 
   <!-- Summary cards -->
@@ -303,20 +393,24 @@ function closeModal() {
     <div class="card-dark p-6">
       <p class="text-[0.7rem] tracking-[0.2em] uppercase text-text-secondary font-mono mb-3">What I built</p>
       <p class="text-sm text-text-secondary leading-relaxed">
-        A complete three-VM lab based on LinkedIn Learning's AD DS course (Ed Liberman, MCT).
-        Starting from bare VMs, the lab covers forest creation, additional DC promotion with a real failure and recovery,
-        RODC deployment, full OU structure, user and group management, password reset delegation,
-        all seven AD management tools, and FSMO role management including emergency seizure via NTDSUTIL.
+        A complete Windows Server 2022 Active Directory environment using three virtual machines. DC1 became the
+        <strong class="text-white">Forest Root Domain Controller</strong> — the first DC in a new forest.
+        DC2 was promoted as a <strong class="text-white">full writable additional DC</strong> for redundancy.
+        DC3 was deployed as a <strong class="text-white">Read-Only Domain Controller (RODC)</strong> for a
+        branch office scenario. Every AD management tool was explored, all five FSMO roles located, and
+        command-line administration practiced through PowerShell and DS utilities.
       </p>
     </div>
     <div class="card-dark p-6">
       <p class="text-[0.7rem] tracking-[0.2em] uppercase text-text-secondary font-mono mb-3">Key outcomes</p>
       <ul class="text-sm text-text-secondary space-y-1.5">
-        <li>• Three-DC environment built from scratch — DC1, DC2 (writable), DC3 (RODC)</li>
-        <li>• Real DNS misconfiguration on DC2 hit, diagnosed, and resolved</li>
-        <li>• RODC password replication policy configured for branch office scenario</li>
-        <li>• OU hierarchy, users, groups, and delegation all implemented</li>
-        <li>• All 5 FSMO roles located, transferred, and seized via NTDSUTIL</li>
+        <li>• Forest root created: <code class="text-accent-success">landonhotel.local</code> with AD-integrated DNS</li>
+        <li>• DC2 promoted as additional DC — multi-master replication verified</li>
+        <li>• RODC deployed with password replication policy configured</li>
+        <li>• All 7 AD management tools explored: ADUC, ADAC, Sites & Services, Schema + more</li>
+        <li>• All 5 FSMO roles located across their respective tools</li>
+        <li>• DS command-line tools and PowerShell AD module practiced</li>
+        <li>• Multi-site topology demonstrated with a new site and DC assignment</li>
       </ul>
     </div>
   </div>
@@ -326,572 +420,693 @@ function closeModal() {
 <!-- ══════════════ OVERVIEW ══════════════ -->
 <section id="overview" class="fade-soft py-16 md:py-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-  <div class="section-header"><h2>How It Worked</h2></div>
+  <div class="section-header"><h2>Lab Architecture</h2></div>
 
-  <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
+  <!-- Environment table -->
+  <div class="fade-up card-dark mb-10 overflow-x-auto">
+    <div class="p-5 border-b border-gray-800">
+      <p class="text-[0.7rem] tracking-[0.2em] uppercase text-text-secondary font-mono">Environment — 3 VMs, 1 Forest</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1.5fr;border-bottom:1px solid rgba(255,255,255,0.08)">
+      <div class="tool-cell text-[0.65rem] tracking-wider uppercase text-text-secondary font-mono">VM</div>
+      <div class="tool-cell text-[0.65rem] tracking-wider uppercase text-text-secondary font-mono">Role</div>
+      <div class="tool-cell text-[0.65rem] tracking-wider uppercase text-text-secondary font-mono">Type</div>
+      <div class="tool-cell text-[0.65rem] tracking-wider uppercase text-text-secondary font-mono border-r-0">Notes</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1.5fr;border-bottom:1px solid rgba(255,255,255,0.06)">
+      <div class="tool-cell font-mono text-accent-action">DC1</div>
+      <div class="tool-cell text-text-secondary">Forest Root DC</div>
+      <div class="tool-cell"><span class="text-xs border border-accent-success text-accent-success font-mono px-2 py-0.5">Writable</span></div>
+      <div class="tool-cell text-text-secondary border-r-0">Holds all 5 FSMO roles by default. DNS co-located.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1.5fr;border-bottom:1px solid rgba(255,255,255,0.06)">
+      <div class="tool-cell font-mono text-accent-action">DC2</div>
+      <div class="tool-cell text-text-secondary">Additional DC</div>
+      <div class="tool-cell"><span class="text-xs border border-accent-success text-accent-success font-mono px-2 py-0.5">Writable</span></div>
+      <div class="tool-cell text-text-secondary border-r-0">Full replica. DNS + Global Catalog enabled. Replicates from DC1.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1.5fr">
+      <div class="tool-cell font-mono text-accent-action">DC3</div>
+      <div class="tool-cell text-text-secondary">Branch Office DC</div>
+      <div class="tool-cell"><span class="text-xs border border-accent-yellow text-accent-yellow font-mono px-2 py-0.5">RODC</span></div>
+      <div class="tool-cell text-text-secondary border-r-0">Read-only. Password replication policy configured. No DNS/GC for minimal footprint.</div>
+    </div>
+  </div>
+
+  <!-- Phase cards -->
+  <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
     <div class="fade-up stat-stagger card-dark phase-card p-5">
       <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 1</p>
-      <p class="text-sm font-semibold mb-1">VM Provisioning</p>
-      <p class="text-xs text-text-secondary leading-relaxed">Three Windows Server 2022 VMs named, configured with static IPs, and DNS set up correctly before any roles were installed.</p>
+      <p class="text-sm font-semibold mb-1">Forest Root (DC1)</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Installed AD DS role, ran the Configuration Wizard to create a new forest, set DNS, DSRM password, and verified domain creation.</p>
     </div>
     <div class="fade-up stat-stagger card-dark phase-card p-5">
       <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 2</p>
-      <p class="text-sm font-semibold mb-1">Forest Root (DC1)</p>
-      <p class="text-xs text-text-secondary leading-relaxed">AD DS role installed and DC1 promoted as the forest root — creating <code class="text-accent-success text-xs">landonhotel.local</code> and holding all 5 FSMO roles by default.</p>
+      <p class="text-sm font-semibold mb-1">Additional DC (DC2)</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Configured DNS to point at DC1, joined the domain as a full writable DC. Replicated database, enabled DNS and Global Catalog.</p>
     </div>
     <div class="fade-up stat-stagger card-dark phase-card p-5">
       <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 3</p>
-      <p class="text-sm font-semibold mb-1">Additional DC (DC2)</p>
-      <p class="text-xs text-text-secondary leading-relaxed">DC2 joined as a full writable DC — hit the DNS failure first, fixed it, then successfully promoted with DNS and Global Catalog enabled.</p>
+      <p class="text-sm font-semibold mb-1">RODC (DC3)</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Promoted as RODC with password replication policy — allowed accounts listed, privileged accounts explicitly denied caching.</p>
     </div>
     <div class="fade-up stat-stagger card-dark phase-card p-5">
       <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 4</p>
-      <p class="text-sm font-semibold mb-1">RODC (DC3)</p>
-      <p class="text-xs text-text-secondary leading-relaxed">DC3 deployed as a Read-Only Domain Controller for the branch office scenario with password replication policy configured.</p>
-    </div>
-    <div class="fade-up stat-stagger card-dark phase-card p-5">
-      <p class="font-mono text-accent-action text-xs uppercase mb-2">Phase 5</p>
-      <p class="text-sm font-semibold mb-1">Admin &amp; FSMO</p>
-      <p class="text-xs text-text-secondary leading-relaxed">OUs, users, groups, and delegation built out. All seven admin tools walked through. FSMO roles transferred and seized via NTDSUTIL.</p>
+      <p class="text-sm font-semibold mb-1">Tools, FSMO & CLI</p>
+      <p class="text-xs text-text-secondary leading-relaxed">Explored all 7 AD admin tools, located all 5 FSMO roles, practiced DS command-line tools and the PowerShell AD module.</p>
     </div>
   </div>
 
 </section>
 
-<!-- ══════════════ PHASES (DC Deployment) ══════════════ -->
-<section id="phases" class="fade-soft py-16 md:py-20">
+<!-- ══════════════ DEPLOYMENT ══════════════ -->
+<section id="deployment" class="fade-soft py-16 md:py-20">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
     <div class="section-header"><h2>DC Deployment Walkthrough</h2></div>
 
     <div class="flex flex-wrap gap-0 border-b border-gray-700 mb-8 overflow-x-auto">
-      <button class="tab-button active" data-tab="setup"  onclick="switchTab('setup')">VM Setup</button>
-      <button class="tab-button"        data-tab="dc1"    onclick="switchTab('dc1')">Forest Root — DC1</button>
-      <button class="tab-button"        data-tab="dc2"    onclick="switchTab('dc2')">Additional DC — DC2</button>
-      <button class="tab-button"        data-tab="dc3"    onclick="switchTab('dc3')">RODC — DC3</button>
+      <button class="tab-button active" data-tab-group="deploy" data-tab="dc1" onclick="switchTab('deploy','dc1')">DC1 — Forest Root</button>
+      <button class="tab-button" data-tab-group="deploy" data-tab="dc2" onclick="switchTab('deploy','dc2')">DC2 — Additional DC</button>
+      <button class="tab-button" data-tab-group="deploy" data-tab="dc3" onclick="switchTab('deploy','dc3')">DC3 — RODC</button>
     </div>
 
-    <!-- ── VM Setup ── -->
-    <div id="tab-setup" class="tab-content active">
+    <!-- DC1 -->
+    <div id="tab-deploy-dc1" class="tab-content active" data-tab-group="deploy">
       <div class="card-dark border border-gray-700 p-8 space-y-10">
+
         <div>
-          <h3 class="text-lg font-semibold mb-2">Phase 1 — VM Provisioning</h3>
+          <h3 class="text-lg font-semibold mb-2">DC1 — Forest Root Domain Controller</h3>
           <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
-            Before any AD role gets installed, three Windows Server 2022 VMs need names, hardware, and static IPs.
-            DC2 and DC3 must also have their Preferred DNS pointed at DC1's IP address —
-            skip this and the promotion wizard fails immediately.
+            DC1 is the first domain controller in the forest — the Forest Root DC. Installing AD DS here
+            creates the entire <code class="text-accent-success">landonhotel.local</code> forest from scratch.
+            Every other DC in the lab joins <em>after</em> this one exists. It always holds all five FSMO roles by default.
           </p>
         </div>
 
         <div class="grid md:grid-cols-2 gap-8">
-          <div class="space-y-3">
-            <h4 class="text-sm font-semibold">What gets configured before any roles</h4>
-            <ul class="text-sm text-text-secondary space-y-1">
-              <li>• VM named, hardware allocated (CPU, RAM, disk)</li>
-              <li>• Windows Server 2022 installed — clean desktop, nothing else</li>
-              <li>• Static IP addresses assigned on each VM</li>
-              <li>• DC2 and DC3: Preferred DNS set to DC1's IP</li>
-            </ul>
+          <div class="space-y-4">
+            <h4 class="text-sm font-semibold">Two-step process</h4>
+            <div class="note-block">
+              <strong class="text-white">Step 1 — Install the AD DS role</strong><br>
+              Server Manager → Add Roles and Features → Active Directory Domain Services.
+              Accept all required feature dependencies. Auto-restart checkbox enabled. Installation completes
+              but the server is <em>not yet a DC</em> — Server Manager shows "Configuration Required."
+            </div>
+            <div class="note-block">
+              <strong class="text-white">Step 2 — Promote to domain controller</strong><br>
+              Click "Promote this server to a domain controller" from the notification flag.
+              Select <strong>Add a new forest</strong>, enter <code class="text-accent-success">landonhotel.local</code>
+              as the root domain name. This is the only option available before any domain exists.
+            </div>
           </div>
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC1_Virtual_Machine_Creation_Summary_And_Hardware_Settings.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_DC1_Virtual_Machine_Creation_Summary_And_Hardware_Settings.png"
-                 class="w-full" alt="VM hardware summary">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">DC1 hardware summary — CPU, RAM, disk confirmed before first boot</p>
+          <div class="image-placeholder" onclick="openModal('')">
+            <div class="ph-icon">🖼</div>
+            <div class="ph-label">DC1 — AD DS Configuration Wizard<br>New forest / root domain name screen</div>
           </div>
         </div>
 
         <div class="grid md:grid-cols-2 gap-8">
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC1_Windows_Server_2022_Initial_Desktop_Deployment.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_DC1_Windows_Server_2022_Initial_Desktop_Deployment.png"
-                 class="w-full" alt="Fresh Windows Server 2022 desktop">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">DC1 — fresh Windows Server 2022 desktop. No roles, no domain. This is the actual starting point.</p>
+          <div>
+            <h4 class="text-sm font-semibold mb-3">DC Options — what each setting means</h4>
+            <div class="card-dark border border-gray-800 overflow-hidden">
+              <div class="tool-row bg-gray-900/30">
+                <div class="tool-cell text-[0.65rem] uppercase tracking-wider text-text-secondary font-mono">Setting</div>
+                <div class="tool-cell text-[0.65rem] uppercase tracking-wider text-text-secondary font-mono border-r-0">Decision</div>
+              </div>
+              <div class="tool-row">
+                <div class="tool-cell text-text-secondary font-mono text-xs">Forest Functional Level</div>
+                <div class="tool-cell text-text-secondary border-r-0 text-xs">Windows Server 2016 — highest available. Controls feature compatibility with older DCs.</div>
+              </div>
+              <div class="tool-row">
+                <div class="tool-cell text-text-secondary font-mono text-xs">DNS Server</div>
+                <div class="tool-cell text-text-secondary border-r-0 text-xs">Enabled. AD DS requires DNS. Best practice: co-locate DNS on at least one DC.</div>
+              </div>
+              <div class="tool-row">
+                <div class="tool-cell text-text-secondary font-mono text-xs">Global Catalog</div>
+                <div class="tool-cell text-text-secondary border-r-0 text-xs">Checked and grayed out — mandatory. The first DC in any forest must be a GC server.</div>
+              </div>
+              <div class="tool-row">
+                <div class="tool-cell text-text-secondary font-mono text-xs">RODC</div>
+                <div class="tool-cell text-text-secondary border-r-0 text-xs">Unavailable. A RODC requires a master writable DC to already exist.</div>
+              </div>
+              <div class="tool-row">
+                <div class="tool-cell text-text-secondary font-mono text-xs">DSRM Password</div>
+                <div class="tool-cell text-text-secondary border-r-0 text-xs">Directory Services Restore Mode — used to boot into recovery if AD fails. Store securely.</div>
+              </div>
+            </div>
           </div>
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC1_Server_Manager_Dashboard_Initial_Configuration.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_DC1_Server_Manager_Dashboard_Initial_Configuration.png"
-                 class="w-full" alt="Server Manager initial state">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">DC1 Server Manager — initial state before any roles are installed</p>
+          <div class="space-y-4">
+            <h4 class="text-sm font-semibold">Database paths (production vs lab)</h4>
+            <div class="warn-block">
+              <strong class="text-accent-yellow">Production:</strong> The NTDS database, transaction log files, and SYSVOL should live on <em>separate physical drives</em> — not just different folders on the same disk. Separating I/O across drives significantly improves performance and resilience.
+            </div>
+            <div class="tip-block">
+              <strong class="text-accent-action">This lab:</strong> Default paths accepted — <code>C:\Windows\NTDS</code> for the database and logs, <code>C:\Windows\SYSVOL</code> for the shared folder.
+            </div>
+            <div class="image-placeholder" onclick="openModal('')">
+              <div class="ph-icon">🖼</div>
+              <div class="ph-label">DC1 — Prerequisites check passed<br>Green checkmark, ready to install</div>
+            </div>
           </div>
         </div>
+
+        <div>
+          <h4 class="text-sm font-semibold mb-3">Verifying DC1 after reboot</h4>
+          <p class="text-sm text-text-secondary mb-4 leading-relaxed">After the promotion wizard completes, the server reboots automatically. Log back in as
+          <code class="text-accent-success">LANDONHOTEL\Administrator</code>. Server Manager now shows AD DS and DNS listed under Roles.
+          Go to Tools → Active Directory Users and Computers to confirm <code class="text-accent-success">landonhotel.local</code> exists
+          with its default containers: Users, Computers, Domain Controllers, Builtin.</p>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="image-placeholder" onclick="openModal('')">
+              <div class="ph-icon">🖼</div>
+              <div class="ph-label">Server Manager — AD DS + DNS roles listed after DC1 promotion</div>
+            </div>
+            <div class="image-placeholder" onclick="openModal('')">
+              <div class="ph-icon">🖼</div>
+              <div class="ph-label">ADUC — landonhotel.local domain tree with default containers</div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <!-- ── DC1 ── -->
-    <div id="tab-dc1" class="tab-content">
+    <!-- DC2 -->
+    <div id="tab-deploy-dc2" class="tab-content" data-tab-group="deploy">
       <div class="card-dark border border-gray-700 p-8 space-y-10">
+
         <div>
-          <h3 class="text-lg font-semibold mb-2">Phase 2 — Forest Root Domain Controller (DC1)</h3>
+          <h3 class="text-lg font-semibold mb-2">DC2 — Additional Domain Controller</h3>
           <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
-            DC1 becomes the forest root — the first DC in the forest, authority for <code class="text-accent-success">landonhotel.local</code>,
-            and default holder of all five FSMO roles. Promotion is always two separate steps:
-            install the role binaries first, then run the promotion wizard.
+            Regardless of company size, a minimum of two domain controllers is always recommended. If DC1 fails,
+            DC2 continues serving authentication — users stay logged in, resources stay accessible, and the domain
+            remains operational. DC2 is a full writable replica of the directory.
           </p>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8">
-          <div class="space-y-3">
-            <h4 class="text-sm font-semibold">Step 1 — Install the AD DS role</h4>
-            <ul class="text-sm text-text-secondary space-y-1">
-              <li>• Server Manager → Add Roles and Features → AD DS</li>
-              <li>• Dependencies added automatically (Group Policy Management, AD DS Tools)</li>
-              <li>• Auto-restart enabled, installation runs</li>
-              <li>• After completion: "Configuration Required" — expected, not an error</li>
-              <li>• The binaries are installed but the server hasn't been promoted yet</li>
-            </ul>
+        <div class="grid md:grid-cols-3 gap-5 mb-2">
+          <div class="card-dark border border-gray-800 p-4">
+            <p class="text-xs font-mono text-accent-action uppercase tracking-wider mb-2">Fault Tolerance</p>
+            <p class="text-xs text-text-secondary">If one DC fails, the other continues authenticating users with no service interruption.</p>
           </div>
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC1_Add_Roles_and_Features_Wizard_Launch.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_DC1_Add_Roles_and_Features_Wizard_Launch.png"
-                 class="w-full" alt="Add Roles and Features wizard">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">Add Roles and Features — AD DS selected, dependencies auto-added</p>
+          <div class="card-dark border border-gray-800 p-4">
+            <p class="text-xs font-mono text-accent-action uppercase tracking-wider mb-2">Redundancy</p>
+            <p class="text-xs text-text-secondary">AD DS data is replicated between all DCs — no single point of failure for the directory database.</p>
+          </div>
+          <div class="card-dark border border-gray-800 p-4">
+            <p class="text-xs font-mono text-accent-action uppercase tracking-wider mb-2">Load Balancing</p>
+            <p class="text-xs text-text-secondary">Authentication requests can be distributed across DCs, reducing load on any single server.</p>
           </div>
         </div>
 
         <div class="grid md:grid-cols-2 gap-8">
-          <div class="space-y-3">
-            <h4 class="text-sm font-semibold">Step 2 — Promote to Forest Root DC</h4>
-            <ul class="text-sm text-text-secondary space-y-1">
-              <li>• "Add a new forest" selected — no existing forest yet</li>
-              <li>• Root domain: <code class="text-accent-success">landonhotel.local</code></li>
-              <li>• Forest/domain functional levels: Windows Server 2016</li>
-              <li>• DNS Server enabled (required) · Global Catalog forced on (mandatory)</li>
-              <li>• DSRM password set · prerequisites check passes · server reboots as DC</li>
+          <div class="space-y-4">
+            <h4 class="text-sm font-semibold">Critical pre-promotion check</h4>
+            <div class="warn-block">
+              <strong class="text-accent-red">Most common mistake:</strong> DC2's DNS must point to DC1 before promotion. If DC2 can't resolve
+              <code>landonhotel.local</code> through DC1's DNS, the Configuration Wizard will fail to find the domain.
+              Set DC2's Preferred DNS Server to DC1's IP address in the network adapter settings first.
+            </div>
+            <h4 class="text-sm font-semibold mt-4">Deployment configuration differences</h4>
+            <ul class="text-sm text-text-secondary space-y-2">
+              <li>• Select <strong class="text-white">"Add a domain controller to an existing domain"</strong> — not a new forest</li>
+              <li>• Enter <code class="text-accent-success">landonhotel.local</code> and click <em>Change</em> to provide domain admin credentials</li>
+              <li>• DC2's local admin account has no authority over the domain — explicit domain credentials required</li>
+              <li>• Enable DNS Server and Global Catalog — same as DC1</li>
+              <li>• Replication source: leave as "Any domain controller" — wizard picks the best available</li>
             </ul>
           </div>
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC1_New_Forest_Creation_Landonhotel_Local.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_DC1_New_Forest_Creation_Landonhotel_Local.png"
-                 class="w-full" alt="New forest creation wizard">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">Promotion wizard — "Add a new forest" selected, landonhotel.local entered as root domain name</p>
+          <div class="image-placeholder" onclick="openModal('')">
+            <div class="ph-icon">🖼</div>
+            <div class="ph-label">DC2 — Deployment Configuration screen<br>"Add a domain controller to an existing domain"</div>
           </div>
         </div>
 
         <div class="grid md:grid-cols-2 gap-8">
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC1_ADDS_Installation_Completed_Promotion_Ready.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_DC1_ADDS_Installation_Completed_Promotion_Ready.png"
-                 class="w-full" alt="Promotion ready">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">AD DS role installed — "promotion ready" notification, Step 2 pending</p>
+          <div class="image-placeholder" onclick="openModal('')">
+            <div class="ph-icon">🖼</div>
+            <div class="ph-label">DC2 — Additional Replication Options<br>Replication source selection</div>
           </div>
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC1_Local_Server_Properties_And_System_Configuration.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_DC1_Local_Server_Properties_And_System_Configuration.png"
-                 class="w-full" alt="DC1 local server post-promotion">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">DC1 Local Server — static IP and domain membership confirmed after promotion</p>
+          <div class="image-placeholder" onclick="openModal('')">
+            <div class="ph-icon">🖼</div>
+            <div class="ph-label">Server Manager — DC2 confirmed, AD DS role listed</div>
           </div>
         </div>
+
+        <div class="tip-block">
+          <strong class="text-accent-action">Install from Media (IFM):</strong> When deploying a DC in a remote location with a slow WAN link, you can export a backup of an existing DC's database to media, then seed the new DC from that local copy instead of replicating across the WAN. Not needed in this single-site lab, but important in multi-site enterprise deployments.
+        </div>
+
       </div>
     </div>
 
-    <!-- ── DC2 ── -->
-    <div id="tab-dc2" class="tab-content">
+    <!-- DC3 RODC -->
+    <div id="tab-deploy-dc3" class="tab-content" data-tab-group="deploy">
       <div class="card-dark border border-gray-700 p-8 space-y-10">
+
         <div>
-          <h3 class="text-lg font-semibold mb-2">Phase 3 — Additional Domain Controller (DC2)</h3>
+          <h3 class="text-lg font-semibold mb-2">DC3 — Read-Only Domain Controller (RODC)</h3>
           <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
-            A single DC is a single point of failure. DC2 joins as a full writable DC providing fault tolerance and replication.
-            The role install is identical to DC1. The promotion wizard differs — you join an existing domain using domain admin credentials.
-            First though, DC2's DNS had to point at DC1. That step got skipped, and the failure is documented here.
+            An RODC is designed for branch offices or remote sites where there is no dedicated IT staff to
+            physically protect the domain controller. The security risk with a standard writable DC is real:
+            an attacker with physical access can extract credential hashes or modify AD objects.
+            An RODC limits the blast radius — no writes can be made to the directory, and only
+            explicitly allowed account passwords are ever cached locally.
           </p>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8">
-          <div class="space-y-3">
-            <h4 class="text-sm font-semibold">The failure — DNS misconfiguration</h4>
-            <p class="text-sm text-text-secondary leading-relaxed">
-              The promotion wizard couldn't locate <code class="text-accent-success">landonhotel.local</code>
-              because DC2's Preferred DNS was still pointing at the wrong address.
-              This is the most common DC promotion failure in the field.
-              The fix is one setting: network adapter → IPv4 → Preferred DNS = DC1's IP.
-            </p>
-          </div>
-          <div class="image-zoom border border-red-900/50 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC2_Domain_Controller_Promotion_Connectivity_Error.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_DC2_Domain_Controller_Promotion_Connectivity_Error.png"
-                 class="w-full" alt="DC2 promotion error">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">⚠ Promotion fails — wizard cannot locate landonhotel.local because DNS isn't pointed at DC1</p>
-          </div>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-8">
-          <div class="space-y-3">
-            <h4 class="text-sm font-semibold">After the fix — DC2 promoted successfully</h4>
-            <ul class="text-sm text-text-secondary space-y-1">
-              <li>• "Add a domain controller to an existing domain" selected</li>
-              <li>• Domain admin credentials entered via Change (local admin has no domain authority)</li>
-              <li>• DNS Server and Global Catalog both enabled</li>
-              <li>• Replication source: Any domain controller (recommended default)</li>
-              <li>• Server reboots — replication with DC1 begins automatically</li>
+        <div class="grid md:grid-cols-2 gap-5 mb-2">
+          <div class="card-dark border border-gray-800 p-5">
+            <p class="text-xs font-mono text-accent-success uppercase tracking-wider mb-3">RODC provides</p>
+            <ul class="text-sm text-text-secondary space-y-1.5">
+              <li>• Full authentication services to local users</li>
+              <li>• Password caching only for explicitly allowed accounts</li>
+              <li>• Can be deployed as Server Core to reduce attack surface</li>
+              <li>• Delegated admin — a non-admin user can manage the RODC locally without domain admin rights</li>
             </ul>
           </div>
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC2_Server_Manager_Dashboard_Post_Deployment.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_DC2_Server_Manager_Dashboard_Post_Deployment.png"
-                 class="w-full" alt="DC2 post deployment">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">DC2 Server Manager — AD DS role active, full writable DC confirmed in the domain</p>
+          <div class="card-dark border border-gray-800 p-5">
+            <p class="text-xs font-mono text-accent-red uppercase tracking-wider mb-3">RODC restrictions</p>
+            <ul class="text-sm text-text-secondary space-y-1.5">
+              <li>• No changes can be written to AD — the database is read-only</li>
+              <li>• Privileged accounts (Domain Admins, Schema Admins) are denied caching by default — must stay denied</li>
+              <li>• If physically compromised, only cached passwords are exposed</li>
+              <li>• No changes originate from the RODC — it only receives replication</li>
+            </ul>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- ── DC3 RODC ── -->
-    <div id="tab-dc3" class="tab-content">
-      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-4">
+            <h4 class="text-sm font-semibold">RODC-specific promotion steps</h4>
+            <ul class="text-sm text-text-secondary space-y-2">
+              <li>• Check <strong class="text-white">Read Only Domain Controller (RODC)</strong> box — this is the key distinction</li>
+              <li>• DNS Server and Global Catalog left unchecked — minimal footprint for the branch</li>
+              <li>• Password Replication Policy screen appears — unique to RODC promotion</li>
+            </ul>
+            <div class="warn-block">
+              <strong class="text-accent-red">Never</strong> add Domain Admin, Schema Admin, or other privileged account passwords to the Allowed Replication list. If the RODC is physically compromised, those cached credentials become immediately exposed.
+            </div>
+          </div>
+          <div class="image-placeholder" onclick="openModal('')">
+            <div class="ph-icon">🖼</div>
+            <div class="ph-label">DC3 — RODC checkbox enabled in DC Options<br>DNS and GC left unchecked</div>
+          </div>
+        </div>
+
         <div>
-          <h3 class="text-lg font-semibold mb-2">Phase 4 — Read-Only Domain Controller (DC3)</h3>
-          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
-            An RODC is for a specific scenario: a branch office that needs local authentication
-            but has no IT staff to physically protect the server. If someone gets physical access to a
-            standard writable DC, they can extract credential hashes for every account in the domain.
-            An RODC can't be written to and only caches passwords for explicitly allowed accounts —
-            limiting the blast radius of a breach.
-          </p>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-8">
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC3_Server_Manager_Local_Server_Before_Domain_Join.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_DC3_Server_Manager_Local_Server_Before_Domain_Join.png"
-                 class="w-full" alt="DC3 before join">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">DC3 — standalone server, pre-join state</p>
-          </div>
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC3_Successful_Domain_Join_Landonhotel_Local.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_DC3_Successful_Domain_Join_Landonhotel_Local.png"
-                 class="w-full" alt="DC3 joined">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">DC3 — RODC successfully joined to landonhotel.local</p>
+          <h4 class="text-sm font-semibold mb-3">Password Replication Policy</h4>
+          <p class="text-sm text-text-secondary mb-4">This screen is unique to RODC deployment and controls which accounts can cache passwords locally. Accounts in the "Allowed RODC Password Replication Group" can authenticate even if the WAN link to the main site goes down.</p>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="card-dark border border-gray-800 p-5">
+              <p class="text-xs font-mono text-accent-success uppercase tracking-wider mb-3">Allowed Replication</p>
+              <p class="text-xs text-text-secondary leading-relaxed">Add the security group containing remote office users so they can authenticate locally during WAN outages. Add custom groups via the Add button. These passwords are pre-seeded on the RODC.</p>
+            </div>
+            <div class="card-dark border border-gray-800 p-5">
+              <p class="text-xs font-mono text-accent-red uppercase tracking-wider mb-3">Denied Replication (Defaults)</p>
+              <p class="text-xs text-text-secondary leading-relaxed">Domain Admins, Schema Admins, Enterprise Admins, and other privileged groups are blocked by default. These entries must remain denied — remove none of them.</p>
+            </div>
           </div>
         </div>
 
         <div class="grid md:grid-cols-2 gap-8">
-          <div class="space-y-3">
-            <h4 class="text-sm font-semibold">Password Replication Policy — unique to RODC</h4>
-            <p class="text-sm text-text-secondary leading-relaxed mb-3">
-              This screen doesn't exist for standard DC promotions. It controls which accounts
-              can have passwords cached locally on the RODC.
-            </p>
-            <ul class="text-sm text-text-secondary space-y-1">
-              <li>• <span class="text-accent-success">Allowed:</span> Remote office users — can auth locally if WAN goes down</li>
-              <li>• <span class="text-accent-red">Always denied:</span> Domain Admins, Schema Admins — must never cache here</li>
-              <li>• <span class="text-[#e5c07b]">Delegated admin:</span> A non-domain-admin user can manage the RODC locally</li>
-            </ul>
-            <p class="text-xs text-text-secondary mt-2 italic">
-              If the RODC hardware is physically compromised, only cached credentials are exposed —
-              not the entire domain.
-            </p>
+          <div class="image-placeholder" onclick="openModal('')">
+            <div class="ph-icon">🖼</div>
+            <div class="ph-label">DC3 — Password Replication Policy screen<br>Allowed and Denied accounts configured</div>
           </div>
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC3_Read_Only_Domain_Controller_Configuration.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_DC3_Read_Only_Domain_Controller_Configuration.png"
-                 class="w-full" alt="RODC promotion screen">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">RODC promotion — Read Only DC checkbox and password replication policy</p>
+          <div class="image-placeholder" onclick="openModal('')">
+            <div class="ph-icon">🖼</div>
+            <div class="ph-label">ADUC — Domain Controllers container<br>DC3 listed, confirmed as RODC via properties</div>
           </div>
         </div>
+
       </div>
     </div>
 
   </div>
 </section>
 
-<!-- ══════════════ AD ADMINISTRATION ══════════════ -->
-<section id="admin" class="fade-soft py-16 md:py-20">
+<!-- ══════════════ TOOLS ══════════════ -->
+<section id="tools" class="fade-soft py-16 md:py-20">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-    <div class="section-header"><h2>AD Administration &amp; FSMO</h2></div>
+    <div class="section-header"><h2>AD Management Tools</h2></div>
+
+    <!-- Tool reference table -->
+    <div class="fade-up card-dark mb-10 overflow-x-auto">
+      <div class="p-5 border-b border-gray-800">
+        <p class="text-[0.7rem] tracking-[0.2em] uppercase text-text-secondary font-mono">Quick Reference — 7 Tools</p>
+      </div>
+      <div class="tool-row bg-gray-900/30">
+        <div class="tool-cell text-[0.65rem] uppercase tracking-wider text-text-secondary font-mono">Tool</div>
+        <div class="tool-cell text-[0.65rem] uppercase tracking-wider text-text-secondary font-mono border-r-0">Primary Use</div>
+      </div>
+      <div class="tool-row"><div class="tool-cell font-mono text-accent-action text-xs">AD Administrative Center</div><div class="tool-cell text-text-secondary text-xs border-r-0">Newer GUI built on PowerShell. Fine-grained password policies, AD Recycle Bin, PowerShell history pane.</div></div>
+      <div class="tool-row"><div class="tool-cell font-mono text-accent-action text-xs">AD Users and Computers</div><div class="tool-cell text-text-secondary text-xs border-r-0">Classic GUI (since Windows 2000). Most widely used for daily user, group, and OU management.</div></div>
+      <div class="tool-row"><div class="tool-cell font-mono text-accent-action text-xs">AD Domains and Trusts</div><div class="tool-cell text-text-secondary text-xs border-r-0">Trust relationships between domains. Raise domain/forest functional levels. Domain Naming Master FSMO.</div></div>
+      <div class="tool-row"><div class="tool-cell font-mono text-accent-action text-xs">AD Sites and Services</div><div class="tool-cell text-text-secondary text-xs border-r-0">Physical site topology. Subnets, inter-site replication, DC-to-site assignment for multi-location environments.</div></div>
+      <div class="tool-row"><div class="tool-cell font-mono text-accent-action text-xs">AD Schema (custom MMC)</div><div class="tool-cell text-text-secondary text-xs border-r-0">Requires <code>regsvr32 schmmgmt.dll</code>. Defines every AD object class and attribute. Modify with extreme caution.</div></div>
+      <div class="tool-row"><div class="tool-cell font-mono text-accent-action text-xs">AD Module for PowerShell</div><div class="tool-cell text-text-secondary text-xs border-r-0">Command-line management via PowerShell cmdlets. Scripting, automation, and bulk operations.</div></div>
+      <div class="tool-row"><div class="tool-cell font-mono text-accent-action text-xs">DS Command-Line Tools</div><div class="tool-cell text-text-secondary text-xs border-r-0">DSadd, DSget, DSmod, DSmove, DSquery, DSRM — legacy batch scripting of AD objects via CMD.</div></div>
+    </div>
 
     <div class="flex flex-wrap gap-0 border-b border-gray-700 mb-8 overflow-x-auto">
-      <button class="tab-button active" data-tab="tools"      onclick="switchTab('tools')">Management Tools</button>
-      <button class="tab-button"        data-tab="ous"        onclick="switchTab('ous')">OUs &amp; Users</button>
-      <button class="tab-button"        data-tab="groups"     onclick="switchTab('groups')">Groups &amp; Delegation</button>
-      <button class="tab-button"        data-tab="schema"     onclick="switchTab('schema')">Schema &amp; Sites</button>
-      <button class="tab-button"        data-tab="fsmo"       onclick="switchTab('fsmo')">FSMO Roles</button>
+      <button class="tab-button active" data-tab-group="tools" data-tab="aduc" onclick="switchTab('tools','aduc')">ADUC & ADAC</button>
+      <button class="tab-button" data-tab-group="tools" data-tab="sites" onclick="switchTab('tools','sites')">Sites & Services</button>
+      <button class="tab-button" data-tab-group="tools" data-tab="schema" onclick="switchTab('tools','schema')">AD Schema</button>
+      <button class="tab-button" data-tab-group="tools" data-tab="cli" onclick="switchTab('tools','cli')">CLI & PowerShell</button>
     </div>
 
-    <!-- ── Tools ── -->
-    <div id="tab-tools" class="tab-content active">
+    <!-- ADUC & ADAC -->
+    <div id="tab-tools-aduc" class="tab-content active" data-tab-group="tools">
       <div class="card-dark border border-gray-700 p-8 space-y-10">
         <div>
-          <h3 class="text-lg font-semibold mb-2">Management Tools — All Seven Covered</h3>
+          <h3 class="text-lg font-semibold mb-2">AD Users & Computers vs. AD Administrative Center</h3>
           <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
-            All AD tools live under Server Manager → Tools. Two are daily drivers. The rest cover infrastructure,
-            multi-site topology, schema, and scripting. Each was walked through individually.
+            These are the two primary GUI tools for day-to-day AD management. Both accomplish the same standard tasks.
+            ADAC is the newer, more powerful tool — but ADUC remains the most widely used because most administrators
+            learned on it and it handles everything needed for routine work.
           </p>
         </div>
 
-        <div class="overflow-x-auto">
-          <table class="w-full text-sm text-text-secondary">
-            <thead>
-              <tr class="border-b border-gray-700">
-                <th class="text-left py-2 pr-6 text-white font-mono text-xs uppercase">Tool</th>
-                <th class="text-left py-2 pr-6 text-white font-mono text-xs uppercase">Primary use</th>
-                <th class="text-left py-2 text-white font-mono text-xs uppercase">Only tool for</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="border-b border-gray-800"><td class="py-2 pr-6 font-mono text-accent-success text-xs">ADUC</td><td class="py-2 pr-6">Daily user, group, OU management</td><td class="py-2">Most widely used — familiarity</td></tr>
-              <tr class="border-b border-gray-800"><td class="py-2 pr-6 font-mono text-accent-success text-xs">ADAC</td><td class="py-2 pr-6">PowerShell-backed GUI management</td><td class="py-2">Fine-grained passwords, AD Recycle Bin</td></tr>
-              <tr class="border-b border-gray-800"><td class="py-2 pr-6 font-mono text-accent-success text-xs">Domains &amp; Trusts</td><td class="py-2 pr-6">Cross-domain trust management</td><td class="py-2">Domain Naming Master location</td></tr>
-              <tr class="border-b border-gray-800"><td class="py-2 pr-6 font-mono text-accent-success text-xs">Sites &amp; Services</td><td class="py-2 pr-6">Multi-site physical topology</td><td class="py-2">Routing auth to nearest DC</td></tr>
-              <tr class="border-b border-gray-800"><td class="py-2 pr-6 font-mono text-accent-success text-xs">Schema (MMC)</td><td class="py-2 pr-6">Forest object/attribute blueprint</td><td class="py-2">Viewing or modifying schema</td></tr>
-              <tr class="border-b border-gray-800"><td class="py-2 pr-6 font-mono text-accent-success text-xs">AD PowerShell</td><td class="py-2 pr-6">Scripted, automated management</td><td class="py-2">Bulk provisioning/deprovisioning</td></tr>
-              <tr><td class="py-2 pr-6 font-mono text-accent-success text-xs">DS Tools (CMD)</td><td class="py-2 pr-6">Legacy command-line management</td><td class="py-2">Older batch scripts</td></tr>
-            </tbody>
-          </table>
-        </div>
-
         <div class="grid md:grid-cols-2 gap-8">
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_ADUC_Customer_Service_OU_User_Accounts.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_ADUC_Customer_Service_OU_User_Accounts.png" class="w-full" alt="ADUC">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">ADUC — OU tree, user list, right-click context menus. The original AD tool, in use since Windows 2000.</p>
+          <div class="card-dark border border-gray-800 p-5">
+            <p class="text-xs font-mono text-accent-action uppercase tracking-wider mb-3">AD Users and Computers (ADUC)</p>
+            <ul class="text-sm text-text-secondary space-y-2">
+              <li>• Classic GUI since Windows 2000 — Explorer-style tree navigation</li>
+              <li>• Right-click context menus for all object operations: Create, Delete, Disable, Reset Password, Move</li>
+              <li>• Multi-tab Properties window (General, Account, Profile, Member Of, etc.)</li>
+              <li>• Used to find FSMO roles: right-click domain → Operations Masters</li>
+              <li>• Domain Controllers container confirms DC list including DC3 RODC</li>
+            </ul>
           </div>
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_Active_Directory_Administrative_Center_Domain_Controller_Inventory.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_Active_Directory_Administrative_Center_Domain_Controller_Inventory.png" class="w-full" alt="ADAC DC inventory">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">ADAC — DC inventory showing DC1, DC2, DC3 (RODC). Every GUI click runs a PowerShell cmdlet behind the scenes.</p>
+          <div class="card-dark border border-gray-800 p-5">
+            <p class="text-xs font-mono text-accent-success uppercase tracking-wider mb-3">AD Administrative Center (ADAC)</p>
+            <ul class="text-sm text-text-secondary space-y-2">
+              <li>• Built on PowerShell — every GUI action executes a cmdlet behind the scenes</li>
+              <li>• PowerShell History pane shows commands in real time — excellent for learning PowerShell equivalents</li>
+              <li>• <strong class="text-white">Fine-Grained Password Policies</strong> — different complexity rules for specific groups (not possible in ADUC)</li>
+              <li>• <strong class="text-white">AD Recycle Bin</strong> — recover deleted objects without a backup restore (requires WS2008 R2+ forest level)</li>
+              <li>• Breadcrumb navigation history — fast switching between frequently visited containers</li>
+            </ul>
           </div>
         </div>
 
+        <div class="tip-block">
+          <strong class="text-accent-action">No wrong answer:</strong> ADUC and ADAC accomplish the same standard AD management functions. ADAC is required only for fine-grained password policies and the AD Recycle Bin — everything else can be done in either tool.
+        </div>
+
         <div class="grid md:grid-cols-2 gap-8">
-          <div class="space-y-3">
-            <h4 class="text-sm font-semibold">DS command-line tools</h4>
-            <p class="text-sm text-text-secondary leading-relaxed">
-              The DS tools predate PowerShell — DSadd, DSget, DSmod, DSmove, DSquery, DSRM.
-              Run any with <code class="text-accent-success">/?</code> to see syntax.
-              Still valid for legacy scripts; PowerShell is preferred for new work.
-            </p>
+          <div class="image-placeholder" onclick="openModal('')">
+            <div class="ph-icon">🖼</div>
+            <div class="ph-label">ADUC — landonhotel.local domain tree<br>Domain Controllers container with DC1, DC2, DC3</div>
           </div>
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DSADD_Command_Line_Help_For_Active_Directory_Object_Management.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_DSADD_Command_Line_Help_For_Active_Directory_Object_Management.png" class="w-full" alt="DSadd help">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">DSadd /? — command-line syntax reference for creating AD objects</p>
+          <div class="image-placeholder" onclick="openModal('')">
+            <div class="ph-icon">🖼</div>
+            <div class="ph-label">ADAC — PowerShell History pane<br>Commands executing in background as GUI is clicked</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ── OUs & Users ── -->
-    <div id="tab-ous" class="tab-content">
+    <!-- Sites & Services -->
+    <div id="tab-tools-sites" class="tab-content" data-tab-group="tools">
       <div class="card-dark border border-gray-700 p-8 space-y-10">
         <div>
-          <h3 class="text-lg font-semibold mb-2">OUs &amp; User Management</h3>
+          <h3 class="text-lg font-semibold mb-2">AD Sites and Services</h3>
           <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
-            OUs are the containers that organize objects and determine how Group Policy applies.
-            The lab built a geo-region hierarchy with department-level sub-OUs, then created
-            users in both ADUC and ADAC to compare the tools.
+            Sites in AD represent physical locations connected by WAN links. The Sites and Services tool
+            defines this topology so users authenticate to the closest domain controller — improving login
+            speed and eliminating unnecessary WAN traffic. Critical in multi-location enterprises.
           </p>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8">
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_OU_Hierarchy_GeoRegion_Structure.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_OU_Hierarchy_GeoRegion_Structure.png" class="w-full" alt="OU hierarchy">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">OU hierarchy — geo-region structure with department sub-OUs built out</p>
+        <div class="grid md:grid-cols-3 gap-5">
+          <div class="card-dark border border-gray-800 p-4">
+            <p class="text-xs font-mono text-accent-action uppercase tracking-wider mb-2">Sites</p>
+            <p class="text-xs text-text-secondary">Physical locations and the servers assigned to them. All three DCs start in Default-First-Site-Name.</p>
           </div>
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_ADUC_Create_Demo_User_In_Customer_Service_OU.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_ADUC_Create_Demo_User_In_Customer_Service_OU.png" class="w-full" alt="Create user ADUC">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">ADUC — New User wizard launched from the Customer Service OU context menu</p>
+          <div class="card-dark border border-gray-800 p-4">
+            <p class="text-xs font-mono text-accent-action uppercase tracking-wider mb-2">Subnets</p>
+            <p class="text-xs text-text-secondary">IP ranges mapped to each site. When a new computer joins the domain, its IP determines its site automatically.</p>
           </div>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-8">
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_ADAC_Create_Test_User.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_ADAC_Create_Test_User.png" class="w-full" alt="Create user ADAC">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">ADAC — same task, modern interface, PowerShell running in the background</p>
-          </div>
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_Computers_Container_Client1_Joined.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_Computers_Container_Client1_Joined.png" class="w-full" alt="Client joined">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">ADUC → Computers container — Client1 joined to landonhotel.local, domain fully functional end-to-end</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── Groups & Delegation ── -->
-    <div id="tab-groups" class="tab-content">
-      <div class="card-dark border border-gray-700 p-8 space-y-10">
-        <div>
-          <h3 class="text-lg font-semibold mb-2">Groups &amp; Permission Delegation</h3>
-          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
-            Security groups let you assign permissions once and control access by managing membership —
-            not by editing permissions on every resource. Delegation removes the need to hand out
-            Domain Admin rights for routine tasks like password resets.
-          </p>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-8">
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_Create_CustSvcUsers_Security_Group.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_Create_CustSvcUsers_Security_Group.png" class="w-full" alt="Create security group">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">Creating CustSvcUsers security group in the Customer Service OU</p>
-          </div>
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_CustSvcUsers_Group_Membership_Verification.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_CustSvcUsers_Group_Membership_Verification.png" class="w-full" alt="Group membership verified">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">Group membership verified — DemoTestUser confirmed in the CustSvcUsers group</p>
+          <div class="card-dark border border-gray-800 p-4">
+            <p class="text-xs font-mono text-accent-action uppercase tracking-wider mb-2">Inter-Site Transports</p>
+            <p class="text-xs text-text-secondary">Controls replication between sites: IP (most common, uses RPC) or SMTP (for unreliable connections).</p>
           </div>
         </div>
 
         <div class="grid md:grid-cols-2 gap-8">
           <div class="space-y-3">
-            <h4 class="text-sm font-semibold">Password reset delegation</h4>
-            <p class="text-sm text-text-secondary leading-relaxed">
-              The Customer Service manager was delegated the reset password permission on the Customer Service OU only —
-              not Domain Admin rights, not access to other OUs. They can reset passwords for their team.
-              That's the entire scope of their elevated access.
-            </p>
-            <p class="text-xs text-text-secondary italic">
-              This is the standard Tier 1 helpdesk pattern — scoped delegation via the Delegation of Control wizard or custom ACEs in Advanced Security Settings.
-            </p>
-          </div>
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_Junior_Admin_Reset_Password_Delegation_Permissions.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_Junior_Admin_Reset_Password_Delegation_Permissions.png" class="w-full" alt="Delegation permissions">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">Junior admin — reset password permission delegated on the Customer Service OU only</p>
-          </div>
-        </div>
-
-        <div class="image-zoom border border-gray-700 p-3"
-             onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_Custom_MMC_Reset_Passwords_Console.png')">
-          <img src="/it-and-security-portfolio/assets/images/VMAD1_Custom_MMC_Reset_Passwords_Console.png" class="w-full max-w-xl mx-auto" alt="Custom MMC reset passwords">
-          <p class="mt-2 text-xs italic text-text-secondary text-center">Custom MMC — a reset passwords console built specifically for the delegated admin, scoped to exactly what they need</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── Schema & Sites ── -->
-    <div id="tab-schema" class="tab-content">
-      <div class="card-dark border border-gray-700 p-8 space-y-10">
-        <div>
-          <h3 class="text-lg font-semibold mb-2">Schema &amp; Sites</h3>
-          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
-            The schema defines every object type and attribute that can exist in AD — forest-wide and irreversible.
-            Microsoft hides the snap-in by default. Sites and Services manages physical topology
-            so users authenticate against the nearest DC.
-          </p>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-8">
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_Active_Directory_Schema_Classes_Container_View.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_Active_Directory_Schema_Classes_Container_View.png" class="w-full" alt="Schema classes">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">Schema MMC — Classes container. Every object type that can exist in AD is defined here.</p>
-          </div>
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_Active_Directory_Schema_Attributes_Container_View.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_Active_Directory_Schema_Attributes_Container_View.png" class="w-full" alt="Schema attributes">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">Schema MMC — Attributes container. Every property any object can hold.</p>
-          </div>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-8">
-          <div class="space-y-3">
-            <h4 class="text-sm font-semibold">Accessing the hidden Schema snap-in</h4>
-            <div class="bg-container-bg border border-gray-800 p-4">
-              <pre class="text-[0.78rem] text-text-secondary overflow-x-auto"><code># Register the DLL
-regsvr32 schmmgmt.dll
-
-# Open blank MMC
-mmc
-
-# File → Add/Remove Snap-in
-# → Active Directory Schema → Add → OK
-# Save as "Active Directory Schema"
-# in Administrative Tools</code></pre>
+            <h4 class="text-sm font-semibold">Lab demonstration: creating a new site</h4>
+            <ol class="text-sm text-text-secondary space-y-2 list-decimal list-inside">
+              <li>Right-click Sites → New Site, name it <code class="text-accent-success">DemoSite</code> (no spaces in site names)</li>
+              <li>Assign a site link — required to create the site</li>
+              <li>Move a DC: navigate to Default-First-Site-Name → Servers, drag a DC to DemoSite</li>
+              <li>Confirmation warning appears — the move is complete</li>
+            </ol>
+            <div class="warn-block">
+              <strong class="text-accent-red">Production warning:</strong> Do not move DCs between sites without planning. Incorrect site assignments affect authentication routing, replication scheduling, and WAN efficiency. This was demonstration only — DCs were moved back after.
             </div>
           </div>
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_Active_Directory_Sites_And_Services_New_DemoSite_Creation.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_Active_Directory_Sites_And_Services_New_DemoSite_Creation.png" class="w-full" alt="Sites and Services">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">Sites &amp; Services — DemoSite created for the branch office scenario where DC3 (RODC) lives</p>
+          <div class="image-placeholder" onclick="openModal('')">
+            <div class="ph-icon">🖼</div>
+            <div class="ph-label">AD Sites and Services — DemoSite created<br>Default-First-Site-Name + new site visible</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ── FSMO ── -->
-    <div id="tab-fsmo" class="tab-content">
+    <!-- Schema -->
+    <div id="tab-tools-schema" class="tab-content" data-tab-group="tools">
       <div class="card-dark border border-gray-700 p-8 space-y-10">
         <div>
-          <h3 class="text-lg font-semibold mb-2">FSMO Roles — Locate, Transfer, Seize</h3>
+          <h3 class="text-lg font-semibold mb-2">AD Schema — The Hidden Tool</h3>
           <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
-            Five operations in AD can't safely run on more than one DC at a time. Each is assigned to a single DC
-            as the role holder. All five default to DC1. This phase covers finding them across three different tools,
-            transferring one via the GUI, and seizing one via NTDSUTIL.
+            The AD Schema is the master blueprint of the entire directory — the definition of every object class
+            (User, Computer, Group, OrgUnit) and every attribute they can have. Modifying the schema changes the
+            structure of the entire forest, permanently and irreversibly. Microsoft hides this tool by default
+            to prevent accidental access.
           </p>
         </div>
 
-        <div class="overflow-x-auto">
-          <table class="w-full text-sm text-text-secondary border border-gray-700">
-            <thead>
-              <tr class="border-b border-gray-700 bg-container-bg">
-                <th class="text-left py-2 px-4 text-white font-mono text-xs uppercase">Role</th>
-                <th class="text-left py-2 px-4 text-white font-mono text-xs uppercase">Scope</th>
-                <th class="text-left py-2 px-4 text-white font-mono text-xs uppercase">Function</th>
-                <th class="text-left py-2 px-4 text-white font-mono text-xs uppercase">Where to find it</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="border-b border-gray-800"><td class="py-2 px-4 font-mono text-accent-success text-xs">Schema Master</td><td class="py-2 px-4">Forest</td><td class="py-2 px-4">Controls all schema changes</td><td class="py-2 px-4">AD Schema MMC → right-click root</td></tr>
-              <tr class="border-b border-gray-800"><td class="py-2 px-4 font-mono text-accent-success text-xs">Domain Naming Master</td><td class="py-2 px-4">Forest</td><td class="py-2 px-4">Unique domain names in forest</td><td class="py-2 px-4">AD Domains &amp; Trusts → right-click root</td></tr>
-              <tr class="border-b border-gray-800"><td class="py-2 px-4 font-mono text-accent-success text-xs">RID Master</td><td class="py-2 px-4">Domain</td><td class="py-2 px-4">RID pool allocation for SID generation</td><td class="py-2 px-4">ADUC → Operations Masters → RID tab</td></tr>
-              <tr class="border-b border-gray-800"><td class="py-2 px-4 font-mono text-accent-success text-xs">PDC Emulator</td><td class="py-2 px-4">Domain</td><td class="py-2 px-4">Time sync, password changes, legacy</td><td class="py-2 px-4">ADUC → Operations Masters → PDC tab</td></tr>
-              <tr><td class="py-2 px-4 font-mono text-accent-success text-xs">Infrastructure Master</td><td class="py-2 px-4">Domain</td><td class="py-2 px-4">Cross-domain object references</td><td class="py-2 px-4">ADUC → Operations Masters → Infrastructure</td></tr>
-            </tbody>
-          </table>
+        <div class="warn-block">
+          <strong class="text-accent-red">Treat as irreversible:</strong> Schema changes are forest-wide and permanent. In production, they are almost always made automatically by enterprise software (Exchange, System Center, SCCM) — never by hand. Never experiment on a production AD schema.
         </div>
 
         <div class="grid md:grid-cols-2 gap-8">
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_RID_Master_FSMO_Role_Verification_On_DC1.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_RID_Master_FSMO_Role_Verification_On_DC1.png" class="w-full" alt="RID Master on DC1">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">ADUC → Operations Masters → RID tab — DC1 confirmed as RID Master holder</p>
+          <div>
+            <h4 class="text-sm font-semibold mb-3">How to access the Schema snap-in</h4>
+            <pre class="bg-container-bg border border-gray-800 p-4 overflow-x-auto text-[0.78rem]"><code class="text-accent-success"># Step 1: Register the schema DLL
+regsvr32 schmmgmt.dll
+# Success dialog: "DllRegisterServer succeeded"
+
+# Step 2: Open a blank MMC
+mmc
+
+# Step 3: File → Add/Remove Snap-in
+# Active Directory Schema is now available in the list
+# Add it, then save the MMC for future use:
+# File → Save As → Windows Administrative Tools → "Active Directory Schema"</code></pre>
+            <div class="tip-block mt-4">
+              Saving the MMC to Administrative Tools makes it accessible from Server Manager's Tools menu in the future — no need to re-register the DLL.
+            </div>
           </div>
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_RID_Master_FSMO_Role_Successfully_Transferred_To_DC2.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_RID_Master_FSMO_Role_Successfully_Transferred_To_DC2.png" class="w-full" alt="Transfer confirmed">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">RID Master transferred to DC2 — planned transfer, old holder online and gracefully handing off</p>
+          <div class="space-y-4">
+            <h4 class="text-sm font-semibold">What the Schema snap-in shows</h4>
+            <div class="card-dark border border-gray-800 p-4">
+              <p class="text-xs font-mono text-accent-action uppercase tracking-wider mb-2">Classes</p>
+              <p class="text-xs text-text-secondary">Every object type defined in AD: User, Computer, Group, OrgUnit, Contact, and more. Each class has a set of mandatory and optional attributes.</p>
+            </div>
+            <div class="card-dark border border-gray-800 p-4">
+              <p class="text-xs font-mono text-accent-action uppercase tracking-wider mb-2">Attributes</p>
+              <p class="text-xs text-text-secondary">Hundreds of properties that can be assigned to objects — everything from <code>mail</code> and <code>telephoneNumber</code> to <code>objectGUID</code> and <code>userAccountControl</code>.</p>
+            </div>
+            <div class="image-placeholder" onclick="openModal('')">
+              <div class="ph-icon">🖼</div>
+              <div class="ph-label">AD Schema snap-in — Classes and Attributes nodes visible in custom MMC</div>
+            </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLI & PowerShell -->
+    <div id="tab-tools-cli" class="tab-content" data-tab-group="tools">
+      <div class="card-dark border border-gray-700 p-8 space-y-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Command-Line Tools — DS Utilities & PowerShell</h3>
+          <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+            GUI tools are efficient for individual operations. Scripts handle scale. The DS command-line utilities
+            predate PowerShell but are still valid for legacy scripts. PowerShell is the modern, preferred
+            approach for automating AD operations — better error handling, readable syntax, and pipeline support.
+          </p>
         </div>
 
         <div class="grid md:grid-cols-2 gap-8">
-          <div class="space-y-3">
-            <h4 class="text-sm font-semibold">Transfer vs. Seize</h4>
-            <p class="text-sm text-text-secondary leading-relaxed mb-3">
-              <strong class="text-white">Transfer</strong> — the current holder is online. Role moves gracefully.
-              Use for planned maintenance or decommissioning.<br><br>
-              <strong class="text-accent-red">Seize</strong> — the current holder has permanently failed and can't recover.
-              Force the role to another DC via NTDSUTIL. The original holder can never rejoin the domain.
-            </p>
-            <p class="text-xs text-text-secondary italic">
-              After the RID Master transfer, the PDC Emulator showed an error — the tool was still querying the old holder.
-              Expected behavior. Refreshing the connection resolved it immediately.
-            </p>
+          <div>
+            <h4 class="text-sm font-semibold mb-3">DS command-line utilities (CMD)</h4>
+            <div class="card-dark border border-gray-800 overflow-hidden">
+              <div class="tool-row bg-gray-900/30">
+                <div class="tool-cell text-[0.65rem] uppercase tracking-wider text-text-secondary font-mono">Command</div>
+                <div class="tool-cell text-[0.65rem] uppercase tracking-wider text-text-secondary font-mono border-r-0">What it does</div>
+              </div>
+              <div class="tool-row"><div class="tool-cell font-mono text-accent-success text-xs">DSadd</div><div class="tool-cell text-text-secondary text-xs border-r-0">Add new objects — supports user, computer, group, OU, contact, quota</div></div>
+              <div class="tool-row"><div class="tool-cell font-mono text-accent-success text-xs">DSget</div><div class="tool-cell text-text-secondary text-xs border-r-0">Read and display properties of existing AD objects</div></div>
+              <div class="tool-row"><div class="tool-cell font-mono text-accent-success text-xs">DSmod</div><div class="tool-cell text-text-secondary text-xs border-r-0">Modify attributes of existing objects</div></div>
+              <div class="tool-row"><div class="tool-cell font-mono text-accent-success text-xs">DSmove</div><div class="tool-cell text-text-secondary text-xs border-r-0">Move objects between containers or OUs</div></div>
+              <div class="tool-row"><div class="tool-cell font-mono text-accent-success text-xs">DSquery</div><div class="tool-cell text-text-secondary text-xs border-r-0">Search for objects matching criteria — often piped into DSmod for bulk ops</div></div>
+              <div class="tool-row"><div class="tool-cell font-mono text-accent-success text-xs">DSRM</div><div class="tool-cell text-text-secondary text-xs border-r-0">Remove/delete objects. Note: different from DSRM (Directory Services Restore Mode)</div></div>
+            </div>
           </div>
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_PDC_Emulator_Role_Access_Error_After_FSMO_Transfer.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_PDC_Emulator_Role_Access_Error_After_FSMO_Transfer.png" class="w-full" alt="PDC error post transfer">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">PDC Emulator error immediately after transfer — expected, tool still pointed at old role holder</p>
+          <div>
+            <h4 class="text-sm font-semibold mb-3">PowerShell AD module — common helpdesk tasks</h4>
+            <pre class="bg-container-bg border border-gray-800 p-4 overflow-x-auto text-[0.78rem]"><code class="text-accent-success"># Create and enable a new domain user
+New-ADUser -Name "John Doe" `
+           -SamAccountName "john.doe" `
+           -UserPrincipalName "john.doe@landonhotel.local" `
+           -AccountPassword (Read-Host -AsSecureString "Password") `
+           -ChangePasswordAtLogon $true `
+           -Enabled $true
+
+# Add user to a security group
+Add-ADGroupMember -Identity "HotelStaff" `
+                 -Members "john.doe"
+
+# Reset password, force change at next login
+Set-ADAccountPassword -Identity "john.doe" `
+                      -Reset `
+                      -NewPassword (Read-Host -AsSecureString)
+Set-ADUser -Identity "john.doe" `
+           -ChangePasswordAtLogon $true
+
+# Unlock a locked-out account
+Unlock-ADAccount -Identity "john.doe"
+
+# Disable an account on offboarding
+Disable-ADAccount -Identity "john.doe"</code></pre>
           </div>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8">
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC2_NTDSUTIL_FSMO_Role_Management_Console.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_DC2_NTDSUTIL_FSMO_Role_Management_Console.png" class="w-full" alt="NTDSUTIL role management">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">NTDSUTIL → FSMO maintenance → role management console — the emergency seizure path</p>
-          </div>
-          <div class="image-zoom border border-gray-700 p-3"
-               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC2_Domain_Naming_Master_Seizure_Confirmation.png')">
-            <img src="/it-and-security-portfolio/assets/images/VMAD1_DC2_Domain_Naming_Master_Seizure_Confirmation.png" class="w-full" alt="Seizure confirmed">
-            <p class="mt-2 text-xs italic text-text-secondary text-center">Domain Naming Master seized on DC2 — confirmed. Original holder cannot rejoin the domain.</p>
-          </div>
+        <div class="tip-block">
+          <strong class="text-accent-action">ADAC + PowerShell history:</strong> While working in the AD Administrative Center, the PowerShell History pane at the bottom displays every cmdlet being executed as you click through the GUI. This is the fastest way to learn AD PowerShell — do it in the GUI, read what the tool actually ran, then start scripting it yourself.
         </div>
+
+        <div class="image-placeholder" onclick="openModal('')">
+          <div class="ph-icon">🖼</div>
+          <div class="ph-label">PowerShell AD Module — PS prompt open, New-ADUser cmdlet example</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════ FSMO ══════════════ -->
+<section id="fsmo" class="fade-soft py-16 md:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="section-header"><h2>FSMO Roles</h2></div>
+
+    <div class="fade-up mb-8">
+      <p class="text-sm text-text-secondary max-w-2xl mx-auto text-center leading-relaxed">
+        Active Directory uses multi-master replication — all writable DCs hold an equal copy of the database and
+        changes can be made on any of them. But certain operations can't safely run on multiple DCs simultaneously.
+        For those, AD designates a single authority: the FSMO role holder.
+        There are five roles total — two forest-wide, three domain-wide.
+      </p>
+    </div>
+
+    <!-- FSMO table -->
+    <div class="fade-up card-dark mb-10 overflow-x-auto">
+      <div class="bg-gray-900/30" style="display:grid;grid-template-columns:1.2fr 0.8fr 2fr;border-bottom:1px solid rgba(255,255,255,0.08)">
+        <div class="fsmo-cell text-[0.65rem] uppercase tracking-wider text-text-secondary font-mono">FSMO Role</div>
+        <div class="fsmo-cell text-[0.65rem] uppercase tracking-wider text-text-secondary font-mono">Scope</div>
+        <div class="fsmo-cell text-[0.65rem] uppercase tracking-wider text-text-secondary font-mono">Function</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.2fr 0.8fr 2fr;border-bottom:1px solid rgba(255,255,255,0.06)">
+        <div class="fsmo-cell font-mono text-accent-action text-xs">Schema Master</div>
+        <div class="fsmo-cell"><span class="text-xs border border-accent-yellow text-accent-yellow font-mono px-2 py-0.5">Forest</span></div>
+        <div class="fsmo-cell text-text-secondary text-xs">Controls all updates to the AD schema. Only one per forest — ever.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.2fr 0.8fr 2fr;border-bottom:1px solid rgba(255,255,255,0.06)">
+        <div class="fsmo-cell font-mono text-accent-action text-xs">Domain Naming Master</div>
+        <div class="fsmo-cell"><span class="text-xs border border-accent-yellow text-accent-yellow font-mono px-2 py-0.5">Forest</span></div>
+        <div class="fsmo-cell text-text-secondary text-xs">Ensures domain names are unique when adding or removing domains from the forest.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.2fr 0.8fr 2fr;border-bottom:1px solid rgba(255,255,255,0.06)">
+        <div class="fsmo-cell font-mono text-accent-action text-xs">RID Master</div>
+        <div class="fsmo-cell"><span class="text-xs border border-accent-action text-accent-action font-mono px-2 py-0.5">Domain</span></div>
+        <div class="fsmo-cell text-text-secondary text-xs">Manages the pool of Relative IDs allocated to other DCs for generating object SIDs.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.2fr 0.8fr 2fr;border-bottom:1px solid rgba(255,255,255,0.06)">
+        <div class="fsmo-cell font-mono text-accent-action text-xs">PDC Emulator</div>
+        <div class="fsmo-cell"><span class="text-xs border border-accent-action text-accent-action font-mono px-2 py-0.5">Domain</span></div>
+        <div class="fsmo-cell text-text-secondary text-xs">Time synchronization for all domain members, password changes, legacy pre-Windows 2000 client support. Most operationally critical role day-to-day.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.2fr 0.8fr 2fr">
+        <div class="fsmo-cell font-mono text-accent-action text-xs">Infrastructure Master</div>
+        <div class="fsmo-cell"><span class="text-xs border border-accent-action text-accent-action font-mono px-2 py-0.5">Domain</span></div>
+        <div class="fsmo-cell text-text-secondary text-xs">Maintains consistency of cross-domain object references, such as group memberships referencing users in other domains.</div>
+      </div>
+    </div>
+
+    <!-- Where to find them -->
+    <div class="fade-up">
+      <h3 class="text-base font-semibold mb-6">Finding all 5 FSMO roles — 3 different tools</h3>
+      <div class="grid md:grid-cols-3 gap-5">
+
+        <div class="card-dark border border-gray-800 p-5 phase-card">
+          <p class="text-xs font-mono text-accent-action uppercase tracking-wider mb-3">ADUC → Domain → Operations Masters</p>
+          <p class="text-xs text-text-secondary mb-3 leading-relaxed">Right-click <code>landonhotel.local</code> → Operations Masters. Three tabs appear — one per domain-level role.</p>
+          <ul class="text-xs text-text-secondary space-y-1">
+            <li>• <strong class="text-white">RID</strong> — RID Master</li>
+            <li>• <strong class="text-white">PDC</strong> — PDC Emulator</li>
+            <li>• <strong class="text-white">Infrastructure</strong> — Infrastructure Master</li>
+          </ul>
+          <p class="text-xs text-text-secondary mt-3">All three show DC1 as the current holder in this lab.</p>
+        </div>
+
+        <div class="card-dark border border-gray-800 p-5 phase-card">
+          <p class="text-xs font-mono text-accent-action uppercase tracking-wider mb-3">AD Domains & Trusts → Root → Operations Master</p>
+          <p class="text-xs text-text-secondary mb-3 leading-relaxed">Right-click the root node "Active Directory Domains and Trusts" (not the domain name itself). Select Operations Master.</p>
+          <ul class="text-xs text-text-secondary space-y-1">
+            <li>• <strong class="text-white">Domain Naming Master</strong> — one role shown</li>
+          </ul>
+          <p class="text-xs text-text-secondary mt-3">DC1 is the Domain Naming Master holder.</p>
+        </div>
+
+        <div class="card-dark border border-gray-800 p-5 phase-card">
+          <p class="text-xs font-mono text-accent-action uppercase tracking-wider mb-3">AD Schema (Custom MMC) → Operations Master</p>
+          <p class="text-xs text-text-secondary mb-3 leading-relaxed">Register <code>schmmgmt.dll</code>, open a blank MMC, add the Schema snap-in. Right-click "Active Directory Schema" → Operations Master.</p>
+          <ul class="text-xs text-text-secondary space-y-1">
+            <li>• <strong class="text-white">Schema Master</strong> — one role shown</li>
+          </ul>
+          <p class="text-xs text-text-secondary mt-3">DC1 is the Schema Master holder.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="fade-up mt-8 grid md:grid-cols-2 gap-6">
+      <div class="tip-block">
+        <strong class="text-accent-action">PDC Emulator is the most critical:</strong> It handles time synchronization for all domain members and is the first DC to receive password changes. An out-of-sync clock (more than 5 minutes) breaks Kerberos authentication entirely — making this role the highest operational priority.
+      </div>
+      <div class="note-block">
+        <strong class="text-accent-yellow">Transfer vs. Seize:</strong> If the role holder is online, <em>transfer</em> gracefully through the tools above. If it has permanently failed, <em>seize</em> by forcing another DC to take the role — but the original role holder cannot rejoin the domain afterward. Seize only when recovery is impossible.
+      </div>
+    </div>
+
+    <div class="fade-up mt-8 grid md:grid-cols-2 gap-8">
+      <div class="image-placeholder" onclick="openModal('')">
+        <div class="ph-icon">🖼</div>
+        <div class="ph-label">ADUC — Operations Masters dialog<br>RID / PDC / Infrastructure tabs showing DC1</div>
+      </div>
+      <div class="image-placeholder" onclick="openModal('')">
+        <div class="ph-icon">🖼</div>
+        <div class="ph-label">AD Domains & Trusts — Domain Naming Master<br>Operations Master showing DC1</div>
       </div>
     </div>
 
@@ -904,78 +1119,58 @@ mmc
 
     <div class="section-header"><h2>What I Learned</h2></div>
 
-    <div class="grid md:grid-cols-3 gap-5 mb-10">
-      <div class="fade-up card-dark border border-red-900/30 p-6 phase-card" style="transition-delay:.05s">
-        <h4 class="text-sm font-bold text-accent-red uppercase tracking-wider mb-3">Tier 1 — Infrastructure</h4>
-        <ul class="text-sm text-text-secondary space-y-2">
-          <li><strong class="text-white block text-xs mb-0.5">Two DCs minimum, always</strong>One DC is a single point of failure — two is the production baseline regardless of size.</li>
-          <li><strong class="text-white block text-xs mb-0.5">DNS before promotion</strong>DC2 and DC3 must point at DC1 for DNS before the wizard starts. Skipping this causes the failure documented in Phase 3.</li>
-          <li><strong class="text-white block text-xs mb-0.5">Static IPs before installation</strong>Dynamic addressing breaks DNS and replication.</li>
-        </ul>
-      </div>
-      <div class="fade-up card-dark border border-blue-900/30 p-6 phase-card" style="transition-delay:.1s">
-        <h4 class="text-sm font-bold text-accent-action uppercase tracking-wider mb-3">Tier 2 — Security</h4>
-        <ul class="text-sm text-text-secondary space-y-2">
-          <li><strong class="text-white block text-xs mb-0.5">RODC password policy isn't optional</strong>It's the entire security argument for deploying an RODC remotely — controls blast radius if hardware is compromised.</li>
-          <li><strong class="text-white block text-xs mb-0.5">Delegate, don't over-privilege</strong>Delegation exists so you never have to give Domain Admin rights for routine tasks like password resets.</li>
-          <li><strong class="text-white block text-xs mb-0.5">Schema changes are irreversible</strong>Forest-wide and permanent. Test environments only.</li>
-        </ul>
-      </div>
-      <div class="fade-up card-dark border border-green-900/30 p-6 phase-card" style="transition-delay:.15s">
-        <h4 class="text-sm font-bold text-accent-success uppercase tracking-wider mb-3">Tier 3 — Operations</h4>
-        <ul class="text-sm text-text-secondary space-y-2">
-          <li><strong class="text-white block text-xs mb-0.5">FSMO roles live in three different tools</strong>Knowing where to look matters most under pressure.</li>
-          <li><strong class="text-white block text-xs mb-0.5">Seize is a last resort</strong>If the seized DC comes back online, you get directory corruption. Only seize after confirming permanent failure.</li>
-          <li><strong class="text-white block text-xs mb-0.5">ADAC's PowerShell History pane</strong>One of the best ways to learn AD PowerShell — watch what the GUI does, use those cmdlets directly.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="fade-up grid md:grid-cols-2 gap-8 mb-10">
-      <div class="card-dark p-6">
+    <div class="grid md:grid-cols-2 gap-8 mb-10">
+      <div class="fade-up card-dark p-6">
         <h4 class="text-sm font-semibold mb-3">Key takeaways</h4>
         <ul class="text-sm text-text-secondary space-y-2">
-          <li>• DC promotion is two steps — role install and promotion wizard are separate operations</li>
-          <li>• DNS misconfiguration is the #1 promotion failure — experienced it firsthand</li>
-          <li>• RODC password replication policy is the core of what makes remote RODC deployment safe</li>
-          <li>• Delegation removes the need to over-privilege helpdesk and junior admins</li>
-          <li>• All five FSMO roles live in three different tools — location matters under pressure</li>
-          <li>• NTDSUTIL seizure is irreversible — if the seized DC rejoins, you get corruption</li>
+          <li>• AD DS is the central identity platform for any Windows enterprise — authentication, access control, and policy all flow through it</li>
+          <li>• DC promotion is always two steps: install the role, then run the Configuration Wizard — they are separate operations</li>
+          <li>• DNS is not optional — Active Directory cannot function without it, which is why co-locating DNS on domain controllers is best practice</li>
+          <li>• A minimum of two domain controllers is always required — one DC is a single point of failure for the entire environment</li>
+          <li>• RODC design is specifically about limiting physical breach impact — not just convenience for remote sites</li>
+          <li>• FSMO roles are spread across three separate tools — you have to know where to look for each one</li>
+          <li>• The AD Schema should be treated as untouchable in production — changes are forest-wide, permanent, and irreversible</li>
+          <li>• ADAC's PowerShell history pane is the fastest way to bridge GUI knowledge into scripted administration</li>
         </ul>
       </div>
-      <div class="card-dark p-6">
+      <div class="fade-up card-dark p-6" style="transition-delay:.1s">
         <h4 class="text-sm font-semibold mb-3">Skills demonstrated</h4>
         <div class="flex flex-wrap gap-2">
           <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Windows Server 2022</span>
-          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">AD DS Installation</span>
-          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">DC Promotion</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Active Directory DS</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Domain Controller Promotion</span>
           <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">DNS Configuration</span>
-          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Forest &amp; Domain Design</span>
           <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">RODC Deployment</span>
-          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">OU Design</span>
-          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">User Management</span>
-          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Group Management</span>
-          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Permission Delegation</span>
-          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Custom MMC</span>
-          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">FSMO Roles</span>
-          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">FSMO Transfer</span>
-          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">FSMO Seizure</span>
-          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">NTDSUTIL</span>
-          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">AD Schema</span>
-          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Sites &amp; Services</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">FSMO Role Management</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Multi-DC Replication</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">AD Sites & Services</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Password Replication Policy</span>
           <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">PowerShell for AD</span>
           <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">DS Command-Line Tools</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">AD Schema Administration</span>
+          <span class="text-xs border border-accent-action text-white font-mono px-3 py-1">Identity & Access Management</span>
+        </div>
+
+        <div class="mt-6">
+          <h4 class="text-sm font-semibold mb-3">Lab environment</h4>
+          <ul class="text-sm text-text-secondary space-y-1">
+            <li>• <strong class="text-white">Instructor:</strong> Ed Liberman, Microsoft Certified Trainer</li>
+            <li>• <strong class="text-white">Source:</strong> LinkedIn Learning — Windows Server 2022: Install and Configure Active Directory</li>
+            <li>• <strong class="text-white">VMs:</strong> 3× Windows Server 2022 (VMware / Hyper-V)</li>
+            <li>• <strong class="text-white">Domain:</strong> <code class="text-accent-success">landonhotel.local</code></li>
+            <li>• <strong class="text-white">Functional Level:</strong> Windows Server 2016 (forest + domain)</li>
+          </ul>
         </div>
       </div>
     </div>
 
-    <div class="fade-up card-dark p-6 mb-10" style="transition-delay:.2s">
+    <div class="fade-up card-dark p-6 mb-10" style="transition-delay:.15s">
       <p class="text-sm text-text-secondary leading-relaxed">
-        This lab documents AD DS from first VM provisioning through emergency FSMO seizure — including a real
-        DNS misconfiguration failure on DC2 that's the most common promotion mistake in the field.
-        The scope goes beyond basic DC setup into the daily work of AD administration: OU hierarchies,
-        user and group management, scoped permission delegation, all seven management tools, and knowing
-        when to transfer versus seize an FSMO role. That's the full picture of what working with Active Directory looks like.
+        This lab builds the complete picture of Active Directory from the ground up — not just clicking through a wizard,
+        but understanding <em>why</em> each DC type exists, what breaks if you skip the DNS pre-check on DC2,
+        why the RODC's password replication policy matters, and how the FSMO roles are distributed across the
+        management tool landscape. The PowerShell section maps GUI knowledge directly to scriptable operations,
+        which is how routine AD tasks actually get done at scale in enterprise environments.
       </p>
     </div>
 
@@ -996,33 +1191,38 @@ window.addEventListener("scroll", () => {
 
 const revealObs = new IntersectionObserver((entries) => {
   entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add("show"); revealObs.unobserve(e.target); }
+    if (e.isIntersecting) {
+      e.target.classList.add("show");
+      revealObs.unobserve(e.target);
+    }
   });
 }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
+
 document.querySelectorAll(".fade-up, .fade-soft").forEach(el => revealObs.observe(el));
 
-const dotSections = ["hero","overview","phases","admin","takeaways"];
+const dotSections = ["hero","overview","deployment","tools","fsmo","takeaways"];
 const dots = document.querySelectorAll(".nav-dot");
+
 const dotObs = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) {
       const idx = dotSections.indexOf(e.target.id);
-      if (idx !== -1) { dots.forEach(d => d.classList.remove("active")); dots[idx]?.classList.add("active"); }
+      if (idx !== -1) {
+        dots.forEach(d => d.classList.remove("active"));
+        dots[idx]?.classList.add("active");
+      }
     }
   });
 }, { threshold: 0.4 });
-dotSections.forEach(id => { const el = document.getElementById(id); if (el) dotObs.observe(el); });
+
+dotSections.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) dotObs.observe(el);
+});
 
 function scrollToSection(id) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
-
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener("click", e => {
-    const target = document.querySelector(a.getAttribute("href"));
-    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: "smooth" }); }
-  });
-});
 
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
 </script>
