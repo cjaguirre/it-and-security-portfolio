@@ -127,6 +127,27 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+.image-zoom {
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+.image-zoom:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 40px rgba(97,175,239,0.2);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  align-items: center;
+  justify-content: center;
+}
+.modal.active { display: flex; }
+.modal-content { max-width: 95%; max-height: 95%; border-radius: 4px; }
+
 .fade-up {
   opacity: 0;
   transform: translateY(28px);
@@ -169,92 +190,6 @@ pre code {
   font-size: .8rem;
 }
 
-/* Screenshot styles */
-.screenshot-frame {
-  border: 1px solid rgba(255,255,255,0.1);
-  background: #0d0d0d;
-  overflow: hidden;
-  position: relative;
-}
-.screenshot-frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top;
-  display: block;
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.screenshot-frame:hover img {
-  transform: scale(1.02);
-}
-.screenshot-label {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 0.4rem 0.6rem;
-  background: rgba(0,0,0,0.75);
-  font-family: "Inconsolata", monospace;
-  font-size: 0.65rem;
-  color: var(--text-secondary);
-  letter-spacing: 0.08em;
-  backdrop-filter: blur(4px);
-}
-.screenshot-label.label-success { color: var(--functional-success); }
-.screenshot-label.label-action  { color: var(--functional-action); }
-.screenshot-label.label-red     { color: var(--accent-red); }
-
-/* Lightbox */
-.lightbox-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.92);
-  z-index: 9000;
-  cursor: zoom-out;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-}
-.lightbox-overlay.open {
-  display: flex;
-  animation: lbFadeIn 0.2s ease;
-}
-@keyframes lbFadeIn {
-  from { opacity: 0; } to { opacity: 1; }
-}
-.lightbox-overlay img {
-  max-width: 90vw;
-  max-height: 88vh;
-  object-fit: contain;
-  border: 1px solid rgba(255,255,255,0.12);
-  cursor: default;
-}
-.lightbox-close {
-  position: absolute;
-  top: 1.25rem;
-  right: 1.5rem;
-  font-family: "Inconsolata", monospace;
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  cursor: pointer;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.lightbox-caption {
-  position: absolute;
-  bottom: 1.25rem;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: "Inconsolata", monospace;
-  font-size: 0.72rem;
-  color: var(--text-secondary);
-  white-space: nowrap;
-  letter-spacing: 0.08em;
-}
-
-.screenshot-frame { cursor: zoom-in; }
-
 * { border-radius: 0 !important; }
 </style>
 <script>
@@ -276,29 +211,24 @@ function switchTab(id) {
   if (tab) tab.classList.add("active");
 }
 
-function openLightbox(src, caption) {
-  const lb = document.getElementById("lightbox");
-  lb.querySelector("img").src = src;
-  lb.querySelector(".lightbox-caption").textContent = caption || "";
-  lb.classList.add("open");
-  document.body.style.overflow = "hidden";
+function openModal(src) {
+  document.getElementById("modalImage").src = src;
+  document.getElementById("imageModal").classList.add("active");
 }
-function closeLightbox() {
-  document.getElementById("lightbox").classList.remove("open");
-  document.body.style.overflow = "";
+function closeModal() {
+  document.getElementById("imageModal").classList.remove("active");
+  document.getElementById("modalImage").src = "";
 }
 </script>
 </head>
 <body class="text-white">
 
-<!-- Lightbox -->
-<div id="lightbox" class="lightbox-overlay" onclick="closeLightbox()">
-  <span class="lightbox-close" onclick="closeLightbox()">[ ESC / close ]</span>
-  <img src="" alt="" onclick="event.stopPropagation()" />
-  <span class="lightbox-caption"></span>
-</div>
-
 <div id="scroll-progress"></div>
+
+<div class="modal" id="imageModal" onclick="closeModal()">
+  <span style="position:absolute;top:2rem;right:3rem;color:white;font-size:3rem;cursor:pointer">&times;</span>
+  <img class="modal-content" id="modalImage" alt="Enlarged view">
+</div>
 
 <div class="nav-dots">
   <div class="nav-dot active" onclick="scrollToSection('hero')"></div>
@@ -336,13 +266,12 @@ function closeLightbox() {
     across <code class="text-accent-success">landonhotel.local</code>.
   </p>
 
-  <!-- Hero screenshot banner -->
-  <div class="fade-up mb-10" style="transition-delay:.2s">
-    <div class="screenshot-frame" style="height:280px;" onclick="openLightbox(this.querySelector('img').src,'DC1 — AD DS installation complete, promotion ready')">
-      <img src="assets/images/VMAD1_DC1_ADDS_Installation_Completed_Promotion_Ready.png"
-           alt="DC1 AD DS installation complete and promotion ready" />
-      <div class="screenshot-label label-success">DC1 — AD DS role installed · promotion ready · landonhotel.local pending</div>
-    </div>
+  <!-- Hero image -->
+  <div class="fade-up mb-10 image-zoom border border-gray-700 p-3" style="transition-delay:.2s"
+       onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC1_ADDS_Installation_Completed_Promotion_Ready.png')">
+    <img src="/it-and-security-portfolio/assets/images/VMAD1_DC1_ADDS_Installation_Completed_Promotion_Ready.png"
+         class="w-full" alt="DC1 AD DS installation complete and promotion ready" />
+    <p class="mt-2 text-xs italic text-text-secondary text-center">DC1 — AD DS role installed, promotion ready, landonhotel.local pending</p>
   </div>
 
   <!-- Stats -->
@@ -374,7 +303,7 @@ function closeLightbox() {
     </div>
   </div>
 
-  <!-- Summary cards + lab environment screenshot -->
+  <!-- Summary cards + VMware screenshot -->
   <div class="fade-up grid md:grid-cols-3 gap-5" style="transition-delay:.3s">
     <div class="card-dark p-6">
       <p class="text-[0.7rem] tracking-[0.2em] uppercase text-text-secondary font-mono mb-3">What I built</p>
@@ -395,12 +324,11 @@ function closeLightbox() {
         <li>• PowerShell and DS tools for scripted user/group administration</li>
       </ul>
     </div>
-    <!-- Lab environment screenshot -->
-    <div class="screenshot-frame" style="min-height:200px;"
-         onclick="openLightbox(this.querySelector('img').src,'VMware Workstation Pro — all 3 VMs in the lab environment')">
-      <img src="assets/images/VMAD1_VMware_Workstation_Pro_Home_Screen_With_Existing_VMs.png"
-           alt="VMware Workstation Pro showing all 3 VMs" style="object-position: center;" />
-      <div class="screenshot-label label-action">VMware Workstation Pro — DC1 · DC2 · DC3 ready</div>
+    <div class="image-zoom border border-gray-700 p-3"
+         onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_VMware_Workstation_Pro_Home_Screen_With_Existing_VMs.png')">
+      <img src="/it-and-security-portfolio/assets/images/VMAD1_VMware_Workstation_Pro_Home_Screen_With_Existing_VMs.png"
+           class="w-full" alt="VMware Workstation Pro showing all 3 VMs" />
+      <p class="mt-2 text-xs italic text-text-secondary text-center">VMware Workstation Pro — DC1, DC2, DC3 ready</p>
     </div>
   </div>
 
@@ -448,11 +376,11 @@ function closeLightbox() {
     <div class="section-header"><h2>Lab Walkthrough</h2></div>
 
     <div class="flex flex-wrap gap-0 border-b border-gray-700 mb-8 overflow-x-auto">
-      <button class="tab-button active" data-tab="dc1"     onclick="switchTab('dc1')">Forest Root — DC1</button>
-      <button class="tab-button"        data-tab="dc2"     onclick="switchTab('dc2')">Additional DC — DC2</button>
-      <button class="tab-button"        data-tab="dc3"     onclick="switchTab('dc3')">RODC — DC3</button>
-      <button class="tab-button"        data-tab="tools"   onclick="switchTab('tools')">Admin Tools</button>
-      <button class="tab-button"        data-tab="fsmo"    onclick="switchTab('fsmo')">FSMO & CLI</button>
+      <button class="tab-button active" data-tab="dc1"    onclick="switchTab('dc1')">Forest Root — DC1</button>
+      <button class="tab-button"        data-tab="dc2"    onclick="switchTab('dc2')">Additional DC — DC2</button>
+      <button class="tab-button"        data-tab="dc3"    onclick="switchTab('dc3')">RODC — DC3</button>
+      <button class="tab-button"        data-tab="tools"  onclick="switchTab('tools')">Admin Tools</button>
+      <button class="tab-button"        data-tab="fsmo"   onclick="switchTab('fsmo')">FSMO & CLI</button>
     </div>
 
     <!-- ── DC1 ── -->
@@ -463,12 +391,12 @@ function closeLightbox() {
           <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
             DC1 is the first server in the environment — the forest root domain controller that creates
             <code class="text-accent-success">landonhotel.local</code> and holds all five FSMO roles by default.
-            The two-step process — install the AD DS role, then promote — is what transforms a plain Windows Server
+            The two-step process — install the AD DS role, then promote — transforms a plain Windows Server
             into the identity authority for the entire domain.
           </p>
         </div>
 
-        <!-- Step 1: Role Install — screenshot alongside text -->
+        <!-- Step 1 -->
         <div class="grid md:grid-cols-2 gap-8 items-start">
           <div class="space-y-3">
             <h4 class="text-sm font-semibold">Step 1 — Role Installation</h4>
@@ -479,14 +407,15 @@ function closeLightbox() {
               <li>• Post-install: Server Manager shows "Configuration Required" — promotion not yet done</li>
             </ul>
           </div>
-          <div class="screenshot-frame" style="height:180px;"
-               onclick="openLightbox(this.querySelector('img').src,'Add Roles and Features wizard — AD DS role selection on DC1')">
-            <img src="assets/images/VMAD1_DC1_Add_Roles_and_Features_Wizard_Launch.png" alt="Add Roles and Features wizard launch" />
-            <div class="screenshot-label label-action">Add Roles and Features — AD DS selected</div>
+          <div class="image-zoom border border-gray-700 p-3"
+               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC1_Add_Roles_and_Features_Wizard_Launch.png')">
+            <img src="/it-and-security-portfolio/assets/images/VMAD1_DC1_Add_Roles_and_Features_Wizard_Launch.png"
+                 class="w-full" alt="Add Roles and Features wizard launch" />
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Add Roles and Features wizard — AD DS role selected on DC1</p>
           </div>
         </div>
 
-        <!-- Step 2: Promotion — screenshot alongside text -->
+        <!-- Step 2 -->
         <div class="grid md:grid-cols-2 gap-8 items-start">
           <div class="space-y-3">
             <h4 class="text-sm font-semibold">Step 2 — Promotion Wizard</h4>
@@ -499,10 +428,11 @@ function closeLightbox() {
               <li>• Prerequisites check passed — server rebooted into domain controller role</li>
             </ul>
           </div>
-          <div class="screenshot-frame" style="height:180px;"
-               onclick="openLightbox(this.querySelector('img').src,'DC1 new forest creation wizard — landonhotel.local')">
-            <img src="assets/images/VMAD1_DC1_New_Forest_Creation_Landonhotel_Local.png" alt="New forest creation wizard" />
-            <div class="screenshot-label label-success">Forest root wizard — landonhotel.local</div>
+          <div class="image-zoom border border-gray-700 p-3"
+               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC1_New_Forest_Creation_Landonhotel_Local.png')">
+            <img src="/it-and-security-portfolio/assets/images/VMAD1_DC1_New_Forest_Creation_Landonhotel_Local.png"
+                 class="w-full" alt="New forest creation wizard" />
+            <p class="mt-2 text-xs italic text-text-secondary text-center">Forest root promotion wizard — landonhotel.local domain name entered</p>
           </div>
         </div>
 
@@ -542,22 +472,24 @@ function closeLightbox() {
           </div>
         </div>
 
-        <!-- Post-promotion: 2 screenshots side by side -->
+        <!-- Post-promotion verification -->
         <div>
           <p class="text-xs font-mono text-accent-action uppercase tracking-widest mb-4">Post-Promotion Verification</p>
           <div class="grid md:grid-cols-2 gap-4">
-            <div class="screenshot-frame" style="height:180px;"
-                 onclick="openLightbox(this.querySelector('img').src,'DC1 — AD DS and DNS roles confirmed installed in Server Manager')">
-              <img src="assets/images/VMAD1_DC1_ADDS_and_DNS_Roles_Installed.png" alt="DC1 AD DS and DNS roles installed" />
-              <div class="screenshot-label label-success">Server Manager — AD DS + DNS confirmed</div>
+            <div class="image-zoom border border-gray-700 p-3"
+                 onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC1_ADDS_and_DNS_Roles_Installed.png')">
+              <img src="/it-and-security-portfolio/assets/images/VMAD1_DC1_ADDS_and_DNS_Roles_Installed.png"
+                   class="w-full" alt="DC1 AD DS and DNS roles installed" />
+              <p class="mt-2 text-xs italic text-text-secondary text-center">Server Manager — AD DS and DNS roles confirmed installed</p>
             </div>
-            <div class="screenshot-frame" style="height:180px;"
-                 onclick="openLightbox(this.querySelector('img').src,'DC1 local server properties — system configuration post-promotion')">
-              <img src="assets/images/VMAD1_DC1_Local_Server_Properties_And_System_Configuration.png" alt="DC1 local server properties" />
-              <div class="screenshot-label label-action">Local Server — static IP + domain membership confirmed</div>
+            <div class="image-zoom border border-gray-700 p-3"
+                 onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC1_Local_Server_Properties_And_System_Configuration.png')">
+              <img src="/it-and-security-portfolio/assets/images/VMAD1_DC1_Local_Server_Properties_And_System_Configuration.png"
+                   class="w-full" alt="DC1 local server properties" />
+              <p class="mt-2 text-xs italic text-text-secondary text-center">Local Server properties — static IP and domain membership confirmed</p>
             </div>
           </div>
-          <p class="text-sm text-text-secondary mt-4 leading-relaxed">After DC1 reboots, Server Manager shows AD DS and DNS under Roles. In ADUC (<code class="text-accent-success">Tools → Active Directory Users and Computers</code>), <code class="text-accent-success">landonhotel.local</code> appears with its default containers — Users, Computers, Domain Controllers, Builtin — confirming the domain is live.</p>
+          <p class="text-sm text-text-secondary mt-4 leading-relaxed">After DC1 reboots, Server Manager shows AD DS and DNS under Roles. In ADUC (<code class="text-accent-success">Tools → Active Directory Users and Computers</code>), <code class="text-accent-success">landonhotel.local</code> appears with its default containers — confirming the domain is live.</p>
         </div>
       </div>
     </div>
@@ -596,14 +528,14 @@ function closeLightbox() {
               </ul>
             </div>
           </div>
-          <!-- DNS failure screenshot — the key teaching moment -->
-          <div class="space-y-3">
-            <div class="screenshot-frame" style="height:220px;"
-                 onclick="openLightbox(this.querySelector('img').src,'DC2 promotion connectivity error — DNS not pointing to DC1')">
-              <img src="assets/images/VMAD1_DC2_Domain_Controller_Promotion_Connectivity_Error.png" alt="DC2 promotion connectivity error" />
-              <div class="screenshot-label label-red">⚠ Real failure — DNS not pointed at DC1 before promotion</div>
+          <div>
+            <div class="image-zoom border border-gray-700 p-3"
+                 onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC2_Domain_Controller_Promotion_Connectivity_Error.png')">
+              <img src="/it-and-security-portfolio/assets/images/VMAD1_DC2_Domain_Controller_Promotion_Connectivity_Error.png"
+                   class="w-full" alt="DC2 promotion connectivity error" />
+              <p class="mt-2 text-xs italic text-text-secondary text-center">⚠ Real failure — DNS not pointed at DC1 before promotion attempt</p>
             </div>
-            <p class="text-xs text-text-secondary leading-relaxed italic">This is the most common promotion failure. The wizard cannot locate <code class="text-accent-success">landonhotel.local</code> because DC2's DNS wasn't set to DC1's IP before starting — exactly the scenario the notes warn about.</p>
+            <p class="text-xs text-text-secondary mt-3 leading-relaxed italic">The most common promotion failure. The wizard cannot locate <code class="text-accent-success">landonhotel.local</code> because DC2's DNS wasn't set to DC1's IP before starting.</p>
           </div>
         </div>
 
@@ -625,13 +557,13 @@ function closeLightbox() {
           </div>
         </div>
 
-        <!-- DC2 confirmed live -->
         <div>
           <p class="text-xs font-mono text-accent-action uppercase tracking-widest mb-3">DC2 Post-Deployment</p>
-          <div class="screenshot-frame" style="height:200px;"
-               onclick="openLightbox(this.querySelector('img').src,'DC2 Server Manager dashboard post-deployment — AD DS role confirmed')">
-            <img src="assets/images/VMAD1_DC2_Server_Manager_Dashboard_Post_Deployment.png" alt="DC2 Server Manager post deployment" />
-            <div class="screenshot-label label-success">DC2 — Server Manager dashboard · AD DS role active · full writable DC confirmed</div>
+          <div class="image-zoom border border-gray-700 p-3"
+               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC2_Server_Manager_Dashboard_Post_Deployment.png')">
+            <img src="/it-and-security-portfolio/assets/images/VMAD1_DC2_Server_Manager_Dashboard_Post_Deployment.png"
+                 class="w-full" alt="DC2 Server Manager post deployment" />
+            <p class="mt-2 text-xs italic text-text-secondary text-center">DC2 Server Manager — AD DS role active, full writable DC confirmed</p>
           </div>
         </div>
 
@@ -661,19 +593,21 @@ function closeLightbox() {
           </p>
         </div>
 
-        <!-- Before / After join screenshots -->
+        <!-- Before / After -->
         <div>
           <p class="text-xs font-mono text-accent-action uppercase tracking-widest mb-3">DC3 — Before &amp; After Domain Join</p>
           <div class="grid md:grid-cols-2 gap-4">
-            <div class="screenshot-frame" style="height:180px;"
-                 onclick="openLightbox(this.querySelector('img').src,'DC3 Server Manager — standalone server before domain join')">
-              <img src="assets/images/VMAD1_DC3_Server_Manager_Local_Server_Before_Domain_Join.png" alt="DC3 before domain join" />
-              <div class="screenshot-label">DC3 — standalone, pre-join state</div>
+            <div class="image-zoom border border-gray-700 p-3"
+                 onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC3_Server_Manager_Local_Server_Before_Domain_Join.png')">
+              <img src="/it-and-security-portfolio/assets/images/VMAD1_DC3_Server_Manager_Local_Server_Before_Domain_Join.png"
+                   class="w-full" alt="DC3 before domain join" />
+              <p class="mt-2 text-xs italic text-text-secondary text-center">DC3 — standalone server, pre-join state</p>
             </div>
-            <div class="screenshot-frame" style="height:180px;"
-                 onclick="openLightbox(this.querySelector('img').src,'DC3 — successful domain join to landonhotel.local as RODC')">
-              <img src="assets/images/VMAD1_DC3_Successful_Domain_Join_Landonhotel_Local.png" alt="DC3 domain join confirmed" />
-              <div class="screenshot-label label-success">DC3 — RODC joined to landonhotel.local</div>
+            <div class="image-zoom border border-gray-700 p-3"
+                 onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC3_Successful_Domain_Join_Landonhotel_Local.png')">
+              <img src="/it-and-security-portfolio/assets/images/VMAD1_DC3_Successful_Domain_Join_Landonhotel_Local.png"
+                   class="w-full" alt="DC3 domain join confirmed" />
+              <p class="mt-2 text-xs italic text-text-secondary text-center">DC3 — RODC successfully joined to landonhotel.local</p>
             </div>
           </div>
         </div>
@@ -700,13 +634,14 @@ function closeLightbox() {
           </div>
         </div>
 
-        <!-- RODC Promotion screenshot -->
+        <!-- RODC promotion screenshot -->
         <div>
           <p class="text-xs font-mono text-accent-action uppercase tracking-widest mb-3">RODC Promotion — The Critical Screen</p>
-          <div class="screenshot-frame" style="height:220px;"
-               onclick="openLightbox(this.querySelector('img').src,'DC3 RODC promotion — Read Only Domain Controller checkbox and password replication policy')">
-            <img src="assets/images/VMAD1_DC3_Read_Only_Domain_Controller_Configuration.png" alt="RODC configuration screen" />
-            <div class="screenshot-label label-action">RODC promotion wizard — Read Only DC checkbox + password replication policy</div>
+          <div class="image-zoom border border-gray-700 p-3"
+               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC3_Read_Only_Domain_Controller_Configuration.png')">
+            <img src="/it-and-security-portfolio/assets/images/VMAD1_DC3_Read_Only_Domain_Controller_Configuration.png"
+                 class="w-full" alt="RODC configuration screen" />
+            <p class="mt-2 text-xs italic text-text-secondary text-center">RODC promotion wizard — Read Only DC checkbox and password replication policy</p>
           </div>
         </div>
 
@@ -714,8 +649,7 @@ function closeLightbox() {
           <h4 class="text-sm font-bold text-accent-red uppercase tracking-wider mb-4">Password Replication Policy — The Critical RODC Config</h4>
           <p class="text-sm text-text-secondary mb-5 leading-relaxed">
             This screen is unique to RODC promotion and has no equivalent elsewhere. It controls which passwords
-            can be cached locally on the RODC — the decision that determines the scope of damage if the hardware
-            is physically compromised.
+            can be cached locally on the RODC — the decision that determines the scope of damage if the hardware is physically compromised.
           </p>
           <div class="grid md:grid-cols-3 gap-5">
             <div class="border border-gray-800 p-4">
@@ -726,7 +660,7 @@ function closeLightbox() {
               <p class="text-xs font-mono text-accent-success uppercase mb-2">Allowed Replication</p>
               <p class="text-sm text-text-secondary">Remote office users whose passwords can be pre-cached locally. They can authenticate even if the WAN link to the main site goes down.</p>
             </div>
-            <div class="border border-accent-red p-4" style="border-color: rgba(224,108,117,0.4)">
+            <div class="border border-gray-800 p-4" style="border-color: rgba(224,108,117,0.4)">
               <p class="text-xs font-mono text-accent-red uppercase mb-2">Denied Replication</p>
               <p class="text-sm text-text-secondary">Domain Admins, Schema Admins, and other privileged accounts. Always blocked — credentials for these accounts must never be stored on an RODC.</p>
             </div>
@@ -747,15 +681,15 @@ function closeLightbox() {
           </p>
         </div>
 
-        <!-- ADUC + ADAC side by side with screenshots -->
         <div class="grid md:grid-cols-2 gap-5">
 
           <!-- ADUC -->
           <div class="border border-gray-700 p-0 overflow-hidden">
-            <div class="screenshot-frame" style="height:160px;"
-                 onclick="openLightbox(this.querySelector('img').src,'ADUC — Customer Service OU user accounts view')">
-              <img src="assets/images/VMAD1_ADUC_Customer_Service_OU_User_Accounts.png" alt="ADUC user accounts view" />
-              <div class="screenshot-label label-action">ADUC — OU tree · user accounts · right-click management</div>
+            <div class="image-zoom p-3"
+                 onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_ADUC_Customer_Service_OU_User_Accounts.png')">
+              <img src="/it-and-security-portfolio/assets/images/VMAD1_ADUC_Customer_Service_OU_User_Accounts.png"
+                   class="w-full" alt="ADUC user accounts view" />
+              <p class="mt-2 text-xs italic text-text-secondary text-center">ADUC — OU tree, user accounts, right-click management</p>
             </div>
             <div class="p-5">
               <h4 class="text-sm font-semibold mb-2">Active Directory Users &amp; Computers (ADUC)</h4>
@@ -767,10 +701,11 @@ function closeLightbox() {
 
           <!-- ADAC -->
           <div class="border border-gray-700 p-0 overflow-hidden">
-            <div class="screenshot-frame" style="height:160px;"
-                 onclick="openLightbox(this.querySelector('img').src,'ADAC — Domain Controller inventory view showing all three DCs')">
-              <img src="assets/images/VMAD1_Active_Directory_Administrative_Center_Domain_Controller_Inventory.png" alt="ADAC domain controller inventory" />
-              <div class="screenshot-label label-action">ADAC — DC inventory showing DC1 · DC2 · DC3 (RODC)</div>
+            <div class="image-zoom p-3"
+                 onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_Active_Directory_Administrative_Center_Domain_Controller_Inventory.png')">
+              <img src="/it-and-security-portfolio/assets/images/VMAD1_Active_Directory_Administrative_Center_Domain_Controller_Inventory.png"
+                   class="w-full" alt="ADAC domain controller inventory" />
+              <p class="mt-2 text-xs italic text-text-secondary text-center">ADAC — DC inventory showing DC1, DC2, DC3 (RODC)</p>
             </div>
             <div class="p-5">
               <h4 class="text-sm font-semibold mb-2">Active Directory Administrative Center (ADAC)</h4>
@@ -782,10 +717,11 @@ function closeLightbox() {
 
           <!-- Sites & Services -->
           <div class="border border-gray-700 p-0 overflow-hidden">
-            <div class="screenshot-frame" style="height:160px;"
-                 onclick="openLightbox(this.querySelector('img').src,'AD Sites and Services — new DemoSite creation dialog')">
-              <img src="assets/images/VMAD1_Active_Directory_Sites_And_Services_New_DemoSite_Creation.png" alt="AD Sites and Services new site creation" />
-              <div class="screenshot-label label-action">Sites &amp; Services — DemoSite creation · site link assignment</div>
+            <div class="image-zoom p-3"
+                 onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_Active_Directory_Sites_And_Services_New_DemoSite_Creation.png')">
+              <img src="/it-and-security-portfolio/assets/images/VMAD1_Active_Directory_Sites_And_Services_New_DemoSite_Creation.png"
+                   class="w-full" alt="AD Sites and Services new site creation" />
+              <p class="mt-2 text-xs italic text-text-secondary text-center">Sites &amp; Services — DemoSite creation and site link assignment</p>
             </div>
             <div class="p-5">
               <h4 class="text-sm font-semibold mb-2">AD Sites &amp; Services</h4>
@@ -794,25 +730,27 @@ function closeLightbox() {
             </div>
           </div>
 
-          <!-- Domains & Trusts (no screenshot, text only) -->
+          <!-- Domains & Trusts -->
           <div class="border border-gray-700 p-5">
             <h4 class="text-sm font-semibold mb-2">AD Domains &amp; Trusts</h4>
             <p class="text-xs font-mono text-accent-action mb-2">Trust relationships &amp; functional levels</p>
             <p class="text-sm text-text-secondary">Manages trust relationships between domains, raises domain and forest functional levels, and shows the Domain Naming Master FSMO role holder.</p>
           </div>
 
-          <!-- Schema — full width with 2 screenshots -->
+          <!-- Schema — full width -->
           <div class="border border-gray-700 col-span-full p-0 overflow-hidden">
             <div class="grid md:grid-cols-2 gap-0">
-              <div class="screenshot-frame" style="height:160px;"
-                   onclick="openLightbox(this.querySelector('img').src,'AD Schema snap-in — Classes container view showing all object types')">
-                <img src="assets/images/VMAD1_Active_Directory_Schema_Classes_Container_View.png" alt="AD Schema classes container" />
-                <div class="screenshot-label label-red">Schema MMC — Classes container · object types defined in the forest</div>
+              <div class="image-zoom p-3"
+                   onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_Active_Directory_Schema_Classes_Container_View.png')">
+                <img src="/it-and-security-portfolio/assets/images/VMAD1_Active_Directory_Schema_Classes_Container_View.png"
+                     class="w-full" alt="AD Schema classes container" />
+                <p class="mt-2 text-xs italic text-text-secondary text-center">Schema MMC — Classes container, object types defined in the forest</p>
               </div>
-              <div class="screenshot-frame" style="height:160px;"
-                   onclick="openLightbox(this.querySelector('img').src,'Saving the custom MMC with AD Schema snap-in to Administrative Tools')">
-                <img src="assets/images/VMAD1_Save_Custom_MMC_Administrative_Tool.png" alt="Save custom MMC administrative tool" />
-                <div class="screenshot-label label-action">Custom MMC saved — persistent access to Schema snap-in</div>
+              <div class="image-zoom p-3"
+                   onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_Save_Custom_MMC_Administrative_Tool.png')">
+                <img src="/it-and-security-portfolio/assets/images/VMAD1_Save_Custom_MMC_Administrative_Tool.png"
+                     class="w-full" alt="Save custom MMC administrative tool" />
+                <p class="mt-2 text-xs italic text-text-secondary text-center">Custom MMC saved — persistent access to the Schema snap-in</p>
               </div>
             </div>
             <div class="p-5">
@@ -899,82 +837,88 @@ mmc
           <p class="text-xs text-text-secondary mt-3 italic">All five roles held by DC1 by default. The PDC Emulator is the most operationally critical — it handles time sync and is first to receive password changes.</p>
         </div>
 
-        <!-- FSMO verification screenshot -->
+        <!-- FSMO location screenshot -->
         <div>
           <p class="text-xs font-mono text-accent-action uppercase tracking-widest mb-3">Locating FSMO Roles</p>
-          <div class="screenshot-frame" style="height:200px;"
-               onclick="openLightbox(this.querySelector('img').src,'RID Master FSMO role verification on DC1 — Operations Masters dialog in ADUC')">
-            <img src="assets/images/VMAD1_RID_Master_FSMO_Role_Verification_On_DC1.png" alt="RID Master FSMO verification on DC1" />
-            <div class="screenshot-label label-action">ADUC → Operations Masters → RID tab — DC1 confirmed as RID Master</div>
+          <div class="image-zoom border border-gray-700 p-3"
+               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_RID_Master_FSMO_Role_Verification_On_DC1.png')">
+            <img src="/it-and-security-portfolio/assets/images/VMAD1_RID_Master_FSMO_Role_Verification_On_DC1.png"
+                 class="w-full" alt="RID Master FSMO verification on DC1" />
+            <p class="mt-2 text-xs italic text-text-secondary text-center">ADUC → Operations Masters → RID tab — DC1 confirmed as RID Master</p>
           </div>
         </div>
 
         <!-- Transfer vs Seize -->
         <div>
-          <div class="grid md:grid-cols-2 gap-5 mb-4">
+          <div class="grid md:grid-cols-2 gap-5 mb-5">
             <div class="border border-gray-700 p-5">
               <p class="text-xs font-mono text-accent-success uppercase mb-2">Transfer (Planned)</p>
               <p class="text-sm text-text-secondary">Current role holder is online. Gracefully move the role to another DC through the appropriate management tool. Use for planned maintenance or decommissioning.</p>
             </div>
             <div class="border border-gray-700 p-5" style="border-color: rgba(224,108,117,0.3)">
               <p class="text-xs font-mono text-accent-red uppercase mb-2">Seize (Emergency)</p>
-              <p class="text-sm text-text-secondary">Current role holder has permanently failed and cannot be recovered. Force another DC to take the role. The original DC cannot rejoin the domain afterward — seize only when recovery is off the table.</p>
+              <p class="text-sm text-text-secondary">Current role holder has permanently failed and cannot be recovered. Force another DC to take the role. The original DC cannot rejoin the domain afterward.</p>
             </div>
           </div>
 
-          <!-- Transfer sequence: 3 screenshots -->
+          <!-- Transfer sequence -->
           <p class="text-xs font-mono text-accent-action uppercase tracking-widest mb-3">Transfer Sequence — RID Master: DC1 → DC2</p>
           <div class="grid md:grid-cols-3 gap-3">
-            <div class="screenshot-frame" style="height:150px;"
-                 onclick="openLightbox(this.querySelector('img').src,'DC2 FSMO role transfer preparation — initiating transfer from DC1')">
-              <img src="assets/images/VMAD1_DC2_FSMO_Role_Transfer_Preparation.png" alt="FSMO role transfer preparation" />
-              <div class="screenshot-label">Transfer initiated from DC1</div>
+            <div class="image-zoom border border-gray-700 p-3"
+                 onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC2_FSMO_Role_Transfer_Preparation.png')">
+              <img src="/it-and-security-portfolio/assets/images/VMAD1_DC2_FSMO_Role_Transfer_Preparation.png"
+                   class="w-full" alt="FSMO role transfer preparation" />
+              <p class="mt-2 text-xs italic text-text-secondary text-center">Transfer initiated from DC1</p>
             </div>
-            <div class="screenshot-frame" style="height:150px;"
-                 onclick="openLightbox(this.querySelector('img').src,'RID Master FSMO role successfully transferred to DC2 — confirmation dialog')">
-              <img src="assets/images/VMAD1_RID_Master_FSMO_Role_Successfully_Transferred_To_DC2.png" alt="RID Master transferred to DC2" />
-              <div class="screenshot-label label-success">RID Master → DC2 confirmed</div>
+            <div class="image-zoom border border-gray-700 p-3"
+                 onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_RID_Master_FSMO_Role_Successfully_Transferred_To_DC2.png')">
+              <img src="/it-and-security-portfolio/assets/images/VMAD1_RID_Master_FSMO_Role_Successfully_Transferred_To_DC2.png"
+                   class="w-full" alt="RID Master transferred to DC2" />
+              <p class="mt-2 text-xs italic text-text-secondary text-center">RID Master → DC2 confirmed</p>
             </div>
-            <div class="screenshot-frame" style="height:150px;"
-                 onclick="openLightbox(this.querySelector('img').src,'PDC Emulator access error after FSMO transfer — expected behavior when old role holder is queried')">
-              <img src="assets/images/VMAD1_PDC_Emulator_Role_Access_Error_After_FSMO_Transfer.png" alt="PDC Emulator access error post transfer" />
-              <div class="screenshot-label label-red">PDC Emulator error — expected post-transfer</div>
+            <div class="image-zoom border border-gray-700 p-3"
+                 onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_PDC_Emulator_Role_Access_Error_After_FSMO_Transfer.png')">
+              <img src="/it-and-security-portfolio/assets/images/VMAD1_PDC_Emulator_Role_Access_Error_After_FSMO_Transfer.png"
+                   class="w-full" alt="PDC Emulator access error post transfer" />
+              <p class="mt-2 text-xs italic text-text-secondary text-center">PDC Emulator error — expected post-transfer behavior</p>
             </div>
           </div>
-          <p class="text-xs text-text-secondary mt-2 italic">The PDC Emulator error after transfer is expected behavior — the tool was still pointing to the old role holder. Refreshing or reconnecting resolves it.</p>
+          <p class="text-xs text-text-secondary mt-2 italic">The PDC Emulator error after transfer is expected — the tool was still pointing to the old role holder. Refreshing resolves it.</p>
         </div>
 
         <!-- Seize via NTDSUTIL -->
         <div>
           <p class="text-xs font-mono text-accent-action uppercase tracking-widest mb-3">Seize via NTDSUTIL — Emergency CLI Method</p>
           <div class="grid md:grid-cols-2 gap-4">
-            <div class="screenshot-frame" style="height:180px;"
-                 onclick="openLightbox(this.querySelector('img').src,'DC2 NTDSUTIL FSMO role management console — maintenance menu')">
-              <img src="assets/images/VMAD1_DC2_NTDSUTIL_FSMO_Role_Management_Console.png" alt="NTDSUTIL FSMO role management console" />
-              <div class="screenshot-label label-action">NTDSUTIL → FSMO maintenance menu</div>
+            <div class="image-zoom border border-gray-700 p-3"
+                 onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC2_NTDSUTIL_FSMO_Role_Management_Console.png')">
+              <img src="/it-and-security-portfolio/assets/images/VMAD1_DC2_NTDSUTIL_FSMO_Role_Management_Console.png"
+                   class="w-full" alt="NTDSUTIL FSMO role management console" />
+              <p class="mt-2 text-xs italic text-text-secondary text-center">NTDSUTIL → FSMO maintenance menu</p>
             </div>
-            <div class="screenshot-frame" style="height:180px;"
-                 onclick="openLightbox(this.querySelector('img').src,'Domain Naming Master seizure confirmation on DC2 via NTDSUTIL')">
-              <img src="assets/images/VMAD1_DC2_Domain_Naming_Master_Seizure_Confirmation.png" alt="Domain Naming Master seizure confirmation" />
-              <div class="screenshot-label label-red">Domain Naming Master seized — DC2 · emergency takeover</div>
+            <div class="image-zoom border border-gray-700 p-3"
+                 onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DC2_Domain_Naming_Master_Seizure_Confirmation.png')">
+              <img src="/it-and-security-portfolio/assets/images/VMAD1_DC2_Domain_Naming_Master_Seizure_Confirmation.png"
+                   class="w-full" alt="Domain Naming Master seizure confirmation" />
+              <p class="mt-2 text-xs italic text-text-secondary text-center">Domain Naming Master seized on DC2 — emergency takeover</p>
             </div>
           </div>
-          <p class="text-xs text-text-secondary mt-3 italic">NTDSUTIL is the command-line tool for emergency FSMO seizure. Used only when the original role holder is permanently offline and cannot be recovered. The seized DC cannot rejoin the domain.</p>
+          <p class="text-xs text-text-secondary mt-3 italic">NTDSUTIL is the command-line tool for emergency FSMO seizure. Used only when the original role holder is permanently offline and cannot be recovered.</p>
         </div>
 
-        <!-- DS command-line tools + PowerShell -->
+        <!-- PowerShell + DS tools -->
         <div class="border border-gray-700 p-6">
           <h4 class="text-sm font-bold text-accent-action uppercase tracking-wider mb-3">PowerShell &amp; DS Command-Line Tools</h4>
           <p class="text-sm text-text-secondary mb-5 max-w-2xl leading-relaxed">
-            The AD module for PowerShell is accessible directly from Server Manager → Tools and opens a PS window pre-loaded with AD cmdlets.
+            The AD module for PowerShell opens a PS window pre-loaded with AD cmdlets directly from Server Manager → Tools.
             The legacy DS tools (DSadd, DSget, DSmod, etc.) still work from a standard command prompt — primarily useful for legacy scripts.
           </p>
 
-          <!-- DSadd screenshot above the code blocks -->
-          <div class="screenshot-frame mb-5" style="height:160px;"
-               onclick="openLightbox(this.querySelector('img').src,'DSADD command line help — Active Directory object management syntax reference')">
-            <img src="assets/images/VMAD1_DSADD_Command_Line_Help_For_Active_Directory_Object_Management.png" alt="DSADD command line help" />
-            <div class="screenshot-label label-action">DSadd /? — command-line syntax for creating AD objects</div>
+          <div class="image-zoom border border-gray-700 p-3 mb-5"
+               onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_DSADD_Command_Line_Help_For_Active_Directory_Object_Management.png')">
+            <img src="/it-and-security-portfolio/assets/images/VMAD1_DSADD_Command_Line_Help_For_Active_Directory_Object_Management.png"
+                 class="w-full" alt="DSADD command line help" />
+            <p class="mt-2 text-xs italic text-text-secondary text-center">DSadd /? — command-line syntax reference for creating AD objects</p>
           </div>
 
           <div class="grid md:grid-cols-2 gap-6">
@@ -1035,7 +979,6 @@ DSRM "CN=Jane Smith,OU=Staff,DC=landonhotel,DC=local"</code></pre>
 
     <div class="section-header"><h2>Reference &amp; Best Practices</h2></div>
 
-    <!-- Environment summary -->
     <div class="fade-up card-dark p-6 mb-8">
       <p class="text-[0.7rem] tracking-[0.2em] uppercase text-text-secondary font-mono mb-4">Lab Environment Summary</p>
       <div class="overflow-x-auto">
@@ -1058,7 +1001,6 @@ DSRM "CN=Jane Smith,OU=Staff,DC=landonhotel,DC=local"</code></pre>
       </div>
     </div>
 
-    <!-- Best practices tiers -->
     <div class="grid md:grid-cols-3 gap-5">
       <div class="fade-up card-dark border border-red-900/30 p-6 phase-card" style="transition-delay:.05s">
         <h4 class="text-sm font-bold text-accent-red uppercase tracking-wider mb-3">Tier 1 — Infrastructure Foundations</h4>
@@ -1129,16 +1071,17 @@ DSRM "CN=Jane Smith,OU=Staff,DC=landonhotel,DC=local"</code></pre>
       </div>
     </div>
 
-    <!-- Client joined — closes the loop -->
+    <!-- Client joined -->
     <div class="fade-up mb-10" style="transition-delay:.12s">
       <p class="text-xs font-mono text-accent-action uppercase tracking-widest mb-3">Environment Verification — Client Joined</p>
-      <div class="grid md:grid-cols-2 gap-5 items-start">
-        <div class="screenshot-frame" style="height:180px;"
-             onclick="openLightbox(this.querySelector('img').src,'Computers container in ADUC — Client1 joined to landonhotel.local domain')">
-          <img src="assets/images/VMAD1_Computers_Container_Client1_Joined.png" alt="Computers container Client1 joined" />
-          <div class="screenshot-label label-success">ADUC → Computers container — Client1 joined to landonhotel.local</div>
+      <div class="grid md:grid-cols-2 gap-5 items-center">
+        <div class="image-zoom border border-gray-700 p-3"
+             onclick="openModal('/it-and-security-portfolio/assets/images/VMAD1_Computers_Container_Client1_Joined.png')">
+          <img src="/it-and-security-portfolio/assets/images/VMAD1_Computers_Container_Client1_Joined.png"
+               class="w-full" alt="Computers container Client1 joined" />
+          <p class="mt-2 text-xs italic text-text-secondary text-center">ADUC → Computers container — Client1 joined to landonhotel.local</p>
         </div>
-        <p class="text-sm text-text-secondary leading-relaxed self-center">
+        <p class="text-sm text-text-secondary leading-relaxed">
           A workstation (Client1) was joined to <code class="text-accent-success">landonhotel.local</code> and appears in the Computers container in ADUC — confirming the domain is fully functional end-to-end: authentication, name resolution, and domain membership all working across the three-DC environment.
         </p>
       </div>
@@ -1210,10 +1153,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-// Close lightbox on Escape
-document.addEventListener("keydown", e => {
-  if (e.key === "Escape") closeLightbox();
-});
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
 </script>
 </body>
 </html>
