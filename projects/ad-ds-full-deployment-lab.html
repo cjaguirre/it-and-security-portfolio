@@ -128,40 +128,12 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.image-placeholder {
-  background: rgba(97,175,239,0.04);
-  border: 1px dashed rgba(97,175,239,0.25);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 160px;
-  padding: 2rem;
-  cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease;
-}
-.image-placeholder:hover {
-  background: rgba(97,175,239,0.07);
-  border-color: rgba(97,175,239,0.45);
-}
-.image-placeholder .ph-icon {
-  font-size: 1.5rem;
-  margin-bottom: .5rem;
-  opacity: 0.35;
-}
-.image-placeholder .ph-label {
-  font-family: "Inconsolata", monospace;
-  font-size: .7rem;
-  color: var(--text-secondary);
-  text-align: center;
-  opacity: 0.6;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
 .image-zoom {
   cursor: pointer;
   transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+  width: 100%;
+  display: block;
+  border: 1px solid rgba(97,175,239,0.15);
 }
 .image-zoom:hover {
   transform: scale(1.02);
@@ -520,10 +492,10 @@ function closeModal() {
               as the root domain name. This is the only option available before any domain exists.
             </div>
           </div>
-          <div class="image-placeholder" onclick="openModal('')">
-            <div class="ph-icon">🖼</div>
-            <div class="ph-label">DC1 — AD DS Configuration Wizard<br>New forest / root domain name screen</div>
-          </div>
+          <img src="images/VMAD1_DC1_New_Forest_Creation_Landonhotel_Local.png"
+               alt="DC1 — AD DS Configuration Wizard, new forest creation"
+               class="image-zoom"
+               onclick="openModal(this.src)">
         </div>
 
         <div class="grid md:grid-cols-2 gap-8">
@@ -564,10 +536,10 @@ function closeModal() {
             <div class="tip-block">
               <strong class="text-accent-action">This lab:</strong> Default paths accepted — <code>C:\Windows\NTDS</code> for the database and logs, <code>C:\Windows\SYSVOL</code> for the shared folder.
             </div>
-            <div class="image-placeholder" onclick="openModal('')">
-              <div class="ph-icon">🖼</div>
-              <div class="ph-label">DC1 — Prerequisites check passed<br>Green checkmark, ready to install</div>
-            </div>
+            <img src="images/VMAD1_DC1_ADDS_Installation_Completed_Promotion_Ready.png"
+                 alt="DC1 — Prerequisites check passed, ready to install"
+                 class="image-zoom"
+                 onclick="openModal(this.src)">
           </div>
         </div>
 
@@ -578,14 +550,14 @@ function closeModal() {
           Go to Tools → Active Directory Users and Computers to confirm <code class="text-accent-success">landonhotel.local</code> exists
           with its default containers: Users, Computers, Domain Controllers, Builtin.</p>
           <div class="grid md:grid-cols-2 gap-6">
-            <div class="image-placeholder" onclick="openModal('')">
-              <div class="ph-icon">🖼</div>
-              <div class="ph-label">Server Manager — AD DS + DNS roles listed after DC1 promotion</div>
-            </div>
-            <div class="image-placeholder" onclick="openModal('')">
-              <div class="ph-icon">🖼</div>
-              <div class="ph-label">ADUC — landonhotel.local domain tree with default containers</div>
-            </div>
+            <img src="images/VMAD1_DC1_ADDS_and_DNS_Roles_Installed.png"
+                 alt="Server Manager — AD DS and DNS roles listed after DC1 promotion"
+                 class="image-zoom"
+                 onclick="openModal(this.src)">
+            <img src="images/VMAD1_ADUC_Domain_Hierarchy_And_Default_Containers.png"
+                 alt="ADUC — landonhotel.local domain tree with default containers"
+                 class="image-zoom"
+                 onclick="openModal(this.src)">
           </div>
         </div>
 
@@ -637,21 +609,21 @@ function closeModal() {
               <li>• Replication source: leave as "Any domain controller" — wizard picks the best available</li>
             </ul>
           </div>
-          <div class="image-placeholder" onclick="openModal('')">
-            <div class="ph-icon">🖼</div>
-            <div class="ph-label">DC2 — Deployment Configuration screen<br>"Add a domain controller to an existing domain"</div>
-          </div>
+          <img src="images/VMAD1_DC2_ADDS_and_DNS_Roles_Installed.png"
+               alt="DC2 — AD DS and DNS roles installed, server confirmed as domain controller"
+               class="image-zoom"
+               onclick="openModal(this.src)">
         </div>
 
         <div class="grid md:grid-cols-2 gap-8">
-          <div class="image-placeholder" onclick="openModal('')">
-            <div class="ph-icon">🖼</div>
-            <div class="ph-label">DC2 — Additional Replication Options<br>Replication source selection</div>
-          </div>
-          <div class="image-placeholder" onclick="openModal('')">
-            <div class="ph-icon">🖼</div>
-            <div class="ph-label">Server Manager — DC2 confirmed, AD DS role listed</div>
-          </div>
+          <img src="images/VMAD1_Active_Directory_Sites_And_Services_DC1_DC2_Replication_Topology.png"
+               alt="AD Sites and Services — DC1 and DC2 replication topology"
+               class="image-zoom"
+               onclick="openModal(this.src)">
+          <img src="images/VMAD1_DC2_ADDS_and_DNS_Roles_Installed.png"
+               alt="Server Manager — DC2 confirmed, AD DS role listed"
+               class="image-zoom"
+               onclick="openModal(this.src)">
         </div>
 
         <div class="tip-block">
@@ -709,10 +681,10 @@ function closeModal() {
               <strong class="text-accent-red">Never</strong> add Domain Admin, Schema Admin, or other privileged account passwords to the Allowed Replication list. If the RODC is physically compromised, those cached credentials become immediately exposed.
             </div>
           </div>
-          <div class="image-placeholder" onclick="openModal('')">
-            <div class="ph-icon">🖼</div>
-            <div class="ph-label">DC3 — RODC checkbox enabled in DC Options<br>DNS and GC left unchecked</div>
-          </div>
+          <img src="images/VMAD1_DC3_Read_Only_Domain_Controller_Configuration.png"
+               alt="DC3 — RODC checkbox enabled in DC Options, DNS and GC left unchecked"
+               class="image-zoom"
+               onclick="openModal(this.src)">
         </div>
 
         <div>
@@ -731,14 +703,14 @@ function closeModal() {
         </div>
 
         <div class="grid md:grid-cols-2 gap-8">
-          <div class="image-placeholder" onclick="openModal('')">
-            <div class="ph-icon">🖼</div>
-            <div class="ph-label">DC3 — Password Replication Policy screen<br>Allowed and Denied accounts configured</div>
-          </div>
-          <div class="image-placeholder" onclick="openModal('')">
-            <div class="ph-icon">🖼</div>
-            <div class="ph-label">ADUC — Domain Controllers container<br>DC3 listed, confirmed as RODC via properties</div>
-          </div>
+          <img src="images/VMAD1_DC3_RODC_Password_Replication_Policy.png"
+               alt="DC3 — Password Replication Policy screen, allowed and denied accounts configured"
+               class="image-zoom"
+               onclick="openModal(this.src)">
+          <img src="images/VMAD1_DC3_Read_Only_Domain_Controller_Properties.png"
+               alt="ADUC — Domain Controllers container, DC3 listed and confirmed as RODC"
+               class="image-zoom"
+               onclick="openModal(this.src)">
         </div>
 
       </div>
@@ -818,14 +790,14 @@ function closeModal() {
         </div>
 
         <div class="grid md:grid-cols-2 gap-8">
-          <div class="image-placeholder" onclick="openModal('')">
-            <div class="ph-icon">🖼</div>
-            <div class="ph-label">ADUC — landonhotel.local domain tree<br>Domain Controllers container with DC1, DC2, DC3</div>
-          </div>
-          <div class="image-placeholder" onclick="openModal('')">
-            <div class="ph-icon">🖼</div>
-            <div class="ph-label">ADAC — PowerShell History pane<br>Commands executing in background as GUI is clicked</div>
-          </div>
+          <img src="images/VMAD1_ADUC_Domain_Controllers_DC1_DC2_DC3_Inventory.png"
+               alt="ADUC — Domain Controllers container with DC1, DC2, DC3"
+               class="image-zoom"
+               onclick="openModal(this.src)">
+          <img src="images/VMAD1_ADAC_PowerShell_History_User_Management.png"
+               alt="ADAC — PowerShell History pane showing commands executing in background"
+               class="image-zoom"
+               onclick="openModal(this.src)">
         </div>
       </div>
     </div>
@@ -870,10 +842,10 @@ function closeModal() {
               <strong class="text-accent-red">Production warning:</strong> Do not move DCs between sites without planning. Incorrect site assignments affect authentication routing, replication scheduling, and WAN efficiency. This was demonstration only — DCs were moved back after.
             </div>
           </div>
-          <div class="image-placeholder" onclick="openModal('')">
-            <div class="ph-icon">🖼</div>
-            <div class="ph-label">AD Sites and Services — DemoSite created<br>Default-First-Site-Name + new site visible</div>
-          </div>
+          <img src="images/VMAD1_Active_Directory_Sites_And_Services_New_DemoSite_Creation.png"
+               alt="AD Sites and Services — DemoSite created, Default-First-Site-Name and new site visible"
+               class="image-zoom"
+               onclick="openModal(this.src)">
         </div>
       </div>
     </div>
@@ -923,10 +895,10 @@ mmc
               <p class="text-xs font-mono text-accent-action uppercase tracking-wider mb-2">Attributes</p>
               <p class="text-xs text-text-secondary">Hundreds of properties that can be assigned to objects — everything from <code>mail</code> and <code>telephoneNumber</code> to <code>objectGUID</code> and <code>userAccountControl</code>.</p>
             </div>
-            <div class="image-placeholder" onclick="openModal('')">
-              <div class="ph-icon">🖼</div>
-              <div class="ph-label">AD Schema snap-in — Classes and Attributes nodes visible in custom MMC</div>
-            </div>
+            <img src="images/VMAD1_Active_Directory_Schema_Classes_Container_View.png"
+                 alt="AD Schema snap-in — Classes and Attributes nodes visible in custom MMC"
+                 class="image-zoom"
+                 onclick="openModal(this.src)">
           </div>
         </div>
       </div>
@@ -993,10 +965,10 @@ Disable-ADAccount -Identity "john.doe"</code></pre>
           <strong class="text-accent-action">ADAC + PowerShell history:</strong> While working in the AD Administrative Center, the PowerShell History pane at the bottom displays every cmdlet being executed as you click through the GUI. This is the fastest way to learn AD PowerShell — do it in the GUI, read what the tool actually ran, then start scripting it yourself.
         </div>
 
-        <div class="image-placeholder" onclick="openModal('')">
-          <div class="ph-icon">🖼</div>
-          <div class="ph-label">PowerShell AD Module — PS prompt open, New-ADUser cmdlet example</div>
-        </div>
+        <img src="images/VMAD1_PowerShell_Get_ADDomainController_Verification.png"
+             alt="PowerShell AD Module — Get-ADDomainController showing DC properties and FSMO roles"
+             class="image-zoom"
+             onclick="openModal(this.src)">
 
       </div>
     </div>
@@ -1100,14 +1072,14 @@ Disable-ADAccount -Identity "john.doe"</code></pre>
     </div>
 
     <div class="fade-up mt-8 grid md:grid-cols-2 gap-8">
-      <div class="image-placeholder" onclick="openModal('')">
-        <div class="ph-icon">🖼</div>
-        <div class="ph-label">ADUC — Operations Masters dialog<br>RID / PDC / Infrastructure tabs showing DC1</div>
-      </div>
-      <div class="image-placeholder" onclick="openModal('')">
-        <div class="ph-icon">🖼</div>
-        <div class="ph-label">AD Domains & Trusts — Domain Naming Master<br>Operations Master showing DC1</div>
-      </div>
+      <img src="images/VMAD1_RID_Master_FSMO_Role_Verification_On_DC1.png"
+           alt="ADUC — Operations Masters dialog showing RID, PDC, Infrastructure tabs with DC1"
+           class="image-zoom"
+           onclick="openModal(this.src)">
+      <img src="images/VMAD1_FSMO_Domain_Naming_Master_Verification_DC2.png"
+           alt="AD Domains and Trusts — Domain Naming Master Operations Master showing DC1"
+           class="image-zoom"
+           onclick="openModal(this.src)">
     </div>
 
   </div>
